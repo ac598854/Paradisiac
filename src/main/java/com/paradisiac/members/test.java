@@ -1,4 +1,4 @@
-package com.paradisiac.memebers;
+package com.paradisiac.members;
 
 public class test {
 
