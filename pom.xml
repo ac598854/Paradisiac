@@ -25,6 +25,7 @@
 		      <version>4.11</version>
 		      <scope>test</scope>
 		 </dependency>
+		 
     	<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -43,12 +44,14 @@
 			<version>4.0.1</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>javax.servlet.jsp-api</artifactId>
 			<version>2.3.3</version>
 			<scope>provided</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.glassfish.web</groupId>
 			<artifactId>javax.servlet.jsp.jstl</artifactId>
@@ -64,16 +67,31 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+		
 		<dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
             <version>3.7.0</version> <!-- Use the latest version -->
         </dependency>
+        
         <dependency>
             <groupId>com.mopano</groupId>
             <artifactId>hibernate-json-org-contributor</artifactId>
             <version>1.0</version>
         </dependency>
+        
+        <dependency>
+		    <groupId>org.apache.taglibs</groupId>
+		    <artifactId>taglibs-standard-spec</artifactId>
+		    <version>1.2.5</version>
+		</dependency>
+
+		<dependency>
+		    <groupId>org.apache.taglibs</groupId>
+		    <artifactId>taglibs-standard-impl</artifactId>
+		    <version>1.2.5</version>
+		    <scope>runtime</scope>
+		</dependency>
 
   </dependencies>
   
