@@ -12,10 +12,20 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
+	
+	<servlet>
+        <servlet-name>ProductServlet</servlet-name>
+        <servlet-class>com.product.controller.ProductServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ProductServlet</servlet-name>
+        <url-pattern>/view/product</url-pattern>
+    </servlet-mapping>
 
 	<listener>
 		<listener-class>com.paradisiac.listener.InitializerListener</listener-class>
 	</listener>
+	
 	<filter>
 		<filter-name>SessionInViewFilter</filter-name>
 		<filter-class>com.paradisiac.filter.OpenSessionInViewFilter</filter-class>
