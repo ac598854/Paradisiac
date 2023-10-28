@@ -12,7 +12,7 @@ public class PromotionJDBCDAO implements PromotionDAO_interface{
 		String driver = "com.mysql.cj.jdbc.Driver";
 		String url = "jdbc:mysql://localhost:3306/paradisiac?serverTimezone=Asia/Taipei";
 		String userid = "root";
-		String passwd = "1234567";
+		String passwd = "123456";
 		
 		private static final String INSERT_STMT = 
 				"INSERT INTO  promotion(promotion_name,promotion_describition,promotion_start_date,promotion_end_date,promotion_discount,promotion_status)VALUES (?, ?, ?, ?, ?, ?)";
