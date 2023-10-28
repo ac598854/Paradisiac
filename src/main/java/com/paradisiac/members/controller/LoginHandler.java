@@ -34,7 +34,7 @@ public class LoginHandler extends HttpServlet {
 	}
 
 	// 檢查密碼、帳號
-	protected int successLogin(String memaccount, String mempass) {
+	protected int successLogin(String memaccount, String mempass,boolean memstatus) {
 		MembersVO membersVO = null;
 		MembersService membersSvc = new MembersService();
 
@@ -46,14 +46,19 @@ public class LoginHandler extends HttpServlet {
 			membersVO = membersSvc.getOneBymemaccount(memaccount);
 			System.out.println("有此帳號，2");
 		}
+		
+		if(!membersVO.getMemstatus()) {
+			System.out.println("帳號凍結，3");
+			return 3;
+		}
 
 		// 檢查帳號+密碼
 		if (membersVO.getMemaccount().equals(memaccount) && membersVO.getMempass().equals(mempass)) {
-			System.out.println("成功登入，3");
-			return 3;
-		} else {
-			System.out.println("密碼錯誤，4");
+			System.out.println("成功登入，4");
 			return 4;
+		} else {
+			System.out.println("密碼錯誤，5");
+			return 5;
 		}
 
 	}
@@ -65,11 +70,11 @@ public class LoginHandler extends HttpServlet {
 
 		// 檢查會員帳號
 		if (membersVO.getMemaccount().equals(memaccount)) {
-			System.out.println("已有相同帳號，5");
-			return 5;
-		} else {
-			System.out.println("沒有相同帳號，6");
+			System.out.println("已有相同帳號，6");
 			return 6;
+		} else {
+			System.out.println("沒有相同帳號，7");
+			return 7;
 		}
 
 	}
@@ -116,28 +121,26 @@ public class LoginHandler extends HttpServlet {
 			}
 
 			// 檢查會員帳號、密碼、狀態，可以登入者賦予session會員編號(驗證是否登入會員)
-			if (successLogin(memaccount, mempass) == 1) {
+			if (successLogin(memaccount, mempass, false) == 1) {
 				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
 				System.out.println("無帳號轉址" + URL);
 				res.sendRedirect(URL);
 				System.out.println("沒有帳號");
 				return;
-			} else if (successLogin(memaccount, mempass) == 4) {
+			} else if (successLogin(memaccount, mempass, false) == 4) {
 				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
 				res.sendRedirect(URL);
 				System.out.println("密碼錯誤轉址");
+				return;
+			} else if (successLogin(memaccount, mempass, false) == 7) {
+				String URL = req.getContextPath() + "/front-end/members/Login.jsp?state=notEnabled&requestURI="+ loginLocation;
+				res.sendRedirect(URL);
+				System.out.println("帳號凍結轉址");
 				return;
 			}else {
 				MembersService membersSvc = new MembersService();
 				MembersVO membersVO = null;
 				membersVO = membersSvc.getOneBymemaccount(memaccount);
-				// 帳號凍結
-				if (!(membersVO.getMemstatus())) {// 帳號凍結
-					res.sendRedirect(req.getContextPath() + "/front-end/members/Login.jsp?state=notEnabled&requestURI="
-							+ loginLocation);
-					return;
-				}
-
 // 帳號、密碼、帳號狀態都OK=可以登入
 				HttpSession session = req.getSession();
 				System.out.println("【session】=" + session);
@@ -271,13 +274,13 @@ public class LoginHandler extends HttpServlet {
 				return;
 			}
 
-			if (successLogin(memaccount, memcaptcha) == 1) {
+			if (successLogin(memaccount, memcaptcha, false) == 1) {
 				// 登入不成功
 				System.out.println("沒有此帳號");
 				String URL = req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=noId";
 				res.sendRedirect(URL);
 				return;
-			} else if (successLogin(memaccount, memcaptcha) == 4) {
+			} else if (successLogin(memaccount, memcaptcha, false) == 4) {
 				// 登入不成功
 				System.out.println("驗證碼錯誤");
 				String URL = req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=wrongNum";
