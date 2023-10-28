@@ -21,7 +21,7 @@ import com.paradisiac.util.jedispool.JedisUtil;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@WebServlet("/back-end/members/members.do")
+
 @MultipartConfig
 public class MembersServlet<Session> extends HttpServlet {
 
