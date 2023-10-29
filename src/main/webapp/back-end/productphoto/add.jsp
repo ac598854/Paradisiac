@@ -64,8 +64,8 @@
 <%-- 		</c:forEach> --%>
 <!-- 	</ul> -->
 <%-- </c:if> --%>
-
-<FORM METHOD="post" ACTION="<%=request.getContextPath() %>/back-end/productphoto/photo" name="form1"  enctype="multipart/form-data">
+<%-- ACTION="<%=request.getContextPath() %>/back-end/productphoto/photo" --%>
+<FORM METHOD="post" ACTION="photo.do" name="form1"  enctype="multipart/form-data">
 <table>
 	
 	

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Photo Display</title>
+</head>
+<body>
+    <h1>Product Photo</h1>
+    <input type="text" id="productIdInput" placeholder="Enter Product ID">
+    <button id="searchButton">Search</button>
+    <br>
+    <p>Photo ID: <span id="photoId"></span></p>
+    <img id="productImage" alt="Product Photo" />
+    
+    <script>
+        var productImageElement = document.getElementById("productImage");
+        var photoIdElement = document.getElementById("photoId");
+        var productIdInput = document.getElementById("productIdInput");
+        var searchButton = document.getElementById("searchButton");
+
+        searchButton.addEventListener("click", function() {
+            var productId = productIdInput.value; // 获取用户输入的商品编号
+
+            // 执行 Ajax 请求，传递商品编号作为查询参数
+            fetch("ProductPhotoServlet?productId=" + productId)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // 假设返回 JSON 数据
+                    }
+                    throw new Error('Network response was not ok');
+                })
+                .then(data => {
+                    photoIdElement.textContent = data.photoId;
+
+                    // 创建 Blob 对象
+                    var blob = new Blob([data.photoData], { type: "image/jpeg" });
+
+                    // 使用 Blob URL 显示图片
+                    var url = URL.createObjectURL(blob);
+                    productImageElement.src = url;
+                })
+                .catch(error => {
+                    console.error('Fetch error:', error);
+                });
+        });
+    </script>
+</body>
+</html>

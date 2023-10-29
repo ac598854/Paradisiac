@@ -47,7 +47,17 @@ public class ProductPhotoDAO implements ProductPhotoDAO_interface{
 		}
 	}
 	public ProductPhotoVO getById(Integer prophono) {
-		return getSession().get(ProductPhotoVO.class, prophono);
+		Transaction tx = getSession().beginTransaction();
+		ProductPhotoVO pvo ;
+		try {
+			pvo = getSession().get(ProductPhotoVO.class, prophono);
+			tx.commit();
+		} catch (Exception e) {
+		    tx.rollback();
+		    throw e;
+		}
+		return pvo;
+//		return getSession().get(ProductPhotoVO.class, prophono);
 	}
 	public List<ProductPhotoVO> getAll() {
 		return getSession().createQuery("from ProductPhotoVO", ProductPhotoVO.class).list();
@@ -67,7 +77,7 @@ public class ProductPhotoDAO implements ProductPhotoDAO_interface{
 
 	
 //	public static void main(String[] args) {
-//		ProductPhotoHibernate photoHibernate = new ProductPhotoHibernate(HibernateUtil.getSessionFactory());
+//		ProductPhotoDAO photoHibernate = new ProductPhotoDAO(HibernateUtil.getSessionFactory());
 //		
 //		System.out.println(photoHibernate.getById(1));
 //	}

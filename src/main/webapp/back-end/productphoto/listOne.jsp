@@ -63,10 +63,7 @@ ProductPhotoVO proVO = (ProductPhotoVO) request.getAttribute("proVO");
 	<tr>
 		<td><%=proVO.getPhotono()%></td>
 		<td><%=proVO.getProductno()%></td>
-		<td><%=proVO.getPicture()%></td>
-		<c:forEach items="${productPhotos}" var="photo">
-        <img src="data:image/png;base64,${photo.picture}" alt="Product Photo">
-   		</c:forEach>
+<%-- 		<td><%=proVO.getPicture()%></td> --%>
 	</tr>
 </table>
 
