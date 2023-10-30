@@ -18,10 +18,11 @@ import com.paradisiac.members.model.*;
 import com.paradisiac.members.service.*;
 import com.paradisiac.util.jedispool.JedisUtil;
 
-import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-@WebServlet("/back-end/members/members.do")
+//import redis.clients.jedis.Jedis;
+//import redis.clients.jedis.JedisPool;
+
 @MultipartConfig
 public class MembersServlet<Session> extends HttpServlet {
 
@@ -73,14 +74,15 @@ public class MembersServlet<Session> extends HttpServlet {
 		return str;
 	}
 
-	public String insertCode(String memno) {
-		String code = getAuthCode();
-		JedisUtil.set(memno, code);
-		JedisPool pool = JedisUtil.getJedisPool();
-		System.out.println("測試jedis-code：" + code);
-		JedisUtil.shutdownJedisPool();
-		return code;
-	}
+//	public String insertCode(String memmail) {
+//		String code = getAuthCode();
+//		JedisUtil.set(memmail, code);
+////		JedisUtil.expire(memmail);
+////		JedisPool pool = JedisUtil.getJedisPool();
+//		System.out.println("測試jedis-code：" + code);
+////		JedisUtil.shutdownJedisPool();
+//		return code;
+//	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -306,36 +308,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			String url = "/back-end/members/MembersLPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
 			successView.forward(req, res);
-		
-		}
-
-		if ("get_all_front".equals(action)) { // 來自update_emp_input.jsp的請求
-			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
-			req.setAttribute("errorMsgs", errorMsgs);
-
-			/*************************** 1.接收請求參數(取值) - 輸入格式的錯誤處理 **********************/
-
-			String memaccount = req.getParameter("memaccount");// 以編號查詢修改
-			MembersService membersService = new MembersService();
-			MembersVO membersVO = membersService.getOneBymemaccount(memaccount);
-
-			// Send the use back to the form, if there were errors
-			if (!errorMsgs.isEmpty()) {
-				// req.setAttribute("MembersVO", MembersVO); // 含有輸入格式錯誤的empVO物件,也存入req
-				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/members/MembersUpdate.jsp");
-				failureView.forward(req, res);
-				return; // 程式中斷
-			}
-
-			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("membersVO", membersVO); // 資料庫update成功後,正確的的empVO物件,存入req
-			String url = "/front-end/members/MembersUpdate.jsp";
-			System.out.println("CP頁路徑：" + url);
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-			successView.forward(req, res);
-			
 		}
 
 		if ("update-Front".equals(action)) {
@@ -343,13 +315,17 @@ public class MembersServlet<Session> extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
+			Integer memno = Integer.valueOf(req.getParameter("memno"));
 			String memname = req.getParameter("memname");
 			String memmail = req.getParameter("memmail");
 			String mempass = req.getParameter("mempass");
-			String memstatus = req.getParameter("memstatus");
 			Integer memgender = Integer.valueOf(req.getParameter("memgender"));
 			String memid = req.getParameter("memid");
-			java.sql.Date membir = java.sql.Date.valueOf(req.getParameter("membir"));
+			java.sql.Date membir = null;
+			System.out.println(req.getParameter("membir"));
+			if (req.getParameter("membir") != null && req.getParameter("membir").toString().length() > 0) {
+				membir = java.sql.Date.valueOf(req.getParameter("membir"));
+			}
 			String memphone = req.getParameter("memphone");
 			String memaddress = req.getParameter("memaddress");
 			Part mempicturePart = req.getPart("mempicture");
@@ -369,67 +345,21 @@ public class MembersServlet<Session> extends HttpServlet {
 
 					e.printStackTrace();
 				}
-
-				if (mempicturePart == null) {
-
-					// 建構webapp絕對路徑
-					String webappPath = getServletContext().getRealPath("/");
-
-					// 建構相對路徑
-					String relativeImagePath = "front-end/images/no-picture-taking.png";
-					String absoluteImagePath = webappPath + relativeImagePath;
-
-					File defaultImageFile = new File(absoluteImagePath);
-
-//					String defaultImagePath = "/front-end/images/no-picture-taking.png";
-//					// 使用ServletContext获取资源流
-//					InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-					if (defaultImageFile.exists()) {
-						// 成功获取资源流，您可以继续处理
-						// ...
-					} else {
-						// 资源不存在，处理错误
-						System.out.println("默认图像文件不存在");
-					}
-				}
-//==
-//			Part mempicturePart = req.getPart("mempicture"); // 获取上传的文件部分
-//			InputStream mempictureStream = mempicturePart.getInputStream(); // 获取输入流以读取文件内容
-//
-//			byte[] buffer = new byte[1024]; // 缓冲区大小，您可以根据需要调整
-//			int bytesRead;
-//			ByteArrayOutputStream output = new ByteArrayOutputStream();
-//
-//			while ((bytesRead = mempictureStream.read(buffer)) != -1) {
-//				output.write(buffer, 0, bytesRead);
-//			}
-//
-//			byte[] mempicture = output.toByteArray(); // 获取二进制数据
-
-				// 现在您可以使用 mempicture 这个 byte[] 来处理上传的图像数据
-
-				// ======
-				Integer memno = Integer.valueOf(req.getParameter("memno"));
-
-				// Send the use back to the form, if there were errors
-//			if (!errorMsgs.isEmpty()) {
-//				req.setAttribute("update-Front", MembersVO); // 含有輸入格式錯誤的memVO物件,也存入req
-//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/update.jsp");
-//				failureView.forward(req, res);
-//				return;
-//			}
-
-				/*************************** 2.開始新增資料 ***************************************/
-				MembersService MemsSvc = new MembersService();
-				MembersVO membersvo = MemsSvc.updateFront(memname, memmail, mempass, memgender, memid, membir, memphone,
-						memaddress, mempictureData, memno);
-				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-				req.setAttribute("memberVO", membersvo);
-				String url = "/back-end/members/MembersCPB.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-				successView.forward(req, res);
 			}
+			MembersVO membersVO = new MembersVO();
+			/*************************** 2.開始查詢資料 ****************************************/
+			MembersService memsSvc = new MembersService();
+			memsSvc.updateFront(memname, memmail, mempass, memgender, memid, membir, memphone, memaddress,
+					mempictureData, memno);
+			membersVO = memsSvc.getOneBymemno(memno);// 呈現更新後畫面，用memno取回所有更新資料
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
+			req.setAttribute("membersVO", membersVO); // 資料庫取出的物件物件，set在頁面
+			String url = "/front-end/members/MembersUpdate.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+			successView.forward(req, res);
+
 		}
+
 		if ("insert".equals(action)) { // 來自addEmp.jsp的請求
 
 			List<String> errorMsgs = new LinkedList<String>();
@@ -460,7 +390,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			String memphone = req.getParameter("memphone");
 			String memaddress = req.getParameter("memaddress");
-			
+
 			Part mempicturePart = req.getPart("mempicture");
 			byte[] mempictureData = null;
 			if (mempicturePart != null) {
@@ -478,51 +408,38 @@ public class MembersServlet<Session> extends HttpServlet {
 
 					e.printStackTrace();
 				}
+			} else {
 
-				if (mempicturePart == null) {
-
-					// 获取webapp目录的绝对路径
-					String webappPath = getServletContext().getRealPath("/");
-
-					// 构建相对路径
-					String relativeImagePath = "front-end/images/no-picture-taking.png";
-					String absoluteImagePath = webappPath + relativeImagePath;
-
-					File defaultImageFile = new File(absoluteImagePath);
-
-//					String defaultImagePath = "/front-end/images/no-picture-taking.png";
-//					// 使用ServletContext获取资源流
-//					InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-					if (defaultImageFile.exists()) {
-						// 成功获取资源流，您可以继续处理
-						// ...
-					} else {
-						// 资源不存在，处理错误
-						System.out.println("默认图像文件不存在");
-					}
-				}
-				String memcaptcha = getAuthCode();
-				System.out.println("驗證碼：" + memcaptcha);
-				/*************************** 2.開始新增資料 ***************************************/
-				MembersService MemsSvc = new MembersService();
-				MembersVO membersvo = MemsSvc.Insertmember(memname, memmail, memaccount, mempass, memgender, memid,
-						membir, memphone, memaddress, memcaptcha, mempictureData);
-				req.setAttribute("membersVO", membersvo);
-				String subject = "啟用會員驗證信";
-				String ch_name = membersvo.getMemname();
-				String ch_account = membersvo.getMemaccount();
-				String messageText = "Hello! " + ch_name + "\n" + "歡迎加入Paradise bay會員" + "\n" + "您的註冊帳號:" + ch_account
-						+ " 註冊驗證碼: " + "\n" + memcaptcha + "\n" + "請至該網址輸入驗證碼 " + "\n" + "http://localhost:8081"
-						+ req.getContextPath() + "/front-end/member/MemberCaptcha.jsp";
-				MailService mail = new MailService();
-				mail.sendMail(memmail, subject, messageText);
-				System.out.println("寄信成功");
-				/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
-				String url = "/front-end/members/MemberCaptcha.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
-				successView.forward(req, res);
-				System.out.println("新增成功");
 			}
+
+					
+			String memcaptcha = getAuthCode();
+			JedisUtil.getJedisPool();//開池
+			JedisUtil.set(memmail, memcaptcha);
+//			String memcaptcha=insertCode(memmail);
+			System.out.println("1="+memcaptcha);//取得產生的驗證碼
+			System.out.println("2="+JedisUtil.get(memmail));//從redis取回驗證碼
+			JedisUtil.shutdownJedisPool();
+
+			/*************************** 2.開始新增資料 ***************************************/
+			MembersService MemsSvc = new MembersService();
+			MembersVO membersvo = MemsSvc.Insertmember(memname, memmail, memaccount, mempass, memgender, memid, membir,
+					memphone, memaddress, memcaptcha, mempictureData);
+			req.setAttribute("membersVO", membersvo);
+			String subject = "啟用會員驗證信";
+			String ch_name = membersvo.getMemname();
+			String ch_account = membersvo.getMemaccount();
+			String messageText = "Hello! " + ch_name + "\n" + "歡迎加入Paradise bay會員" + "\n" + "您的註冊帳號:" + ch_account
+					+ " 註冊驗證碼: " + "\n" + memcaptcha + "\n" + "請至該網址輸入驗證碼 " + "\n" + "http://localhost:8081"
+					+ req.getContextPath() + "/front-end/member/MemberCaptcha.jsp";
+			MailService mail = new MailService();
+			mail.sendMail(memmail, subject, messageText);
+			System.out.println("寄信成功");
+			/*************************** 3.新增完成,準備轉交(Send the Success view) ***********/
+			String url = "/front-end/members/MemberCaptcha.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 新增成功後轉交listAllEmp.jsp
+			successView.forward(req, res);
+			System.out.println("新增成功");
 		}
 
 //			if ("delete".equals(action)) { // 來自listAllEmp.jsp

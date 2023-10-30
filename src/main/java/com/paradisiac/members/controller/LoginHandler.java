@@ -34,7 +34,7 @@ public class LoginHandler extends HttpServlet {
 	}
 
 	// 檢查密碼、帳號
-	protected int successLogin(String memaccount, String mempass) {
+	protected int successLogin(String memaccount, String mempass,boolean memstatus) {
 		MembersVO membersVO = null;
 		MembersService membersSvc = new MembersService();
 
@@ -46,14 +46,19 @@ public class LoginHandler extends HttpServlet {
 			membersVO = membersSvc.getOneBymemaccount(memaccount);
 			System.out.println("有此帳號，2");
 		}
+		
+		if(!membersVO.getMemstatus()) {
+			System.out.println("帳號凍結，3");
+			return 3;
+		}
 
 		// 檢查帳號+密碼
 		if (membersVO.getMemaccount().equals(memaccount) && membersVO.getMempass().equals(mempass)) {
-			System.out.println("成功登入，3");
-			return 3;
-		} else {
-			System.out.println("密碼錯誤，4");
+			System.out.println("成功登入，4");
 			return 4;
+		} else {
+			System.out.println("密碼錯誤，5");
+			return 5;
 		}
 
 	}
@@ -65,11 +70,11 @@ public class LoginHandler extends HttpServlet {
 
 		// 檢查會員帳號
 		if (membersVO.getMemaccount().equals(memaccount)) {
-			System.out.println("已有相同帳號，5");
-			return 5;
-		} else {
-			System.out.println("沒有相同帳號，6");
+			System.out.println("已有相同帳號，6");
 			return 6;
+		} else {
+			System.out.println("沒有相同帳號，7");
+			return 7;
 		}
 
 	}
@@ -106,8 +111,11 @@ public class LoginHandler extends HttpServlet {
 			if (mempass != null) {
 				mempass = mempass.trim();
 			}
-			String loginLocation = req.getParameter("loginLocation");// loginLocation紀錄登入前位置(從哪裡登入)
-			System.out.println("loginLocation=" + loginLocation);
+			//取前一個登入位置
+			HttpSession session = req.getSession();
+//			String location = (String) session.getAttribute("location");// loginLocation紀錄登入前位置(從哪裡登入)
+			String location = session.getAttribute("location")!=null ? (String) session.getAttribute("location") : "";
+			System.out.println("Location=" + location);
 
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/front-end/members/LoginError.jsp");
@@ -116,140 +124,83 @@ public class LoginHandler extends HttpServlet {
 			}
 
 			// 檢查會員帳號、密碼、狀態，可以登入者賦予session會員編號(驗證是否登入會員)
-			if (successLogin(memaccount, mempass) == 1) {
+			if (successLogin(memaccount, mempass, false) == 1) {
 				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
 				System.out.println("無帳號轉址" + URL);
 				res.sendRedirect(URL);
 				System.out.println("沒有帳號");
 				return;
-			} else if (successLogin(memaccount, mempass) == 4) {
+			} else if (successLogin(memaccount, mempass, false) == 5) {
 				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
 				res.sendRedirect(URL);
 				System.out.println("密碼錯誤轉址");
 				return;
+			} else if (successLogin(memaccount, mempass, false) == 3) {
+				String URL = req.getContextPath() + "/front-end/members/Login.jsp?error=noAccount";
+				res.sendRedirect(URL);
+				System.out.println("帳號凍結轉址");
+				return;
 			}else {
+				//登入成功
 				MembersService membersSvc = new MembersService();
 				MembersVO membersVO = null;
 				membersVO = membersSvc.getOneBymemaccount(memaccount);
-				// 帳號凍結
-				if (!(membersVO.getMemstatus())) {// 帳號凍結
-					res.sendRedirect(req.getContextPath() + "/front-end/members/Login.jsp?state=notEnabled&requestURI="
-							+ loginLocation);
-					return;
-				}
-
 // 帳號、密碼、帳號狀態都OK=可以登入
-				HttpSession session = req.getSession();
+				HttpSession session2 = req.getSession();
 				System.out.println("【session】=" + session);
 				session.setAttribute("memno", membersVO.getMemno());// 給session memno屬性(標示為會員)
 				Integer memno = (Integer) session.getAttribute("memno");// 測試用
 				System.out.println("測試取得放入session的會員編號"+memno);// 測試用
 
-				System.out.println("從哪裡登入" + loginLocation);// 不是從登入會面近來有location
+				System.out.println("從哪裡登入" + location);// 不是從登入會面近來有location
 
-// ================設定當【loginLocation】為特定頁面:購物購物車、訂房訂購頁、活動訂購頁，則轉到結帳頁
+// ================設定當【location】為特定頁面:購物購物車、訂房訂購頁、活動訂購頁，則轉到結帳頁
 
-				if (loginLocation != "") {// 如果上一個登入位置不等於空，則可以進入結帳頁面)
-					System.out.println(loginLocation);
+				if (location != "") {// 如果上一個登入位置不等於空，則可以進入結帳頁面)
+					System.out.println(location);
 
 					// 如果是活動訂購頁()
 					String actorderpage = req.getContextPath() + "/front-end/actorder/ActOder.jsp";
-					if (loginLocation.equals(actorderpage)) {
+					if (location.equals(actorderpage)) {
 						System.out.println(actorderpage);// 確認購物頁
-						res.sendRedirect(req.getContextPath() + "/shop/actorder.do?action=toActCheckOut");
+						res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");
 						return;
 					}
 					res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 如果沒有特定的
 																						// loginLocation，則將使用者導向到首頁。
 					return;
+					
 //	=================待填購物、訂房=========================================================
 				}
 				try {// 如果不是從登入頁登入，則移除登入狀態，重導回上一頁
-					String location = (String) session.getAttribute("location");
-					if (location != null) {// 如果位置不等於null則移除session中位置，並重新導向位置
+					System.out.println("移除登入狀態");
+					if (location != "") {// 如果位置不等於null則移除session中位置，並重新導向位置
 						System.out.println("location=" + location);
 						session.removeAttribute("location"); // 移除掉
-						res.sendRedirect(location);
+						res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");
 						return;
 					}
-
 				} catch (Exception ignored) {
 					System.out.println(ignored.getMessage());
-
 				}
-				res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 成功登入轉至首頁
+//				res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 成功登入轉至首頁
+				
+				
+				//測試用
+				//res.sendRedirect(req.getContextPath() + "/front-end/members/MembersUpdate.jsp");
 
-				// ======測試用跳轉至會員專區
-////				res.sendRedirect(req.getContextPath() + "/front-end/MembersUpdate.jsp");
-//				MembersService membersSvc1 = new MembersService();
-//				MembersVO membersVO1 = null;
-//				membersVO1 = membersSvc1.getOneBymemaccount(memaccount);
-//				System.out.println(membersVO1);
-//				req.setAttribute("membersVO", membersVO1); // 資料庫update成功後,正確的的empVO物件,存入req
-//				String url = "/front-end/members/MembersUpdate.jsp";
-//				System.out.println("CP頁路徑：" + url);
-//				RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-//				System.out.println("RES:"+res+"REQ:"+req);
-//				successView.forward(req, res);
+				MembersService membersService = new MembersService();
+				MembersVO membersVO1 = membersService.getOneBymemno(memno);//取152行memno
+				req.setAttribute("membersVO", membersVO1);
+				String url = "/front-end/members/MembersUpdate.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				successView.forward(req, res);
+
 			}
 
 		}
 
-		if ("update-Front".equals(action)) {
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-
-			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
-			String memname = req.getParameter("memname");
-			String memmail = req.getParameter("memmail");
-			String mempass = req.getParameter("mempass");
-			Integer memgender = Integer.valueOf(req.getParameter("memgender"));
-			String memid = req.getParameter("memid");
-			java.sql.Date membir = java.sql.Date.valueOf(req.getParameter("membir"));
-			String memphone = req.getParameter("memphone");
-			String memaddress = req.getParameter("memaddress");
-			Part mempicturePart = req.getPart("mempicture");
-			byte[] mempictureData = null;
-			if (mempicturePart != null) {
-				// 圖片上傳部分不為空，處理上傳的圖片
-				try (InputStream is = mempicturePart.getInputStream()) {
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-					int bytesRead;
-					byte[] data = new byte[1024];
-					while ((bytesRead = is.read(data)) != -1) {
-						buffer.write(data, 0, bytesRead);
-					}
-					mempictureData = buffer.toByteArray();
-					buffer.close();
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
-
-				if (mempicturePart == null) {
-
-					// 建構webapp絕對路徑
-					String webappPath = getServletContext().getRealPath("/");
-
-					// 建構相對路徑
-					String relativeImagePath = "front-end/images/no-picture-taking.png";
-					String absoluteImagePath = webappPath + relativeImagePath;
-
-					File defaultImageFile = new File(absoluteImagePath);
-
-//					String defaultImagePath = "/front-end/images/no-picture-taking.png";
-//					// 使用ServletContext获取资源流
-//					InputStream defaultImageStream = getServletContext().getResourceAsStream(defaultImagePath);
-					if (defaultImageFile.exists()) {
-						// 成功获取资源流，您可以继续处理
-						// ...
-					} else {
-						// 资源不存在，处理错误
-						System.out.println("默认图像文件不存在");
-					}
-				}
-			}
-		}
+		
 		if ("email-Confirm".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -271,13 +222,13 @@ public class LoginHandler extends HttpServlet {
 				return;
 			}
 
-			if (successLogin(memaccount, memcaptcha) == 1) {
+			if (successLogin(memaccount, memcaptcha, false) == 1) {
 				// 登入不成功
 				System.out.println("沒有此帳號");
 				String URL = req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=noId";
 				res.sendRedirect(URL);
 				return;
-			} else if (successLogin(memaccount, memcaptcha) == 4) {
+			} else if (successLogin(memaccount, memcaptcha, false) == 4) {
 				// 登入不成功
 				System.out.println("驗證碼錯誤");
 				String URL = req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=wrongNum";
@@ -291,7 +242,7 @@ public class LoginHandler extends HttpServlet {
 				MemsSvc.updateBackStatus(membersVO.getMemno(), true);
 
 				res.sendRedirect(req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=success");
-
+				
 			}
 
 		}

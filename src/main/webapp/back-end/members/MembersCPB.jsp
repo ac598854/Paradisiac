@@ -91,7 +91,9 @@ th, td {
 									class="round-image" id="preview_img_id">
 							</c:when>
 							<c:otherwise>
-								<span class="text">預覽圖</span>
+								<img
+									src="<%=request.getContextPath()%>/images/no-picture-taking.png"
+									class="round-image" id="no_img_id">
 							</c:otherwise>
 						</c:choose>
 					</div></td>

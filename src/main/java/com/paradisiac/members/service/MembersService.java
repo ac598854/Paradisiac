@@ -71,7 +71,7 @@ public class MembersService {
 		return MembersVO;
 	}
 
-	public MembersVO updateFront(String memname, String memmail,String mempass,
+	public void updateFront(String memname, String memmail,String mempass,
 			Integer memgender, String memid, java.sql.Date membir,String memphone ,String memaddress,byte[] mempicture,Integer memno) {
 		MembersVO MembersVO = new MembersVO();
 		MembersVO.setMemname(memname);
@@ -85,7 +85,7 @@ public class MembersService {
 		MembersVO.setMempicture(mempicture);
 		MembersVO.setMemno(memno);
 		dao.updateFront(MembersVO);
-		return MembersVO;
+//		return MembersVO;
 	}
 	
 	public MembersVO updatePass(String mempass, Integer memno) {

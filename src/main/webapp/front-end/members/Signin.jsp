@@ -36,7 +36,7 @@ pageContext.setAttribute("membersVO", membersVO);
 			});
 		});
 
-		$('#checkCaptchaButton').on('click', function() {
+		$('#checkCaptchaButton').on('click', function() {//取出redis驗證碼另寫action
 			var captcha = $('#memcaptcha').val();
 			$.ajax({
 				type : "POST",

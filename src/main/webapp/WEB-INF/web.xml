@@ -19,7 +19,32 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>ProductServlet</servlet-name>
-        <url-pattern>/view/product</url-pattern>
+        <url-pattern>/back-end/product</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>MembersServlet</servlet-name>
+        <servlet-class>com.paradisiac.members.controller.MembersServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MembersServlet</servlet-name>
+        <url-pattern>/back-end/members/members.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MembersServlet</servlet-name>
+        <url-pattern>/front-end/members/members.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>LoginHandler</servlet-name>
+        <servlet-class>com.paradisiac.members.controller.LoginHandler</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LoginHandler</servlet-name>
+        <url-pattern>/front-end/members/login.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginHandler</servlet-name>
+        <url-pattern>/back-end/members/login.do</url-pattern>
     </servlet-mapping>
 
 	<listener>
@@ -32,7 +57,19 @@
 	</filter>
 	<filter-mapping>
 		<filter-name>SessionInViewFilter</filter-name>
-		<url-pattern>/hibernate/*</url-pattern>
+		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
+<!-- 	<filter> -->
+<!--   		<filter-name>LoginFilter</filter-name> -->
+<!--   		<filter-class>com.paradisiac.filter.LoginFilter</filter-class> -->
+<!--  	</filter> -->
+<!--  	<filter-mapping> -->
+<!--   		<filter-name>LoginFilter</filter-name> -->
+<!-- 		  <url-pattern>/front-end/members/MembersUpdate.jsp</url-pattern> -->
+<!-- 		  <url-pattern>/front-end/actorder/ActCheckOut.jsp</url-pattern> -->
+<!-- 		  <url-pattern>/front-end/csmessages/MessageCPF.jsp</url-pattern> -->
+<!-- 		  <url-pattern>/front-end/csmessages/MessageLPF.jsp</url-pattern> -->
+<!-- 	</filter-mapping> -->
 
 </web-app>
