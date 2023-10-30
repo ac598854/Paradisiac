@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.members.model.*"%>
-<%@ page import="java.util.Base64;"%>
+<%@ page import="java.util.Base64"%>
 
 
 <html>
@@ -61,7 +61,7 @@ th, td {
 		</ul>
 	</c:if>
 	
-	<FORM METHOD="post" ACTION="login.do" name="form1">
+	<FORM METHOD="post" ACTION="members.do" name="form1" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>會員頭像:</td>

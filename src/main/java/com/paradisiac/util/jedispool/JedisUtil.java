@@ -32,12 +32,26 @@ public class JedisUtil {
 	}
 
 
-
-
-	public static void set(String key, String value) {
+	public static void set(String key, String value) {//同樣key會覆蓋原資料
 	    JedisPool pool = getJedisPool();
 	    try (Jedis jedis = pool.getResource()) {
 	        jedis.set(key, value);
+	    }
+	}
+	
+	public static String get(String key) {
+		String result="";
+	    JedisPool pool = getJedisPool();
+	    try (Jedis jedis = pool.getResource()) {
+	    	result=jedis.get(key);
+	    }
+	    return result;
+	}
+	
+	public static void expire(String key) {
+	    JedisPool pool = getJedisPool();
+	    try (Jedis jedis = pool.getResource()) {
+	    	jedis.expire(key, 60);//10秒
 	    }
 	}
 
