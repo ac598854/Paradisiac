@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta charset="UTF-8">
     <title>Product Photo Display</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
 </head>
 <body>
     <h1>Product Photo</h1>
     <input type="text" id="productIdInput" placeholder="Enter Product ID">
-    <button id="searchButton">Search</button>
+    <button id="searchButton" class="btn btn-primary">Search</button>
     <br>
-    <p>Photo ID: <span id="photoId"></span></p>
-    <img id="productImage" alt="Product Photo" />
+    <table class="table table-bordered">
+    	<tr>
+    		<th>商品編號</th>
+    		<th>照片編號</th>
+    		<th>照片</th>
+    	</tr>
+    	<tr>
+    		<td><span id="productIds"></span></td>
+    		<td><span id="photoId"></span></td>
+    		<td><img id="productImage" alt="Product Photo"  height="150"/></td>
+    	</tr>	
+    </table>
+<!--     <p>Photo ID: <span id="photoId"></span></p> -->
+<!--     <img id="productImage" alt="Product Photo"  height="150"/> -->
     
     <script>
+    	var productIds = document.getElementById("productIds");
         var productImageElement = document.getElementById("productImage");
         var photoIdElement = document.getElementById("photoId");
         var productIdInput = document.getElementById("productIdInput");
@@ -19,29 +34,25 @@
 
         searchButton.addEventListener("click", function() {
             var productId = productIdInput.value; // 获取用户输入的商品编号
-
-            // 执行 Ajax 请求，传递商品编号作为查询参数
-            fetch("ProductPhotoServlet?productId=" + productId)
+            	
+            
+          fetch("/Paradisiac/ProductPhotoServlet?productId=" + productId)
                 .then(response => {
                     if (response.ok) {
-                        return response.json(); // 假设返回 JSON 数据
+                        return response.json(); 
                     }
                     throw new Error('Network response was not ok');
                 })
                 .then(data => {
                     photoIdElement.textContent = data.photoId;
-
-                    // 创建 Blob 对象
-                    var blob = new Blob([data.photoData], { type: "image/jpeg" });
-
-                    // 使用 Blob URL 显示图片
-                    var url = URL.createObjectURL(blob);
-                    productImageElement.src = url;
+                    document.getElementById("productImage").src = "data:image/png;base64," + data.photoData;
+                    
                 })
                 .catch(error => {
                     console.error('Fetch error:', error);
                 });
         });
     </script>
+     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
