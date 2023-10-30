@@ -11,12 +11,9 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	String userid = "root";
 	String passwd = "Cha103_11";
 
-//	private static final String INSERT = "INSERT INTO members(mem_no,mem_status,mem_name,mem_mail,mem_account,mem_pass,mem_gender,mem_id,mem_bir, mem_phone,mem_address,mem_date,mem_captcha) VALUES (?, ?, ?, ?, ?, ?, ? ,?, ?, ?,?, ?,?)";
-	// 16行要刪掉有圖(53、104行)
-	private static final String INSERT = "INSERT INTO members(mem_status,mem_name,mem_mail,mem_account,mem_pass,mem_gender,mem_id,mem_bir, mem_phone,mem_address,mem_captcha,mem_picture) VALUES (true, ?, ?, ?, ?, ? ,?, ?, ?,?,?,?)";
-	// 18行要刪掉?沒有更新全部的
-	private static final String UPDATE_ALL = "UPDATE members SET mem_status = ?, mem_name = ?, mem_mail = ?, mem_account = ?, mem_pass = ?, mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 
+	private static final String INSERT = "INSERT INTO members(mem_status,mem_name,mem_mail,mem_account,mem_pass,mem_gender,mem_id,mem_bir, mem_phone,mem_address,mem_captcha,mem_picture) VALUES (true, ?, ?, ?, ?, ? ,?, ?, ?,?,?,?)";
+	private static final String UPDATE_ALL = "UPDATE members SET mem_status = ?, mem_name = ?, mem_mail = ?, mem_account = ?, mem_pass = ?, mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 	private static final String UPDATE_BACK_STATUS = "UPDATE members SET mem_status = ? WHERE mem_no = ?";
 	private static final String UPDATE_FRONT = "UPDATE members SET mem_name = ?, mem_mail = ?, mem_pass = ?,mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 	private static final String UPDATE_PASS = "UPDATE members SET mem_pass = ? WHERE mem_no = ?";
@@ -35,8 +32,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(INSERT);
-
+			pstmt = con.prepareStatement(INSERT);//下面set順序要跟sql問號一致
+	
 			pstmt.setString(1, mVO.getMemname());
 			pstmt.setString(2, mVO.getMemmail());
 			pstmt.setString(3, mVO.getMemaccount());
@@ -46,7 +43,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			pstmt.setDate(7, mVO.getMembir());
 			pstmt.setString(8, mVO.getMemphone());
 			pstmt.setString(9, mVO.getMemaddress());
-			pstmt.setString(10, mVO.getMemaddress());
+			pstmt.setString(10, mVO.getMemcaptcha());
 			pstmt.setBytes(11, mVO.getMempicture());// 預刪功能
 
 			pstmt.executeUpdate();
@@ -176,7 +173,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_FRONT);
-
+					
 			pstmt.setString(1, mVO.getMemname());
 			pstmt.setString(2, mVO.getMemmail());
 			pstmt.setString(3, mVO.getMempass());
@@ -185,16 +182,18 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			pstmt.setDate(6, mVO.getMembir());
 			pstmt.setString(7, mVO.getMemphone());
 			pstmt.setString(8, mVO.getMemaddress());
-			pstmt.setInt(9, mVO.getMemno());
-			pstmt.setBytes(10, mVO.getMempicture());
+			pstmt.setBytes(9, mVO.getMempicture());
+			pstmt.setInt(10, mVO.getMemno());
 
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
 		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
 			// Handle any SQL errors
 		} catch (SQLException se) {
+			se.printStackTrace();
 			throw new RuntimeException("A database error occured(發生資料庫錯誤。). " + se.getMessage());
 			// Clean up JDBC resources
 		} finally {
@@ -224,7 +223,6 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_PASS);
-
 			pstmt.setString(1, mVO.getMempass());
 			pstmt.setInt(2, mVO.getMemno());
 
@@ -560,7 +558,6 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	@Override
 	public void delete(Integer memno) {
 		int updateCount_MEM = 0;
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 

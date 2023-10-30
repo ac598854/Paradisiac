@@ -92,7 +92,6 @@ th, td {
 				placeholder="請輸入密碼" name="mempass">
 			
 			<input type="hidden" name="action" value="loginCheck">
-			<input type="hidden" name="loginLocation" value="${param.requestURI}">
 			<input type="submit" class="form-btn" value="登入" /> 
 				<br> <br>
 			<a href='ForgetPass.jsp' class="link to-forgetpassk">忘記密碼</a> <br> <br>
