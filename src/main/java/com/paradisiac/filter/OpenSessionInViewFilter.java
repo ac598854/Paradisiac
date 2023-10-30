@@ -19,10 +19,11 @@ public class OpenSessionInViewFilter implements Filter{
 		SessionFactory factory = HibernateUtil.getSessionFactory();
 		try {
 			factory.getCurrentSession().beginTransaction();
-			System.out.println("執行filter");
+			System.out.println("執行Hibernate filter");
 			chain.doFilter(req, res);
 			factory.getCurrentSession().getTransaction().commit();
 		} catch (Exception e) {
+			System.out.println("rollback");
 			factory.getCurrentSession().getTransaction().rollback();
 			e.printStackTrace();
 			chain.doFilter(req, res);
