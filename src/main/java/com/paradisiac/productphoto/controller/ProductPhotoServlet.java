@@ -35,6 +35,7 @@ public class ProductPhotoServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		req.setCharacterEncoding("UTF-8");
+		
 		String productId = req.getParameter("productId");
 		Integer productno = null ;
 		productno = Integer.valueOf(productId);

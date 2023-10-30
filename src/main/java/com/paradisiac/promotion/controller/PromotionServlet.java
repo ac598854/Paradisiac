@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.paradisiac.promotion.model.PromotionVO;
 import com.paradisiac.promotion.service.PromotionService;
-@WebServlet("/photo.do")
+@WebServlet("/back-end/promotion/promotion")
 public class PromotionServlet extends HttpServlet{
 	/**
 	 * 
