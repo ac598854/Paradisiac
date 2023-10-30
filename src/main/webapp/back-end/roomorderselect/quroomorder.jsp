@@ -13,7 +13,7 @@
         <div class="text-center">
             <h1 class="mt-3">Order List Select</h1>
             <h2>員工系統</h2>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/back-end/roomorderselect/roomorderselect?action=getAll">查詢所有員工</a>
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/emp/emp.do?action=getAll">查詢所有員工</a>
         </div>
 
         <h3 class="mt-5"><b>查詢</b></h3>
@@ -40,7 +40,6 @@
             <input type="hidden" name="action" value="compositeQuery">
         </form>
     </div>
-		<a href="${pageContext.request.contextPath}/index2.jsp">回首頁</a>	
     <!-- 引入 Bootstrap JavaScript 和 jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
