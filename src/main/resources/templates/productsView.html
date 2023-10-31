@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品列表</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            fetch('http://localhost:8080/getProducts')
+                .then(response => response.json())
+                .then(data => {
+                    let tableBody = document.querySelector('tbody');
+                    data.forEach(product => {
+                        let row = document.createElement('tr');
+
+                        let productNoCell = document.createElement('td');
+                        productNoCell.innerText = product.productNo;
+                        row.appendChild(productNoCell);
+
+                        let productNameCell = document.createElement('td');
+                        productNameCell.innerText = product.productName;
+                        row.appendChild(productNameCell);
+
+                        let productPriceCell = document.createElement('td');
+                        productPriceCell.innerText = product.productPrice;
+                        row.appendChild(productPriceCell);
+
+                        let productQuantityCell = document.createElement('td');
+                        productQuantityCell.innerText = product.productQuantity;
+                        row.appendChild(productQuantityCell);
+
+                        let productStatusCell = document.createElement('td');
+                        productStatusCell.innerText = product.productStatus ? '上架' : '下架';
+                        row.appendChild(productStatusCell);
+
+                        let actionsCell = document.createElement('td');
+                        actionsCell.innerHTML = '<a href="#" class="btn btn-primary btn-sm mr-2">編輯</a> <a href="#" class="btn btn-danger btn-sm">刪除</a>';
+                        row.appendChild(actionsCell);
+
+                        tableBody.appendChild(row);
+                    });
+                });
+        });
+    </script>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">商品管理</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">商品列表</a>
+            </li>
+            <!-- 可以添加其他導航項目 -->
+        </ul>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <h2>商品列表</h2>
+
+    <table class="table table-bordered table-hover table-striped">
+        <thead class="thead-dark">
+        <tr>
+            <th>商品編號</th>
+            <th>商品名稱</th>
+            <th>價格</th>
+            <th>數量</th>
+            <th>狀態</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 這裡的內容將由JavaScript動態填充 -->
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

@@ -17,7 +17,7 @@ public class ProductCategoryController {
     @Autowired
     private ProductCategoryService productCategoryService;
 
-    @GetMapping("/products/{productCategoryNo}")
+    @GetMapping("/productCategory/{productCategoryNo}")
     public ResponseEntity<ProductCategory> getProductCategory(@PathVariable Integer productCategoryNo){
 
         ProductCategory productCategory = productCategoryService.getProductCategoryById(productCategoryNo);
