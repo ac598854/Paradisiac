@@ -5,8 +5,10 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.paradisiac.util.HibernateUtil;
+
 
 
 
@@ -46,18 +48,11 @@ public class ProductPhotoDAO implements ProductPhotoDAO_interface{
 			return -1;
 		}
 	}
-	public ProductPhotoVO getById(Integer prophono) {
-//		Transaction tx = getSession().beginTransaction();
-//		ProductPhotoVO pvo ;
-//		try {
-//			pvo = getSession().get(ProductPhotoVO.class, prophono);
-//			tx.commit();
-//		} catch (Exception e) {
-//		    tx.rollback();
-//		    throw e;
-//		}
-//		return pvo;
-		return getSession().get(ProductPhotoVO.class, prophono);
+	public ProductPhotoVO getByNo(Integer productno) {
+		Query<ProductPhotoVO> query1 = getSession().createQuery("from ProductPhotoVO where productno = :productno", ProductPhotoVO.class)//舊版是?新的加上才可用
+				.setParameter("productno", productno); 
+		ProductPhotoVO result = query1.uniqueResult();	
+		return result;
 	}
 	public List<ProductPhotoVO> getAll() {
 		return getSession().createQuery("from ProductPhotoVO", ProductPhotoVO.class).list();

@@ -8,10 +8,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "product_photo")
 public class ProductPhotoVO {
-	
+	@Id
 	@Column(name = "product_photo_no")
 	private Integer photono;
-	@Id
+	
 	@Column(name = "product_no")
 	private Integer productno;
 	
