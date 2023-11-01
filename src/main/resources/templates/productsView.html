@@ -1,81 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>商品列表</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            fetch('http://localhost:8080/getProducts')
-                .then(response => response.json())
-                .then(data => {
-                    let tableBody = document.querySelector('tbody');
-                    data.forEach(product => {
-                        let row = document.createElement('tr');
-
-                        let productNoCell = document.createElement('td');
-                        productNoCell.innerText = product.productNo;
-                        row.appendChild(productNoCell);
-
-                        let productNameCell = document.createElement('td');
-                        productNameCell.innerText = product.productName;
-                        row.appendChild(productNameCell);
-
-                        let productPriceCell = document.createElement('td');
-                        productPriceCell.innerText = product.productPrice;
-                        row.appendChild(productPriceCell);
-
-                        let productQuantityCell = document.createElement('td');
-                        productQuantityCell.innerText = product.productQuantity;
-                        row.appendChild(productQuantityCell);
-
-                        let productStatusCell = document.createElement('td');
-                        productStatusCell.innerText = product.productStatus ? '上架' : '下架';
-                        row.appendChild(productStatusCell);
-
-                        let actionsCell = document.createElement('td');
-                        actionsCell.innerHTML = '<a href="#" class="btn btn-primary btn-sm mr-2">編輯</a> <a href="#" class="btn btn-danger btn-sm">刪除</a>';
-                        row.appendChild(actionsCell);
-
-                        tableBody.appendChild(row);
-                    });
-                });
-        });
-    </script>
+    <title>商品管理後台</title>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">商品管理</a>
-    <div class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#">商品列表</a>
-            </li>
-            <!-- 可以添加其他導航項目 -->
-        </ul>
-    </div>
-</nav>
+<h1>商品管理後台</h1>
 
-<div class="container mt-5">
-    <h2>商品列表</h2>
+<!-- 商品列表 -->
+<table id="productTable">
+    <thead>
+    <tr>
+        <th>商品ID</th>
+        <th>商品名稱</th>
+        <th>類別</th>
+        <th>圖片URL</th>
+        <th>價格</th>
+        <th>庫存</th>
+        <th>描述</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody id="productTbody">
+    <!-- 商品數據將會填充到這裡 -->
+    </tbody>
+</table>
+<div id="pagination"></div>
 
-    <table class="table table-bordered table-hover table-striped">
-        <thead class="thead-dark">
-        <tr>
-            <th>商品編號</th>
-            <th>商品名稱</th>
-            <th>價格</th>
-            <th>數量</th>
-            <th>狀態</th>
-            <th>操作</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- 這裡的內容將由JavaScript動態填充 -->
-        </tbody>
-    </table>
-</div>
+<!-- 新增商品的表單 -->
+<!-- ... (稍後添加) -->
+
+<script>
+    async function fetchProducts(page = 1) {
+        try {
+            const limit = 10;
+            const offset = (page - 1) * limit;
+            const response = await fetch(`http://localhost:8080/api/products?limit=${limit}&offset=${offset}`); // 使用你的分頁API
+
+            if (response.ok) {
+                const data = await response.json();
+                displayProducts(data.results);
+                const totalPages = Math.ceil(data.total / limit);
+                displayPagination(totalPages, page);
+            } else {
+                console.log("Failed to fetch products");
+            }
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
+    }
+
+    function displayPagination(totalPages, currentPage) {
+        const pagination = document.getElementById('pagination');
+        let html = '';
+        for (let i = 1; i <= totalPages; i++) {
+            html += `<button onclick="fetchProducts(${i})">${i}</button>`;
+        }
+        pagination.innerHTML = html;
+    }
+
+    function displayProducts(products) {
+        const tbody = document.getElementById('productTbody');
+        tbody.innerHTML = ''; // 清空表格
+
+        products.forEach(product => {
+            const row = `<tr>
+            <td>${product.id}</td> <!-- 加入ID -->
+            <td>${product.productName}</td>
+            <td>${product.category}</td>
+            <td><img src="${product.imageUrl}" alt="${product.productName}" width="50"></td>
+            <td>${product.price}</td>
+            <td>${product.stock}</td>
+            <td>${product.description}</td>
+            <!-- 其他欄位 -->
+            </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+
+    // 初始化
+    fetchProducts();
+
+</script>
 
 </body>
 </html>

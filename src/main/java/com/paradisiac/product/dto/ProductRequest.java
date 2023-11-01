@@ -1,90 +1,67 @@
 package com.paradisiac.product.dto;
 
-import org.springframework.lang.NonNull;
+import com.paradisiac.product.constant.ProductCategory;
+import javax.validation.constraints.NotNull;
+
 
 public class ProductRequest {
-    @NonNull
-    private Integer productNo;
-    @NonNull
-    private Integer productCategoryNo;
-    @NonNull
+    @NotNull
     private String productName;
-    @NonNull
-    private Integer productPrice;
-    @NonNull
-    private Integer productQuantity;
-    @NonNull
-    private Boolean productStatus;
-    private Integer productTotalReviewCount;
-    private Integer productTotalReviewStatus;
+    @NotNull
+    private ProductCategory category;
+    @NotNull
+    private String imageUrl;
+    @NotNull
+    private Integer price;
+    @NotNull
+    private Integer stock;
+    private String description;
 
-    @NonNull
-    public Integer getProductNo() {
-        return productNo;
-    }
-
-    public void setProductNo(@NonNull Integer productNo) {
-        this.productNo = productNo;
-    }
-
-    @NonNull
-    public Integer getProductCategoryNo() {
-        return productCategoryNo;
-    }
-
-    public void setProductCategoryNo(@NonNull Integer productCategoryNo) {
-        this.productCategoryNo = productCategoryNo;
-    }
-
-    @NonNull
     public String getProductName() {
         return productName;
     }
 
-    public void setProductName(@NonNull String productName) {
+    public void setProductName(String productName) {
         this.productName = productName;
     }
 
-    @NonNull
-    public Integer getProductPrice() {
-        return productPrice;
+    public ProductCategory getCategory() {
+        return category;
     }
 
-    public void setProductPrice(@NonNull Integer productPrice) {
-        this.productPrice = productPrice;
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 
-    @NonNull
-    public Integer getProductQuantity() {
-        return productQuantity;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setProductQuantity(@NonNull Integer productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    @NonNull
-    public Boolean getProductStatus() {
-        return productStatus;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setProductStatus(@NonNull Boolean productStatus) {
-        this.productStatus = productStatus;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    public Integer getProductTotalReviewCount() {
-        return productTotalReviewCount;
+    public Integer getStock() {
+        return stock;
     }
 
-    public void setProductTotalReviewCount(Integer productTotalReviewCount) {
-        this.productTotalReviewCount = productTotalReviewCount;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
-    public Integer getProductTotalReviewStatus() {
-        return productTotalReviewStatus;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProductTotalReviewStatus(Integer productTotalReviewStatus) {
-        this.productTotalReviewStatus = productTotalReviewStatus;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
