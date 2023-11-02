@@ -32,7 +32,7 @@ public class ProductController {
             @RequestParam (required = false) String search,
             //排序 Sorting
             @RequestParam (defaultValue = "created_date") String orderBy,
-            @RequestParam (defaultValue = "desc") String sort,
+            @RequestParam (defaultValue = "asc") String sort,
             //分頁 Pagination
             @RequestParam (defaultValue = "5") @Max(1000) @Min(0) Integer limit,
             @RequestParam (defaultValue = "0") @Min(0) Integer offset
