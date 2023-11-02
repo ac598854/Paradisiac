@@ -1,28 +1,82 @@
 package com.paradisiac.employee.model;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import com.google.gson.annotations.Expose;
+import com.paradisiac.department.model.DeptVO;
+
+
+
+@Entity
+@Table(name = "employee")
 public class EmpVO implements java.io.Serializable{
+	@Expose
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
+	@Column(name = "emp_no", updatable = false)
 	private Integer empno;
-	private Integer deptno;
+	
+	// fetch 預設為 EAGER
+	@Expose
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "dept_no", referencedColumnName = "dept_no")	
+	private DeptVO dept;
+	
+//	@Expose
+//	@Column(name = "dept_no")
+//	private Integer deptno;
+	
+	@Expose
+	@Column(name = "emp_status", columnDefinition = "tinyint")	
 	private Integer empStatus;
+	
+	@Expose
+	@Column(name = "emp_name")
 	private String empName;
+	
+	@Expose
+	@Column(name = "emp_mail")
 	private String empMail;
+	
+	@Expose
+	@Column(name = "emp_account")
 	private String empAccount;
+	
+	@Expose
+	@Column(name = "emp_pass")
 	private String empPass;
+	
+	@Expose
+	@Column(name = "emp_gender", columnDefinition = "tinyint")
 	private Integer empGender;
+	
+	@Expose
+	@Column(name = "emp_phone")
 	private String empPhone;
 	
+
 	public Integer getEmpno() {
 		return empno;
 	}
 	public void setEmpno(Integer empno) {
 		this.empno = empno;
 	}
-	public Integer getDeptno() {
-		return deptno;
+	//=======聯合映射=================
+	public DeptVO getDept() {
+		return dept;
 	}
-	public void setDeptno(Integer deptno) {
-		this.deptno = deptno;
+	public void setDeptVO(DeptVO dept) {
+		this.dept = dept;
 	}
+	//==============================
 	public Integer getEmpStatus() {
 		return empStatus;
 	}
@@ -67,11 +121,13 @@ public class EmpVO implements java.io.Serializable{
 	}
 	
 	//for join deptName from deptNo
-	public com.paradisiac.department.model.DeptVO getDeptVO(){
-		com.paradisiac.department.service.DeptServiceImpl deptSvc = new com.paradisiac.department.service.DeptServiceImpl();
-		com.paradisiac.department.model.DeptVO deptVO = deptSvc.getDeptByDeptno(deptno); //deptno是EmpVO class的變數(不是DeptVO的deptNo)
-		return deptVO;
-	}
+//	public com.paradisiac.department.model.DeptVO getDeptVO(){
+//		com.paradisiac.department.service.DeptServiceImpl deptSvc = new com.paradisiac.department.service.DeptServiceImpl();
+//		com.paradisiac.department.model.DeptVO deptVO = deptSvc.getDeptByDeptno(deptno); //deptno是EmpVO class的變數(不是DeptVO的deptNo)
+//		return deptVO;
+//	}
+	
+
 
 	
 

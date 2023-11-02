@@ -4,12 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%-- <link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">--%>
+
 <title>Hibernate Demo</title>
 </head>
 <body>
 	<h1>部門管理</h1>
-	<h2>部門系統</h2>
 	<a href="${pageContext.request.contextPath}/dept.do?action=getAll">查詢所有部門</a>
 	<br><br>
 	<h3><b>複合查詢 (使用 Criteria Query)：</b></h3>

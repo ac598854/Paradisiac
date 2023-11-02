@@ -1,9 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ page import="com.paradisiac.employee.model.*"%>
+<%@ page import="com.paradisiac.department.model.*"%>
 <%-- 此頁暫練習採用 Script 的寫法取值 --%>
 
 <%
   EmpVO empVO = (EmpVO) request.getAttribute("empVO"); //EmpServlet.java(Concroller), 存入req的empVO物件
+
 %>
 
 <html>
@@ -50,7 +52,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneEmp.jsp</h3>
-		 <h4><a href="emp/select_page.jsp">回首頁</a></h4>
+		 <h4><a href="back-end/emp/select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -92,7 +94,7 @@
 		}	
 		%>
 		<td><%=empVO.getEmpno()%></td>
-		<td><%=empVO.getDeptno()%></td>
+		<td><%=empVO.getDept().getDeptNo()%></td>
 		<td><%=st%></td>
 		<td><%=empVO.getEmpName()%></td>
 		<td><%=empVO.getEmpMail()%></td>
