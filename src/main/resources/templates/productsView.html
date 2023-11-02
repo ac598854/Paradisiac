@@ -131,6 +131,39 @@
             padding: 20px;
             z-index: 2;  /* 比 overlay 的 z-index 高，這樣它才會出現在最上面 */
         }
+        /* overlay 樣式 */
+        #overlay, #overlayEdit {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* 黑色背景，半透明 */
+            z-index: 1;  /* 確保它位於其他內容之上 */
+        }
+
+        /* 新增商品模態框樣式 */
+        #addProductModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 2;  /* 比 overlay 的 z-index 高，這樣它才會出現在最上面 */
+        }
+
+        /* 編輯商品模態框樣式 */
+        #editProductModal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            z-index: 3;  /* 比 overlayEdit 的 z-index 高，這樣它才會出現在最上面 */
+        }
+
     </style>
 </head>
 <body>
@@ -146,22 +179,34 @@
     </nav>
 </header>
 
+
 <div class="container mt-5">
     <div class="table-responsive">
-        <!-- 模態框的背景（overlay） -->
-        <div id="overlay" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+        <!-- 黯淡的背景（overlay） -->
+        <div id="overlay" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+        <!-- 狀態選擇下拉選單 -->
+        <label for="displayStatus">顯示狀態:</label>
+        <select id="displayStatus" onchange="filterProductsByStatus()">
+            <option value="ALL">全部</option>
+            <option value="ON_SHELF">上架</option>
+            <option value="OFF_SHELF">下架</option>
+        </select>
         <!-- 模態框 -->
         <div id="addProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
             <h2>新增商品</h2>
             <form id="addProductForm">
                 <input type="text" id="productName" placeholder="商品名稱"><br>
-                <input type="text" id="category" placeholder="商品種類"><br>
+                <select id="addCategorySelect"> <!-- 新增的下拉選單 -->
+                    <!-- 選項將會在這裡填充 -->
+                </select>
+                <br>
                 <input type="text" id="imageUrl" placeholder="商品圖片"><br>
                 <input type="number" id="price" placeholder="價格"><br>
                 <input type="number" id="stock" placeholder="庫存"><br>
                 <input type="text" id="description" placeholder="商品描述"><br>
                 <!-- 其他欄位... -->
                 <button type="submit">完成</button>
+                <button type="button" onclick="hideAllModals()">取消</button>
             </form>
         </div>
         <button id="addProductButton">新增商品</button>
@@ -184,9 +229,91 @@
         </table>
     </div>
 
+
+    <div id="overlayEdit" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+    <!-- 編輯商品的模態框 -->
+    <div id="editProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
+        <h2>編輯商品</h2>
+        <form id="editProductForm">
+            <input type="text" id="editProductName" placeholder="商品名稱"><br>
+            <select id="editCategorySelect"> <!-- 新增的下拉選單 -->
+                <!-- 選項將會在這裡填充 -->
+            </select>
+            <br>
+            <input type="text" id="editImageUrl" placeholder="商品圖片"><br>
+            <input type="number" id="editPrice" placeholder="價格"><br>
+            <input type="number" id="editStock" placeholder="庫存"><br>
+            <input type="text" id="editDescription" placeholder="商品描述"><br>
+            <!-- 其他欄位... -->
+            <button type="submit">完成</button>
+            <button type="button" onclick="hideAllModals()">取消</button>
+        </form>
+    </div>
+
+
 </div>
 
 <script>
+    // 新增的初始化下拉選單函數
+    function initCategoryDropdown() {
+        const categories = ['ParadisiacTheme', 'ParadisiacExquisite'];
+
+        // 初始化新增商品的下拉選單
+        const addSelectElement = document.getElementById("addCategorySelect");
+
+        // 初始化編輯商品的下拉選單
+        const editSelectElement = document.getElementById("editCategorySelect");
+
+        categories.forEach(category => {
+            const option1 = document.createElement("option");
+            option1.value = category;
+            option1.innerText = category;
+            addSelectElement.appendChild(option1);
+
+            const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
+            editSelectElement.appendChild(option2);
+        });
+    }
+
+    // 顯示或隱藏模態框及背景
+    function toggleModal(modalId, overlayId, display) {
+        const modalElement = document.getElementById(modalId);
+        const overlayElement = document.getElementById(overlayId);
+
+        if (modalElement && overlayElement) {
+            modalElement.style.display = display;
+            overlayElement.style.display = display;
+        } else {
+            console.error("Element not found: ", modalId, overlayId);
+        }
+    }
+
+    function hideAllModals() {
+        toggleModal("addProductModal", "overlay", "none");
+        toggleModal("editProductModal", "overlayEdit", "none");
+    }
+
+    document.addEventListener("DOMContentLoaded",function(){
+        // 初始化下拉選單
+        initCategoryDropdown();
+        // 顯示新增商品模態框
+        document.getElementById("addProductButton").addEventListener("click", function() {
+            toggleModal("addProductModal", "overlay", "block");
+        });
+
+        // 點擊模態框外面的區域時，隱藏所有模態框
+        document.getElementById("overlay").addEventListener("click", hideAllModals);
+        document.getElementById("overlayEdit").addEventListener("click", hideAllModals);
+
+        // 在取消按鈕上添加點擊事件來隱藏模態框
+        document.getElementById("addCancelBtn").addEventListener("click", hideAllModals);
+        document.getElementById("editCancelBtn").addEventListener("click", hideAllModals);
+
+        // 初始化：調用fetchProducts函數來獲取和顯示商品數據
+        fetchProducts();
+    });
+
+
     // 逐行解釋
     // 定義一個非同步函數來獲取商品數據
     async function fetchProducts() {
@@ -209,7 +336,7 @@
         }
     }
 
-    // 定義一個函數來顯示商品數據
+    // 顯示商品數據
     function displayProducts(products) {
         const tbody = document.getElementById('productTbody');
         tbody.innerHTML = ''; // 清空表格
@@ -224,8 +351,7 @@
             <td>${product.stock}</td>
             <td>${product.description}</td>
             <td>
-                <button onclick="editProduct(${product.id})">編輯</button>
-                <button onclick="deleteProduct(${product.id})">刪除</button>
+                <button onclick="editProduct(${product.productId})">編輯</button>
             </td>
             </tr>`;
             // 將新的表格內容加到tbody中
@@ -235,13 +361,17 @@
     // 初始化：調用fetchProducts函數來獲取和顯示商品數據
     fetchProducts();
 
-    // 提交表單
+    // 新增商品
     document.getElementById("addProductForm").addEventListener("submit", async function(event) {
+        // 取得下拉選單中選定的商品類別
+        const selectedCategory = document.getElementById("addCategorySelect").value;
+
         event.preventDefault();  // 阻止表單的預設提交行為
 
         const productName = document.getElementById("productName").value;
         const price = document.getElementById("price").value;
-        const category = document.getElementById("category").value;
+        // 使用下拉選單的選定值作為商品類別
+        const category = selectedCategory;
         const imageUrl = document.getElementById("imageUrl").value;
         const stock = document.getElementById("stock").value;
         const description = document.getElementById("description").value;
@@ -268,7 +398,7 @@
 
             if (response.status === 201) {
                 // 關閉模態框
-                document.getElementById("addProductModal").style.display = "none";
+                hideAllModals();  // 使用此函數直接關閉模態框和overlay
                 // 重新載入商品列表
                 await fetchProducts();
             } else {
@@ -278,27 +408,92 @@
             console.error("新增商品時發生錯誤:", error);
         }
     });
-    // 函數：隱藏模態框和 overlay
-    function hideModal() {
-        document.getElementById("addProductModal").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
+
+    // 修改商品
+    let currentEditingProductId = null;  // 儲存當前正在編輯的商品 ID
+    // 編輯商品函數
+    async function editProduct(productId) {
+        currentEditingProductId = productId;  // 設定當前正在編輯的商品 ID
+
+        const selectedCategory = document.getElementById("editCategorySelect").value;
+
+        // 顯示模態框和 overlay
+        toggleModal("editProductModal", "overlayEdit", "block");
+
+
+        const productData = await fetch(`http://localhost:8080/products/${productId}`);
+        const product = await productData.json();
+
+        // 把產品資料填入模態框的輸入欄位
+        // （這邊省略了具體代碼，但概念就是把 product 物件的各個屬性填入對應的 input 欄位）
+        document.getElementById("editProductName").value = product.productName;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editCategorySelect").value = product.category;
+        document.getElementById("editImageUrl").value = product.imageUrl;
+        document.getElementById("editStock").value = product.stock;
+        document.getElementById("editDescription").value = product.description;
     }
 
-    // 在整個頁面加載完成後設置事件
-    window.onload = function() {
-        // 顯示模態框
-        document.getElementById("addProductButton").addEventListener("click", function() {
-            document.getElementById("addProductModal").style.display = "block";
-            document.getElementById("overlay").style.display = "block";
-        });
+    // 編輯商品的表單提交
+    document.getElementById("editProductForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
 
-        // 當用戶點擊模態框外的區域，關閉它
-        window.onclick = function(event) {
-            if (event.target === document.getElementById("overlay")) {
-                hideModal();
-            }
+        // 從輸入欄位中取得編輯後的商品資料
+        const productName = document.getElementById("editProductName").value;
+        const price = document.getElementById("editPrice").value;
+        const category = document.getElementById("editCategorySelect").value;
+        const imageUrl = document.getElementById("editImageUrl").value;
+        const stock = document.getElementById("editStock").value;
+        const description = document.getElementById("editDescription").value;
+        // 取得其他欄位...
+
+        const productData = {
+            productName,
+            price,
+            category,
+            imageUrl,
+            stock,
+            description
         };
-    };
+
+        try {
+            const response = await fetch(`http://localhost:8080/products/${currentEditingProductId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if (response.status === 200) {
+                // 重新載入商品列表
+                await fetchProducts();
+            } else {
+                console.log("編輯商品失敗");
+            }
+        } catch (error) {
+            console.error("編輯商品時發生錯誤:", error);
+        }
+
+        // 使用 hideAllModals 函數來隱藏模態框和 overlay
+        hideAllModals();
+    });
+
+    function filterProductsByStatus() {
+        const status = document.getElementById('displayStatus').value;
+        const rows = document.getElementById('productTbody').rows;
+
+        for (let i = 0; i < rows.length; i++) {
+            const rowStatus = rows[i].getAttribute('data-status'); // 假設每行都有一個data-status屬性表示商品的狀態
+            if (status === 'ALL' || status === rowStatus) {
+                rows[i].style.display = '';
+            } else {
+                rows[i].style.display = 'none';
+            }
+        }
+    }
+
+
 </script>
 
 <footer id="footer">
