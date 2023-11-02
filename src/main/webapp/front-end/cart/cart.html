@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <!-- 引入 Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+    li {
+    transition: opacity 0.3s; /* 定义淡出效果，可以根据需要调整时间 */
+}
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">My Shop</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#cartModal">Shopping Cart</button>
+    </nav>
+
+    <!-- 商品列表 -->
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 1</h5>
+                        <p class="card-text">Price: $10.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 1', 10)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 2</h5>
+                        <p class="card-text">Price: $15.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 2', 15)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 3</h5>
+                        <p class="card-text">Price: $15.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 3', 15)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 购物车内容的模态框 -->
+    <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Shopping Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- 这里可以显示购物车内容 -->
+                    <ul id="cart-items"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="checkout()">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 引入 Bootstrap JS 和 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        const cart = {};
+
+        function addToCart(productName, price) {
+            if (cart[productName]) {
+                cart[productName].quantity++;
+            } else {
+                cart[productName] = {
+                    price: price,
+                    quantity: 1
+                };
+            }
+            updateCart();
+            checkout();
+        }
+
+
+
+
+
+
+
+
+
+        function removeFromCart(productName) {
+            if (cart[productName]) {
+                if (cart[productName].quantity > 1) {
+                    cart[productName].quantity--;
+                } else {
+                    delete cart[productName];
+                }
+                updateCart();
+            }
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById("cart-items");
+            cartItems.innerHTML = "";
+            for (const product in cart) {
+                const productDetails = cart[product];
+                if (productDetails.quantity > 0) {  // 只处理数量大于0的商品
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${product} (Price: $${productDetails.price}, Quantity: ${productDetails.quantity})`;
+
+                    const quantityInput = document.createElement("input");
+                    quantityInput.type = "number";
+                    quantityInput.value = productDetails.quantity;
+                    quantityInput.min = 0;  // 允许数量为0
+                    quantityInput.addEventListener("change", (event) => {
+                        const newValue = event.target.value;
+
+                        // 使用正则表达式进行验证，只允许非负整数
+                        if (/^\d+$/.test(newValue) && newValue !== "") {
+                            cart[product].quantity = parseInt(newValue);
+                        } else {
+                            // 如果输入无效，还原为上一次的值
+                            quantityInput.value = productDetails.quantity;
+                            alert("商品数量请填非负整数。");
+                        }
+                        if (cart[product].quantity === 0) {
+                            // 如果数量为0，添加淡出效果并从购物车中移除商品
+                            listItem.style.opacity = 0;
+                            setTimeout(() => {
+                                delete cart[product];
+                                updateCart();
+                            }, 300); // 等待0.3秒后删除
+                        }
+                    });
+
+                    listItem.appendChild(quantityInput);
+                    cartItems.appendChild(listItem);
+                }
+            }
+        }
+
+
+
+
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartButton = document.querySelector("button[data-target='#cartModal']");
+
+            if (cartButton) {
+                cartButton.addEventListener("click", function () {
+                    shoppingCart();
+                });
+            }
+        });
+
+        let cartLoaded = false;  // 新增標誌
+        function shoppingCart() {
+            if (!cartLoaded) {
+                fetch('/Paradisiac/Cart?action=shoppingCart', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => response.json())  // 解析JSON响应
+                    .then(data => {
+                        // 将获取的购物车数据与现有的cart对象合并
+                        for (const product in data.items) {
+                            if (cart[product]) {
+                                cart[product].quantity += data.items[product].quantity;
+                            } else {
+                                cart[product] = data.items[product];
+                            }
+                        }
+                        updateCart();
+                        cartLoaded = true;
+                    })
+                    .catch(error => {
+                        console.error('Error fetching shopping cart:', error);
+                    });
+            }
+        }
+
+
+
+
+        function checkout() {
+            // 创建包含购物车数据的 JSON 对象
+            const cartData = {
+                items: cart
+            };
+            const cartDataJSON = JSON.stringify(cartData);
+            console.log(cartDataJSON);
+
+            fetch('/Paradisiac/Cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'checkout', data: cartData }) // 添加参数 action 和 data
+            }).then(response => {
+                console.log(response);
+            });
+        }
+
+    </script>
+</body>
+
+</html>
