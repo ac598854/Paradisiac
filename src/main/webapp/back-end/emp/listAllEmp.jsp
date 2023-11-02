@@ -3,12 +3,16 @@
 <%@ page import="java.util.*"%>
 <%@ page import="com.paradisiac.employee.model.*"%>
 <%@ page import="com.paradisiac.employee.service.*"%>
+<%@ page import="com.paradisiac.department.model.*"%>
 <%-- 此頁練習採用 EL 的寫法取值 --%>
 
 <%
     EmpService empSvc = new EmpService();
     List<EmpVO> list = empSvc.getAll();
     pageContext.setAttribute("list",list);
+    
+    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+
 
 %>
 
@@ -88,7 +92,7 @@
 
 		<tr>
 			<td>${empVO.empno}</td>
-			<td>${empVO.deptno}-[${empVO.deptVO.deptName}]</td>
+			<td>${empVO.dept.deptNo}-</td> <%--[${empVO.deptVO.deptName}] --%>
 			<td>${empVO.empStatus== 0 ? '凍結' : (empVO.empStatus == 1 ? '未凍結' : '其他')}</td>
 			<td>${empVO.empName}</td>
 			<td>${empVO.empMail}</td>

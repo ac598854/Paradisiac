@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.paradisiac.department.model.DeptVO;
 import com.paradisiac.employee.model.EmpVO;
 import com.paradisiac.employee.service.*;
 
@@ -64,8 +65,7 @@ public class EmpServlet extends HttpServlet {
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
-			
-			/***************************2.開始查詢資料***********************************/
+				
 			EmpService empSvc = new EmpService();
 			EmpVO empVO = empSvc.getOneEmp(empno);//自行輸入員工編號, 可能有空值 or 錯誤填寫
 			if (empVO == null) {
@@ -125,7 +125,8 @@ public class EmpServlet extends HttpServlet {
 			} else if(!empName.trim().matches(enameReg)) { //以下練習正則(規)表示式(regular-expression)
 				errorMsgs.add("員工姓名: 只能是中、英文字母、數字和_ , 且長度必需在2到10之間");
             }
-			Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());			
+			Integer deptno = Integer.valueOf(req.getParameter("deptno").trim());//	.trim()
+			
 			Integer empStatus = Integer.valueOf(req.getParameter("empStatus").trim());
 			Integer empGender = Integer.valueOf(req.getParameter("empGender").trim());
 			String empMail = req.getParameter("empMail").trim();
@@ -146,8 +147,13 @@ public class EmpServlet extends HttpServlet {
 			}
 			
 			EmpVO empVO = new EmpVO(); //把修改的員工資料放進各屬性中
+			
+			DeptVO deptVO = new DeptVO();//聯合映射
+			deptVO.setDeptNo(deptno);
+			
 			empVO.setEmpno(empno);
-			empVO.setDeptno(deptno);
+			empVO.setDeptVO(deptVO);			
+			//empVO.setDeptno(deptno);
 			empVO.setEmpStatus(empStatus);
 			empVO.setEmpName(empName);
 			empVO.setEmpMail(empMail);
@@ -167,10 +173,11 @@ public class EmpServlet extends HttpServlet {
 			
 			/***************************2.開始修改資料*****************************************/
 			EmpService empSvc = new EmpService();
-			empVO = empSvc.updateEmp(empno, deptno, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
+			empVO = empSvc.updateEmp(empno, deptVO, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
 			
 			/***************************3.修改完成,準備轉交(Send the Success view)*************/
 			req.setAttribute("empVO", empVO); // 資料庫update成功後,正確的的empVO物件,存入req
+			
 			String url = "/back-end/emp/listOneEmp.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
 			successView.forward(req, res);
@@ -202,10 +209,10 @@ public class EmpServlet extends HttpServlet {
 			
 			Integer deptno = null;
 			try {
-				deptno = Integer.valueOf(req.getParameter("deptno").trim());
+				deptno = Integer.valueOf(req.getParameter("deptno"));
 			}catch(Exception e){
 				errorMsgs.add("請選擇部門");
-			}
+			}		
 
 			Integer empStatus = null;
 			try {
@@ -239,8 +246,12 @@ public class EmpServlet extends HttpServlet {
 			}
 			
 			EmpVO empVO = new EmpVO();
+			DeptVO deptVO = new DeptVO();//聯合映射
+			deptVO.setDeptNo(deptno);
+			
 			empVO.setEmpno(empno);
-			empVO.setDeptno(deptno);
+			empVO.setDeptVO(deptVO);
+			//empVO.setDeptno(deptno);
 			empVO.setEmpStatus(empStatus);
 			empVO.setEmpName(empName);
 			empVO.setEmpMail(empMail);
@@ -259,7 +270,7 @@ public class EmpServlet extends HttpServlet {
 			}
 			/***************************2.開始新增資料***************************************/
 			EmpService empSvc = new EmpService();
-			empVO = empSvc.addEmp(empno, deptno, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
+			empVO = empSvc.addEmp(empno, deptVO, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
 			String url = "/back-end/emp/listAllEmp.jsp";

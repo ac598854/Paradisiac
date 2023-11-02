@@ -3,13 +3,14 @@ package com.paradisiac.department.service;
 import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.Session;
 
 import com.paradisiac.department.model.DeptDAOImpl;
 import com.paradisiac.department.model.DeptDAO_interface;
 import com.paradisiac.department.model.DeptVO;
-
+import com.paradisiac.employee.model.EmpVO;
 import com.paradisiac.util.HibernateUtil;
 
 public class DeptServiceImpl implements DeptService{
@@ -37,11 +38,19 @@ public class DeptServiceImpl implements DeptService{
 		// TODO Auto-generated method stub
 		
 	}
-
+//================================================
+	@Override
+	public Set<EmpVO> getDeptByDeptnoE(Integer deptno) {
+		Set<EmpVO> deptEmpSet = dao.findByPrimaryKeyE(deptno);
+		return deptEmpSet;
+	}
+	
 	@Override
 	public DeptVO getDeptByDeptno(Integer deptno) {
 		return dao.findByPrimaryKey(deptno);
+			
 	}
+	
 
 
 	@Override
