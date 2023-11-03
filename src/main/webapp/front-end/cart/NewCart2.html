@@ -82,7 +82,7 @@
 
     <script>
         const cart = {};
-        let cartItemCountElement; // 保存购物车数量的元素
+        let cartItemCountElement; // 購物車內數量
 
         function updateCartItemCount() {
             let totalProductCount = 0;
@@ -121,9 +121,9 @@
                 items: cart
             };
             const cartDataJSON = JSON.stringify(cartData);
-            console.log("传送的数据:" + cartDataJSON);
+            console.log("傳送的數據:" + cartDataJSON);
 
-//             这里添加向后端发送数据的代码
+
             fetch('/Paradisiac/Cart', {
                 method: 'POST',
                 headers: {
@@ -134,7 +134,7 @@
                 if (response.ok) {
                     return response.json();
                 } else {
-                    throw  Error('没有获取到响应');
+                    throw  Error('沒有取得回應');
                 }
             })
 //                 .then(data => {
@@ -145,7 +145,6 @@
         }
 
         function reload() {
-//             这里添加获取购物车数据的代码
             fetch('/Paradisiac/Cart?action=loadCart', {
                 method: 'GET',
                 headers: {
@@ -156,7 +155,7 @@
                     if (response.ok) {
                         return response.json();
                     } else {
-                        throw new Error('没有获取到响应');
+                        throw new Error('沒有取得回應');
                     }
                 })
                 .then(data => {
