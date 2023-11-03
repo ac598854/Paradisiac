@@ -43,9 +43,23 @@ nav li {
 }
 
 #productDetail img {
-    width: 200px;
-    height: auto;
-    margin-right: 20px;
+    max-width: 300px; /* 調整圖片大小 */
+    margin-right: 20px; /* 圖片和表格之間的間距 */
+}
+#productDetail table {
+    border-collapse: collapse;
+    width: 60%; /* 調整表格寬度 */
+}
+#productDetail table, #productDetail th, #productDetail td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: left;
+}
+.products-detail img {
+    width: 300px;  /* 或其他您希望的寬度 */
+    height: auto;  /* 保持圖片的寬高比 */
+    display: block;  /* 讓圖片在中央 */
+    margin: 0 auto;  /* 讓圖片在中央 */
 }
 
 .product-info h3 {
@@ -112,3 +126,5 @@ nav li {
     bottom: 10px;
     left: 10px;
 }
+
+

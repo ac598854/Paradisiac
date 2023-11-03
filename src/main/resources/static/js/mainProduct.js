@@ -14,30 +14,39 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Error:', error);
         });
+
+    // 加載相似商品
+    loadSimilarProducts();
 });
 
 // 顯示商品詳情的函數
 function displayProductDetail(product) {
     const detailDiv = document.getElementById('productDetail');
-    // 商品名稱
-    const productName = document.createElement('h1');
-    productName.innerText = product.productName;
-    detailDiv.appendChild(productName);
 
     // 商品圖片
     const productImage = document.createElement('img');
     productImage.src = product.imageUrl;
     detailDiv.appendChild(productImage);
 
-    // 商品價格
-    const productPrice = document.createElement('p');
-    productPrice.innerText = "NT$ " + product.price;
-    detailDiv.appendChild(productPrice);
+    // 創建一個表格來顯示商品資料
+    const productTable = document.createElement('table');
+    detailDiv.appendChild(productTable);
 
-    // 商品描述 (假設Product物件有一個description屬性)
-    const productDescription = document.createElement('p');
-    productDescription.innerText = product.description;
-    detailDiv.appendChild(productDescription);
+    const productDetails = [
+        ['商品名稱', product.productName],
+        ['種類', product.category],
+        ['價格', "NT$ " + product.price],
+        ['庫存', product.stock], // 假設有一個stock屬性
+        ['描述', product.description]
+    ];
+
+    productDetails.forEach(detail => {
+        const row = productTable.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        cell1.textContent = detail[0];
+        cell2.textContent = detail[1];
+    });
 }
 
 function loadSimilarProducts() {
@@ -72,4 +81,3 @@ function loadSimilarProducts() {
             console.error('Error:', error);
         });
 }
-
