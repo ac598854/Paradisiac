@@ -1,0 +1,114 @@
+/* 頁首樣式 */
+header {
+    background-color: lightblue;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+}
+
+header button {
+    background-color: rebeccapurple;
+    color: #fff;
+    border: none;
+    padding: 5px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+header button:hover {
+    background-color: rebeccapurple;
+}
+/* 導航欄樣式 */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #eee;
+}
+
+nav li {
+    margin: 0 10px;
+}
+/* 商品詳情部分 */
+#productDetail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+#productDetail img {
+    width: 200px;
+    height: auto;
+    margin-right: 20px;
+}
+
+.product-info h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+/* 相似商品部分 */
+#similarProducts {
+    padding: 20px;
+}
+
+.products-grid {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* 動態卡片的CSS可以參考之前提供的productFront.html的CSS */
+/* 商品卡片樣式 */
+.productCard {
+    width: calc((100% / 4) - 2%);
+    height: 250px;
+    margin: 1%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.productCard:hover {
+    transform: scale(1.05);
+}
+
+.productCard img {
+    max-width: 100%;
+    display: block;
+    margin: 10px auto;
+    max-height: 130px;
+}
+
+.productCard h3 {
+    font-size: 18px;
+    margin: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.productCard p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
