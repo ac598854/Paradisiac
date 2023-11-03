@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        #cartItemCount {
+            position: absolute;
+            top: 0px;
+            right: 0px;
+            left: 20px;
+            bottom: 20px;
+            background-color: #dc3545;
+            color: #fff;
+            border-radius: 40%;
+            font-size: 10px;
+            padding: 4px 4px;
+        }
+
+        #shoppingCart {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #car {
+            position: relative;
+            top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class a="navbar-brand" href="#">My Shop</a>
+        <button class="btn btn-primary" id="shoppingCart">
+            <span>
+                <i class="bi bi-cart-fill me-1 fs-20 " id="car"></i>
+                <div id="cartItemCount" class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger text-white">0</div>
+            </span>
+        </button>
+    </nav>
+
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 1</h5>
+                        <p class="card-text">Price: $10.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 1', 10)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 2</h5>
+                        <p class="card-text">Price: $15.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 2', 15)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Product 3</h5>
+                        <p class="card-text">Price: $15.00</p>
+                        <button class="btn btn-primary" onclick="addToCart('Product 3', 15)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        const cart = {};
+        let cartItemCountElement; // 保存购物车数量的元素
+
+        function updateCartItemCount() {
+            let totalProductCount = 0;
+            for (const product in cart) {
+                totalProductCount += cart[product].quantity;
+            }
+            cartItemCountElement.textContent = totalProductCount;
+        }
+
+        function addToCart(productName, price) {
+            if (cart[productName]) {
+                cart[productName].quantity++;
+            } else {
+                cart[productName] = {
+                    price: price,
+                    quantity: 1
+                };
+            }
+            post();
+            updateCartItemCount();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            cartItemCountElement = document.getElementById('cartItemCount');
+            reload();
+            
+            const cartButton = document.getElementById("shoppingCart");
+            cartButton.addEventListener("click", function () {
+                const cartPageURL = "cart.html";
+                window.location.href = cartPageURL;
+            });
+        });
+
+        function post() {
+            const cartData = {
+                items: cart
+            };
+            const cartDataJSON = JSON.stringify(cartData);
+            console.log("传送的数据:" + cartDataJSON);
+
+//             这里添加向后端发送数据的代码
+            fetch('/Paradisiac/Cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ action: 'checkout', data: cartData })
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw  Error('没有获取到响应');
+                }
+            })
+//                 .then(data => {
+//                     if (data.add) {
+//                         alert(data.add);
+//                     }
+//                 });
+        }
+
+        function reload() {
+//             这里添加获取购物车数据的代码
+            fetch('/Paradisiac/Cart?action=loadCart', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('没有获取到响应');
+                    }
+                })
+                .then(data => {
+                    if (data.error) {
+                        alert(data.error);
+                    } else {
+                        for (const product in data.items) {
+                            cart[product] = data.items[product];
+                        }
+                        updateCartItemCount();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+    </script>
+</body>
+</html>
