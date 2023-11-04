@@ -34,7 +34,7 @@ public class LoginHandler extends HttpServlet {
 	}
 
 	// 檢查密碼、帳號
-	protected int successLogin(String memaccount, String mempass,boolean memstatus) {
+	protected int successLogin(String memaccount, String mempass, boolean memstatus) {
 		MembersVO membersVO = null;
 		MembersService membersSvc = new MembersService();
 
@@ -46,8 +46,8 @@ public class LoginHandler extends HttpServlet {
 			membersVO = membersSvc.getOneBymemaccount(memaccount);
 			System.out.println("有此帳號，2");
 		}
-		
-		if(!membersVO.getMemstatus()) {
+
+		if (!membersVO.getMemstatus()) {
 			System.out.println("帳號凍結，3");
 			return 3;
 		}
@@ -63,21 +63,21 @@ public class LoginHandler extends HttpServlet {
 
 	}
 
-	// 註冊檢查-帳號是否存在【不用AJAX?】
-	protected int successAccount(String memaccount, String memcaptcha) {
-		MembersVO membersVO = null;
-		MembersService membersSvc = new MembersService();
-
-		// 檢查會員帳號
-		if (membersVO.getMemaccount().equals(memaccount)) {
-			System.out.println("已有相同帳號，6");
-			return 6;
-		} else {
-			System.out.println("沒有相同帳號，7");
-			return 7;
-		}
-
-	}
+//	// 註冊檢查-帳號是否存在
+//	protected int successAccount(String memaccount, String memcaptcha) {
+//		MembersVO membersVO = null;
+//		MembersService membersSvc = new MembersService();
+//
+//		// 檢查會員帳號
+//		if (membersVO.getMemaccount().equals(memaccount)) {
+//			System.out.println("已有相同帳號，6");
+//			return 6;
+//		} else {
+//			System.out.println("沒有相同帳號，7");
+//			return 7;
+//		}
+//
+//	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setCharacterEncoding("UTF-8");
@@ -111,10 +111,10 @@ public class LoginHandler extends HttpServlet {
 			if (mempass != null) {
 				mempass = mempass.trim();
 			}
-			//取前一個登入位置
+			// 取前一個登入位置
 			HttpSession session = req.getSession();
 //			String location = (String) session.getAttribute("location");// loginLocation紀錄登入前位置(從哪裡登入)
-			String location = session.getAttribute("location")!=null ? (String) session.getAttribute("location") : "";
+			String location = session.getAttribute("location") != null ? (String) session.getAttribute("location") : "";
 			System.out.println("Location=" + location);
 
 			if (!errorMsgs.isEmpty()) {
@@ -140,43 +140,37 @@ public class LoginHandler extends HttpServlet {
 				res.sendRedirect(URL);
 				System.out.println("帳號凍結轉址");
 				return;
-			}else {
-				//登入成功
+			} else {
+				//帳號、密碼、帳號狀態都OK=可以登入
 				MembersService membersSvc = new MembersService();
 				MembersVO membersVO = null;
 				membersVO = membersSvc.getOneBymemaccount(memaccount);
-// 帳號、密碼、帳號狀態都OK=可以登入
+				// 可以登入，賦予Session會員編號
 				HttpSession session2 = req.getSession();
 				System.out.println("【session】=" + session);
 				session.setAttribute("memno", membersVO.getMemno());// 給session memno屬性(標示為會員)
-				Integer memno = (Integer) session.getAttribute("memno");// 測試用
-				System.out.println("測試取得放入session的會員編號"+memno);// 測試用
-
-				System.out.println("從哪裡登入" + location);// 不是從登入會面近來有location
-
-// ================設定當【location】為特定頁面:購物購物車、訂房訂購頁、活動訂購頁，則轉到結帳頁
-
-				if (location != "") {// 如果上一個登入位置不等於空，則可以進入結帳頁面)
+				Integer memno = (Integer) session.getAttribute("memno");// 測試用(取得存在session會員編號)
+				System.out.println("測試取得放入session的會員編號" + memno);// 測試用
+				System.out.println("從哪裡登入" + location);
+// ================使用者可以登入，設定當【location】為特定頁面:購物購物車、訂房訂購頁、活動訂購頁，則轉到結帳頁，否則
+				if (location != "") {// 特例：如果上一個登入位置為空狀況下，在那些頁面特定頁面
 					System.out.println(location);
-
 					// 如果是活動訂購頁()
 					String actorderpage = req.getContextPath() + "/front-end/actorder/ActOder.jsp";
-					if (location.equals(actorderpage)) {
-						System.out.println(actorderpage);// 確認購物頁
-						res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");
+					if (location.equals(actorderpage)) {//來源網站如果是等於活動預定頁
+						System.out.println(actorderpage);// 確認活動預定頁
+						res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");//則可以進入結帳頁面
 						return;
 					}
-					res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 如果沒有特定的
-																						// loginLocation，則將使用者導向到首頁。
+					res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 如果沒有特定的loginLocation(例如:最新消息)，則將使用者導向到首頁。
 					return;
-					
 //	=================待填購物、訂房=========================================================
 				}
 				try {// 如果不是從登入頁登入，則移除登入狀態，重導回上一頁
 					System.out.println("移除登入狀態");
 					if (location != "") {// 如果位置不等於null則移除session中位置，並重新導向位置
 						System.out.println("location=" + location);
-						session.removeAttribute("location"); // 移除掉
+						session.removeAttribute("location"); // 移除掉【  //*工作2: 看看有無來源網頁 (-->如有來源網頁:則重導至來源網頁)】
 						res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");
 						return;
 					}
@@ -184,23 +178,21 @@ public class LoginHandler extends HttpServlet {
 					System.out.println(ignored.getMessage());
 				}
 //				res.sendRedirect(req.getContextPath() + "/front-end/homepage.jsp");// 成功登入轉至首頁
-				
-				
-				//測試用
-				//res.sendRedirect(req.getContextPath() + "/front-end/members/MembersUpdate.jsp");
+
+				// 測試用
+				// res.sendRedirect(req.getContextPath() +"/front-end/members/MembersUpdate.jsp");
 
 				MembersService membersService = new MembersService();
-				MembersVO membersVO1 = membersService.getOneBymemno(memno);//取152行memno
+				MembersVO membersVO1 = membersService.getOneBymemno(memno);// 取152行memno
 				req.setAttribute("membersVO", membersVO1);
 				String url = "/front-end/members/MembersUpdate.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 
 			}
 
 		}
 
-		
 		if ("email-Confirm".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -242,58 +234,10 @@ public class LoginHandler extends HttpServlet {
 				MemsSvc.updateBackStatus(membersVO.getMemno(), true);
 
 				res.sendRedirect(req.getContextPath() + "/front-end/member/MemberCaptcha.jsp?error=success");
-				
+
 			}
 
 		}
-
-//	// 會員註冊檢查(帳號重複?)【AJAX】
-//	if("AccountCheck".equals(action)){
-//		JSONObject output = new JSONObject();
-//		String inputId=req.getParameter("inputId");
-//		MemberService memberSvc=new MemberService();
-//		MemberVO memberVO=null;
-//		memberVO=memberSvc.getfindOnePK(inputId);
-//		
-//		try {
-//	        output.put("available", ((memberVO==null)?"Y":"N"));
-//	    } catch (JSONException e) {
-//	        // TODO Auto-generated catch block
-//	        e.printStackTrace();
-//	    }
-//	    res.setContentType("text/plain");
-//	    PrintWriter out = res.getWriter();
-//	    System.out.println(output);
-//	    out.write(output.toString());
-//	    out.flush();
-//	    out.close();
-//	}
-
-		// 4.寄驗證碼
-
-//		String email = request.getParameter("email");
-//
-//        // 在此處理寄送驗證碼的邏輯，例如生成驗證碼、寄送郵件
-//
-//        // 假設驗證碼為 "123456"
-//        String verificationCode = "123456";
-//
-//        response.getWriter().write("驗證碼已寄送至您的郵件: " + email);
-
-		// 5.會員註冊驗證碼確認【AJAX】
-//
-//		 String email = request.getParameter("email");
-//	        String verificationCode = request.getParameter("verificationCode");
-
-		// 在此處理驗證碼檢查的邏輯，確認驗證碼是否正確
-
-//	        // 假設驗證碼為 "123456"
-//	        if (verificationCode.equals("123456")) {
-//	            response.getWriter().write("驗證成功");
-//	        } else {
-//	            response.getWriter().write("驗證失敗");
-//	        }
-//	    }
 
 	}
 
