@@ -17,7 +17,7 @@ public class MembersService {
 	public MembersService() {
 		dao = new MembersJDBCDAO();
 	}
-
+//記得刪picture
 	public MembersVO Insertmember(String memname, String memmail, String memaccount, String mempass,
 			Integer memgender, String memid, java.sql.Date membir,String memphone ,String memaddress,String memcaptcha,byte[] mempicture) {//這裡接收的是符合檢測的「值」
 
@@ -42,6 +42,8 @@ public class MembersService {
 			Integer memgender, String memid, java.sql.Date membir,String memphone ,String memaddress,byte[] mempicture) {
 
 		MembersVO MembersVO = new MembersVO();
+		
+
 		MembersVO.setMemstatus(memstatus);
 		MembersVO.setMemname(memname);
 		MembersVO.setMemmail(memmail);
@@ -111,11 +113,11 @@ public class MembersService {
 		return dao.getOneBymemaccount(memaccount);
 	}
 
+//=======記得刪
 	public void deleteMember(Integer memno) {
 		dao.delete(memno);
 	}
 
 
-	
 
 }

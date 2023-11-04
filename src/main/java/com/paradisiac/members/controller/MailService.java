@@ -1,4 +1,4 @@
-package com.paradisiac.members.service;
+package com.paradisiac.members.controller;
 
 import java.util.Properties;
 

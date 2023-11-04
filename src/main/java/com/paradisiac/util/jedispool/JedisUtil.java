@@ -51,7 +51,7 @@ public class JedisUtil {
 	public static void expire(String key) {
 	    JedisPool pool = getJedisPool();
 	    try (Jedis jedis = pool.getResource()) {
-	    	jedis.expire(key, 30);//10秒
+	    	jedis.expire(key, 60);//10秒
 	    }
 	}
 

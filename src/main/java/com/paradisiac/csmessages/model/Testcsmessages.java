@@ -6,8 +6,8 @@ public class Testcsmessages {
 
 	public static void main(String[] args) {
 		CsMessagesJDBCDAO dao = new CsMessagesJDBCDAO();
-//
-//		// getAll
+
+		// getAll
 //	System.out.println("==========查全部========");
 //	List<CsMessagesVO> list = dao.getAll();
 //	for (CsMessagesVO CsVO : list) {
@@ -24,13 +24,18 @@ public class Testcsmessages {
 
 //新增	
 		CsMessagesVO testAdd = new CsMessagesVO();
-		testAdd.setMemno(113);
-		testAdd.setCscontent("客訴3");
-		dao.insertFront(testAdd);
+		testAdd.setCsmsgno(11);
+		testAdd.setMemno(111);
+		testAdd.setEmpno(101);
+		testAdd.setCscontent("客訴");
+		testAdd.setCsaskdate(new java.sql.Timestamp(System.currentTimeMillis()));
+		testAdd.setCsreply("回覆");
+		testAdd.setCsredate(new java.sql.Timestamp(System.currentTimeMillis()));
+		dao.insert(testAdd);
 		System.out.println("新增成功");
 		
-//		 GET_One_BYMEMNO
-//	CsMessagesVO testOneByCsmagno = dao.getOneByCsmsgno(20);
+		// GET_One_BYMEMNO
+//	CsMessagesVO testOneByCsmagno = dao.get_one_bycamsgno(20);
 //	System.out.println("訊息編號：" + testOneByCsmagno.getCsmsgno() + ",");
 //	System.out.println("會員編號：" + testOneByCsmagno.getMemno() + ",");
 //	System.out.println("處理員工編號：" + testOneByCsmagno.getEmpno() + ",");
