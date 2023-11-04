@@ -3,20 +3,34 @@
 <%@ page import="com.paradisiac.members.model.*"%>
 <%@ page import="java.util.Base64"%>
 
-
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>會員專區資料修改 - MembersUpdate.jsp</title>
 
 <style>
-table#table-1 {
+.round-image-container {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 10px auto;
+	position: relative;
+}
+
+.round-image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+#table-1 {
 	background-color: #CCCCFF;
 	border: 2px solid black;
 	text-align: center;
 }
 
-table#table-1 h4 {
+#table-1 h4 {
 	color: red;
 	display: block;
 	margin-bottom: 1px;
@@ -26,9 +40,7 @@ h4 {
 	color: blue;
 	display: inline;
 }
-</style>
 
-<style>
 table {
 	width: 450px;
 	background-color: white;
@@ -47,8 +59,9 @@ th, td {
 </head>
 <body bgcolor='white'>
 
-	<table id="table-1">
-	</table>
+	<div id="table-1">
+		<!-- Change the table to a div to apply the CSS -->
+	</div>
 	<h3>資料修改:</h3>
 
 	<%-- 錯誤表列 --%>
@@ -60,25 +73,27 @@ th, td {
 			</c:forEach>
 		</ul>
 	</c:if>
-	
-	<FORM METHOD="post" ACTION="members.do" name="form1" enctype="multipart/form-data">
-		<table>
-			<tr>
-				<td>會員頭像:</td>
-				<td><input type="HIDDEN" name="mempicture"
-					value="${membersVO.mempicture}" size="45" />${membersVO.mempicture}</td>
 
-				<c:choose>
-					<c:when test="${not empty membersVO.mempicture}">
-						<img
-							src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(membersVO.mempicture)}"
-							class="preview_img" id="preview_img_id">
-					</c:when>
-					<c:otherwise>
-						<span class="text">預覽圖</span>
-					</c:otherwise>
-				</c:choose>
-			</tr>
+	<FORM METHOD="post" ACTION="members.do" name="form1"
+		enctype="multipart/form-data">
+		<div class="round-image-container">
+			<!-- Change the table to a div to apply the CSS -->
+			<input type="hidden" name="mempicture"
+				value="${membersVO.mempicture}" size="45" />
+			<c:choose>
+				<c:when test="${not empty membersVO.mempicture}">
+					<img
+						src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(membersVO.mempicture)}"
+						class="round-image" id="preview_img_id">
+				</c:when>
+				<c:otherwise>
+					<img
+						src="<%=request.getContextPath()%>/images/no-picture-taking.png"
+						class="round-image" id="no_img_id">
+				</c:otherwise>
+			</c:choose>
+		</div>
+		<table>
 			<tr>
 				<td>會員編號:<font color=red><b>*</b></font></td>
 				<td><input type="hidden" name="memno"
@@ -93,6 +108,7 @@ th, td {
 				<td><input type="TEXT" name="memname"
 					value="${membersVO.memname}" size="45" /></td>
 			</tr>
+
 			<tr>
 				<td>電子信箱:<font color=red><b>*</b></td>
 				<td><input type="TEXT" name="memmail"
@@ -140,13 +156,9 @@ th, td {
 				<td><input type="TEXT" name="memaddress"
 					value="${membersVO.memaddress}" size="45" /></td>
 			</tr>
-
-
 		</table>
 		<br> <input type="hidden" name="action" value="update-Front">
 		<input type="submit" value="送出修改">
-
 	</FORM>
-
 </body>
 </html>
