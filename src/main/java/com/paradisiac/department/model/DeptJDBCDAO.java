@@ -7,8 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.paradisiac.department.model.DeptVO;
+import com.paradisiac.employee.model.EmpVO;
 
 
 public class DeptJDBCDAO implements DeptDAO_interface{
@@ -234,6 +236,11 @@ public class DeptJDBCDAO implements DeptDAO_interface{
 	}
 	@Override
 	public List<DeptVO> getDeptsList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Set<EmpVO> findByPrimaryKeyE(Integer deptNo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

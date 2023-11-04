@@ -3,6 +3,7 @@ package com.paradisiac.employee.service;
 import java.util.List;
 
 import com.paradisiac.employee.model.EmpJDBCDAO;
+import com.paradisiac.department.model.DeptVO;
 import com.paradisiac.employee.model.EmpDAO_interface;
 import com.paradisiac.employee.model.EmpVO;
 
@@ -15,13 +16,13 @@ public class EmpService {
 
 	
 	//以下是service的增刪改查方法=====================================================
-	public EmpVO updateEmp(Integer empno, Integer deptno, Integer empStatus,
+	public EmpVO updateEmp(Integer empno, DeptVO dept, Integer empStatus,
 			String empName, String empMail, String empAccount, String empPass, Integer empGender, String empPhone) {
 
 		EmpVO empVO = new EmpVO();
 
 		empVO.setEmpno(empno);
-		empVO.setDeptno(deptno);
+		empVO.setDeptVO(dept);
 		empVO.setEmpStatus(empStatus);
 		empVO.setEmpName(empName);
 		empVO.setEmpMail(empMail);
@@ -47,13 +48,13 @@ public class EmpService {
 		return dao.getAll();
 	}
 	
-	public EmpVO addEmp(Integer empno, Integer deptno, Integer empStatus,
+	public EmpVO addEmp(Integer empno, DeptVO dept, Integer empStatus,
 			String empName, String empMail, String empAccount, String empPass, Integer empGender, String empPhone) {
 
 		EmpVO empVO = new EmpVO();
 
 		empVO.setEmpno(empno);
-		empVO.setDeptno(deptno);
+		empVO.setDeptVO(dept);
 		empVO.setEmpStatus(empStatus);
 		empVO.setEmpName(empName);
 		empVO.setEmpMail(empMail);

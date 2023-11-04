@@ -1,11 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.employee.model.*"%>
+<%@ page import="com.paradisiac.department.model.*"%>
 
 <% //見com.emp.controller.EmpServlet.java第163行存入req的empVO物件 (此為從資料庫取出的empVO, 也可以是輸入格式有錯誤時的empVO物件)
    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+   DeptVO deptVO = (DeptVO) request.getAttribute("deptVO");
 %>
---<%= empVO==null %>--${empVO.deptno}-- <!-- line 100 -->
+--<%= empVO==null%><%--${empVO.deptno} --%><!--line 100  -->
+--<%= deptVO==null%>
 <html>
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
@@ -49,7 +52,7 @@
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料修改 - update_emp_input.jsp</h3>
-		 <h4><a href="emp/select_page.jsp">回首頁</a></h4>
+		 <h4><a href="back-end/emp/select_page.jsp">回首頁</a></h4>
 	</td></tr>
 </table>
 
@@ -110,9 +113,10 @@
 	<jsp:useBean id="deptSvc" scope="page" class="com.paradisiac.department.service.DeptServiceImpl" />
 	<tr>
 		<td>部門:<font color=red><b>*</b></font></td>
-		<td><select size="1" name="deptno">
+		<td><select size="1" name="deptno"> <%--deptno --%>
 			<c:forEach var="deptVO" items="${deptSvc.all}" >
-				<option value="${deptVO.deptNo}" ${(empVO.deptno==deptVO.deptNo)?'selected':'' } >${deptVO.deptName}<%--將本來的部門設為預設 --%>
+				<option value="${deptVO.deptNo}" ${(empVO.dept.deptNo==deptVO.deptNo)?'selected':'' } >${deptVO.deptName}<%--將本來的部門設為預設 --%>
+				
 			</c:forEach>
 		</select></td>
 	</tr>

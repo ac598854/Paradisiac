@@ -9,6 +9,7 @@ import java.util.*;
 
 import com.paradisiac.employee.model.EmpDAO_interface;
 import com.paradisiac.employee.model.EmpVO;
+import com.paradisiac.department.model.DeptVO;
 
 
 public class EmpJDBCDAO implements EmpDAO_interface{
@@ -73,7 +74,8 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
 			pstmt.setInt(1, empVO.getEmpno());
-			pstmt.setInt(2,empVO.getDeptno());
+			pstmt.setInt(2,empVO.getDept().getDeptNo());
+			//pstmt.setInt(2,empVO.getDeptno());
 			pstmt.setInt(3,empVO.getEmpStatus());
 			pstmt.setString(4,empVO.getEmpName());
 			pstmt.setString(5,empVO.getEmpMail());
@@ -111,8 +113,8 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 			
-			pstmt.setInt(9, empVO.getEmpno());
-			pstmt.setInt(1,empVO.getDeptno());
+			pstmt.setInt(9,empVO.getEmpno());
+			pstmt.setInt(1,empVO.getDept().getDeptNo());
 			pstmt.setInt(2,empVO.getEmpStatus());
 			pstmt.setString(3,empVO.getEmpName());
 			pstmt.setString(4,empVO.getEmpMail());
@@ -163,8 +165,13 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects, 拿"table欄位"的value
 				empVO = new EmpVO();
+				DeptVO deptVO = new DeptVO();
+				
 				empVO.setEmpno(rs.getInt("emp_no"));
-				empVO.setDeptno(rs.getInt("dept_no"));
+				
+				deptVO.setDeptNo(rs.getInt("dept_no"));
+				empVO.setDeptVO(deptVO);
+
 				empVO.setEmpStatus(rs.getInt("emp_status"));
 				empVO.setEmpName(rs.getString("emp_name"));
 				empVO.setEmpMail(rs.getString("emp_mail"));
@@ -211,8 +218,14 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
 				empVO = new EmpVO();
+				DeptVO deptVO = new DeptVO();
+				
 				empVO.setEmpno(rs.getInt("emp_no"));
-				empVO.setDeptno(rs.getInt("dept_no"));
+				
+				deptVO.setDeptNo(rs.getInt("dept_no"));
+				empVO.setDeptVO(deptVO);
+				
+				//empVO.setDeptno(rs.getInt("dept_no"));
 				empVO.setEmpStatus(rs.getInt("emp_status"));
 				empVO.setEmpName(rs.getString("emp_name"));
 				empVO.setEmpMail(rs.getString("emp_mail"));

@@ -3,6 +3,7 @@ package com.paradisiac.department.model;
 import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -50,10 +51,17 @@ public class DeptDAOImpl implements DeptDAO_interface{
 			return -1;
 		}		
 	}
-
+//=====================================================================
 	@Override
-	public DeptVO findByPrimaryKey(Integer deptNo) {
-		return getSession().get(DeptVO.class, deptNo);
+	public Set<EmpVO> findByPrimaryKeyE(Integer deptNo) {
+		//DeptVO dept = getSession().get(DeptVO.class, deptNo);//取得部門
+		Set<EmpVO> deptEmpSet = getSession().get(DeptVO.class, deptNo).getEmps(); //回傳部門底下員工集合
+		return deptEmpSet;
+	}
+	
+	@Override
+	public DeptVO findByPrimaryKey(Integer deptNo) { //回傳一個部門
+		return getSession().get(DeptVO.class, deptNo); 
 	}
 
 	@Override//用來顯示部門下拉選單
@@ -85,6 +93,7 @@ public class DeptDAOImpl implements DeptDAO_interface{
 		return getSession().createQuery("from DeptVO", DeptVO.class).list();
 	}
 	
+	//由員工查出所在部門資訊
 	public void getEmpJoin(){
 		 //使用原生資料庫語法指令查詢
 
@@ -101,9 +110,7 @@ public class DeptDAOImpl implements DeptDAO_interface{
 		}
 			
 	}//SELECT dept_no, dept_name FROM department WHERE emp_no = ? 
-	public static void main(String[] args) {
 
-	}
 }
 
 	
