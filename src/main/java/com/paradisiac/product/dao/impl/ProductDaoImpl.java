@@ -1,5 +1,6 @@
 package com.paradisiac.product.dao.impl;
 
+import com.paradisiac.product.dto.ProductQueryParams;
 import com.paradisiac.product.dto.ProductRequest;
 import com.paradisiac.product.model.Product;
 import com.paradisiac.product.dao.ProductDao;
@@ -23,12 +24,35 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts() {
-        String sql = "SELECT product_no, product_category_no, product_name, product_price, product_quantity, " +
-                "product_status, product_total_review_count, product_total_review_status " +
-                "FROM product";
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+        String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
+
+        // 查詢條件
+        sql = addFilteringSql(sql, map, productQueryParams);
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return total;
+    }
+
+    @Override
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date " +
+                "from product where 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 查詢條件
+        sql = addFilteringSql(sql, map, productQueryParams);
+        // 排序
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+        // 分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit",productQueryParams.getLimit());
+        map.put("offset",productQueryParams.getOffset());
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
@@ -36,81 +60,88 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public Product getProductById(Integer productNo) {
-        String sql = "SELECT product_no, product_category_no, product_name, product_price, product_quantity, " +
-                "product_status, product_total_review_count, product_total_review_status " +
-                "FROM product WHERE product_no = :productNo";
+    public Product getProductById(Integer productId) {
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date " +
+                "from product where product_id = :productId";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("productNo", productNo);
+        map.put("productId", productId);
 
-        List<Product> productList = namedParameterJdbcTemplate
-                .query(sql, map, new ProductRowMapper());
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
-        if(productList.size() > 0 ){
+        if (productList.size() > 0) {
             return productList.get(0);
-        }else {
+        } else {
             return null;
         }
     }
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO product(product_category_no, product_name, product_price, product_quantity, " +
-                "product_status, product_total_review_count, product_total_review_status ) " +
-                "VALUE (:productCategoryNo, :productName, :productPrice, :productQuantity, :productStatus," +
-                ":productTotalReviewCount, :productTotalReviewStatus)";
+        String sql = "INSERT INTO product (product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date) " +
+                "VALUES (:productName, :category, :imageUrl, :price, :stock, :description," +
+                ":createdDate, :lastModifiedDate)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("productCategoryNo", productRequest.getProductCategoryNo());
         map.put("productName", productRequest.getProductName());
-        map.put("productPrice", productRequest.getProductPrice());
-        map.put("productQuantity", productRequest.getProductQuantity());
-        map.put("productStatus", productRequest.getProductStatus());
-        map.put("productTotalReviewCount", productRequest.getProductTotalReviewCount());
-        map.put("productTotalReviewStatus", productRequest.getProductTotalReviewStatus());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
 
-        // 儲存資料庫自動生成的productId
+        Date now = new Date();
+        map.put("createdDate", now);
+        map.put("lastModifiedDate", now);
+
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int productId = keyHolder.getKey().intValue();
 
-        int productNo = keyHolder.getKey().intValue();
-
-        return productNo;
-
+        return productId;
     }
 
     @Override
-    public void updateProduct(Integer productNo, ProductRequest productRequest) {
-        String sql = "UPDATE product SET product_category_no = :productCategoryNo, product_name = :productName, product_price = :productPrice, " +
-                "product_quantity = :productQuantity, product_status = :productStatus, product_total_review_count = :productTotalReviewCount, " +
-                "product_total_review_status = :productTotalReviewStatus " +
-                "WHERE product_no = :productNo";
-
+    public void updateProduct(Integer productId, ProductRequest productRequest) {
+        String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
+                "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate" +
+                " WHERE product_id = :productId";
         Map<String, Object> map = new HashMap<>();
-        map.put("productNo", productNo);
+        map.put("productId", productId);
 
-        map.put("productCategoryNo", productRequest.getProductCategoryNo());
         map.put("productName", productRequest.getProductName());
-        map.put("productPrice", productRequest.getProductPrice());
-        map.put("productQuantity", productRequest.getProductQuantity());
-        map.put("productStatus", productRequest.getProductStatus());
-        map.put("productTotalReviewCount", productRequest.getProductTotalReviewCount());
-        map.put("productTotalReviewStatus", productRequest.getProductTotalReviewStatus());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+
+        map.put("lastModifiedDate", new Date());
 
         namedParameterJdbcTemplate.update(sql, map);
-
     }
-
     @Override
-    public void deleteProductById(Integer productNo) {
-        String sql = "DELETE FROM product WHERE product_no = :productNo";
-
+    public void deleteProductById(Integer productId) {
+        String sql = "DELETE FROM product WHERE product_id = :productId";
         Map<String, Object> map = new HashMap<>();
-        map.put("productNo", productNo);
+        map.put("productId", productId);
 
         namedParameterJdbcTemplate.update(sql, map);
     }
+    private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
+        // 查詢條件
+        if (productQueryParams.getCategory() != null) {
+            sql = sql + " AND category = :category";
+            map.put("category", productQueryParams.getCategory().name());
+        }
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
 
+        return sql;
+    }
 }

@@ -1,5 +1,6 @@
 package com.paradisiac.product.rowmapper;
 
+import com.paradisiac.product.constant.ProductCategory;
 import com.paradisiac.product.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -9,17 +10,24 @@ import java.sql.SQLException;
 public class ProductRowMapper implements RowMapper<Product> {
 
     @Override
-    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Product mapRow(ResultSet resultSet, int i) throws SQLException {
         Product product = new Product();
 
-        product.setProductNo(rs.getInt("product_no"));
-        product.setProductCategoryNo(rs.getInt("product_category_no"));
-        product.setProductName(rs.getString("product_name"));
-        product.setProductPrice(rs.getInt("product_price"));
-        product.setProductQuantity(rs.getInt("product_quantity"));
-        product.setProductStatus(rs.getBoolean("product_status"));
-        product.setProductTotalReviewCount((rs.getInt("product_total_review_count")));
-        product.setProductTotalReviewStatus(rs.getInt("product_total_review_status"));
+        product.setProductId(resultSet.getInt("product_id"));
+        product.setProductName(resultSet.getString("product_name"));
+
+        String categoryStr = resultSet.getString("category");
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        product.setCategory(category);
+
+//        product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
+
+        product.setImageUrl(resultSet.getString("image_url"));
+        product.setPrice(resultSet.getInt("price"));
+        product.setStock(resultSet.getInt("stock"));
+        product.setDescription(resultSet.getString("description"));
+        product.setCreatedDate(resultSet.getTimestamp("created_date"));
+        product.setLastModifiedDate(resultSet.getTimestamp("last_modified_date"));
 
         return product;
     }
