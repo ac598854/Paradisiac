@@ -137,11 +137,11 @@
                     throw  Error('沒有取得回應');
                 }
             })
-//                 .then(data => {
-//                     if (data.add) {
-//                         alert(data.add);
-//                     }
-//                 });
+                .then(data => {
+                    if (data.add) {
+                        alert(data.add);
+                    }
+                });
         }
 
         function reload() {
@@ -160,7 +160,7 @@
                 })
                 .then(data => {
                     if (data.error) {
-                        alert(data.error);
+//                         alert(data.error);
                     } else {
                         for (const product in data.items) {
                             cart[product] = data.items[product];
