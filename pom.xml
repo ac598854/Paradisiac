@@ -254,6 +254,12 @@
             <artifactId>json</artifactId>
             <version>20180813</version>
         </dependency>
+        
+        <dependency>
+            <groupId>com.mopano</groupId>
+            <artifactId>hibernate-json-org-contributor</artifactId>
+            <version>1.0</version>
+        </dependency>
 		
 
 	</dependencies>
