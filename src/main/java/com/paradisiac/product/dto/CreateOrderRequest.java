@@ -1,9 +1,13 @@
-package com.paradisiac.shoporder.dto;
+package com.paradisiac.product.dto;
 
+import com.paradisiac.product.dto.BuyItem;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 public class CreateOrderRequest {
+    @Valid
     @NotEmpty
     private List<BuyItem> buyItemList;
 
