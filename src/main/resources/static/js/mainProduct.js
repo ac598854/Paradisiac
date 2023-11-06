@@ -19,6 +19,17 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSimilarProducts();
 });
 
+// 轉換種類名稱的函數
+function convertCategoryToChinese(category) {
+    switch (category) {
+        case 'ParadisiacTheme':
+            return '主題商品';
+        case 'ParadisiacExquisite':
+            return '精品商品';
+        default:
+            return category;  // 如果有其他種類，則直接返回
+    }
+}
 // 顯示商品詳情的函數
 function displayProductDetail(product) {
     const detailDiv = document.getElementById('productDetail');
@@ -34,7 +45,7 @@ function displayProductDetail(product) {
 
     const productDetails = [
         ['商品名稱', product.productName],
-        ['種類', product.category],
+        ['種類', convertCategoryToChinese(product.category)], // 使用轉換函數
         ['價格', "NT$ " + product.price],
         ['庫存', product.stock], // 假設有一個stock屬性
         ['描述', product.description]
