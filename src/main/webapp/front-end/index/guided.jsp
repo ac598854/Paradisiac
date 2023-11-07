@@ -50,13 +50,6 @@
                         <a class="nav-link" href="#">登入會員</a>
                     </li>
                     
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/emp/emp.do?action=getAll">測試-訂單查詢</a>
-              	    </li>
-              	    
-					<li class="nav-item">
-					    <a class="nav-link" href="${pageContext.request.contextPath}/type/type.do?action=getAll">測試-房型查詢</a>
-					</li>
 
                 </ul>
             </div>
