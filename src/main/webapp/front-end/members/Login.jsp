@@ -6,6 +6,7 @@
 <%@ page import="java.util.*"%>
 
 
+
 <%
 // MembersVO membersVO=null; 
 // Integer memno=(Integer)session.getAttribute("memno"); 
@@ -85,11 +86,11 @@ th, td {
 		<form method="post" action="login.do" name="form1">
 			<label for="singaccount">帳號</label> 
 			<input type="text"
-				placeholder="請輸入帳號" required="" id="singaccount" name="memaccount" >
+				placeholder="請輸入帳號" id="singaccount" name="memaccount" required >
 								
 			<label for="signpass">密碼</label> 
-			<input type="password" required="" id="signpass"
-				placeholder="請輸入密碼" name="mempass">
+			<input type="password" id="signpass"
+				placeholder="請輸入密碼" name="mempass" required>
 			
 			<input type="hidden" name="action" value="loginCheck">
 			<input type="submit" class="form-btn" value="登入" /> 

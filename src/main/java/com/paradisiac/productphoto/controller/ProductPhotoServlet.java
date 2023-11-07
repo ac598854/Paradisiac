@@ -40,10 +40,10 @@ public class ProductPhotoServlet extends HttpServlet {
 		Integer productno = null ;
 		productno = Integer.valueOf(productId);
 		//service搜尋
-		ProductPhotoVO photoVO = productPhotoService.getById(productno);
+		ProductPhotoVO photoVO = productPhotoService.getByNo(productno);
 		//取得結果
 		Integer photoId = photoVO.getPhotono();
-		byte[] imageBytes = productPhotoService.getById(productno).getPicture();
+		byte[] imageBytes = productPhotoService.getByNo(productno).getPicture();
 
          // 将照片编号和照片数据作为JSON响应返回
 		JsonObject responseJson = new JsonObject();

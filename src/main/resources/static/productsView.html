@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>商品管理後台</title>
+    <link rel="stylesheet" href="css/styles.css"> <!-- 引入CSS檔案 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- Header 頭部 -->
+<header>
+    <h1>商品管理後台</h1>
+    <nav>
+        <ul>
+            <li><a href="#">首頁</a></li>
+            <li><a href="#">訂單管理</a></li>
+            <li><a href="#">庫存管理</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="container mt-5">
+    <div class="table-responsive">
+        <!-- 黯淡的背景（overlay） -->
+        <div id="overlay" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+<!--        &lt;!&ndash; 狀態選擇下拉選單 &ndash;&gt;-->
+<!--        <label for="displayStatus">顯示狀態:</label>-->
+<!--        <select id="displayStatus" onchange="filterProductsByStatus()">-->
+<!--            <option value="ALL">全部</option>-->
+<!--            <option value="ON_SHELF">上架</option>-->
+<!--            <option value="OFF_SHELF">下架</option>-->
+<!--        </select>-->
+        <!-- 模態框 -->
+        <div id="addProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
+            <h2>新增商品</h2>
+            <form id="addProductForm">
+                <input type="text" id="productName" placeholder="商品名稱"><br>
+                <input type="text" id="imageUrl" placeholder="商品圖片"><br>
+                <select id="addCategorySelect"> <!-- 新增的下拉選單 -->
+                    <!-- 選項將會在這裡填充 -->
+                </select>
+                <br>
+                <input type="number" id="stock" placeholder="庫存"><br>
+                <input type="number" id="price" placeholder="價格"><br>
+                <input type="text" id="description" placeholder="商品描述"><br>
+                <!-- 其他欄位... -->
+                <button type="submit">完成</button>
+                <button type="button" onclick="hideAllModals()">取消</button>
+            </form>
+        </div>
+        <button id="addProductButton">新增商品</button>
+        <button id="firstPage">第一頁</button>
+        <button id="prevPage">上一頁</button>
+        <button id="nextPage">下一頁</button>
+        <button id="lastPage">最後一頁</button>
+
+        <table class="table table-striped table-bordered" id="productTable">
+            <thead>
+            <tr>
+                <th>編號</th>
+                <th>名稱</th>
+                <th>圖片</th>
+                <th>類別</th>
+                <th>庫存</th>
+                <th>價格</th>
+                <th>描述</th>
+            </tr>
+            </thead>
+            <tbody id="productTbody">
+            <!-- 商品數據將會填充到這裡 -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="overlayEdit" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+    <!-- 編輯商品的模態框 -->
+    <div id="editProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
+        <h2>編輯商品</h2>
+        <form id="editProductForm">
+            <input type="text" id="editProductName" placeholder="商品名稱"><br>
+            <input type="text" id="editImageUrl" placeholder="商品圖片"><br>
+            <select id="editCategorySelect"> <!-- 新增的下拉選單 -->
+                <!-- 選項將會在這裡填充 -->
+            </select>
+            <br>
+            <input type="number" id="editStock" placeholder="庫存"><br>
+            <input type="number" id="editPrice" placeholder="價格"><br>
+            <input type="text" id="editDescription" placeholder="商品描述"><br>
+            <!-- 其他欄位... -->
+            <button type="submit">完成</button>
+            <button type="button" onclick="hideAllModals()">取消</button>
+        </form>
+    </div>
+    <footer id="footer">
+        <div class="container">
+            <p>© 2023 Your Company. All rights reserved.</p>
+            <ul>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms and Conditions</a></li>
+            </ul>
+        </div>
+    </footer>
+</div>
+    <script src="js/main.js"></script>
+</body>
+</html>

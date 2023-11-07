@@ -28,8 +28,8 @@ public class ProductPhotoService {
 		return photoDAO.delete(prophono);
 
 	}
-	public ProductPhotoVO getById(Integer prophono) {
-		return photoDAO.getById(prophono);
+	public ProductPhotoVO getByNo(Integer productno) {
+		return photoDAO.getByNo(productno);
 		
 	}
 	public List<ProductPhotoVO> getAll(){
