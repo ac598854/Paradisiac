@@ -1,23 +1,55 @@
 // 新增的初始化下拉選單函數
 function initCategoryDropdown() {
-    const categories = ['ParadisiacTheme', 'ParadisiacExquisite'];
+    const categories = [
+        { text: '主題商品', value: 'ParadisiacTheme' },
+        { text: '精品商品', value: 'ParadisiacExquisite' }
+    ];
 
-    // 初始化新增商品的下拉選單
-    const addSelectElement = document.getElementById("addCategorySelect");
+    // 初始化新增商品的狀態下拉選單
+    const addCategorySelectElement = document.getElementById("addCategorySelect");
+    addCategorySelectElement.innerHTML = '';  // 清空選項
 
-    // 初始化編輯商品的下拉選單
-    const editSelectElement = document.getElementById("editCategorySelect");
+    // 初始化編輯商品的狀態下拉選單
+    const editCategorySelectElement = document.getElementById("editCategorySelect");
+    editCategorySelectElement.innerHTML = '';  // 清空選項
 
     categories.forEach(category => {
         const option1 = document.createElement("option");
-        option1.value = category;
-        option1.innerText = category;
-        addSelectElement.appendChild(option1);
+        option1.value = category.value;
+        option1.innerText = category.text;
+        addCategorySelectElement.appendChild(option1);
 
         const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
-        editSelectElement.appendChild(option2);
+        editCategorySelectElement.appendChild(option2);
     });
 }
+
+function initStatusDropdown() {
+    const statuses = [
+        { text: '上架', value: 'STATUSOn' },
+        { text: '下架', value: 'STATUSOff' }
+    ];
+
+    // 初始化新增商品的狀態下拉選單
+    const addStatusSelectElement = document.getElementById("addStatusSelect");
+    addStatusSelectElement.innerHTML = '';  // 清空選項
+
+    // 初始化編輯商品的狀態下拉選單
+    const editStatusSelectElement = document.getElementById("editStatusSelect");
+    editStatusSelectElement.innerHTML = '';  // 清空選項
+
+    statuses.forEach(status => {
+        const option1 = document.createElement("option");
+        option1.value = status.value;
+        option1.innerText = status.text;
+        addStatusSelectElement.appendChild(option1);
+
+        const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
+        editStatusSelectElement.appendChild(option2);
+    });
+}
+
+
 
 // 顯示或隱藏模態框及背景
 function toggleModal(modalId, overlayId, display) {
@@ -40,6 +72,7 @@ function hideAllModals() {
 document.addEventListener("DOMContentLoaded",function(){
     // 初始化下拉選單
     initCategoryDropdown();
+    initStatusDropdown();
     // 顯示新增商品模態框
     document.getElementById("addProductButton").addEventListener("click", function() {
         toggleModal("addProductModal", "overlay", "block");
@@ -50,8 +83,8 @@ document.addEventListener("DOMContentLoaded",function(){
     document.getElementById("overlayEdit").addEventListener("click", hideAllModals);
 
     // 在取消按鈕上添加點擊事件來隱藏模態框
-    document.getElementById("addCancelBtn").addEventListener("click", hideAllModals);
-    document.getElementById("editCancelBtn").addEventListener("click", hideAllModals);
+    // document.getElementById("addCancelBtn").addEventListener("click", hideAllModals);
+    // document.getElementById("editCancelBtn").addEventListener("click", hideAllModals);
 
     // 初始化：調用fetchProducts函數來獲取和顯示商品數據
     fetchProducts();
@@ -141,6 +174,29 @@ document.getElementById('lastPage').addEventListener('click', () => {
 // 當頁面載入時，首次調用fetchProducts以獲取商品數據
 fetchProducts();
 
+// 轉換狀態的函數
+function convertCategoryToText(category) {
+    switch (category) {
+        case 'ParadisiacTheme':
+            return '主題商品';
+        case 'ParadisiacExquisite':
+            return '精品商品';
+        default:
+            return category;  // 如果有其他狀態，則直接返回
+    }
+}
+// 轉換狀態的函數
+function convertStatusToText(status) {
+    switch (status) {
+        case 'STATUSOn':
+            return '上架';
+        case 'STATUSOff':
+            return '下架';
+        default:
+            return status;  // 如果有其他狀態，則直接返回
+    }
+}
+
 // 顯示商品數據
 function displayProducts(products) {
     const tbody = document.getElementById('productTbody');
@@ -149,12 +205,13 @@ function displayProducts(products) {
         // 創建一行新的表格內容
         const row = `<tr>
             <td>${product.productId}</td>
-            <td>${product.productName}</td>
             <td><img src="${product.imageUrl}" alt="${product.productName}" width="200"></td>
-            <td>${product.category}</td>
+            <td>${product.productName}</td>
+            <td>${convertCategoryToText(product.category)}</td> <!-- 使用轉換函數 -->
             <td>${product.stock}</td>
             <td>${product.price}</td>
             <td>${product.description}</td>
+            <td>${convertStatusToText(product.status)}</td> <!-- 使用轉換函數 -->
             <td>
                 <button onclick="editProduct(${product.productId})">編輯</button>
             </td>
@@ -170,6 +227,7 @@ fetchProducts();
 document.getElementById("addProductForm").addEventListener("submit", async function(event) {
     // 取得下拉選單中選定的商品類別
     const selectedCategory = document.getElementById("addCategorySelect").value;
+    const selectedStatus = document.getElementById("addStatusSelect").value;
 
     event.preventDefault();  // 阻止表單的預設提交行為
 
@@ -180,6 +238,9 @@ document.getElementById("addProductForm").addEventListener("submit", async funct
     const imageUrl = document.getElementById("imageUrl").value;
     const stock = document.getElementById("stock").value;
     const description = document.getElementById("description").value;
+    const status = selectedStatus // 新增這一行
+    console.log(status);
+
     // 取得其他欄位...
 
     const productData = {
@@ -188,7 +249,8 @@ document.getElementById("addProductForm").addEventListener("submit", async funct
         category,
         imageUrl,
         stock,
-        description
+        description,
+        status
         // 其他欄位...
     };
 
@@ -237,6 +299,8 @@ async function editProduct(productId) {
     document.getElementById("editImageUrl").value = product.imageUrl;
     document.getElementById("editStock").value = product.stock;
     document.getElementById("editDescription").value = product.description;
+    document.getElementById("editStatusSelect").value = product.status;
+
 }
 
 // 編輯商品的表單提交
@@ -250,6 +314,8 @@ document.getElementById("editProductForm").addEventListener("submit", async func
     const imageUrl = document.getElementById("editImageUrl").value;
     const stock = document.getElementById("editStock").value;
     const description = document.getElementById("editDescription").value;
+    const status = document.getElementById("editStatusSelect").value;
+    console.log(status);
     // 取得其他欄位...
 
     const productData = {
@@ -258,7 +324,8 @@ document.getElementById("editProductForm").addEventListener("submit", async func
         category,
         imageUrl,
         stock,
-        description
+        description,
+        status
     };
 
     try {

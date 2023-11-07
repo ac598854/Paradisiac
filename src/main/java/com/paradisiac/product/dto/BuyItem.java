@@ -1,11 +1,14 @@
-package com.paradisiac.shoporder.dto;
+package com.paradisiac.product.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 public class BuyItem {
 
     @NotNull
     private Integer productId;
+
+    @Min(1)
     @NotNull
     private Integer quantity;
 

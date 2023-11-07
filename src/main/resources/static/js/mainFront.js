@@ -27,6 +27,11 @@ function displayProducts(products) {
     }
 
     products.forEach(product => {
+        // 檢查商品狀態，如果是下架狀態，則跳過
+        if (product.status === 'STATUSOff') {
+            return; // 跳過此次迴圈，不渲染該商品
+        }
+
         var productDiv = document.createElement('div');
         productDiv.className = 'productCard';
 
@@ -41,6 +46,13 @@ function displayProducts(products) {
         var productPrice = document.createElement('p');
         productPrice.innerText = "NT$ " + product.price;
         productDiv.appendChild(productPrice);
+
+        // 新增Add To Cart按鈕
+        var addToCartButton = document.createElement('button');
+        addToCartButton.className = 'btn btn-primary';
+        addToCartButton.innerHTML = '<i class="fas fa-shopping-cart"></i> Add To Cart';
+
+        productDiv.appendChild(addToCartButton);
 
         productDiv.onclick = function() {
             window.location.href = `product.html?productId=${product.productId}`;
@@ -122,3 +134,19 @@ document.getElementById('nextPage').addEventListener('click', () => {
 });
 
 fetchProducts();
+
+
+//     // 使用jQuery的Ajax方法
+//     $.ajax({
+//     url: '/productFront.html', // 這裡的URL應該與後端伺服器配置的路由相匹配
+//     type: 'GET', // HTTP請求類型
+//     success: function(response) {
+//     // 成功獲取響應後，你可以對response進行操作
+//     // 例如將response插入到頁面的某個部分
+//     $('#productsArea').html(response);
+//     },
+//     error: function(xhr, status, error) {
+//     // 如果有錯誤發生，這裡會接收錯誤信息
+//     console.error("Error: " + status + " - " + error);
+// }
+// });

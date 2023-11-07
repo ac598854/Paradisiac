@@ -1,6 +1,7 @@
 package com.paradisiac.product.rowmapper;
 
 import com.paradisiac.product.constant.ProductCategory;
+import com.paradisiac.product.constant.ProductStatus;
 import com.paradisiac.product.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -28,6 +29,8 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setDescription(resultSet.getString("description"));
         product.setCreatedDate(resultSet.getTimestamp("created_date"));
         product.setLastModifiedDate(resultSet.getTimestamp("last_modified_date"));
+
+        product.setStatus(ProductStatus.valueOf(resultSet.getString("status")));
 
         return product;
     }

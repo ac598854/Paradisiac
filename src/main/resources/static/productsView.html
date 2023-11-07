@@ -9,29 +9,44 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<!-- Header 頭部 -->
-<header>
-    <h1>商品管理後台</h1>
-    <nav>
-        <ul>
-            <li><a href="#">首頁</a></li>
-            <li><a href="#">訂單管理</a></li>
-            <li><a href="#">庫存管理</a></li>
-        </ul>
-    </nav>
-</header>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">商品後台管理</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">儀表板</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">訂單管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">庫存管理</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        更多操作
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="#">設定</a></li>
+                        <li><a class="dropdown-item" href="#">用戶管理</a></li>
+                        <li><a class="dropdown-item" href="#">報告</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 
 <div class="container mt-5">
     <div class="table-responsive">
         <!-- 黯淡的背景（overlay） -->
         <div id="overlay" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
-<!--        &lt;!&ndash; 狀態選擇下拉選單 &ndash;&gt;-->
-<!--        <label for="displayStatus">顯示狀態:</label>-->
-<!--        <select id="displayStatus" onchange="filterProductsByStatus()">-->
-<!--            <option value="ALL">全部</option>-->
-<!--            <option value="ON_SHELF">上架</option>-->
-<!--            <option value="OFF_SHELF">下架</option>-->
-<!--        </select>-->
         <!-- 模態框 -->
         <div id="addProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
             <h2>新增商品</h2>
@@ -39,13 +54,16 @@
                 <input type="text" id="productName" placeholder="商品名稱"><br>
                 <input type="text" id="imageUrl" placeholder="商品圖片"><br>
                 <select id="addCategorySelect"> <!-- 新增的下拉選單 -->
-                    <!-- 選項將會在這裡填充 -->
-                </select>
+                    <option value="ParadisiacTheme">主題商品</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
+                    <option value="ParadisiacExquisite">精品商品</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->                </select>
                 <br>
                 <input type="number" id="stock" placeholder="庫存"><br>
                 <input type="number" id="price" placeholder="價格"><br>
                 <input type="text" id="description" placeholder="商品描述"><br>
-                <!-- 其他欄位... -->
+                <select id="addStatusSelect">
+                    <option value="STATUSOn">上架</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
+                    <option value="STATUSOff">下架</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
+                </select>
                 <button type="submit">完成</button>
                 <button type="button" onclick="hideAllModals()">取消</button>
             </form>
@@ -60,12 +78,13 @@
             <thead>
             <tr>
                 <th>編號</th>
-                <th>名稱</th>
                 <th>圖片</th>
+                <th>名稱</th>
                 <th>類別</th>
                 <th>庫存</th>
                 <th>價格</th>
                 <th>描述</th>
+                <th>狀態</th>
             </tr>
             </thead>
             <tbody id="productTbody">
@@ -82,24 +101,55 @@
             <input type="text" id="editProductName" placeholder="商品名稱"><br>
             <input type="text" id="editImageUrl" placeholder="商品圖片"><br>
             <select id="editCategorySelect"> <!-- 新增的下拉選單 -->
-                <!-- 選項將會在這裡填充 -->
-            </select>
+                <option value="ParadisiacTheme">主題商品</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
+                <option value="ParadisiacExquisite">精品商品</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->             </select>
             <br>
             <input type="number" id="editStock" placeholder="庫存"><br>
             <input type="number" id="editPrice" placeholder="價格"><br>
             <input type="text" id="editDescription" placeholder="商品描述"><br>
-            <!-- 其他欄位... -->
+            <select id="editStatusSelect">
+                <option value="STATUSOn">上架</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
+                <option value="STATUSOff">下架</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
+            </select>
             <button type="submit">完成</button>
             <button type="button" onclick="hideAllModals()">取消</button>
         </form>
     </div>
-    <footer id="footer">
-        <div class="container">
-            <p>© 2023 Your Company. All rights reserved.</p>
-            <ul>
-                <li><a href="#">Privacy Policy</a></li>
-                <li><a href="#">Terms and Conditions</a></li>
-            </ul>
+    <footer class="bg-light text-center text-lg-start">
+        <div class="container p-4">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">關於我們</h5>
+                    <p>
+                        這裡是您的公司或網站的描述。您可以在這裡添加有關您的業務或任何其他相關信息的詳細信息。
+                    </p>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">連結</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#" class="text-dark">連結 1</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-dark">連結 2</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+                    <h5 class="text-uppercase">連結</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li>
+                            <a href="#" class="text-dark">連結 3</a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-dark">連結 4</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+            © 2023 您的公司名稱. All rights reserved.
         </div>
     </footer>
 </div>
