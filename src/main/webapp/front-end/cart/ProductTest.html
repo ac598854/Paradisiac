@@ -44,14 +44,20 @@
         </button>
     </nav>
 
+
     <div class="container mt-3">
         <div class="row">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Product 1</h5>
-                        <p class="card-text">Price: $10.00</p>
-                        <button class="btn btn-primary" onclick="addToCart('Product 1', 10)">Add to Cart</button>
+                        <h5 class="card-title">iPhone 13</h5>
+                        <br><br>
+                        <p class="card-text">價格:1000</p>
+                        <br>
+                        <P> Apple 的最新款智能手機，搭載 A15 Bionic 處理器和出色的攝像頭性能。</P>
+                        <br>
+                        <P>庫存:5</P>
+                        <button class="btn btn-primary" onclick="addToCart('iPhone 13', 1000,'Apple 的最新款智能手機，搭載 A15 Bionic 處理器和出色的攝像頭性能。')">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -92,12 +98,13 @@
             cartItemCountElement.textContent = totalProductCount;
         }
 
-        function addToCart(productName, price) {
+        function addToCart(productName, price,description) {
             if (cart[productName]) {
                 cart[productName].quantity++;
             } else {
                 cart[productName] = {
                     price: price,
+                    description: description,
                     quantity: 1
                 };
             }
@@ -115,10 +122,12 @@
                 window.location.href = cartPageURL;
             });
         });
+    
+//====================POST===========================================//
 
         function post() {
             const cartData = {
-                items: cart
+                items: cart //key,value的方式存取cart內資訊
             };
             const cartDataJSON = JSON.stringify(cartData);
             console.log("傳送的數據:" + cartDataJSON);
@@ -127,7 +136,7 @@
             fetch('/Paradisiac/Cart', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json;charset=utf-8'
                 },
                 body: JSON.stringify({ action: 'checkout', data: cartData })
             }).then(response => {
@@ -143,7 +152,7 @@
                     }
                 });
         }
-
+//========================頁面加載時GET====================================//
         function reload() {
             fetch('/Paradisiac/Cart?action=loadCart', {
                 method: 'GET',
@@ -154,17 +163,19 @@
                 .then(response => {
                     if (response.ok) {
                         return response.json();
+                        console.log(response.json());
                     } else {
                         throw new Error('沒有取得回應');
                     }
                 })
                 .then(data => {
                     if (data.error) {
-//                         alert(data.error);
+                        console.log(data.error);
                     } else {
                         for (const product in data.items) {
                             cart[product] = data.items[product];
                         }
+
                         updateCartItemCount();
                     }
                 })

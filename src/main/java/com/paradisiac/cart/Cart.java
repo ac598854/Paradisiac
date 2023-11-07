@@ -20,7 +20,8 @@ public class Cart extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
-		String memno = (String) session.getAttribute("memno");// 什麼都可以存所以是object
+		Object memnoObject = session.getAttribute("memno");// 什麼都可以存所以是object
+		String memno = (String)memnoObject;
 		String action = request.getParameter("action");
 		// ==========是會員從redis內取得=================================
 		if (memno != null) {
