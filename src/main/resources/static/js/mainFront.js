@@ -134,19 +134,3 @@ document.getElementById('nextPage').addEventListener('click', () => {
 });
 
 fetchProducts();
-
-
-//     // 使用jQuery的Ajax方法
-//     $.ajax({
-//     url: '/productFront.html', // 這裡的URL應該與後端伺服器配置的路由相匹配
-//     type: 'GET', // HTTP請求類型
-//     success: function(response) {
-//     // 成功獲取響應後，你可以對response進行操作
-//     // 例如將response插入到頁面的某個部分
-//     $('#productsArea').html(response);
-//     },
-//     error: function(xhr, status, error) {
-//     // 如果有錯誤發生，這裡會接收錯誤信息
-//     console.error("Error: " + status + " - " + error);
-// }
-// });
