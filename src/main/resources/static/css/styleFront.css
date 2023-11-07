@@ -1,0 +1,142 @@
+/* 基本頁面樣式 */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+/* 頁首樣式 */
+header {
+    background-color: lightblue;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+}
+
+header button {
+    background-color: rebeccapurple;
+    color: #fff;
+    border: none;
+    padding: 5px 15px;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+header button:hover {
+    background-color: rebeccapurple;
+}
+
+/* 導航欄樣式 */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #eee;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+/* 主要內容區域樣式 */
+.container {
+    display: flex;
+}
+
+aside {
+    flex: 1;
+    max-width: 20%;
+    padding: 20px;
+    border-right: 1px solid #ccc;
+}
+
+aside ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    transition: background-color 0.3s ease;
+}
+
+aside ul li button:hover {
+    background-color: #e0e0e0;
+}
+
+main {
+    flex: 4;
+    padding: 20px;
+}
+
+/* 商品卡片樣式 */
+.productCard {
+    width: calc((100% / 4) - 2%);
+    height: 250px;
+    margin: 1%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.productCard:hover {
+    transform: scale(1.05);
+}
+
+.productCard img {
+    max-width: 100%;
+    display: block;
+    margin: 10px auto;
+    max-height: 130px;
+}
+
+.productCard h3 {
+    font-size: 18px;
+    margin: 10px 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.productCard p {
+    font-size: 16px;
+    margin-bottom: 10px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+
+/* 其他通用樣式 */
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+button {
+    border:0;
+    background-color:#003C9D;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;
+}
