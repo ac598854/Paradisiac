@@ -21,7 +21,7 @@
 	<%@ include file="back-left.jsp" %>
 			<!-- Page Content -->
 			<div>
-				我是內容
+				我是內容  複製之後可以自行添加JSP引用back-left.jsp去做使用
 			</div>
 		<!-- Page Content -->
 </body>
