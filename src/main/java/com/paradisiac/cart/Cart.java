@@ -23,7 +23,7 @@ public class Cart extends HttpServlet {
 		String memno = (String) session.getAttribute("memno");// 什麼都可以存所以是object
 		String action = request.getParameter("action");
 		// ==========是會員從redis內取得=================================
-		if (memno != null) {
+		if (memno == null) {
 			if ("shoppingCart".equals(action) || "loadCart".equals(action)) {
 				Jedis jedis = new Jedis("localhost", 6379);
 				String items = jedis.get("guest1");// 之後改成memno
@@ -36,7 +36,7 @@ public class Cart extends HttpServlet {
 			}
 		}
 		// ==========不是會員從session內取得=================================
-		if (memno == null) {
+		if (memno != null) {
 			if ("shoppingCart".equals(action)  || "loadCart".equals(action)) {
 				Object cartObject = session.getAttribute("cart");// 沒有的話會是空值
 				if (cartObject != null) {
@@ -72,7 +72,7 @@ public class Cart extends HttpServlet {
 		HttpSession session = request.getSession();
 		String memno = (String) session.getAttribute("memno");// session什麼都可以存所以是object
 
-		if (memno != null) {
+		if (memno == null) {
 			if ("checkout".equals(action)) {
 
 				// 解析请求体中的 JSON 数据
@@ -89,7 +89,7 @@ public class Cart extends HttpServlet {
 				response.getWriter().write(addResponse.toString());
 			}
 		}
-		if(memno == null) {
+		if(memno != null) {
 			if ("checkout".equals(action)) {
 					session.setAttribute("cart",data);
 					response.setContentType("application/json");
