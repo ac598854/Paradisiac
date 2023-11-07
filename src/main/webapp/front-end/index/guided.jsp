@@ -50,9 +50,7 @@
                         <a class="nav-link" href="#">登入會員</a>
                     </li>
                     
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Paradisiac/back-end/roomorderselect/listallroomord.jsp">測試-訂單查詢</a>
-              	    </li>
+
                 </ul>
             </div>
         </div>
