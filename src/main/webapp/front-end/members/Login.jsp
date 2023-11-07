@@ -40,9 +40,7 @@ h4 {
 	color: blue;
 	display: inline;
 }
-</style>
 
-<style>
 table {
 	width: 450px;
 	background-color: white;

@@ -51,12 +51,12 @@ public class CsMessagesService {
 		return dao.getAllByEmpno(empno);
 	}
 
-	public List<CsMessagesVO> getAllBycsredate(Timestamp csredate) {
-		return dao.getAllBycsredate(csredate);
+	public List<CsMessagesVO> getAllBystatus(StringBuffer whereCondition,String keyword) {
+		return dao.getAllBystatus(whereCondition,keyword);
 	}
 
-	public List<CsMessagesVO> getAllBycscontent(String cscontent) {
-		return dao.getAllBycscontent(cscontent);
+	public List<CsMessagesVO> getAllBycscontent(String keyword,Integer whereMemno) {
+		return dao.getAllBycscontent(keyword,whereMemno);
 	}
 
 

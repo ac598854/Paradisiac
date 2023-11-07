@@ -1,5 +1,20 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ page import="java.util.*"%>
+<%@ page import="com.paradisiac.csmessages.model.*"%>
+<%@ page import="com.paradisiac.csmessages.controller.*"%>
+<%@ page import="com.paradisiac.csmessages.service.*"%>
+<%
+request.setCharacterEncoding("utf-8");
+
+String keyword = request.getParameter("keyword") != null ? request.getParameter("keyword") : "";
+
+Integer whereMemno = (Integer) session.getAttribute("memno");
+CsMessagesService csMessagesService = new CsMessagesService();
+List<CsMessagesVO> list = csMessagesService.getAllBycscontent(keyword, whereMemno);
+pageContext.setAttribute("list", list);
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,13 +33,6 @@
 <link
 	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css"
 	rel="stylesheet">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif] -->
 
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
@@ -77,12 +85,10 @@ ul.navigation {
 }
 
 .container-fluid {
-	/* 	max-width: 1100px; */
-	/* 	margin-top: 10px; */
-	max-width: 100%; /* 讓container-fluid的寬度自適應其父容器 */
+	max-width: 100%; 
 	margin-top: 10px;
-	padding: 0; /* 清除內邊距 */
-	overflow: hidden; /* 清除溢出 */
+	padding: 0; 
+	overflow: hidden; 
 }
 
 .sidebar-nav>.sidebar-title {
@@ -219,7 +225,23 @@ ul.navigation {
 		margin-right: 0;
 	}
 }
-/* 表格、查詢部分 */
+
+/*表格、查詢*/
+.table {
+	width: 100%;
+}
+
+.container {
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.container-fluid {
+	overflow: visible;
+}
+
 .table-data {
 	display: flex;
 	flex-wrap: wrap;
@@ -227,6 +249,7 @@ ul.navigation {
 }
 
 .table-data .col-md-2 {
+	width: 100%;
 	padding: 10px;
 	border: 1px solid #ccc;
 	background-color: #f8f9fa;
@@ -289,6 +312,10 @@ ul.navigation {
 .table tbody tr:nth-child(even) {
 	background-color: #e9ecef;
 }
+
+.input-group {
+	width: 500px;
+}
 </style>
 </head>
 
@@ -301,13 +328,16 @@ ul.navigation {
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
 				<li class="sidebar-title">會員專區</li>
+				<li><a
+					href="<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp">會員基本資料</a></li>
 				<li class="sidebar-title">訂單管理</li>
 				<li><a href="#">訂房訂單管理</a></li>
 				<li><a href="#">購物訂單管理</a></li>
 				<li><a href="#">活動訂單管理</a></li>
 				<li class="sidebar-title">會員服務</li>
 				<li><a href="#">會員紀念相簿</a></li>
-				<li><a href="#">會員客服專區</a></li>
+				<li><a
+					href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp">會員客服專區</a></li>
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
@@ -321,85 +351,91 @@ ul.navigation {
 		<div id="page-content-wrapper">
 			<a href="#menu-toggle" class="btn btn-success btn-sm"
 				id="menu-toggle">展開畫面</a>
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-lg-12">
-						<h1>會員客服訊息</h1>
-						<div class="col-md-3">
-							<label for="csMsgNo">問題關鍵字</label>
-							<div class="input-group">
-								<input type="text" class="form-control" id="csMsgNo">
-								<div class="input-group-append">
-									<button class="btn btn-primary" type="button">送出</button>
-								</div>
-							</div>
-						</div>
-						<div class="col-md-3">
-							<label for="csStatus">回應狀態</label>
-							<div class="input-group">
-								<select class="form-control" id="csStatus">
-									<option value="有回應時間">有回應時間(已回覆)</option>
-									<option value="無回應時間">無回應時間(未回覆)</option>
-								</select>
-								<div class="input-group-append">
-									<button class="btn btn-primary" type="button">送出</button>
-								</div>
-							</div>
-						</div>
 
-						<!-- 表格部分 -->
-						<div class="container">
-							<div class="row mb-4">
-								<div class="col-md-12">
-									<div class="table-responsive">
-										<table class="table">
-											<thead>
-												<tr>
-													<th style="width: 5%;">客服編號</th>
-													<th style="width: 10%;">申訴內容</th>
-													<th style="width: 10%;">申訴時間</th>
-													<th style="width: 10%;">回應時間</th>
-													<th style="width: 10%;">動作</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>CS_MSG_NO</td>
-													<td>申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容申訴内容</td>
-													<td>CS_ASK_DATE</td>
-													<td>CS_RE_DATE</td>
-													<td><button class="btn btn-primary">檢視</button></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+			<div class="container-fluid">
+				<form action="MessageLPF.jsp" method="get">
+					<div class="row">
+						<div class="col-lg-12">
+							<h1>會員客服訊息</h1>
+							<div class="form-group2">
+								<label for="csMsgNo">問題關鍵字</label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="keyword"
+										id="keyword" value="<%=keyword%>">
+									<div class="input-group-append"></div>
 								</div>
 							</div>
+
+							<button class="btn btn-primary" type="submit">送出</button>
 						</div>
 					</div>
+				</form>
+			</div>
+
+			<br>
+			<!-- 表格部分 -->
+
+			<div class="container">
+
+				<div class="row mb-4">
+					<div class="col-md-12">
+						<div class="table-responsive" id="table-responsive">
+							<!-- 新增按鈕開始 -->
+							<div class="text-right mb-2">
+								<button class="btn btn-success" id="addButton">新增</button>
+							</div>
+							<!-- 新增按鈕結束 -->
+							<table class="table">
+								<thead>
+									<tr>
+										<th>客服編號</th>
+										<th>申訴內容</th>
+										<th>申訴時間</th>
+										<th>回覆狀態</th>
+										<th>動作</th>
+									</tr>
+								</thead>
+								<tbody>
+									<%@ include file="page1.file"%>
+									<c:forEach var="CsMessagesVO" items="${list}"
+										begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+										<tr>
+											<td>${CsMessagesVO.csmsgno}</td>
+											<td>${CsMessagesVO.cscontent}</td>
+											<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
+													pattern="yyyy-MM-dd HH:mm" /></td>
+											<td><c:choose>
+													<c:when test="${not empty CsMessagesVO.csredate}">
+            										已回覆
+        											</c:when>
+													<c:otherwise>
+														<span style="color: red;">未回覆</span>
+													</c:otherwise>
+												</c:choose></td>
+
+
+											<FORM METHOD="post" ACTION="csmessages.do"">
+												<button class="btn btn-primary" id="reviewButton">檢視</button>
+												<input type="hidden" name="csmsgno"
+													value="${CsMessagesVO.csmsgno}"> <input
+													type="hidden" name="action" value="getOne_For_CsMsgno_Front">
+											</FORM>
+
+											<!-- 											<td><button class="btn btn-primary" id="reviewButton">檢視</button></td> -->
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<%@ include file="page2.file"%>
+						</div>
+					</div>
+
 				</div>
 			</div>
-			<!-- 页面选择器部分 -->
-			<div class="container">
-				<nav aria-label="Page navigation">
-					<ul class="pagination justify-content-end">
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="First"> <span aria-hidden="true">首页</span></a></li>
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Previous"> <span aria-hidden="true">上一页</span></a></li>
-						<li class="page-item active"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Next"> <span aria-hidden="true">下一页</span></a></li>
-						<li class="page-item"><a class="page-link" href="#"
-							aria-label="Last"> <span aria-hidden="true">尾页</span></a></li>
-					</ul>
-				</nav>
-			</div>
 		</div>
-
 	</div>
+
+	
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
 	<script
@@ -411,6 +447,22 @@ ul.navigation {
 			e.preventDefault();
 			$("#wrapper").toggleClass("toggled");
 		});
+		
+//新增
+		  var addButton = document.getElementById("addButton");
+		  addButton .addEventListener("click", function() {
+// 			  let pathName = window.document.location.pathname;//JS跳頁寫法
+// 			  let projectName = pathName.substring( 0 , pathName.substring(1).indexOf("/")+1);
+// 		    var newPageURL ="http://localhost:8081/Paradisiac/front-end/csmessages/MessageCPF.jsp";
+		    window.location.href ="<%=request.getContextPath()%>/front-end/csmessages/MessageCPF.jsp";
+						});
+//檢視		  
+		  		  var addButton = document.getElementById("reviewButton");
+		  addButton .addEventListener("click", function() {
+			  console.log("1");
+		    window.location.href ="<%=request.getContextPath()%>
+		/front-end/csmessages/MessageCPF.jsp";
+						});
 	</script>
 </body>
 
