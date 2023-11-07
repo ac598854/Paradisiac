@@ -20,5 +20,7 @@ public interface PhotoService {
 	
 	void addPhoto(List<PhotoVO> photoList);
 	
+	void deletePhoto(String[] selectedPhotos);
+	
 
 }

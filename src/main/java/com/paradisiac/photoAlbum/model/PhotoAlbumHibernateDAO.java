@@ -106,6 +106,7 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 		long total= getSession().createQuery("select count(*) from PhoWithAlbDTO where albNo = :albNo", Long.class)
 				.setParameter("albNo", albNo)
 				.uniqueResult(); //總筆數
+
 		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 			

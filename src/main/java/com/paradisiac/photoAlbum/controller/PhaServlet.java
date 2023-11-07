@@ -173,7 +173,7 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("phaList", phaList);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/back-end/pha/listAllPha.jsp";
+		return "/back-end/pha/listAllPha2.jsp";
 
 	}
 	//查相簿的所有照片=============================================================
@@ -186,15 +186,14 @@ public class PhaServlet extends HttpServlet {
 		PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
 		List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(albNo, currentPage);
 		
-		if (req.getSession().getAttribute("phoPageQty") == null) {
-			int phoPageQty = phaDAO.getTotalQty(albNo);
-			req.getSession().setAttribute("phoPageQty", phoPageQty);
-		}
+		int phoPageQty = phaDAO.getTotalQty(albNo);
+		req.getSession().setAttribute("phoPageQty", phoPageQty);
+		
 
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/back-end/pha/listOnePha.jsp";
+		return "/back-end/pha/listOnePha2.jsp";
 
 
 	}

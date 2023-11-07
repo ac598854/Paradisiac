@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.photoAlbum.model.*"%>
-
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 
 
@@ -81,15 +80,13 @@
             </div>
 
             <div class="row">
-                <div class="col-md-4">
-             
-                <c:forEach var="pha" items="${list}" >
-                    <div class="form-group">
-                        <img class="photo-preview" src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}" alt="相片预览">
-                    </div>
-                </div>
-                </c:forEach>
-
+                <div class="col-md-4">           
+                	<c:forEach var="pha" items="${list}" >
+	                    <div class="form-group">
+	                        <img class="photo-preview" src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}" alt="相片预览">
+	                    </div>               
+                	</c:forEach>
+ 				</div>
             </div>
 
         </form>

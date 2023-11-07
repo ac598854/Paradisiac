@@ -107,6 +107,25 @@ public class PhotoServlet extends HttpServlet {
 			successView.forward(req, res);
 			
 		}//新增相片
+		//刪除相片======================================================================
+		if("delete".equals(action)) {
+			String selectedPhotosParam = req.getParameter("selectedPhotos");
+			String[] selectedPhotos = null;
+	        if (selectedPhotosParam != null && !selectedPhotosParam.isEmpty()) {
+	            // 依照逗號拆開放入新集合中
+	            selectedPhotos = selectedPhotosParam.split(",");	            
+	        }else {	        
+				forwardPath = "/back-end/dept/select_dept_page.jsp";
+				RequestDispatcher successView = req.getRequestDispatcher(forwardPath); 
+				successView.forward(req, res);
+	        }
+	        photoSvc.deletePhoto(selectedPhotos);
+			forwardPath = "/back-end/pha/select_phoalb.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); 
+			successView.forward(req, res);
+	        
+	        
+		}//刪除相片
 		
 		
 		

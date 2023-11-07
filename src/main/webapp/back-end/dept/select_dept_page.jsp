@@ -32,6 +32,7 @@
 			<option value="hr">人資部</option>
 			<option value="planning">企劃部</option>-->
 		</select>
+
 		
 		<input type="hidden" name="action" value="getOne_For_Display">
         <input type="button" value="送出">

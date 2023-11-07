@@ -75,9 +75,21 @@ public class PhotoHiberbateDAO implements PhotoDAO_Interface{
 		for(PhotoVO photoVO : photoList) {
 			getSession().save(photoVO); //把相片逐一取出新增進去
 		}
-		
-		
+
 	}
+	
+	@Override//一次刪除多張相片
+	public void delete(String[] selectedPhotos) {
+		for(String photoNO : selectedPhotos) { //把相片逐一取出
+			Integer photonum = Integer.valueOf(photoNO);
+			PhotoVO photo = getSession().get(PhotoVO.class, photonum); //找出照片物件
+			if (photo != null) {
+				getSession().delete(photo);
+			}
+		}
+	}
+
+	
 
 
 }

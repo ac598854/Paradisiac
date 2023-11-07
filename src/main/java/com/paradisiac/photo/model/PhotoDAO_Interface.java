@@ -21,5 +21,7 @@ public interface PhotoDAO_Interface {
 	List<PhotoVO> getPhotosList();
 	
 	public void insert(List<PhotoVO> photoList);
+	
+	public void delete(String[] selectedPhotos);
 
 }
