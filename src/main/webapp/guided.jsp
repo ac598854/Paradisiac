@@ -51,8 +51,13 @@
                     </li>
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="/Paradisiac/back-end/roomorderselect/listallroomord.jsp">測試-訂單查詢</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/emp/emp.do?action=getAll">測試-訂單查詢</a>
               	    </li>
+              	    
+					<li class="nav-item">
+					    <a class="nav-link" href="${pageContext.request.contextPath}/type/type.do?action=getAll">測試-房型查詢</a>
+					</li>
+
                 </ul>
             </div>
         </div>
