@@ -126,5 +126,12 @@ nav li {
     bottom: 10px;
     left: 10px;
 }
+button {
+    border:0;
+    background-color:#003C9D;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;
+}
 
 
