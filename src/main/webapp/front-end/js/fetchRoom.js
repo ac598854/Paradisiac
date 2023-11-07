@@ -112,7 +112,7 @@
   //從redis讀取每日所有房型資料
   function updateCalendarDate() {
     $.ajax({
-      url: "/cha103g2/front-end/roomcalendar/getRedisCalAll.jsp",
+      url: "/Paradisiac/front-end/roomcalendar/getRedisCalAll.jsp",
       type: "GET",
       //取得伺服器回傳的資料轉成json
       success: function(response) {
