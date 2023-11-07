@@ -15,7 +15,10 @@
             margin: 0; 
             padding: 0; 
         }
-
+		.fixed-image {
+		    width: 500px; /* 设置图片的宽度 */
+		    height: 300px; /* 设置图片的高度 */
+		}
         /* 導覽列 */
         .fixed-navbar {
         position: fixed;
@@ -134,8 +137,8 @@
                             <div class="carousel-inner">
 
                                 <div class="carousel-item active">
-                                <a href="1"> 
-                                    <img src="https://picsum.photos/1600/600?random=20" class="d-block w-100" alt="1">
+                                <a href="/Paradisiac/front-end/roomtype/getOne.jsp"> 
+                                    <img src="/Paradisiac/front-end/roomtype/image/00101.jpg" class="d-block w-100 fixed-image" alt="1">
                                     <div class="carousel-caption">
                                     <h3>單人套房</h3>
                                     <p></p>
@@ -144,8 +147,8 @@
                                 </div>
 
                                 <div class="carousel-item">
-                                <a href="2">
-                                    <img src="https://picsum.photos/1600/600?random=21" class="d-block w-100" alt="2">
+                                <a href="/Paradisiac/front-end/roomtype/getTwo.jsp">
+                                    <img src="/Paradisiac/front-end/roomtype/image/00201.jpg" class="d-block w-100 fixed-image" alt="2">
                                     <div class="carousel-caption">
                                     <h3>雙人套房</h3>
                                     <p></p>
@@ -154,8 +157,8 @@
                                 </div>
 
                                 <div class="carousel-item">
-                                    <a href="3">
-                                    <img src="https://picsum.photos/1600/600?random=22" class="d-block w-100" alt="3">
+                                    <a href="/Paradisiac/front-end/roomtype/getFour.jsp">
+                                    <img src="/Paradisiac/front-end/roomtype/image/00401.jpg" class="d-block w-100 fixed-image" alt="3">
                                     <div class="carousel-caption">
                                         <h3>四人套房</h3>
                                         <p></p>
@@ -164,8 +167,8 @@
                                 </div>
 
                                 <div class="carousel-item">
-                                    <a href="4">
-                                    <img src="https://picsum.photos/1600/600?random=23" class="d-block w-100" alt="3">
+                                    <a href="/Paradisiac/front-end/roomtype/getEight.jsp">
+                                    <img src="/Paradisiac/front-end/roomtype/image/00801.jpg" class="d-block w-100 fixed-image" alt="4">
                                     <div class="carousel-caption">
                                         <h3>八人套房</h3>
                                         <p></p>
@@ -240,6 +243,7 @@
 	            </a>
 	        </div>
         </div>
+
         
   	<%@ include file="footer.jsp" %>
 
