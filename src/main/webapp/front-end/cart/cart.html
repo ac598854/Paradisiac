@@ -11,7 +11,6 @@
 
 
     <style>
-        /* 为包含"删除全部"按钮的<div>元素添加样式 */
         .delete-all-button {
             position: absolute;
             top: 30px;
@@ -19,13 +18,11 @@
             padding: 10px;
         }
 
-        /* 为表格的列添加样式以确保按钮不会遮挡内容 */
         .table th,
         .table td {
             position: relative;
         }
 
-        /* 样式用于购物车为空消息 */
         #emptyCartMessage {
             display: none;
             text-align: center;
@@ -35,10 +32,8 @@
             transform: translate(-50%, -50%);
         }
 
-        /* 使用伪元素添加空购物车图标 */
         #emptyCartMessage::before {
             content: "\1F6D2";
-            /* Unicode字符编码，这里使用购物车图标 */
             font-size: 100px;
             display: block;
         }
@@ -106,10 +101,10 @@
 
         //===============================頁面進入需要先載入的================================================//
         document.addEventListener("DOMContentLoaded", function () {
-            // 跳转马上获取session内的购物车数据(+redis内的)
+        	// 跳轉馬上取得session內的購物車資料(+redis內的)
             getSessionCart().then(function () {
-                // 从 cart 对象中构建新的 products 数组
-                // 初始化总价格
+            	// 從 cart 物件建立新的 products 數組
+                // 初始化總價格
                 var totalAmountElement = document.getElementById("totalAmount");
                 totalAmountElement.textContent = "0";
                 //==========================勾選框相關==================================
@@ -125,13 +120,13 @@
                     updateTotalPrice();
                 });
 
-                // ====================检查商品是否为空==========================================
+                // ====================檢查商品是否為空==========================================
                 var productRows = document.querySelectorAll("tbody tr");
                 var emptyCartMessage = document.getElementById("emptyCartMessage");
                 var otherElements = document.querySelectorAll(".container > *");
 
                 if (productRows.length === 0) {
-                    // 商品为空，显示空购物车消息并隐藏其他元素
+                	// 商品為空，顯示空購物車訊息並隱藏其他元素
                     emptyCartMessage.style.display = "block";
                     otherElements.forEach(function (element) {
                         element.style.display = "none";
@@ -197,7 +192,7 @@
 
 
         //勾選更新價格跟勾選框
-        //事件处理程序是在页面加载时绑定的所以必須是以通过监听父元素上的事件，根据事件的目标来确定是哪个复选框发生了变化才可以綁定到。
+        //事件處理程序是在頁面載入時綁定的所以必須是以透過監聽父元素上的事件，根據事件的目標來確定是哪個複選框發生了變化才可以綁定到。
         var productTableBody = document.getElementById("productTableBody");
         productTableBody.addEventListener("change", function (event) {
             var target = event.target;
@@ -219,19 +214,18 @@
         }
 
 
-        // 删除单个商品
+     // 刪除單一商品
         function removeProduct(button) {
-            var row = button.parentElement.parentElement; // 获取商品所在的行
-            row.remove(); // 从DOM中删除该行
-            updateTotalPrice(); // 更新总价格
-            updateSelectAll(); // 更新全选复选框
+            var row = button.parentElement.parentElement; 
+            row.remove();
+            updateTotalPrice(); 
+            updateSelectAll();
             var productRows = document.querySelectorAll("tbody tr");
             var emptyCartMessage = document.getElementById("emptyCartMessage");
             var deleteAllElement = document.getElementById("deleteAll");
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
-                // 商品为空，显示空购物车消息并隐藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -244,16 +238,16 @@
         function removeAllProducts() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
             productCheckboxes.forEach(function (checkbox) {
-                checkbox.checked = false; // 取消选择所有商品的复选框
+                checkbox.checked = false;
             });
 
-            var productRows = document.querySelectorAll("tbody tr"); // 获取所有商品行
+            var productRows = document.querySelectorAll("tbody tr"); 
             productRows.forEach(function (row) {
                 row.remove(); // 删除所有商品行
             });
 
-            updateTotalPrice(); // 更新总价格
-            updateSelectAll(); // 更新全选复选框
+            updateTotalPrice(); 
+            updateSelectAll(); 
 
             var productRows = document.querySelectorAll("tbody tr");
             var emptyCartMessage = document.getElementById("emptyCartMessage");
@@ -261,7 +255,6 @@
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
-                // 商品为空，显示空购物车消息并隐藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -292,7 +285,6 @@
             totalAmountElement.textContent = totalAmount;
         }
         //=======================get取得session內資訊================================//
-        // 获取购物车数据并构建新的 products 数组
         function getSessionCart() {
             return fetch('/Paradisiac/Cart?action=shoppingCart', {
                 method: 'GET',
@@ -318,7 +310,7 @@
                                 name: product,
                                 price: cartProduct.price,
                                 description: cartProduct.description,
-                                maxQuantity: cartProduct.quantity  // 这里的 maxQuantity 可能需要调整
+                                maxQuantity: cartProduct.quantity 
                             });
                             
                         }
