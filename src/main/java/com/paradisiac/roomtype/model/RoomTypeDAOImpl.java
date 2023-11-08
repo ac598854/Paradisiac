@@ -22,22 +22,22 @@ import org.hibernate.Transaction;
 import com.paradisiac.roomtype.model.RoomTypeVO;
 import com.paradisiac.util.HibernateUtil;
 
-public class RoomTypeDAOImpl implements RoomTypeDAO{
+public class RoomTypeDAOImpl implements RoomTypeDAO {
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
-		private SessionFactory factory;
-		Transaction tx = null;
-		public RoomTypeDAOImpl() {
-			factory = HibernateUtil.getSessionFactory();
-		}
-		
-		// Session 為 not thread-safe，所以此方法在各個增刪改查方法裡呼叫
-		// 以避免請求執行緒共用了同個 Session
-		private Session getSession() {
-			return factory.getCurrentSession();
-		}
+	private SessionFactory factory;
+	Transaction tx = null;
+
+	public RoomTypeDAOImpl() {
+		factory = HibernateUtil.getSessionFactory();
+	}
+
+	private Session getSession() {
+		return factory.getCurrentSession();
+	}
+
 	@Override
 	public int insert(RoomTypeVO entity) {
-		
+
 		return (Integer) getSession().save(entity);
 	}
 
@@ -53,7 +53,7 @@ public class RoomTypeDAOImpl implements RoomTypeDAO{
 
 	@Override
 	public int delete(Integer id) {
-		
+
 		RoomTypeVO revo = getSession().get(RoomTypeVO.class, id);
 
 		if (revo != null) {
@@ -75,7 +75,7 @@ public class RoomTypeDAOImpl implements RoomTypeDAO{
 	public List<RoomTypeVO> getAll() {
 		System.out.print("RoomTypeDAOImpl: call --> getSession()");
 		return getSession().createQuery("from RoomTypeVO", RoomTypeVO.class).list();
-	
+
 	}
 
 	@Override
@@ -87,17 +87,14 @@ public class RoomTypeDAOImpl implements RoomTypeDAO{
 	@Override
 	public List<RoomTypeVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from RoomTypeVO", RoomTypeVO.class)
-				.setFirstResult(first)
-				.setMaxResults(PAGE_MAX_RESULT)
-				.list();
-		
+		return getSession().createQuery("from RoomTypeVO", RoomTypeVO.class).setFirstResult(first)
+				.setMaxResults(PAGE_MAX_RESULT).list();
+
 	}
 
 	@Override
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from RoomTypeVO", Long.class).uniqueResult();
 	}
-	
 
 }

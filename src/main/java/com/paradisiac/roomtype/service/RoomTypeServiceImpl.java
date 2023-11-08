@@ -36,17 +36,26 @@ public class RoomTypeServiceImpl implements RoomTypeService{
 	}
 
 	@Override
-	public RoomTypeVO getRoomTypeVOByRoomTypeVOno(Integer rtvono) {
+	public RoomTypeVO getOneRoomType(Integer rtvono) {
 		
 		return dao.getByteId(rtvono);
+	}
+	/*
+	 * @Override public List<RoomTypeVO> getAllRoomTypeVOs(int currentPage) {
+	 * System.out.print("Service: call --> getAll()"); return
+	 * dao.getAll(currentPage); }
+	 */
+	@Override
+	public List<RoomTypeVO> getAll() {
+		
+		return dao.getAll();
 	}
 
 	@Override
 	public List<RoomTypeVO> getAllRoomTypeVOs(int currentPage) {
-		System.out.print("Service: call --> getAll()");
-		return dao.getAll(currentPage);
-	}
-
+		// TODO Auto-generated method stub
+		return dao.getAll(currentPage); }
+	
 	@Override
 	public int getPageTotal() {
 		long total = dao.getTotal();
@@ -78,5 +87,9 @@ public class RoomTypeServiceImpl implements RoomTypeService{
 		
 		return dao.getByCompositeQuery(query);
 	}
+
+	
+
+	
 
 }

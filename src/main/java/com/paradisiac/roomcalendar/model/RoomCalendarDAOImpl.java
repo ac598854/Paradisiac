@@ -1,35 +1,17 @@
 package com.paradisiac.roomcalendar.model;
 
-import static com.paradisiac.util.Constants.PAGE_MAX_RESULT;
-
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.lang.reflect.Type;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.paradisiac.roomcalendar.model.CalAllDTO;
-import com.paradisiac.util.HibernateUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import redis.clients.jedis.Jedis;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 
 	//SessionFactory物件，用於取得與資料庫的連線Session。
@@ -65,8 +47,10 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 			    .createQuery("from CalSingleDTO c where vDate = :vDate", CalSingleDTO.class)
 			    .setParameter("vDate", java.sql.Date.valueOf(day))
 			    .list();
-		Gson gson = new Gson();
+		//Gson可以指定日期格式
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		jsonStr = gson.toJson(list);
+		System.out.println("================getDB:"+jsonStr);
 		return jsonStr;
 	}
 	@Override
@@ -83,8 +67,7 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 		JSONArray jsonArray = new JSONArray();
 		for (CalAllDTO dto : list) {
 			JSONObject CalAll = new JSONObject();
-			// 處理CalenderDTO對象的數據
-			// 例如，您可以訪問對象的屬性並進行相應的操作
+			// 處理CalenderDTO對象的數據			
 			CalAll.put("vdate", dto.getVdata());
 			CalAll.put("tRoom", dto.getlRoom());
 			CalAll.put("bRoom", dto.getbRoom());
@@ -93,7 +76,7 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 			jsonArray.put(CalAll);
 			//System.out.println(CalAll);
 
-			jsonStr = jsonArray.toString(); // 把array轉成字串
+			jsonStr = jsonArray.toString(); // 把JsonArray轉成字串
 			//System.out.print(jsonStr);
 			Jedis jedis = new Jedis("localhost", 6379);
 			jedis.select(3); // 選擇第3個DB

@@ -17,7 +17,7 @@
 	<br> 
 	<a href="${pageContext.request.contextPath}/calender.do?action=getSingle">行事曆(單一房型)</a>
 	<br>
-	<a href="${pageContext.request.contextPath}/RoomNum.do?action=getAll">房型查詢</a>
-	<a href="${pageContext.request.contextPath}/roominfo.do/firstGet">測試</a>
+	<a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">房型查詢</a>
+	<%-- <a href="${pageContext.request.contextPath}/roominfo.do/firstGet">測試</a> --%>
 </body>
 </html>

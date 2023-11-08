@@ -12,10 +12,11 @@ public interface RoomTypeService {
 	
 	void deleteRoomTypeVO(Integer rtvono);
 	
-	RoomTypeVO getRoomTypeVOByRoomTypeVOno(Integer rtvono);
+	RoomTypeVO getOneRoomType(Integer rtvono);
 	
 	List<RoomTypeVO> getAllRoomTypeVOs(int currentPage);
 	
+	List<RoomTypeVO> getAll();
 	int getPageTotal();
 	
 	List<RoomTypeVO> getRoomTypeVOsByCompositeQuery(Map<String, String[]> map);

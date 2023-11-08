@@ -97,7 +97,7 @@
 	 <tbody>
 		<c:forEach var="roomnum" items="${roomnumList}">
 			<tr>
-				<td>${roomnum.rNum}</td>
+				<td>${roomnum.rnum}</td>
 				<td>${roomnum.roomTypeNo}</td>
 				<td>${roomnum.roomOrderNo}</td>
 				<td>${roomnum.checkInName}</td>
@@ -114,7 +114,7 @@
 	 <div class="text-center">
 	 <c:choose>
         <c:when test="${currentPage > 1}">
-            <a href="${pageContext.request.contextPath}/roomnum/roomnum.do?action=getAll&page=1" class="pagination-link">至第一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=1" class="pagination-link">至第一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="#" class="pagination-link" style="pointer-events: none; cursor: default;">第一頁</a>&nbsp;
@@ -123,7 +123,7 @@
 
     <c:choose>
         <c:when test="${currentPage - 1 != 0}">
-            <a href="${pageContext.request.contextPath}/roomnum/roomnum.do?action=getAll&page=${currentPage - 1}" class="pagination-link">上一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=${currentPage - 1}" class="pagination-link">上一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="#" class="pagination-link" style="pointer-events: none; cursor: default;">上一頁</a>&nbsp;
@@ -132,7 +132,7 @@
 
     <c:choose>
         <c:when test="${currentPage + 1 <= roomnumPageQty}">
-            <a href="${pageContext.request.contextPath}/roomnum/roomnum.do?action=getAll&page=${currentPage + 1}" class="pagination-link">下一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=${currentPage + 1}" class="pagination-link">下一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="#" class="pagination-link" style="pointer-events: none; cursor: default;">下一頁</a>&nbsp;
@@ -141,10 +141,10 @@
 
     <c:choose>
         <c:when test="${currentPage != roomnumPageQty}">
-            <a href="${pageContext.request.contextPath}/roomnum/roomnum.do?action=getAll&page=${roomnumPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=${roomnumPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
-            <a href="${pageContext.request.contextPath}/emp/emp.do?action=getAll" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;
         </c:otherwise>
     </c:choose>
 	 </div>
