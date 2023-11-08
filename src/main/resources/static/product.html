@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/styleProduct.css"> <!-- 引入CSS檔案 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>商品詳情</title>
+  <!-- 您可以在這裡加入CSS連結 -->
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <input type="text" placeholder="Search..." id="searchInput" onkeyup="handleEnter(event)">
+  <button onclick="searchProducts()">搜尋</button>
+  <button onclick="openCart()">購物車</button>
+  <button onclick="login()">登入</button></header>
+
+<h2>Product Details</h2>
+
+<!-- 商品詳情 -->
+<div id="productDetail" class="products-detail"></div>
+
+<h2>Similar Products</h2>
+
+<!-- 相似商品 -->
+<div class="products-grid"></div>
+
+<!-- 您可以在這裡加入JavaScript連結 -->
+<script src="js/mainProduct.js"></script>
+</body>
+</html>

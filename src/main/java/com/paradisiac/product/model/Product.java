@@ -1,29 +1,26 @@
 package com.paradisiac.product.model;
 
+import com.paradisiac.product.constant.ProductCategory;
+
+import java.util.Date;
+
 public class Product {
-    private Integer productNo;
-    private Integer productCategoryNo;
+    private Integer productId;
     private String productName;
-    private Integer productPrice;
-    private Integer productQuantity;
-    private Boolean productStatus;
-    private Integer productTotalReviewCount;
-    private Integer productTotalReviewStatus;
+    private ProductCategory category;
+    private String imageUrl;
+    private Integer price;
+    private Integer stock;
+    private String description;
+    private Date createdDate;
+    private Date lastModifiedDate;
 
-    public Integer getProductNo() {
-        return productNo;
+    public Integer getProductId() {
+        return productId;
     }
 
-    public void setProductNo(Integer productNo) {
-        this.productNo = productNo;
-    }
-
-    public Integer getProductCategoryNo() {
-        return productCategoryNo;
-    }
-
-    public void setProductCategoryNo(Integer productCategoryNo) {
-        this.productCategoryNo = productCategoryNo;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -34,43 +31,59 @@ public class Product {
         this.productName = productName;
     }
 
-    public Integer getProductPrice() {
-        return productPrice;
+    public ProductCategory getCategory() {
+        return category;
     }
 
-    public void setProductPrice(Integer productPrice) {
-        this.productPrice = productPrice;
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 
-    public Integer getProductQuantity() {
-        return productQuantity;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setProductQuantity(Integer productQuantity) {
-        this.productQuantity = productQuantity;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public Boolean getProductStatus() {
-        return productStatus;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setProductStatus(Boolean productStatus) {
-        this.productStatus = productStatus;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-    public Integer getProductTotalReviewCount() {
-        return productTotalReviewCount;
+    public Integer getStock() {
+        return stock;
     }
 
-    public void setProductTotalReviewCount(Integer productTotalReviewCount) {
-        this.productTotalReviewCount = productTotalReviewCount;
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
-    public Integer getProductTotalReviewStatus() {
-        return productTotalReviewStatus;
+    public String getDescription() {
+        return description;
     }
 
-    public void setProductTotalReviewStatus(Integer productTotalReviewStatus) {
-        this.productTotalReviewStatus = productTotalReviewStatus;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }
