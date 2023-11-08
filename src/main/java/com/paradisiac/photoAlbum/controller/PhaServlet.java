@@ -144,6 +144,7 @@ public class PhaServlet extends HttpServlet {
 		if("delete".equals(action)) {
 			/***************************1.接收請求參數****************************************/
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+
 			/***************************2.開始查詢資料****************************************/
 			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
 		}
@@ -173,7 +174,7 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("phaList", phaList);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/back-end/pha/listAllPha2.jsp";
+		return "/back-end/pha/listAllPha.jsp";
 
 	}
 	//查相簿的所有照片=============================================================
@@ -189,11 +190,10 @@ public class PhaServlet extends HttpServlet {
 		int phoPageQty = phaDAO.getTotalQty(albNo);
 		req.getSession().setAttribute("phoPageQty", phoPageQty);
 		
-
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
 
-		return "/back-end/pha/listOnePha2.jsp";
+		return "/back-end/pha/listOnePha.jsp";
 
 
 	}

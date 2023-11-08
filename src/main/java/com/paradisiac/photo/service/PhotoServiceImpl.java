@@ -55,7 +55,7 @@ public class PhotoServiceImpl implements PhotoService{
 	}
 	@Override //一次刪除多張相片
 	public void deletePhoto(String[] selectedPhotos) {
-		dao.delete(selectedPhotos); //送出要刪除的相片pk
+		dao.delete(selectedPhotos); //送出要刪除的相片pk 字串list
 		
 	}
 

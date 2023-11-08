@@ -3,9 +3,9 @@ package com.paradisiac.photo.controller;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Date;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,10 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import com.paradisiac.photo.model.PhoWithAlbDTO;
+import com.paradisiac.photo.model.PhotoVO;
 import com.paradisiac.photo.service.PhotoService;
 import com.paradisiac.photo.service.PhotoServiceImpl;
+import com.paradisiac.photoAlbum.model.PhotoAlbumDAO_interface;
+import com.paradisiac.photoAlbum.model.PhotoAlbumHibernateDAO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
-import com.paradisiac.photo.model.PhotoVO;
+import com.paradisiac.photoAlbum.service.PhotoAlbumServiceImpl;
+import com.paradisiac.photoAlbum.service.PhotoAlbumService_interface;
+import com.paradisiac.util.HibernateUtil;
 
 
 @WebServlet("/pho.do")
@@ -109,22 +115,28 @@ public class PhotoServlet extends HttpServlet {
 		}//新增相片
 		//刪除相片======================================================================
 		if("delete".equals(action)) {
-			String selectedPhotosParam = req.getParameter("selectedPhotos");
 			String[] selectedPhotos = null;
-	        if (selectedPhotosParam != null && !selectedPhotosParam.isEmpty()) {
-	            // 依照逗號拆開放入新集合中
-	            selectedPhotos = selectedPhotosParam.split(",");	            
-	        }else {	        
-				forwardPath = "/back-end/dept/select_dept_page.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(forwardPath); 
-				successView.forward(req, res);
-	        }
+			String albNo = req.getParameter("albNo");
+			selectedPhotos = req.getParameterValues("photoNo"); //用Values取得有打勾的陣列
 	        photoSvc.deletePhoto(selectedPhotos);
-			forwardPath = "/back-end/pha/select_phoalb.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); 
-			successView.forward(req, res);
 	        
+	        String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
+			int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
+			
+			PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
+			List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(Integer.valueOf(albNo), currentPage);
 	        
+			int phoPageQty = phaDAO.getTotalQty(Integer.valueOf(albNo));
+			req.getSession().setAttribute("phoPageQty", phoPageQty);
+			
+			req.setAttribute("list", list);
+			req.setAttribute("currentPage", currentPage);
+
+			forwardPath = "/back-end/pha/listOnePha.jsp";
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+			dispatcher.forward(req, res);
+
 		}//刪除相片
 		
 		
