@@ -228,7 +228,7 @@
         .sub-menu {
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease-in-out; /* 过渡效果 */
+          transition: max-height 0.3s ease-in-out;  
         }
 
 

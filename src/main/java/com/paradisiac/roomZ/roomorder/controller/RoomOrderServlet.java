@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.paradisiac.roomZ.roomorder.entity.RoomOrderVO;
 import com.paradisiac.roomZ.roomorder.service.RoomOrderService;
 import com.paradisiac.roomZ.roomorder.service.RoomOrderServiceImpl;
-
+import java.text.SimpleDateFormat;
 
 @WebServlet("/order/order.do")
 public class RoomOrderServlet extends HttpServlet{
@@ -97,8 +97,8 @@ public class RoomOrderServlet extends HttpServlet{
 		Integer priceInt = null;
 		
 //		roomOrderDatedt = java.sql.Timestamp.valueOf(req.getParameter("roomOrderDate").trim());
-		checkinDatedt = Date.valueOf(req.getParameter("checkinDate").trim());
-		checkoutDatedt = Date.valueOf(req.getParameter("checkoutDate").trim());
+		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
+		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
 
 		
 		
@@ -139,27 +139,19 @@ public class RoomOrderServlet extends HttpServlet{
 		String memNo = req.getParameter("memNo");
 		String roomAmount = req.getParameter("roomAmount");
 		String price = req.getParameter("price");
-		//paymentMethod
 		String payStatus = req.getParameter("payStatus");
-		//orderStatus
 
-
-		
 		Integer roomOrderNoInt = null;
 
-		// 将字符串参数解析为整数
-		Timestamp roomOrderDatedt = null;
-		Date checkinDatedt = null;
-		Date checkoutDatedt = null;
+		Timestamp roomOrderDatedt = java.sql.Timestamp.valueOf(req.getParameter("roomOrderDate").trim());
+		Date checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
+		Date checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
+		
 		
 		Integer roomTypeNoInt = null;
 		Integer memNoInt = null;
 		Integer roomAmountInt = null;
 		Integer priceInt = null;
-		
-		roomOrderDatedt = java.sql.Timestamp.valueOf(req.getParameter("roomOrderDate").trim());
-		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
-		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
 
 		boolean payStatusBool = Boolean.parseBoolean(payStatus);
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
