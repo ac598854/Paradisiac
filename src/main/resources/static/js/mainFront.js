@@ -51,6 +51,11 @@ function displayProducts(products) {
         var addToCartButton = document.createElement('button');
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart"></i> Add To Cart';
+        addToCartButton.onclick = addToCart; // 綁定事件
+        // 更新 addToCartButton 的 onclick 設定
+        addToCartButton.onclick = function(event) {
+            addToCart(event); // 這裡傳遞事件對象
+        };
 
         productDiv.appendChild(addToCartButton);
 
@@ -133,20 +138,56 @@ document.getElementById('nextPage').addEventListener('click', () => {
     fetchProducts();
 });
 
+
+//6.商品種類點擊
+const categories = [
+    { text: '主題商品', value: 'ParadisiacTheme' },
+    { text: '精品商品', value: 'ParadisiacExquisite' }
+];
+//為每個商品種類添加點擊事件
+document.querySelectorAll('.list-group-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // 找到點擊的類別對應的值
+        const category = categories.find(c => c.text === this.textContent)?.value;
+        if (category) {
+            filterProductsByCategory(category);
+        }
+    });
+});
+
+// 根據類別過濾商品的函數
+function filterProductsByCategory(categoryValue) {
+    $.ajax({
+        url: `http://localhost:8080/products?category=${encodeURIComponent(categoryValue)}`,
+        type: 'GET',
+        success: function(response) {
+            // 確保傳遞給 displayProducts 的是一個陣列
+            if (response && response.results) {
+                // 如果 response.results 是陣列，則直接使用
+                displayProducts(response.results);
+            } else {
+                // 如果 response 就是陣列或其他問題，應進行錯誤處理
+                console.error('Unexpected response structure:', response);
+                // 可以選擇顯示錯誤訊息或者其他用戶友善的處理方式
+                productsArea.innerHTML = '<p>無法顯示商品資訊，請稍後再試。</p>';
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + status + " - " + error);
+        }
+    });
+}
+
+//更新購物車的數量
+function addToCart() {
+    var cartCountElement = document.getElementById('cartCount');
+    var currentCount = parseInt(cartCountElement.textContent);
+    cartCountElement.textContent = currentCount + 1;
+
+    // 阻止事件冒泡
+    event.stopPropagation();
+}
+
+
+
 fetchProducts();
-
-
-//     // 使用jQuery的Ajax方法
-//     $.ajax({
-//     url: '/productFront.html', // 這裡的URL應該與後端伺服器配置的路由相匹配
-//     type: 'GET', // HTTP請求類型
-//     success: function(response) {
-//     // 成功獲取響應後，你可以對response進行操作
-//     // 例如將response插入到頁面的某個部分
-//     $('#productsArea').html(response);
-//     },
-//     error: function(xhr, status, error) {
-//     // 如果有錯誤發生，這裡會接收錯誤信息
-//     console.error("Error: " + status + " - " + error);
-// }
-// });
