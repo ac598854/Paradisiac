@@ -1,4 +1,4 @@
-package com.paradisiac.roomorder.entity;
+package com.paradisiac.roomorder.model;
 
 import java.util.Date;
 
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "room_order")
-public class roomOrderVO {
+public class RoomOrderVO {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "room_order_no", updatable = false)
@@ -30,11 +30,11 @@ public class roomOrderVO {
 	private Integer roomAmount;
 	@Column(name = "price")
 	private Integer price;
-	@Column(name = "payment_method")
+	@Column(name = "payment_method", columnDefinition = "tinyint")
 	private byte paymentMethod;
 	@Column(name = "pay_status")
 	private boolean payStatus;
-	@Column(name = "order_status")
+	@Column(name = "order_status", columnDefinition = "tinyint")
 	private byte orderStatus;
 	
 

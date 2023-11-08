@@ -111,8 +111,13 @@
   });
   //從redis讀取每日所有房型資料
   function updateCalendarDate() {
+	  //取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
+	let pathName = window.document.location.pathname;
+				//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
+	let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+			//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
     $.ajax({
-      url: "/Paradisiac/front-end/roomcalendar/getRedisCalAll.jsp",
+      url: `${projectName}/front-end/roomcalendar/getRedisCalAll.jsp`,
       type: "GET",
       //取得伺服器回傳的資料轉成json
       success: function(response) {
@@ -138,7 +143,13 @@
 function getSingleForDay(selectDay) {
 	console.log("取得日期資料：",selectDay);
 	const data = { selectDay: selectDay };
-	fetch('/cha103g2/roominfo.do/firstGet', {
+	//取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
+	let pathName = window.document.location.pathname;
+				//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
+	let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+			//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
+	//roominfo.do -->roomcalendar/getCalendarInfoServlet.java
+	fetch(`${projectName}/roominfo.do/firstGet`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json'
@@ -153,11 +164,11 @@ function getSingleForDay(selectDay) {
 			roomInfoContainer.innerHTML ="";
 			console.log(jsonData);
 			jsonData.forEach(item => {
-				//取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp
+				//取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
 				let pathName = window.document.location.pathname;
-				//字串分割後取得專案名稱/cha103g2
+				//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
 				let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-				console.log(pathName, "====", projectName);
+			//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
 				let html = `
 		 	 <div class="container" border p-3>
 			  <div class="row">
@@ -186,6 +197,7 @@ function getSingleForDay(selectDay) {
 			  </div>
 		  </div>
           `;		
+           		console.log("=====vDate:",item.vDate);
 				roomInfoContainer.innerHTML += html;
 			});
 			// 将获取的值设置到标签上 <button class="btn btn-primary offset-md-6 onclick="handleReservation(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', ${item.rBooking})">立即預訂</button>
@@ -196,6 +208,8 @@ function getSingleForDay(selectDay) {
  function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility, rbooking) {
             // 填充燈箱內容
             let lightboxContent = document.getElementById('lightboxContent');
+          
+           
             let html ="";
             html = `
                 <h3>房型編號：${roomTypeNo}</h3>
@@ -209,12 +223,13 @@ function getSingleForDay(selectDay) {
                 <p>設施：${facility}</p>
                 <p>預訂數量：${rbooking}</p>
             `;
-		console.log(html);
+		
 		lightboxContent.innerHTML =html;
 		
             // 顯示燈箱
             $('#lightbox').modal('show');
         }
 
-//=============================燈箱顯示訂房資訊
+//=============================燈箱顯示訂房資訊-日期格式化
+
 
