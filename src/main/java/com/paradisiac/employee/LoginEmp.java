@@ -29,63 +29,66 @@ public class LoginEmp extends HttpServlet{
 		EmpService empSvc = new EmpService();
 		
 		if("loginEmp".equals(action)) {
+			System.out.println("檢查員工帳號");
 			//接收參數與錯誤訊息印出
-			List<String> errorMsgs = new LinkedList<String>();
-			String empnoStr = req.getParameter("empno");
+			List<String> errorMsgs = new LinkedList<String>();			
 			req.setAttribute("errorMsgs", errorMsgs);
-			Integer empno = null;		
-			String empPass = req.getParameter("empPass");
 			
-			if (empnoStr != null && !empnoStr.isEmpty()) { //先判斷是否為空
-			    try {
-			        empno = Integer.valueOf(empnoStr); //將字串轉成Integer
-			    } catch (NumberFormatException e) {
-			        empno = 0;
-			        errorMsgs.add("員工編號格式錯誤"); 
-			    }
-			} else {
-			    empno = 0;
-			    errorMsgs.add("員工編號請勿空白");
+			String empnoStr = req.getParameter("empno");	
+			String empPass = req.getParameter("empPass");
+			Integer empno = null;
+			
+			if (empnoStr != null && (empnoStr.trim()).length() == 0) { //先判斷字串是否為空
+				errorMsgs.add("員工編號請勿空白");
+			}else {				
+				try {
+					empno = Integer.valueOf(empnoStr); //把字串轉成Integer
+				} catch (Exception e) {
+					errorMsgs.add("員工編號格式不正確");
+				}				
 			}
-
+			
 			if(empPass == null || (empPass.trim()).length() == 0) {
 				errorMsgs.add("密碼請勿空白");
+			}
+			
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");//有錯跳回查詢頁面
+				failureView.forward(req, res);
+				return;// 程式中斷
 			}
 
 			//驗證帳號密碼是否正確
 			LoginEmp loginemp = new LoginEmp();
-
-			if (!errorMsgs.isEmpty() || empno == 0) { //印出錯誤訊息,導回登入頁面
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");
+			int result = loginemp.loginTest(empno, empPass);
+			switch(result) {
+				case -1: 
+					errorMsgs.add("查無此員工編號");
+					break;
+				case -2:
+					errorMsgs.add("密碼有誤");
+					break;
+			}
+			if (!errorMsgs.isEmpty()) {
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");//有錯跳回查詢頁面
 				failureView.forward(req, res);
 				return;// 程式中斷
-			}else {			
-				int result = loginemp.loginTest(empno, empPass);
-				switch(result) {
-					case -1: 
-						errorMsgs.add("查無此員工編號");
-						break;
-					case -2:
-						errorMsgs.add("密碼有誤");
-						break;
-				}
-			 //登入成功, 導入各部門的功能首頁
-				DeptVO deptVO = empSvc.getOneEmp(empno).getDept();
-				Integer deptNo = deptVO.getDeptNo();
-				switch(deptNo) {
-					case 101: //業務部,相簿管理
-						forwardPath = "back-end/pha/select_phoalb.jsp";
-						break;
-					case 103: //人資部,員工管理
-						forwardPath = "/back-end/emp/select_page.jsp";
-						break;
-					}
-				req.setAttribute("deptNo", deptNo);
-				RequestDispatcher successView = req.getRequestDispatcher(forwardPath);
-				successView.forward(req, res);
-			}	
-			
-		}//login
+			}
+
+			// 登入成功, 導入各部門的功能首頁
+			DeptVO deptVO = empSvc.getOneEmp(empno).getDept();
+			Integer deptNo = deptVO.getDeptNo();
+			switch (deptNo) {
+			case 101: // 業務部,相簿管理
+				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
+				break;
+			case 103: // 人資部,員工管理
+				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				break;
+			}
+			res.sendRedirect(forwardPath);
+
+		} // login
 
 	}//post
 	
