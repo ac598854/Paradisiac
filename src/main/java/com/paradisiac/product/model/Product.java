@@ -1,6 +1,7 @@
 package com.paradisiac.product.model;
 
 import com.paradisiac.product.constant.ProductCategory;
+import com.paradisiac.product.constant.ProductStatus;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class Product {
     private String description;
     private Date createdDate;
     private Date lastModifiedDate;
+    private ProductStatus status;
 
     public Integer getProductId() {
         return productId;
@@ -85,5 +87,13 @@ public class Product {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 }

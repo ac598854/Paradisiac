@@ -25,23 +25,23 @@ header {
 }
 
 /* footer樣式 */
-#footer {
-    background-color: lightblue;
-    padding: 20px 0;
-    text-align: center;
-    width: 100%; /* 佔滿整個容器的寬度 */
-    box-sizing: border-box; /* 包含邊距和邊框在內的寬度 */
-    margin: 0; /* 移除外邊距 */
-}
+/*#footer {*/
+/*    background-color: lightblue;*/
+/*    padding: 20px 0;*/
+/*    text-align: center;*/
+/*    width: 100%; !* 佔滿整個容器的寬度 *!*/
+/*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
+/*    margin: 0; !* 移除外邊距 *!*/
+/*}*/
 
-/* 這個樣式將應用於footer內部的container，如果存在的話 */
-#footer .container {
-    width: 100%; /* 佔滿footer的寬度 */
-    max-width: none; /* 移除最大寬度限制 */
-    margin: 0 auto; /* 如果需要在頁面中間對齊 */
-    padding: 0; /* 移除內填充 */
-    box-sizing: border-box; /* 包含邊距和邊框在內的寬度 */
-}
+/*!* 這個樣式將應用於footer內部的container，如果存在的話 *!*/
+/*#footer .container {*/
+/*    width: 100%; !* 佔滿footer的寬度 *!*/
+/*    max-width: none; !* 移除最大寬度限制 *!*/
+/*    margin: 0 auto; !* 如果需要在頁面中間對齊 *!*/
+/*    padding: 0; !* 移除內填充 *!*/
+/*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
+/*}*/
 
 /* 導航樣式 */
 nav ul {

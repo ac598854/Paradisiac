@@ -1,6 +1,8 @@
 package com.paradisiac.product.dto;
 
 import com.paradisiac.product.constant.ProductCategory;
+import com.paradisiac.product.constant.ProductStatus;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -16,6 +18,8 @@ public class ProductRequest {
     @NotNull
     private Integer stock;
     private String description;
+    @NotNull
+    private ProductStatus status;
 
     public String getProductName() {
         return productName;
@@ -63,5 +67,13 @@ public class ProductRequest {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ProductStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ProductStatus status) {
+        this.status = status;
     }
 }
