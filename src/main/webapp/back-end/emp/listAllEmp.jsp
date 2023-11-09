@@ -11,7 +11,7 @@
     List<EmpVO> list = empSvc.getAll();
     pageContext.setAttribute("list",list);
     
-    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+    //EmpVO empVO = (EmpVO) request.getAttribute("empVO");
 
 
 %>
