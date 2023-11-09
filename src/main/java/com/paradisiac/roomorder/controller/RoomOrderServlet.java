@@ -147,7 +147,7 @@ public class RoomOrderServlet extends HttpServlet {
 
 		Integer roomOrderNoInt = null;
 
-		// 将字符串参数解析为整数
+		// 
 		Timestamp roomOrderDatedt = null;
 		Date checkinDatedt = null;
 		Date checkoutDatedt = null;
