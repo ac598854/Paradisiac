@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import redis.clients.jedis.Jedis;
 
-@WebServlet("/Cart")
+@WebServlet("/Carta")
 public class Cart extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -51,33 +51,32 @@ public class Cart extends HttpServlet {
 					for (String key : sessionData.keySet()) {
 					    productObject = sessionData.getJSONObject(key);
 					    sessionquantity = ((JSONObject) productObject).getInt("quantity");
-					    System.out.println(key + " sessionQuantity: " + sessionquantity);
+//					    System.out.println(key + " sessionQuantity: " + sessionquantity);
 
 					    if (redisDataJSON.has(key)) {
 					        redisObject = redisDataJSON.getJSONObject(key);
 					        redisquantity = ((JSONObject) redisObject).getInt("quantity");
-					        System.out.println(key + " redisQuantity: " + redisquantity);
+//					        System.out.println(key + " redisQuantity: " + redisquantity);
+					        int total =  sessionquantity + redisquantity;
+					        ((JSONObject) redisObject).put("quantity", total);
+					        System.out.println("更新後redis內數量:"+redisObject);
 					    }
-					    int total =  sessionquantity + redisquantity;
-				        ((JSONObject) redisObject).put("quantity", total);
+					    else {    //redis沒有該商品
+					    	((JSONObject) redisObject).put("quantity",sessionquantity);
+					    	redisDataJSON.put(key, redisObject);
+					    	System.out.println(sessionquantity);
+					    	System.out.println("redis內沒有該商品session有最後redis內的商品:"+redisObject);
+					    }
 					}
 					
 					jedis.set("guest1", redisDataJSON.toString());
-					 
-//					 for (String key : redisDataJSON.keySet()) {
-//				             redisObject = redisDataJSON.getJSONObject(key);
-//				             redisquantity = ((JSONObject) redisObject).getInt("quantity");
-//				            System.out.println(key + " redisQuantity: " + redisquantity);
-//				        }
-					
-//					 int total =  sessionquantity + redisquantity;
-//					 redisDataJSON.put("quantity", total);
-					 
-//					JSONObject cartData = new JSONObject(redisDataJSON);
-					session.removeAttribute("cart");
+//					session.removeAttribute("cart");
 					
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
+					//讓伺服器不要快取
+//					response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+//					response.setHeader("Expires", "0");
 					response.getWriter().write(redisDataJSON.toString());
 					jedis.close();
 				}
@@ -125,7 +124,7 @@ public class Cart extends HttpServlet {
 		HttpSession session = request.getSession();
 		String memno = (String) session.getAttribute("memno");// session什麼都可以存所以是object
 
-		if (memno != null) {
+		if (memno == null) {
 			if ("checkout".equals(action)) {
 
 				// 解析请求体中的 JSON 数据
@@ -142,7 +141,7 @@ public class Cart extends HttpServlet {
 				response.getWriter().write(addResponse.toString());
 			}
 		}
-		if(memno == null) {
+		if(memno != null) {
 			if ("checkout".equals(action)) {
 					session.setAttribute("cart",data);
 					System.out.println(data);

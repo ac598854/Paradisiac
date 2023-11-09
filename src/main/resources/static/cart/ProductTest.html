@@ -108,7 +108,7 @@
                     quantity: 1
                 };
             }
-            post();
+            post();//錯的 會post總數量 好像沒錯 要試看看會員才知道????
             updateCartItemCount();
         }
 
@@ -126,19 +126,17 @@
 //====================POST===========================================//
 
         function post() {
-            const cartData = {
-                items: cart //key,value的方式存取cart內資訊
-            };
-            const cartDataJSON = JSON.stringify(cartData);
-            console.log("傳送的數據:" + cartDataJSON);
-
+           
+            const cartJSON = JSON.stringify(cart);
+            console.log("傳送的數據:" + cartJSON);
+            const dataToSend = { action: 'checkout', cartData: cartJSON };
 
             fetch('/Paradisiac/Cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify({ action: 'checkout', data: cartData })
+                body: JSON.stringify(dataToSend)
             }).then(response => {
                 if (response.ok) {
                     return response.json();
@@ -169,11 +167,12 @@
                     }
                 })
                 .then(data => {
+                	
                     if (data.error) {
                         console.log(data.error);
                     } else {
-                        for (const product in data.items) {
-                            cart[product] = data.items[product];
+                        for (const productName in data) {
+                            cart[productName] = data[productName];
                         }
 
                         updateCartItemCount();
