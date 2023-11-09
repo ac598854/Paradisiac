@@ -53,6 +53,14 @@
 </head>
 
 <body>
+    <div id="productInfo">
+        <form id="cartForm" method="POST" action="/Cart">
+            <!-- 添加一個隱藏的 input 元素來接收商品 JSON 數據 -->
+            <input type="hidden" name="productJson" id="productJson">
+            <!-- 其他購物車內容，例如商品列表、總價格等 -->
+            <button type="submit">結帳</button> <!-- 提交表單按鈕，當用戶結帳時使用 -->
+        </form>
+    </div>
     <div class="container">
         <h1>商品列表</h1>
         <div class="form-check">
@@ -102,6 +110,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
     <script>
+        window.onload = function() {
+            // 獲取 input 元素
+            var productJsonInput = document.getElementById("productJson");
+
+            // 檢查是否找到 input 元素
+            if (productJsonInput) {
+                // 獲取 JSON 字符串值
+                var productJsonString = productJsonInput.value;
+
+                // 解析 JSON 字符串為 JavaScript 對象
+                var productData = JSON.parse(productJsonString);
+
+                // 現在您可以在這裡使用 productData 來處理商品數據
+                // 例如，顯示商品詳細信息或添加到購物車
+
+            }
+        };
         var products = [];
 
         //===============================頁面進入需要先載入的================================================//
@@ -138,10 +163,11 @@
                     });
                 }
             });
+
         });
         // ==========================動態生成表格=============================================//
         function generateProductRows() {
-        	
+
             var productTableBody = document.getElementById("productTableBody");
             for (var i = 0; i < products.length; i++) {
                 console.log(i)
@@ -291,6 +317,7 @@
 
             totalAmountElement.textContent = totalAmount;
         }
+
         //=======================get取得session內資訊================================//
         // 获取购物车数据并构建新的 products 数组
         function getSessionCart() {
@@ -320,12 +347,13 @@
                                 description: cartProduct.description,
                                 maxQuantity: cartProduct.quantity  // 这里的 maxQuantity 可能需要调整
                             });
-                            
+
                         }
-                        
+
                         generateProductRows();
                     }
                 });
+
         }
 
 
