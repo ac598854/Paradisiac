@@ -28,9 +28,7 @@ public class RoomPictureDAOImpl implements roomPictureDAO {
 	
 	private Session getSession() {
 		return factory.getCurrentSession();
-	}
-
-	
+	}	
 
 	@Override
 	public int insert(RoomPictureVO entity) {

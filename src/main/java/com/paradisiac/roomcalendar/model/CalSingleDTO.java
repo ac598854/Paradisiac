@@ -60,7 +60,7 @@ public class CalSingleDTO {
 	private byte rTypeStatus;
 	
 	@Column(name = "rbooking")
-	private Integer rbooking;
+	private Long rbooking;
 	
 	@Column(name = "astatus")
 	private String aStatus;
@@ -173,20 +173,17 @@ public class CalSingleDTO {
 	public void setaStatus(String aStatus) {
 		this.aStatus = aStatus;
 	}
-	public Integer getRbooking() {
-		if(rbooking ==null) {
-			rbooking =0;
-		}
-		return rbooking;
+	public Long getRbooking() {		
+		return this.rbooking;
 	}
 
-	public void setRbooking(Integer rbooking) {
+	public void setRbooking(Long rbooking) {		
 		this.rbooking = rbooking;
 	}
 	
 	public CalSingleDTO(Integer roomTypeNo, Date vDate, String roomName, String rType, Integer roomTotal, Integer price,
 			Integer normalPrice, Integer holiDayPrice, Integer bridgeHolidayPrice, String notice, String facility,
-			byte rTypeStatus, Integer rbooking, String aStatus) {
+			byte rTypeStatus, Long rbooking, String aStatus) {
 		super();
 		this.roomTypeNo = roomTypeNo;
 		this.vDate = vDate;

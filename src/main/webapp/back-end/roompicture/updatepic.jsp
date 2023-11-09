@@ -1,9 +1,9 @@
 <%@page import="java.sql.Timestamp"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.paradisiac.roompicture.entity.*"%>
-<%@ page import="com.paradisiac.roompicture.service.*"%>
-<%@ page import="com.paradisiac.roompicture.dao.*"%>
+<%@ page import="com.paradisiac.roomZ.roompicture.entity.*"%>
+<%@ page import="com.paradisiac.roomZ.roompicture.service.*"%>
+<%@ page import="com.paradisiac.roomZ.roompicture.dao.*"%>
 
 <!DOCTYPE html>
 <html lang="en">

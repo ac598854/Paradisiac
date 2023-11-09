@@ -84,6 +84,8 @@ public class ProductController {
         return  ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
+    // GEt File方法 Post API傳到資料庫
+
     //修改
     @PutMapping("/products/{productId}")
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,

@@ -23,7 +23,7 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 
 	@Override
 	public int addorder(Timestamp roomOrderDate, Date checkinDate, Date checkoutDate, Integer roomTypeNo, Integer memNo,
-			Integer roomAmount, Integer price, byte paymentMethod, boolean payStatus, byte orderStatus) {
+			Integer roomAmount, Integer price, byte paymentMethod, byte payStatus, byte orderStatus) {
 		RoomOrderVO ord = new RoomOrderVO();
 		ord.setRoomOrderDate(roomOrderDate);
 		ord.setCheckinDate(checkinDate);
@@ -42,7 +42,7 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 
 	@Override
 	public int updateorder(Integer roomOrderNo, Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,
-			Integer roomTypeNo, Integer memNo, Integer roomAmount, Integer price, byte paymentMethod, boolean payStatus,
+			Integer roomTypeNo, Integer memNo, Integer roomAmount, Integer price, byte paymentMethod, byte payStatus,
 			byte orderStatus) {
 		RoomOrderVO ord = new RoomOrderVO();
 		ord.setRoomOrderNo(roomOrderNo);
