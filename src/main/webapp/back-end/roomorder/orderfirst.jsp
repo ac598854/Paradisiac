@@ -70,7 +70,7 @@
             </div>  
                         <div class="form-group">
                 <label for="payStatus">payStatus：</label>
-                <input type="text" class="form-control" id="payStatus" name="payStatus" value="true">
+                <input type="text" class="form-control" id="payStatus" name="payStatus" value="1">
             </div>   
             
                                     <div class="form-group">

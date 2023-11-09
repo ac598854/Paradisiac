@@ -82,10 +82,9 @@ public class RoomOrderServlet extends HttpServlet{
 		String roomAmount = req.getParameter("roomAmount");
 		String price = req.getParameter("price");
 		//paymentMethod
-		String payStatus = req.getParameter("payStatus");
+//		String payStatus = req.getParameter("payStatus");
 		//orderStatus
 
-		// 将字符串参数解析为整数
 		Timestamp roomOrderDatedt = null;
 		Timestamp roomOrderDatenow =  new Timestamp(System.currentTimeMillis());
 		Date checkinDatedt = null;
@@ -102,7 +101,7 @@ public class RoomOrderServlet extends HttpServlet{
 
 		
 		
-		boolean payStatusBool = Boolean.parseBoolean(payStatus);
+		byte payStatusBool = Byte.parseByte(req.getParameter("payStatus").trim());
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
 		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
 
@@ -116,15 +115,15 @@ public class RoomOrderServlet extends HttpServlet{
 		    
 		}
 
-		// 如果有確定進入資料庫會有流水編號，再去找流水編號的值，顯示在jsp
+
 		int saved = roomOrderService.addorder(roomOrderDatenow, checkinDatedt, checkoutDatedt, roomTypeNoInt, memNoInt, roomAmountInt, priceInt, paymentMethod, payStatusBool,orderStatus);
 		var result = roomOrderService.findByorderNo(saved);
 
 		if (saved > 0) {
-//		    return 1; // 添加成功
+
 	        System.out.println("新增成功");
 	    } else {
-//	        return -1; // 添加失败
+
 	        System.out.println("新增失敗");
 	    }
 	
@@ -139,7 +138,7 @@ public class RoomOrderServlet extends HttpServlet{
 		String memNo = req.getParameter("memNo");
 		String roomAmount = req.getParameter("roomAmount");
 		String price = req.getParameter("price");
-		String payStatus = req.getParameter("payStatus");
+//		String payStatus = req.getParameter("payStatus");
 
 		Integer roomOrderNoInt = null;
 
@@ -153,7 +152,7 @@ public class RoomOrderServlet extends HttpServlet{
 		Integer roomAmountInt = null;
 		Integer priceInt = null;
 
-		boolean payStatusBool = Boolean.parseBoolean(payStatus);
+		byte payStatusBool = Byte.parseByte(req.getParameter("payStatus").trim());
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
 		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
 
