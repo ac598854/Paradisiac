@@ -28,11 +28,11 @@ public class LoginFilter implements Filter {
 		// 【取得 session】
 		HttpSession session = req.getSession();
 		// 【從 session 取得memno屬性】
-		Object memno = session.getAttribute("memno");
+		Object memno = session.getAttribute("memno");		
 		
 		if (memno == null) {//如果memno是null，表示使用者未登入
 			session.setAttribute("location", req.getRequestURI());//將當前請求的URI存入Session中，以便稍後重定向後能夠知道用戶原來要訪問的頁面。
-			System.out.println(req.getRequestURI());
+			System.out.println("非登入會員時，所在的location="+req.getRequestURI());
 			res.sendRedirect(req.getContextPath() + "/front-end/members/Login.jsp");
 			return;//return表示不再執行過濾器鏈，即結束過濾器的執行。
 		} else {
