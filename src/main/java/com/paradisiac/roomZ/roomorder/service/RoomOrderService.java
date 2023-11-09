@@ -9,9 +9,9 @@ import com.paradisiac.roomZ.roomorder.entity.RoomOrderVO;
 public interface RoomOrderService {
 	
 	
-	int addorder(Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,Integer roomTypeNo,Integer memNo,Integer roomAmount,Integer price,byte paymentMethod,boolean payStatus,byte orderStatus);
+	int addorder(Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,Integer roomTypeNo,Integer memNo,Integer roomAmount,Integer price,byte paymentMethod,byte payStatus,byte orderStatus);
 //
-	int updateorder(Integer roomOrderNo ,Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,Integer roomTypeNo,Integer memNo,Integer roomAmount,Integer price,byte paymentMethod,boolean payStatus,byte orderStatus);
+	int updateorder(Integer roomOrderNo ,Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,Integer roomTypeNo,Integer memNo,Integer roomAmount,Integer price,byte paymentMethod,byte payStatus,byte orderStatus);
 //
 
 //	

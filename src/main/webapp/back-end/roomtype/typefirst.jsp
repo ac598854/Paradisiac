@@ -126,42 +126,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // 紀錄房型數
-            let roomCount = 1;
 
-            $("#addButton").click(function() {
-                // 獲取新資料
-                var roomName = $("#roomName").val();
-                var rtype = $("#rtype").val();
-                var roomTotal = $("#roomTotal").val();
-                var price = $("#price").val();
-                var price = $("#normalPrice").val();
-                var price = $("#holidayPrice").val();
-                var price = $("#bridgeHolidayPrice").val();
-                var price = $("#notice").val();
-                var price = $("#facility").val();
-                var price = $("#rTypeStatus").val();
-                // 其他表單元素的取得
-                var newRow = `
-                    <tr>
-                        <td>${roomCount}</td>
-                        <td>${roomName}</td>
-                        <td>${rtype}</td>
-                        <td>${roomTotal}</td>
-                        <td>${price}</td>
-                        <td>${normalPrice}</td>
-                        <td>${holidayPrice}</td>
-                        <td>${bridgeHolidayPrice}</td>
-                        <td>${notice}</td>
-                        <td>${facility}</td>
-                        <td>${rTypeStatus}</td>
-                    </tr>`;
-                $("#roomList tbody").append(newRow);
-                roomCount++; // 更新房型數
-            });
-        });
-    </script>
 </body>
 </html>

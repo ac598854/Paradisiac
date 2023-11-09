@@ -14,7 +14,7 @@
             <div class="col-md-4">
             <h4>聯絡我們</h4>
             <p>地址: 桃園市中壢區復興路46號</p>
-            <p>电话: 03-4617862</p>
+            <p>電话: 03-4617862</p>
             <p>Email: ParadisiacCove@hotels.com.tw</p>
             </div>
             <div class="col-md-4">
