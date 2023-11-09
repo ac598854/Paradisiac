@@ -1,4 +1,4 @@
-package com.paradisiac.cart;
+package com.paradisiac.product.controller;
 
 import java.io.BufferedReader;
 
@@ -16,59 +16,36 @@ import org.springframework.web.bind.annotation.RestController;
 
 import redis.clients.jedis.Jedis;
 
-@WebServlet("/Cart")
+@WebServlet("/Carta")
 public class Cart extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 	
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		
 		HttpSession session = request.getSession();
-		
 		Object memnoObject = session.getAttribute("memno");// 什麼都可以存所以是object
 		String memno = (String)memnoObject;
-		
-		Object sessionObject = session.getAttribute("cart");
-		
 		String action = request.getParameter("action");
-// ==========是會員從redis內取得並且要取得session內的資料加在一起並且送出去=================================
-		if (memno != null) {//是會員
-			if(sessionObject != null) {//session內有資料
-				if ("shoppingCart".equals(action) || "loadCart".equals(action)) {
-					
-					Jedis jedis = new Jedis("localhost", 6379);
-					String redisData = jedis.get("guest1");// 之後改成memno
-					
-					JSONObject sessionData = new JSONObject(sessionObject);
-					
-					if (redisData != null) {
-		                JSONObject redisDataJSON = new JSONObject(redisData);
-		                for (String key : sessionData.keySet()) {    //KeySet陣列
-		                    redisDataJSON.put(key, sessionData.get(key));
-		                }
-		                jedis.set(memno, redisDataJSON.toString());
-		            } else {
-		                jedis.set(memno, sessionData.toString());
-		            }
-					
-					
-					
-					JSONObject cartData = new JSONObject(redisData);
-	
-					response.setContentType("application/json");
-					response.setCharacterEncoding("UTF-8");
-					response.getWriter().write(cartData.toString());
-					jedis.close();
-				}
+		// ==========是會員從redis內取得=================================
+		if (memno == null) {
+			if ("shoppingCart".equals(action) || "loadCart".equals(action)) {
+				Jedis jedis = new Jedis("localhost", 6379);
+				String items = jedis.get("guest1");// 之後改成memno
+				JSONObject cartData = new JSONObject(items);
+
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(cartData.toString());
+				jedis.close();
 			}
 		}
-// ==========不是會員從session內取得=================================
-		if (memno == null) {
+		// ==========不是會員從session內取得=================================
+		if (memno != null) {
 			if ("shoppingCart".equals(action)  || "loadCart".equals(action)) {
-//				Object cartObject = session.getAttribute("cart");// 沒有的話會是空值
-				if (sessionObject != null) {
-					JSONObject cart = (JSONObject) sessionObject;
+				Object cartObject = session.getAttribute("cart");// 沒有的話會是空值
+				if (cartObject != null) {
+					JSONObject cart = (JSONObject) cartObject;
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write(cart.toString());
@@ -83,9 +60,6 @@ public class Cart extends HttpServlet {
 		}
 	}
 
-	
-	
-	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// 解析post過來的json格式
@@ -96,10 +70,9 @@ public class Cart extends HttpServlet {
 			stringBuilder.append(line);
 		}
 		JSONObject jsonData = new JSONObject(stringBuilder.toString());
-		// 取得json內的資料有action跟data
+		// 取得json內的資料
 		String action = jsonData.getString("action");
 		JSONObject data = jsonData.getJSONObject("data");// 購物車資訊
-		
 		// 取得session內的會員資料
 		HttpSession session = request.getSession();
 		String memno = (String) session.getAttribute("memno");// session什麼都可以存所以是object
@@ -124,7 +97,6 @@ public class Cart extends HttpServlet {
 		if(memno == null) {
 			if ("checkout".equals(action)) {
 					session.setAttribute("cart",data);
-					System.out.println(data);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					JSONObject addResponse = new JSONObject();
