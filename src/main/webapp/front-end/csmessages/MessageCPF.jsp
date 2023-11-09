@@ -1,6 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=BIG5"
-	pageEncoding="BIG5"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page import="com.paradisiac.csmessages.model.*"%>
+<%@ page import="com.paradisiac.csmessages.service.*"%>
+<%@ page import="com.paradisiac.csmessages.controller.*"%>
 <!DOCTYPE html>
+
 <html>
 <head>
 
@@ -69,11 +73,10 @@ ul.navigation {
 }
 
 .container-fluid {
-
-	max-width: 100%; 
+	max-width: 100%;
 	margin-top: 10px;
-	padding: 0; 
-	overflow: hidden; 
+	padding: 0;
+	overflow: hidden;
 }
 
 .sidebar-nav>.sidebar-title {
@@ -211,7 +214,7 @@ ul.navigation {
 	}
 }
 
-/* ªí®æ¡B¬d¸ß³¡¤À */
+/* è¡¨æ ¼ã€æŸ¥è©¢éƒ¨åˆ† */
 .table {
 	width: 100%;
 }
@@ -304,10 +307,14 @@ ul.navigation {
 	border-color: #6c757d;
 }
 
-#cscontent,#csreply{
-height:300px;
+#cscontent, #csreply {
+	height: 300px;
 }
 
+#cscontentHead{
+	font-size: 20px;
+	font-weight: bold;
+}
 </style>
 </head>
 
@@ -318,112 +325,92 @@ height:300px;
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
-				<li class="sidebar-title">·|­û±M°Ï</li>
+				<li class="sidebar-title">æœƒå“¡å°ˆå€</li>
 				<li><a
-					href="<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp">·|­û°ò¥»¸ê®Æ</a></li>
-				<li class="sidebar-title">­q³æ±M°Ï</li>
-				<li><a href="#">­q©Ğ­q³æ¬d¸ß</a></li>
-				<li><a href="#">ÁÊª«­q³æ¬d¸ß</a></li>
-				<li><a href="#">¬¡°Ê­q³æ¬d¸ß</a></li>
-				<li class="sidebar-title">·|­ûªA°È</li>
-				<li><a href="#">·|­û¬ö©À¬ÛÃ¯</a></li>
+					href="<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp">æœƒå“¡åŸºæœ¬è³‡æ–™</a></li>
+				<li class="sidebar-title">è¨‚å–®å°ˆå€</li>
+				<li><a href="#">è¨‚æˆ¿è¨‚å–®æŸ¥è©¢</a></li>
+				<li><a href="#">è³¼ç‰©è¨‚å–®æŸ¥è©¢</a></li>
+				<li><a href="#">æ´»å‹•è¨‚å–®æŸ¥è©¢</a></li>
+				<li class="sidebar-title">æœƒå“¡æœå‹™</li>
+				<li><a href="#">æœƒå“¡å®¢æœå°ˆå€</a></li>
 				<li><a
-					href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp">·|­û«ÈªA±M°Ï</a></li>
+					href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp">æœƒå“¡å®¢æœå°ˆå€</a></li>
+				<li><a href="#">æœƒå“¡ç´€å¿µç›¸ç°¿</a></li>
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Top Navigation -->
 		<ul class="navigation">
-			<li><a href="#home">µn¥X</a></li>
+			<li><a href="#home">ç™»å‡º</a></li>
 
 		</ul>
-		<!-- Page Content -->
+<!-- 		Page Content -->
 		<div id="page-content-wrapper">
 			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">®i¶}µe­±</a>
+				id="menu-toggle">å±•é–‹ç•«é¢</a>
 
 
-			<h1>½Ğ¿é¤J±zªº°İÃD</h1>
+			<h1>è«‹è¼¸å…¥æ‚¨çš„å•é¡Œ</h1>
 			<div class="container"></div>
 			<div class="container mt-3">
 				<div class="row">
 					<div class="col-12 text-right">
 						<a
 							href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp"
-							class="btn btn-secondary">¦^¤W¤@­¶</a>
+							class="btn btn-secondary">å›ä¸Šä¸€é </a>
 					</div>
-					<!-- ²Ä¤@³¡¤Àªí³æ -->
-					<form id="customerForm" method="post" accept-charset="UTF-8" action="csmessages.do">
+
+					<form id="customerForm" method="post" accept-charset="UTF-8"
+						action="csmessages.do">
 
 						<div class="form-group">
-							<label for="cscontent">«ÈªA°İÃD</label>
-							<textarea class="form-control" id="cscontent" name="cscontent"
-								value="${CsVO.cscscontent}" rows="3" placeholder="½Ğ¿é¤J°İÃD"></textarea>
-						</div>
+							<label for="cscontent" id="cscontentHead">ç”³è¨´å•é¡Œ</label>
+               				<textarea class="form-control" name="cscontent" id="cscontent" rows="3"><c:out value="${CsVO.cscontent}" /></textarea>
 
-						<button type="button" class="btn btn-primary" id="submitButton">°e¥X</button>
+						<br>
+						<button type="button" class="btn btn-primary" id="submitButton">é€å‡º</button>
 						<input type="hidden" name="action" value="insert_Front">
 
-						<button type="reset" class="btn btn-secondary" id="resetButton">­«³]</button>
+						<button type="reset" class="btn btn-secondary" id="resetButton">é‡è¨­</button>
+						</div>
+
 					</form>
 					<br>
-					<!-- ²Ä¤G³¡¤À -->
-					<form>
-						<div class="form-group">
-							<label for="csreply ">«ÈªA¦^ÂĞ</label>
-							<textarea class="form-control" id="csreply" rows="3" value="${CsVO.csreply}" readonly></textarea>
-						</div>
-						<div class="form-group">
-							<label for="csredate">¦^ÂĞ®É¶¡</label> <input type="text"
-								class="form-control" id="csredate"
-								value="<?php echo date('Y-m-d H:i:s'); ?>"  readonly>
-						</div>
-					</form>
+
+
 				</div>
 
 			</div>
+		</div>
+	</div>
 			<!-- Bootstrap JavaScript -->
 			<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 			<script
 				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 			<script
 				src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-			<script>
-				// JavaScript¥N½X¥H³B²zÂIÀ»"°e¥X"«ö¶s®Éªº½T»{¹ï¸Ü®Ø
-				document.getElementById('submitButton').addEventListener(
-						'click',
-						function() {
-							if (confirm('¬O§_°e¥X¥Ó¶D°T®§¡H')) {
-								// ¦pªG¨Ï¥ÎªÌÂIÀ»½T©w¡A°õ¦æ°e¥Xªí³æªº¬ÛÃö¾Ş§@
-								document.getElementById('customerForm')
-										.submit();
-							}
-						});
-			</script>
-
-			<script
-				src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-			<script
-				src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-			<script
-				src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
-			<script
-				src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
 			<!-- Menu Toggle Script -->
 			<script>
 				$("#menu-toggle").click(function(e) {
-					e.preventDefault();
-					$("#wrapper").toggleClass("toggled");
-				});
+ 					e.preventDefault();
+ 					$("#wrapper").toggleClass("toggled");
+ 				});
+
+ 			<!-- é€å‡ºè¨Šæ¯ç¢ºèª -->		
+ 				// JavaScriptä»£ç¢¼ä»¥è™•ç†é»æ“Š"é€å‡º"æŒ‰éˆ•æ™‚çš„ç¢ºèªå°è©±æ¡†
+ 				document.getElementById('submitButton').addEventListener(
+ 						'click',
+ 						function() {
+ 							if (confirm('é€å‡ºç”³è¨´è¨Šæ¯ï¼Ÿ')) {
+ 								// å¦‚æœä½¿ç”¨è€…é»æ“Šç¢ºå®šï¼ŒåŸ·è¡Œé€å‡ºè¡¨å–®çš„ç›¸é—œæ“ä½œ
+ 								document.getElementById('customerForm')
+ 										.submit();
+							}
+ 						});
+		
 			</script>
-
-
-		</div>
-	</div>
 </body>
 <link rel="stylesheet" asset="eduser.css"
 	href="chrome-extension://mjdbhokoopacimoekfgkcoogikbfgngb/assets/eduser.css">

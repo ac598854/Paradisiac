@@ -271,8 +271,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			MembersVO membersVO = new MembersVO();
-			membersVO.setMemstatus(memstatus);
-
+//			membersVO.setMemstatus(memstatus);
 		
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("membersVO", membersVO); 

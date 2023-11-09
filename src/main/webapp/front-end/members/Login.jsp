@@ -4,16 +4,10 @@
 <%@ page import="com.paradisiac.members.controller.*"%>
 <%@ page import="com.paradisiac.members.service.*"%>
 <%@ page import="java.util.*"%>
-
+<%-- <%@ include file="/front-end/index/footer.jsp %> --%>
 
 
 <%
-// MembersVO membersVO=null; 
-// Integer memno=(Integer)session.getAttribute("memno"); 
-// MembersService MembersSvc=new MembersService(); 
-// membersVO = MembersSvc.getOneBymemno(memno); 
-// pageContext.setAttribute("membersVO", membersVO);
-// System.out.println("==check");
 	MembersVO membersVO=null;
 	membersVO=(MembersVO)session.getAttribute("membersVO");
 %>
@@ -95,6 +89,7 @@ th, td {
 				<br> <br>
 			<a href='ForgetPass.jsp' class="link to-forgetpassk">忘記密碼</a> <br> <br>
 			<a href='Signin.jsp' class="link to-signin">註冊會員</a> <br> <br>
+			<a href='<%=request.getContextPath()%>/front-end/index/index2.jsp' class="link to-signin">回首頁</a> <br> <br>
 		</form>
 	</div>
 

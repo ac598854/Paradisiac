@@ -9,14 +9,13 @@
 request.setCharacterEncoding("utf-8");
 
 String keyword = request.getParameter("keyword") != null ? request.getParameter("keyword") : "";
-
 Integer whereMemno = (Integer) session.getAttribute("memno");
 CsMessagesService csMessagesService = new CsMessagesService();
 List<CsMessagesVO> list = csMessagesService.getAllBycscontent(keyword, whereMemno);
 pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html >
 
 <head>
 
@@ -27,7 +26,7 @@ pageContext.setAttribute("list", list);
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>User Dashboard</title>
+<title>會員客服專區</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -85,10 +84,10 @@ ul.navigation {
 }
 
 .container-fluid {
-	max-width: 100%; 
+	max-width: 100%;
 	margin-top: 10px;
-	padding: 0; 
-	overflow: hidden; 
+	padding: 0;
+	overflow: hidden;
 }
 
 .sidebar-nav>.sidebar-title {
@@ -343,9 +342,9 @@ ul.navigation {
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Top Navigation -->
-		<ul class="navigation">
-			<li><a href="#home">登出</a></li>
 
+		<ul class="navigation">
+			<li id="logoutLi"><a href="#home">登出</a></li>
 		</ul>
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
@@ -356,7 +355,7 @@ ul.navigation {
 				<form action="MessageLPF.jsp" method="get">
 					<div class="row">
 						<div class="col-lg-12">
-							<h1>會員客服訊息</h1>
+							<h1>會員客服專區</h1>
 							<div class="form-group2">
 								<label for="csMsgNo">問題關鍵字</label>
 								<div class="input-group">
@@ -391,7 +390,7 @@ ul.navigation {
 										<th>客服編號</th>
 										<th>申訴內容</th>
 										<th>申訴時間</th>
-										<th>回覆狀態</th>
+										<th>客服狀態</th>
 										<th>動作</th>
 									</tr>
 								</thead>
@@ -413,15 +412,7 @@ ul.navigation {
 													</c:otherwise>
 												</c:choose></td>
 
-
-											<FORM METHOD="post" ACTION="csmessages.do"">
-												<button class="btn btn-primary" id="reviewButton">檢視</button>
-												<input type="hidden" name="csmsgno"
-													value="${CsMessagesVO.csmsgno}"> <input
-													type="hidden" name="action" value="getOne_For_CsMsgno_Front">
-											</FORM>
-
-											<!-- 											<td><button class="btn btn-primary" id="reviewButton">檢視</button></td> -->
+											<td><button class="btn btn-primary" id="reviewButton" data-msgno="${CsMessagesVO.csmsgno}">檢視</button></td>
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -435,7 +426,6 @@ ul.navigation {
 		</div>
 	</div>
 
-	
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
 	<script
@@ -443,27 +433,42 @@ ul.navigation {
 
 	<!-- Menu Toggle Script -->
 	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-		
-//新增
-		  var addButton = document.getElementById("addButton");
-		  addButton .addEventListener("click", function() {
-// 			  let pathName = window.document.location.pathname;//JS跳頁寫法
-// 			  let projectName = pathName.substring( 0 , pathName.substring(1).indexOf("/")+1);
-// 		    var newPageURL ="http://localhost:8081/Paradisiac/front-end/csmessages/MessageCPF.jsp";
-		    window.location.href ="<%=request.getContextPath()%>/front-end/csmessages/MessageCPF.jsp";
-						});
-//檢視		  
-		  		  var addButton = document.getElementById("reviewButton");
-		  addButton .addEventListener("click", function() {
-			  console.log("1");
-		    window.location.href ="<%=request.getContextPath()%>
-		/front-end/csmessages/MessageCPF.jsp";
-						});
-	</script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
+    // 新增
+    var addButton = document.getElementById("addButton");
+    addButton.addEventListener("click", function() {
+        window.location.href = "<%=request.getContextPath()%>/front-end/csmessages/MessageCPF.jsp";
+    });
+
+    // 檢視   
+	var reviewButtons = document.querySelectorAll("#reviewButton");
+	reviewButtons.forEach(function(button) {
+	button.addEventListener("click", function() {
+    var csmsgno = this.getAttribute("data-msgno");
+	console.log(csmsgno);
+    window.location.href = "csmessages.do?action=getOne_For_CsMsgno_Front&csmsgno=" + csmsgno;
+  });
+});
+
+
+  
+    // 登出
+    var logoutLi= document.getElementById("logoutLi");
+    document.getElementById("logoutLi").addEventListener("click", function(e) {
+        e.preventDefault(); // 防止連結點選後的默認行為（即跳轉到 #home）
+
+        // 透過 JavaScript 重定向到 Servlet 並傳遞 action 參數
+        window.location.href = "login.do?action=stateLogout";
+    });
+    
+    
+    
+</script>
+	
 </body>
 
 </html>

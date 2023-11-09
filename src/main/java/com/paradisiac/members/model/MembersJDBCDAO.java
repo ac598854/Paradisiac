@@ -18,8 +18,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	private static final String UPDATE_FRONT = "UPDATE members SET mem_name = ?, mem_mail = ?, mem_pass = ?,mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 	private static final String UPDATE_PASS = "UPDATE members SET mem_pass = ? WHERE mem_no = ?";
 //	private static final String UPDATE_MEMCAPTCHA = "UPDATE members SET mem_captcha = ? WHERE mem_no = ?";
-	private static final String GET_ALL = "SELECT * FROM members ORDER BY mem_no";
-	private static final String GET_ALL_BYSTATUS = "SELECT * FROM members WHERE mem_status = ? ORDER BY mem_no";
+	private static final String GET_ALL = "SELECT * FROM members ORDER BY mem_no DESC";
+	private static final String GET_ALL_BYSTATUS = "SELECT * FROM members WHERE mem_status = ? ORDER BY mem_no DESC";
 	private static final String GET_ONE_BYMEMNO = "SELECT * FROM members WHERE mem_no = ?";
 	private static final String GET_ONE_BYMEMACCOUNT = "SELECT * FROM members WHERE mem_account = ?";
 	private static final String DELETE = "DELETE FROM members WHERE mem_no = ?"; // 之後刪掉(沒有此功能)

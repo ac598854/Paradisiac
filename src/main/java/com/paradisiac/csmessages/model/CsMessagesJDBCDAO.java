@@ -19,7 +19,7 @@ public class CsMessagesJDBCDAO implements CsMessagesDAO_interface{
 	
 	private static final String INSERT_FRONT = "INSERT INTO cs_messages(mem_no,cs_content,cs_ask_date) VALUES ( ?, ?,NOW())";
 	private static final String GET_ONE_BYCSMSGNO = "SELECT * FROM cs_messages WHERE cs_msg_no = ?";
-	private static final String GET_ALL = "SELECT * FROM cs_messages ORDER BY cs_msg_no";
+	private static final String GET_ALL = "SELECT * FROM cs_messages ORDER BY cs_msg_no DESC";
 	private static final String GET_ALL_BYEMPNO = "SELECT * FROM cs_messages WHERE empno = ? ORDER BY cs_msg_no";
 	
 //	private static final String GET_ALL_BYSTATUS = "SELECT * FROM cs_messages WHERE empno = ? ORDER BY cs_msg_no";
@@ -199,8 +199,8 @@ public class CsMessagesJDBCDAO implements CsMessagesDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sql="SELECT * FROM cs_messages "+whereCodition.toString()+ " ORDER BY cs_msg_no";
-		System.out.println("203="+sql);
+		String sql="SELECT * FROM cs_messages "+whereCodition.toString()+ " ORDER BY cs_msg_no DESC";
+		System.out.println("(後台JDBC)203="+sql);
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
@@ -263,8 +263,8 @@ public class CsMessagesJDBCDAO implements CsMessagesDAO_interface{
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String sql="SELECT * FROM cs_messages  where cs_content LIKE ? and mem_no=?   ORDER BY cs_msg_no";
-		System.out.println("203="+sql);
+		String sql="SELECT * FROM cs_messages  where cs_content LIKE ? and mem_no=?   ORDER BY cs_msg_no DESC";
+		System.out.println("203(前台JDBC)="+sql);
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);

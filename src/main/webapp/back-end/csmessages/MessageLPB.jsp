@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
 <%@ page import="com.paradisiac.csmessages.model.*"%>
 <%@ page import="com.paradisiac.csmessages.controller.*"%>
@@ -426,8 +427,8 @@ h1, h2, h3, h4 {
 											<th>申訴內容</th>
 											<th>處理員工</th>
 											<th>申訴時間</th>
-											<th>回應時間</th>
-											<th>處理</th>
+											<th>客服狀態</th>
+											<th>動作</th>
 										</tr>
 									</thead>
 
@@ -440,14 +441,22 @@ h1, h2, h3, h4 {
 												<td>${CsMessagesVO.memno}</td>
 												<td>${CsMessagesVO.cscontent}</td>
 												<td>${CsMessagesVO.empno}</td>
-												<td>${CsMessagesVO.csaskdate}</td>
-												<td>${CsMessagesVO.csredate}</td>
+												<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
+													pattern="yyyy-MM-dd HH:mm" /></td>
+												<td><c:choose>
+													<c:when test="${not empty CsMessagesVO.csredate}">
+            										已回覆
+        											</c:when>
+													<c:otherwise>
+														<span style="color: red;">未回覆</span>
+													</c:otherwise>
+												</c:choose></td>
 												<td>
 													<FORM METHOD="post" ACTION="csmessages.do">
 														<input type="submit" value="回覆" class="btn btn-primary">
 														<input type="hidden" name="csmsgno"
 															value="${CsMessagesVO.csmsgno}"> <input
-															type="hidden" name="action" value="get_all_back">
+															type="hidden" name="action" value="getOne_For_CsMsgno">
 													</FORM>
 												</td>
 											</tr>

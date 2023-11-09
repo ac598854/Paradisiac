@@ -5,9 +5,9 @@ import java.util.List;
 
 public interface CsMessagesDAO_interface {
 	public void insertFront(CsMessagesVO CsVO);
-	public CsMessagesVO  getOneByCsmsgno(Integer CsVO);
+	public CsMessagesVO  getOneByCsmsgno(Integer csmsgno);
 	public List<CsMessagesVO> getAll();
-	List<CsMessagesVO> getAllByEmpno(Integer empno);
+	public List<CsMessagesVO> getAllByEmpno(Integer empno);
 	public List<CsMessagesVO> getAllBystatus(StringBuffer whereCodition,String keyword);
 	//判斷有無員工編號為是否處理狀態
 	public List<CsMessagesVO> getAllBycscontent(String keyword,Integer whereMemno);
