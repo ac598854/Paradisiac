@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const productId = urlParams.get('productId');
 
     // 使用productId調用API來獲取商品詳情
-    fetch(`http://localhost:8080/products/${productId}`)
+    fetch(`http://localhost:8081/products/${productId}`)
         .then(response => response.json())
         .then(product => {
             displayProductDetail(product);
@@ -61,7 +61,7 @@ function displayProductDetail(product) {
 }
 
 function loadSimilarProducts() {
-    fetch('http://localhost:8080/products')
+    fetch('http://localhost:8081/products')
         .then(response => response.json())
         .then(data => {
             // 從所有商品中隨機選擇四個
