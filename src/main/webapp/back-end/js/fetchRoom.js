@@ -139,7 +139,7 @@
       error: function(error) {}
     });
   }
- //依選擇的日期到後端取的房型資料
+ //依選擇的日期到後端取得資料
 function getSingleForDay(selectDay) {
 	console.log("取得日期資料：",selectDay);
 	const data = { selectDay: selectDay };

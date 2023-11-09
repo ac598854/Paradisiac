@@ -33,7 +33,7 @@ public class RoomOrderVO {
 	@Column(name = "payment_method", columnDefinition = "tinyint")
 	private byte paymentMethod;
 	@Column(name = "pay_status")
-	private boolean payStatus;
+	private byte payStatus;
 	@Column(name = "order_status", columnDefinition = "tinyint")
 	private byte orderStatus;
 	
@@ -94,10 +94,10 @@ public class RoomOrderVO {
 	public void setPaymentMethod(byte paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-	public boolean isPayStatus() {
+	public byte isPayStatus() {
 		return payStatus;
 	}
-	public void setPayStatus(boolean payStatus) {
+	public void setPayStatus(byte payStatus) {
 		this.payStatus = payStatus;
 	}
 	public byte getOrderStatus() {
