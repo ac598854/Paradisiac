@@ -29,46 +29,66 @@ public class Cart extends HttpServlet {
 		Object memnoObject = session.getAttribute("memno");// 什麼都可以存所以是object
 		String memno = (String)memnoObject;
 		
-		Object sessionObject = session.getAttribute("cart");
+		String cartDataString = (String) session.getAttribute("cart");;
 		
 		String action = request.getParameter("action");
 // ==========是會員從redis內取得並且要取得session內的資料加在一起並且送出去=================================
-		if (memno != null) {//是會員
-			if(sessionObject != null) {//session內有資料
+		if (memno == null) {//是會員
+			if(cartDataString != null) {//session內有資料
 				if ("shoppingCart".equals(action) || "loadCart".equals(action)) {
 					
 					Jedis jedis = new Jedis("localhost", 6379);
 					String redisData = jedis.get("guest1");// 之後改成memno
 					
-					JSONObject sessionData = new JSONObject(sessionObject);
+					JSONObject redisDataJSON = new JSONObject(redisData);
+					int redisquantity = 0;
+					Object redisObject = null;
 					
-					if (redisData != null) {
-		                JSONObject redisDataJSON = new JSONObject(redisData);
-		                for (String key : sessionData.keySet()) {    //KeySet陣列
-		                    redisDataJSON.put(key, sessionData.get(key));
-		                }
-		                jedis.set(memno, redisDataJSON.toString());
-		            } else {
-		                jedis.set(memno, sessionData.toString());
-		            }
+					JSONObject sessionData = new JSONObject(cartDataString);
+					int sessionquantity = 0;
+					Object productObject = null;
 					
+					for (String key : sessionData.keySet()) {
+					    productObject = sessionData.getJSONObject(key);
+					    sessionquantity = ((JSONObject) productObject).getInt("quantity");
+					    System.out.println(key + " sessionQuantity: " + sessionquantity);
+
+					    if (redisDataJSON.has(key)) {
+					        redisObject = redisDataJSON.getJSONObject(key);
+					        redisquantity = ((JSONObject) redisObject).getInt("quantity");
+					        System.out.println(key + " redisQuantity: " + redisquantity);
+					    }
+					    int total =  sessionquantity + redisquantity;
+				        ((JSONObject) redisObject).put("quantity", total);
+					}
 					
+					jedis.set("guest1", redisDataJSON.toString());
+					 
+//					 for (String key : redisDataJSON.keySet()) {
+//				             redisObject = redisDataJSON.getJSONObject(key);
+//				             redisquantity = ((JSONObject) redisObject).getInt("quantity");
+//				            System.out.println(key + " redisQuantity: " + redisquantity);
+//				        }
 					
-					JSONObject cartData = new JSONObject(redisData);
-	
+//					 int total =  sessionquantity + redisquantity;
+//					 redisDataJSON.put("quantity", total);
+					 
+//					JSONObject cartData = new JSONObject(redisDataJSON);
+					session.removeAttribute("cart");
+					
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
-					response.getWriter().write(cartData.toString());
+					response.getWriter().write(redisDataJSON.toString());
 					jedis.close();
 				}
 			}
 		}
 // ==========不是會員從session內取得=================================
-		if (memno == null) {
+		if (memno != null) {
 			if ("shoppingCart".equals(action)  || "loadCart".equals(action)) {
 //				Object cartObject = session.getAttribute("cart");// 沒有的話會是空值
-				if (sessionObject != null) {
-					JSONObject cart = (JSONObject) sessionObject;
+				if (cartDataString != null) {
+					JSONObject cart = new JSONObject (cartDataString);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write(cart.toString());
@@ -98,7 +118,8 @@ public class Cart extends HttpServlet {
 		JSONObject jsonData = new JSONObject(stringBuilder.toString());
 		// 取得json內的資料有action跟data
 		String action = jsonData.getString("action");
-		JSONObject data = jsonData.getJSONObject("data");// 購物車資訊
+		String data = jsonData.getString("cartData");// 購物車資訊
+		JSONObject jsonObject = new JSONObject(data);
 		
 		// 取得session內的會員資料
 		HttpSession session = request.getSession();
@@ -108,7 +129,7 @@ public class Cart extends HttpServlet {
 			if ("checkout".equals(action)) {
 
 				// 解析请求体中的 JSON 数据
-				String jsonData2 = data.toString();// 可以存json但必須得是字串
+				String jsonData2 = jsonObject.toString();// 可以存json但必須得是字串
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.set("guest1", jsonData2);//改memno
 				jedis.close();
