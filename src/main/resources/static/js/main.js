@@ -2,7 +2,11 @@
 function initCategoryDropdown() {
     const categories = [
         { text: '主題商品', value: 'ParadisiacTheme' },
-        { text: '精品商品', value: 'ParadisiacExquisite' }
+        { text: '精品商品', value: 'ParadisiacExquisite' },
+        { text: '主題公仔', value: 'ParadisiacThemeActionFigures' },
+        { text: '精品衣服', value: 'ParadisiacExquisiteCloththing' },
+        { text: '主題日常用品', value: 'ParadisiacThemehousehold' }
+
     ];
 
     // 初始化新增商品的狀態下拉選單
@@ -181,6 +185,12 @@ function convertCategoryToText(category) {
             return '主題商品';
         case 'ParadisiacExquisite':
             return '精品商品';
+        case 'ParadisiacThemeActionFigures':
+            return '主題公仔';
+        case 'ParadisiacExquisiteCloththing':
+            return '精品衣服';
+        case 'ParadisiacThemehousehold':
+            return '主題日常用品';
         default:
             return category;  // 如果有其他狀態，則直接返回
     }

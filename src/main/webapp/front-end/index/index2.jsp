@@ -16,8 +16,8 @@
             padding: 0; 
         }
 		.fixed-image {
-		    width: 500px; /* 设置图片的宽度 */
-		    height: 300px; /* 设置图片的高度 */
+		    width: 500px;
+		    height: 300px; 
 		}
         /* 導覽列 */
         .fixed-navbar {
