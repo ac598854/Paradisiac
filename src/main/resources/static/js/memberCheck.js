@@ -1,7 +1,9 @@
+let pathName = window.document.location.pathname;
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 //單一卡片測試加入Check Order
 document.getElementById('product-card').addEventListener('click', function() {
     const productId = this.dataset.productId;
-    fetch(`http://localhost:8081/products/${productId}`)
+    fetch(projectName + `/products/${productId}`)
         .then(response => response.json())
         .then(product => {
             // Display product details in the checkout area

@@ -1,3 +1,5 @@
+let pathName = window.document.location.pathname;
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 document.addEventListener('DOMContentLoaded', function() {
     // 這裡 'userId' 應從用戶的登入狀態獲取，這裡僅為示例
     const userId = 1; // 使用實際從登入狀態或會話獲取的用戶ID
@@ -5,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchOrders(userId) {
-    fetch(`/users/${userId}/orders`)
+    fetch(projectName + `/users/${userId}/orders`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
