@@ -1,0 +1,50 @@
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f7f7f7;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 20px;
+}
+
+.order-item {
+    border: 1px solid #e1e1e1;
+    margin-bottom: 8px;
+    padding: 10px;
+    background: #fafafa;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.order-item:hover {
+    background: #f0f0f0;
+}
+
+.order-details {
+    display: none;
+    padding: 10px;
+    border-top: 1px solid #e1e1e1;
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.order-summary {
+    margin-top: 10px;
+}
+
+.items-per-page {
+    margin-top: 10px;
+    text-align: right;
+}
+
+/* 這裡添加更多您需要的CSS */

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>結賬 - 書店購物車</title>
+    <link rel="stylesheet" href="styles.css"> <!-- 指向您的CSS樣式表 -->
+</head>
+<body>
+<header>
+    <!-- 頁面標題和導航 -->
+</header>
+
+<main>
+    <section class="checkout-form">
+        <h2>Check Out</h2>
+        <form id="shipping-form">
+            <!-- 表單欄位 -->
+            <label for="name">Name *</label>
+            <input type="text" id="name" name="name" required>
+
+            <!-- 其他欄位... -->
+
+            <button type="submit">Place Order</button>
+            <button type="button" onclick="cancelOrder()">Cancel</button>
+        </form>
+    </section>
+
+    <section class="order-summary">
+        <h2>Order Summary</h2>
+        <div id="order-items">
+            <!-- 訂單摘要項目將透過JavaScript動態生成 -->
+        </div>
+        <div class="grand-total">
+            <!-- 總計 -->
+        </div>
+    </section>
+</main>
+
+<footer>
+    <!-- 頁腳資訊 -->
+</footer>
+
+<script src="checkout.js"></script> <!-- 指向您的JavaScript文件 -->
+</body>
+</html>
