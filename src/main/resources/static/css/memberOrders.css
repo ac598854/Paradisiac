@@ -7,6 +7,10 @@ body {
     color: #333;
 }
 
+.center-text {
+    text-align: center;
+}
+
 /* 導航欄樣式 */
 nav ul {
     list-style-type: none;
@@ -112,6 +116,11 @@ button {
 .table td {
     padding: 0.75rem;
     border: 1px solid #dee2e6;
+}
+
+.narrow-table {
+    max-width: 80%; /* 或您希望的任何其他寬度 */
+    margin: 0 auto; /* 這會使表格在容器中居中 */
 }
 
 main {

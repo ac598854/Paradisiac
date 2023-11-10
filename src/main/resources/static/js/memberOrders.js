@@ -34,7 +34,7 @@ function createOrdersTable(orders) {
     ordersTableContainer.innerHTML = '';
 
     const table = document.createElement('table');
-    table.className = 'table';
+    table.className = 'table narrow-table'; // 添加新的 CSS 類
     const thead = document.createElement('thead');
     const headerRow = thead.insertRow();
 
