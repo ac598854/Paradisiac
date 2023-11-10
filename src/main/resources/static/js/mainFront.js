@@ -1,3 +1,5 @@
+let pathName = window.document.location.pathname;
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 // 1. 初始化設定
 window.onload = function() {
     loadProducts();
@@ -6,7 +8,7 @@ window.onload = function() {
 // 2. 載入商品資料
 function loadProducts() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8080/products', true);
+    xhr.open('GET', projectName + '/products', true); // 修改為動態路徑
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var productsData = JSON.parse(xhr.responseText);
@@ -95,7 +97,7 @@ function displayProducts(products) {
         productDiv.appendChild(addToCartButton);
 
         productDiv.onclick = function() {
-            window.location.href = `product.html?productId=${product.productId}`;
+            window.location.href = projectName + `product.html?productId=${product.productId}`;
         };
         productsArea.appendChild(productDiv);
     });
@@ -105,7 +107,7 @@ function displayProducts(products) {
 function searchProducts() {
     const query = document.getElementById('searchInput').value;
     var xhr = new XMLHttpRequest();
-    let apiUrl = 'http://localhost:8080/products?search=' + encodeURIComponent(query);
+    let apiUrl = projectName + '/products?search=' + encodeURIComponent(query);
     xhr.open('GET', apiUrl, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -129,7 +131,7 @@ const limit = 8;
 
 async function fetchProducts() {
     try {
-        const response = await fetch(`http://localhost:8080/products?limit=${limit}&offset=${offset}`);
+        const response = await fetch(projectName + `/products?limit=${limit}&offset=${offset}`);
         if (response.ok) {
             const data = await response.json();
             const products = data.results;
@@ -209,7 +211,7 @@ document.querySelectorAll('.list-group-item').forEach(item => {
 // 顯示所有商品的函數
 function displayAllProducts() {
     $.ajax({
-        url: 'http://localhost:8080/products', // 不帶類別參數，表示請求所有商品
+        url: projectName + '/products', // 不帶類別參數，表示請求所有商品
         type: 'GET',
         success: function(response) {
             if (response && response.results) {
@@ -227,7 +229,7 @@ function displayAllProducts() {
 // 根據類別過濾商品的函數
 function filterProductsByCategory(categoryValue) {
     $.ajax({
-        url: `http://localhost:8080/products?category=${encodeURIComponent(categoryValue)}`,
+        url: projectName + `/products?category=${encodeURIComponent(categoryValue)}`,
         type: 'GET',
         success: function(response) {
             // 確保傳遞給 displayProducts 的是一個陣列
