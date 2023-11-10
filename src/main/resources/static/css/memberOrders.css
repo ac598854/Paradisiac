@@ -1,15 +1,57 @@
+/* 基本頁面樣式 */
 body {
     font-family: 'Arial', sans-serif;
+    background-color: lightblue;
     margin: 0;
     padding: 0;
-    background: #f7f7f7;
+    color: #333;
 }
 
-.main-container {
-    max-width: 800px;
-    margin: 0 auto;
-    background: #fff;
+/* 導航欄樣式 */
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    background-color: #eee;
+}
+
+nav li {
+    margin: 0 10px;
+}
+
+/* 主要內容區域樣式 */
+.container {
+    display: flex;
+}
+
+aside {
+    flex: 1;
+    max-width: 20%;
     padding: 20px;
+    border-right: 1px solid #ccc;
+}
+
+aside ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    transition: background-color 0.3s ease;
+}
+
+aside ul li button:hover {
+    background-color: #e0e0e0;
 }
 
 .order-item {
@@ -47,4 +89,32 @@ body {
     text-align: right;
 }
 
-/* 這裡添加更多您需要的CSS */
+button {
+    border:0;
+    background-color:#003C9D;
+    color:#fff;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+/* 新增的表格樣式 */
+.table-responsive {
+    margin-top: 20px;
+}
+
+.table {
+    width: 100%;
+    background-color: #fff;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+}
+
+main {
+    margin-bottom: 100px; /* 足够的空间以避免被 footer 遮挡 */
+}
+
