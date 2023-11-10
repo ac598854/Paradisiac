@@ -25,9 +25,7 @@ public class Cart extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		HttpSession session = request.getSession();
-		
-		Object memnoObject = session.getAttribute("memno");// 什麼都可以存所以是object
-		String memno = (String)memnoObject;
+		Integer memno = (Integer) session.getAttribute("memno");
 		
 		String sessionDataString = (String) session.getAttribute("cart");
 		
@@ -36,11 +34,13 @@ public class Cart extends HttpServlet {
 		// ==========是會員從redis內取得=================================
 		if (memno != null) {
 			if ("shoppingCart".equals(action) || "loadCart".equals(action)) {
+				System.out.println("是會員從redis取");
 				Jedis jedis = new Jedis("localhost", 6379);
 				String redisDataString = jedis.get("guest2");// 之後改成memno
 				JSONObject redisDataJSON = new JSONObject(redisDataString);
 				if(sessionDataString != null) {
 					JSONObject sessionDataJSON = new JSONObject(sessionDataString);
+//					System.out.println("session內有:"+sessionDataJSON);
 					for (String key : sessionDataJSON.keySet()) {
 					    Object productObject = sessionDataJSON.getJSONObject(key);
 					    int sessionquantity = ((JSONObject) productObject).getInt("quantity");
@@ -57,11 +57,6 @@ public class Cart extends HttpServlet {
 					    
 					}
 				}
-//				if(sessionDataString == null) {
-//						
-//					
-//					
-//				}
 				jedis.set("guest2", redisDataJSON.toString());
 				session.removeAttribute("cart");
 				response.setContentType("application/json");
@@ -73,11 +68,13 @@ public class Cart extends HttpServlet {
 		// ==========不是會員從session內取得=================================
 		if (memno == null) {
 			if ("shoppingCart".equals(action)  || "loadCart".equals(action)) {
+					System.out.println("不是會員從session取得");
 				if (sessionDataString != null) {
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					response.getWriter().write(sessionDataString);
 				} else {
+					System.out.println("不是會員且session是空的");
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");
 					JSONObject errorResponse = new JSONObject();
@@ -98,17 +95,18 @@ public class Cart extends HttpServlet {
 			stringBuilder.append(line);
 		}
 		JSONObject jsonData = new JSONObject(stringBuilder.toString());
+		System.out.println(stringBuilder);
 		// 取得json內的資料
 		String action = jsonData.getString("action");
 		String data = jsonData.getString("cartData");// 購物車資訊
 		
 		// 取得session內的會員資料
 		HttpSession session = request.getSession();
-		String memno = (String) session.getAttribute("memno");// session什麼都可以存所以是object
+		Integer memno = (Integer) session.getAttribute("memno");// session什麼都可以存所以是object
 
 		if (memno != null) {
 			if ("checkout".equals(action)) {
-
+				System.out.println("是會員存redis");
 				// 解析请求体中的 JSON 数据
 //				String jsonData2 = jsonObject.toString();// 可以存json但必須得是字串
 				Jedis jedis = new Jedis("localhost", 6379);
@@ -125,6 +123,7 @@ public class Cart extends HttpServlet {
 		}
 		if(memno == null) {
 			if ("checkout".equals(action)) {
+					System.out.println("不是會員存入session");
 					session.setAttribute("cart",data);
 					response.setContentType("application/json");
 					response.setCharacterEncoding("UTF-8");

@@ -11,6 +11,7 @@
 
 
     <style>
+        /* 为包含"删除全部"按钮的<div>元素添加样式 */
         .delete-all-button {
             position: absolute;
             top: 30px;
@@ -18,11 +19,13 @@
             padding: 10px;
         }
 
+        /* 为表格的列添加样式以确保按钮不会遮挡内容 */
         .table th,
         .table td {
             position: relative;
         }
 
+        /* 样式用于购物车为空消息 */
         #emptyCartMessage {
             display: none;
             text-align: center;
@@ -32,8 +35,10 @@
             transform: translate(-50%, -50%);
         }
 
+        /* 使用伪元素添加空购物车图标 */
         #emptyCartMessage::before {
             content: "\1F6D2";
+            /* Unicode字符编码，这里使用购物车图标 */
             font-size: 100px;
             display: block;
         }
@@ -48,6 +53,14 @@
 </head>
 
 <body>
+    <div id="productInfo">
+        <form id="cartForm" method="POST" action="/Cart">
+            <!-- 添加一個隱藏的 input 元素來接收商品 JSON 數據 -->
+            <input type="hidden" name="productJson" id="productJson">
+            <!-- 其他購物車內容，例如商品列表、總價格等 -->
+            <button type="submit">結帳</button> <!-- 提交表單按鈕，當用戶結帳時使用 -->
+        </form>
+    </div>
     <div class="container">
         <h1>商品列表</h1>
         <div class="form-check">
@@ -97,14 +110,31 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
     <script>
+//         window.onload = function() {
+//             // 獲取 input 元素
+//             var productJsonInput = document.getElementById("productJson");
+
+//             // 檢查是否找到 input 元素
+//             if (productJsonInput) {
+//                 // 獲取 JSON 字符串值
+//                 var productJsonString = productJsonInput.value;
+
+//                 // 解析 JSON 字符串為 JavaScript 對象
+//                 var productData = JSON.parse(productJsonString);
+
+//                 // 現在您可以在這裡使用 productData 來處理商品數據
+//                 // 例如，顯示商品詳細信息或添加到購物車
+
+//             }
+//         };
         var products = [];
 
         //===============================頁面進入需要先載入的================================================//
         document.addEventListener("DOMContentLoaded", function () {
-        	// 跳轉馬上取得session內的購物車資料(+redis內的)
+            // 跳转马上获取session内的购物车数据(+redis内的)
             getSessionCart().then(function () {
-            	// 從 cart 物件建立新的 products 數組
-                // 初始化總價格
+                // 从 cart 对象中构建新的 products 数组
+                // 初始化总价格
                 var totalAmountElement = document.getElementById("totalAmount");
                 totalAmountElement.textContent = "0";
                 //==========================勾選框相關==================================
@@ -120,23 +150,24 @@
                     updateTotalPrice();
                 });
 
-                // ====================檢查商品是否為空==========================================
+                // ====================检查商品是否为空==========================================
                 var productRows = document.querySelectorAll("tbody tr");
                 var emptyCartMessage = document.getElementById("emptyCartMessage");
                 var otherElements = document.querySelectorAll(".container > *");
 
                 if (productRows.length === 0) {
-                	// 商品為空，顯示空購物車訊息並隱藏其他元素
+                    // 商品为空，显示空购物车消息并隐藏其他元素
                     emptyCartMessage.style.display = "block";
                     otherElements.forEach(function (element) {
                         element.style.display = "none";
                     });
                 }
             });
+
         });
         // ==========================動態生成表格=============================================//
         function generateProductRows() {
-        	
+
             var productTableBody = document.getElementById("productTableBody");
             for (var i = 0; i < products.length; i++) {
                 console.log(i)
@@ -165,7 +196,7 @@
                     option.textContent = j;
                     quantitySelect.appendChild(option);
                 }
-                quantitySelect.value = product.maxQuantity;
+                quantitySelect.value = product.quantity;
                 productTableBody.appendChild(row);
             }
         }
@@ -192,7 +223,7 @@
 
 
         //勾選更新價格跟勾選框
-        //事件處理程序是在頁面載入時綁定的所以必須是以透過監聽父元素上的事件，根據事件的目標來確定是哪個複選框發生了變化才可以綁定到。
+        //事件处理程序是在页面加载时绑定的所以必須是以通过监听父元素上的事件，根据事件的目标来确定是哪个复选框发生了变化才可以綁定到。
         var productTableBody = document.getElementById("productTableBody");
         productTableBody.addEventListener("change", function (event) {
             var target = event.target;
@@ -214,18 +245,19 @@
         }
 
 
-     // 刪除單一商品
+        // 删除单个商品
         function removeProduct(button) {
-            var row = button.parentElement.parentElement; 
-            row.remove();
-            updateTotalPrice(); 
-            updateSelectAll();
+            var row = button.parentElement.parentElement; // 获取商品所在的行
+            row.remove(); // 从DOM中删除该行
+            updateTotalPrice(); // 更新总价格
+            updateSelectAll(); // 更新全选复选框
             var productRows = document.querySelectorAll("tbody tr");
             var emptyCartMessage = document.getElementById("emptyCartMessage");
             var deleteAllElement = document.getElementById("deleteAll");
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
+                // 商品为空，显示空购物车消息并隐藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -238,16 +270,16 @@
         function removeAllProducts() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
             productCheckboxes.forEach(function (checkbox) {
-                checkbox.checked = false;
+                checkbox.checked = false; // 取消选择所有商品的复选框
             });
 
-            var productRows = document.querySelectorAll("tbody tr"); 
+            var productRows = document.querySelectorAll("tbody tr"); // 获取所有商品行
             productRows.forEach(function (row) {
                 row.remove(); // 删除所有商品行
             });
 
-            updateTotalPrice(); 
-            updateSelectAll(); 
+            updateTotalPrice(); // 更新总价格
+            updateSelectAll(); // 更新全选复选框
 
             var productRows = document.querySelectorAll("tbody tr");
             var emptyCartMessage = document.getElementById("emptyCartMessage");
@@ -255,6 +287,7 @@
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
+                // 商品为空，显示空购物车消息并隐藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -284,7 +317,9 @@
 
             totalAmountElement.textContent = totalAmount;
         }
+
         //=======================get取得session內資訊================================//
+        // 获取购物车数据并构建新的 products 数组
         function getSessionCart() {
             return fetch('/Paradisiac/Cart?action=shoppingCart', {
                 method: 'GET',
@@ -304,20 +339,22 @@
                         console.log(data.error);
                     } else {
                         products = [];
-                        for (const product in data.items) {
-                            const cartProduct = data.items[product];
+                        for (const productName in data) {
+                            const cartProduct = data[productName];
                             products.push({
-                                name: product,
+                                name: productName,
                                 price: cartProduct.price,
-                                description: cartProduct.description,
-                                maxQuantity: cartProduct.quantity 
+                                quantity: cartProduct.quantity,
+                                // 如果您希望在表格中显示商品描述，您可以设置一个默认值，例如 "No description"
+                                description: cartProduct.description || "No description"
                             });
-                            
                         }
-                        
+
+
                         generateProductRows();
                     }
                 });
+
         }
 
 

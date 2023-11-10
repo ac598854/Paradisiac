@@ -3,8 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!--      頁面不能使用快取 -->
-    <meta http-equiv="cache-control" content="no-store" /> 
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -89,10 +87,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-    	
-    
-    
-    	
         const cart = {};
         let cartItemCountElement; // 購物車內數量
 
@@ -121,7 +115,6 @@
         document.addEventListener("DOMContentLoaded", function () {
             cartItemCountElement = document.getElementById('cartItemCount');
             reload();
-            console.log("頁面load監聽被觸發了的");
             
             const cartButton = document.getElementById("shoppingCart");
             cartButton.addEventListener("click", function () {
@@ -133,7 +126,7 @@
 //====================POST===========================================//
 
         function post() {
-          
+           
             const cartJSON = JSON.stringify(cart);
             console.log("傳送的數據:" + cartJSON);
             const dataToSend = { action: 'checkout', cartData: cartJSON };
@@ -159,51 +152,36 @@
         }
 //========================頁面加載時GET====================================//
         function reload() {
-    fetch('/Paradisiac/Cart?action=loadCart', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-            console.log("觸發relod")
-        } else {
-            throw new Error('沒有取得回應');
-        }
-    })
-    .then(data => {
-        if (data.error) {
-            console.log(data.error);
-        } 
-//         else {
-            // 如果伺服器返回的購物車內容為空，將購物車數量設置為0
-//             if (!data.cart || Object.keys(data.cart).length === 0) {
-// //             	console.log("觸發更新購物車")
-// //                 cartItemCountElement.textContent = '0';
-//             } 
-            else {
-                for (const product in data.cart) {
-                    cart[product] = data.cart[product];
+            fetch('/Paradisiac/Cart?action=loadCart', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
-                updateCartItemCount();
-            }
-//         }
-    })
-    .catch(error => {
-        console.log(error);
-    });
-};
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                        console.log(response.json());
+                    } else {
+                        throw new Error('沒有取得回應');
+                    }
+                })
+                .then(data => {
+                	
+                    if (data.error) {
+                        console.log(data.error);
+                    } else {
+                        for (const productName in data) {
+                            cart[productName] = data[productName];
+                        }
 
-//按上一頁觸發
-// window.addEventListener('popstate', function(event) {
-// 		cartItemCountElement = document.getElementById('cartItemCount');
-//         reload();
-//         console.log(cartItemCountElement.textContent);
-//         console.log('上一頁被觸發了！');
-// });
-
+                        updateCartItemCount();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
     </script>
 </body>
 </html>
