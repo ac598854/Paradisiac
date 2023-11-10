@@ -30,12 +30,13 @@
         }
         
         .photo-content img {
-		    max-width: 30%;  /*添加此行以限制最大宽度 */
+		    max-width: 40%;  /*限制最大宽度*/
 		    height: 200px; /* auto自动调整高度以保持纵横比 */
             background-color: #eee;
             border: 1px solid #ccc;
             margin: 5px;
         }
+
         /*
         .album .d-flex.justify-content-end {
         position: absolute;
