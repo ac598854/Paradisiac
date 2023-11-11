@@ -150,7 +150,7 @@ function displayProducts(products) {
             console.log("傳送的數據:" + cartJSON);
             const dataToSend = { action: 'checkout', cartData: cartJSON };
 
-            fetch('/Paradisiac/Cart', {
+            fetch(projectName + '/Cart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
@@ -171,7 +171,7 @@ function displayProducts(products) {
         }
 //========================頁面加載時GET====================================//
         function reload() {
-            fetch('/Paradisiac/Cart?action=loadCart', {
+            fetch(projectName + '/Cart?action=loadCart', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
