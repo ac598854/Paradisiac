@@ -9,7 +9,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "Cha103_11";
+	String passwd = "123456";
 
 
 	private static final String INSERT = "INSERT INTO members(mem_status,mem_name,mem_mail,mem_account,mem_pass,mem_gender,mem_id,mem_bir, mem_phone,mem_address,mem_captcha,mem_picture) VALUES (true, ?, ?, ?, ?, ? ,?, ?, ?,?,?,?)";
