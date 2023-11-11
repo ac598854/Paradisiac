@@ -6,8 +6,12 @@ import java.util.List;
 public class Order {
 
     private Integer orderId;
-    private Integer userId;
+    private Integer memNo;
     private Integer totalAmount;
+    private String orderName;
+    private Integer orderPhone;
+    private String address;
+    private Boolean status;
     private Date createdDate;
     private Date lastModifiedDate;
 
@@ -21,12 +25,12 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getMemNo() {
+        return memNo;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setMemNo(Integer memNo) {
+        this.memNo = memNo;
     }
 
     public Integer getTotalAmount() {
@@ -35,6 +39,30 @@ public class Order {
 
     public void setTotalAmount(Integer totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getOrderName() {
+        return orderName;
+    }
+
+    public void setOrderName(String orderName) {
+        this.orderName = orderName;
+    }
+
+    public Integer getOrderPhone() {
+        return orderPhone;
+    }
+
+    public void setOrderPhone(Integer orderPhone) {
+        this.orderPhone = orderPhone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public Date getCreatedDate() {
@@ -59,5 +87,13 @@ public class Order {
 
     public void setOrderItemList(List<OrderItem> orderItemList) {
         this.orderItemList = orderItemList;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }

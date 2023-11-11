@@ -1,6 +1,7 @@
 package com.paradisiac.product.dao.impl;
 
 import com.paradisiac.product.dao.OrderDao;
+import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.dto.OrderQueryParams;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.model.OrderItem;
@@ -25,9 +26,10 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    //計算訂單
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT count(*) FROM `order` WHERE 1 = 1";
+        String sql = "SELECT count(*) FROM psorder WHERE 1 = 1";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -39,10 +41,12 @@ public class OrderDaoImpl implements OrderDao {
         return total;
     }
 
+    //查詢所有訂單
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date " +
-                "FROM `order` WHERE 1 = 1";
+        String sql = "SELECT order_id, mem_no, total_amount, order_name, order_phone, address, " +
+                "status, created_date, last_modified_date " +
+                "FROM psorder WHERE 1 = 1";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -62,10 +66,12 @@ public class OrderDaoImpl implements OrderDao {
         return orderList;
     }
 
+    //查詢單一訂單
     @Override
     public Order getOrderById(Integer orderId) {
-        String sql = "SELECT order_id, user_id, total_amount, created_date, last_modified_date " +
-                "FROM `order` WHERE order_id = :orderId";
+        String sql = "SELECT order_id, mem_no, total_amount, order_name, order_phone, address, " +
+                "status, created_date, last_modified_date " +
+                "FROM psorder WHERE order_id = :orderId";
 
         Map<String,Object> map = new HashMap<>();
         map.put("orderId", orderId);
@@ -79,6 +85,7 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
+    //查詢單一訂單明細
     @Override
     public List<OrderItem> getOrderItemByOrderId(Integer orderId) {
         String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.product_name, p.image_url" +
@@ -94,14 +101,21 @@ public class OrderDaoImpl implements OrderDao {
         return orderItemList;
     }
 
+    //創建訂單
     @Override
-    public Integer createOrder(Integer userId, Integer totalAmount) {
-        String sql = "INSERT INTO `order`(user_id, total_amount, created_date, last_modified_date) " +
-                "VALUES(:userId, :totalAmount, :createdDate, :lastModifiedDate)";
+    public Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest) {
+        String sql = "INSERT INTO psorder(mem_no, total_amount, order_name, order_phone, " +
+                "address, status, created_date, last_modified_date) " +
+                "VALUES(:memNo, :totalAmount, :orderName, :orderPhone, " +
+                ":address, :status, :createdDate, :lastModifiedDate)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("userId", userId);
-        map.put("totalAmount", totalAmount);
+        map.put("memNo", memNo);
+        map.put("totalAmount", createOrderRequest.getTotalAmount());
+        map.put("orderName", createOrderRequest.getOrderName());
+        map.put("orderPhone", createOrderRequest.getOrderPhone());
+        map.put("address", createOrderRequest.getAddress());
+        map.put("status", createOrderRequest.getStatus());
 
         Date now = new Date();
         map.put("createdDate", now);
@@ -117,6 +131,7 @@ public class OrderDaoImpl implements OrderDao {
 
     }
 
+    //創建訂單明細
     @Override
     public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
 
@@ -155,9 +170,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
-        if(orderQueryParams.getUserId() != null){
-            sql = sql + " AND user_id = :userId";
-            map.put("userId", orderQueryParams.getUserId());
+        if(orderQueryParams.getMemNo() != null){
+            sql = sql + " AND mem_no = :memNo";
+            map.put("memNo", orderQueryParams.getMemNo());
         }
         return sql;
     }

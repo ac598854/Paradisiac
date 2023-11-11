@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OrderService {
 
-    void isUserExist(Integer userId);
+//    void isUserExist(Integer memNo);
 
     Integer countOrder(OrderQueryParams orderQueryParams);
 
@@ -16,7 +16,7 @@ public interface OrderService {
 
     Order getOrderById(Integer orderId);
 
-    Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest);
+    Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest);
 
 
 }

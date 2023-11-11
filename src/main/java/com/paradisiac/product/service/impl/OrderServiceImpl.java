@@ -1,7 +1,6 @@
 package com.paradisiac.product.service.impl;
 
 import com.paradisiac.product.dao.ProductDao;
-import com.paradisiac.product.dao.UserDao;
 import com.paradisiac.product.dto.OrderQueryParams;
 import com.paradisiac.product.model.Product;
 import com.paradisiac.product.dao.OrderDao;
@@ -9,7 +8,6 @@ import com.paradisiac.product.dto.BuyItem;
 import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.model.OrderItem;
-import com.paradisiac.product.model.User;
 import com.paradisiac.product.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,21 +27,21 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderDao orderDao;
 
-    @Autowired
-    private UserDao userDao;
+//    @Autowired
+//    private UserDao userDao;
 
     @Autowired
     private ProductDao productDao;
 
-    @Override
-    public void isUserExist(Integer userId) {
-        User user =  userDao.getUserById(userId);
-
-        if(user == null){
-            log.warn("The user {} does not exist", userId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @Override
+//    public void isUserExist(Integer userId) {
+//        User user =  userDao.getUserById(userId);
+//
+//        if(user == null){
+//            log.warn("The user {} does not exist", userId);
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
@@ -75,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional // 確保兩者同時新增成功，或是同時不新增成功
     @Override
-    public Integer createOrder(Integer userId, CreateOrderRequest createOrderRequest) {
+    public Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest) {
 
         int totalAmount = 0;
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -111,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // 創建訂單
-        Integer orderId = orderDao.createOrder(userId, totalAmount);
+        Integer orderId = orderDao.createOrder(memNo, createOrderRequest );
 
         orderDao.createOrderItems(orderId, orderItemList);
 

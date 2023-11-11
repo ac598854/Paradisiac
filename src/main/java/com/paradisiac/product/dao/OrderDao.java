@@ -1,5 +1,6 @@
 package com.paradisiac.product.dao;
 
+import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.dto.OrderQueryParams;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.model.OrderItem;
@@ -16,7 +17,7 @@ public interface OrderDao {
 
     List<OrderItem> getOrderItemByOrderId(Integer orderId);
 
-    Integer createOrder(Integer userId, Integer totalAmount);
+    Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest);
 
     void  createOrderItems(Integer orderId, List<OrderItem> orderItemList);
 

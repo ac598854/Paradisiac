@@ -22,19 +22,20 @@ public class OderController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/users/{userId}/orders")
+    //查詢訂單
+    @GetMapping("/members/{memNo}/orders")
     public ResponseEntity<Page<Order>> getOrders(
-            @PathVariable Integer userId,
+            @PathVariable Integer memNo,
             @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0") @Min(0) Integer offset){
 
         OrderQueryParams orderQueryParams = new OrderQueryParams();
-        orderQueryParams.setUserId(userId);
+        orderQueryParams.setMemNo(memNo);
         orderQueryParams.setLimit(limit);
         orderQueryParams.setOffset(offset);
 
         //檢查user是否存在
-        orderService.isUserExist(userId);
+//        orderService.isUserExist(memNo);
 
         //取得order list
         List<Order> orderList = orderService.getOrders(orderQueryParams);
@@ -52,10 +53,11 @@ public class OderController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
-    @PostMapping("/users/{userId}/orders")
-    public ResponseEntity<Order> createOrder(@PathVariable Integer userId,
+    //新增訂單
+    @PostMapping("/members/{memNo}/orders")
+    public ResponseEntity<Order> createOrder(@PathVariable Integer memNo,
                                          @RequestBody @Valid CreateOrderRequest createOrderRequest){
-        Integer orderId =  orderService.createOrder(userId, createOrderRequest);
+        Integer orderId =  orderService.createOrder(memNo, createOrderRequest);
 
         Order order = orderService.getOrderById(orderId);
 
