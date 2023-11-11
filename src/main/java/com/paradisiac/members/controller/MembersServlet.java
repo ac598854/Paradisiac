@@ -271,7 +271,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			MembersVO membersVO = new MembersVO();
-//			membersVO.setMemstatus(memstatus);
 		
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("membersVO", membersVO); 
@@ -495,21 +494,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			out.flush();
 		}
 
-//			if ("delete".equals(action)) { // 來自listAllEmp.jsp
-//				Map<String, String> errorMsgs1 = new LinkedHashMap<String, String>();
-//				req.setAttribute("errorMsgs", errorMsgs1);
-//
-//				/*************************** 1.接收請求參數 ***************************************/
-//				Integer memno = Integer.valueOf(req.getParameter("memno"));
-//
-//				/*************************** 2.開始刪除資料 ***************************************/
-//				MembersService memsSvc = new MembersService();
-//				memsSvc.deleteMember(memno);
-//
-//				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-//				String url = "/back-end/members/listAllMem.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-//				successView.forward(req, res);
-//			}
+
 	}
 }

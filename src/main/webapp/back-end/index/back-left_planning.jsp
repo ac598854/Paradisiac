@@ -19,7 +19,7 @@
 
 
 
-<style>
+    <style>
         @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
         body {
         overflow-x: hidden;
@@ -49,7 +49,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background: #89B0AE;
+        background: #8E44AD;
         /*COLOR*/
         width: 100%;
         height: 61px;
@@ -69,7 +69,7 @@
         }
 
         .navigation li a:hover {
-        background-color: #89B0AE;
+        background-color: #783993;
         /*COLOR*/
         }
 
@@ -89,7 +89,7 @@
         .sidebar-nav > .sidebar-brand a:active,
         .sidebar-nav > .sidebar-brand a:hover,
         .sidebar-nav > .sidebar-brand a:visited {
-        background: #89B0AE;
+        background: #783993;
         /*COLOR*/
         color: #ffffff!important;
         font-size: 24px;
@@ -104,7 +104,7 @@
         }
 
         .sidebar-nav li a:hover {
-        border-left: 4px solid #BEE3DB;
+        border-left: 4px solid #783993;
         /*COLOR*/
         }
 
@@ -228,7 +228,7 @@
         .sub-menu {
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease-in-out; /* 过渡效果 */
+          transition: max-height 0.3s ease-in-out;  
         }
 
 
@@ -244,7 +244,7 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a href="/Paradisiac/front-end/index/index2.jsp">P</a>
+          <a href="/Paradisiac/front-end/index/index2.jsp">前台首頁</a>
         </li>
 
         <li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
@@ -254,27 +254,7 @@
           <li><a href="#">客服機器人</a></li>
         </ul>
         
-            <!--訂房-->  
-        <li class="sidebar-title" data-toggle="submenu-2">
-          訂房系統管理
-        </li>
-        <ul class="sub-menu" id="submenu-2">
-            <li>
-            <a href="#">訂房行事曆</a>
-            </li>
-            <li>
-            <a href="#">訂房房型管理</a>
-            </li>
-            <li>
-            <a href="#">訂房訂單管理</a>
-            </li>
-            <li>
-            <a href="#">訂房房型圖片管理</a>
-            </li>
-            <li>
-            <a href="#">訂房房間管理</a>
-            </li>
-     </ul>
+
             <!--活動-->  
         <li class="sidebar-title" data-toggle="submenu-3">
             活動系統管理
@@ -296,42 +276,18 @@
                 <a href="#">活動相片管理</a>
             </li>
         </ul>
-            <!--商品-->  
-
-          <li class="sidebar-title" data-toggle="submenu-4">
-            商品系統管理
-          </li>
-          <ul class="sub-menu" id="submenu-4">
-            <li>
-                <a href="#">商品訂單管理</a>
-            </li>
-            <li>
-                <a href="#">商品類型管理</a>
-            </li>
-            <li>
-                <a href="#">商品相片管理</a>
-            </li>
-            <li>
-                <a href="#">促銷專案管理</a>
-            </li>
-            <li>
-                <a href="#">促銷商品管理</a>
-            </li>
-        </ul>
             <!--會員-->  
           <li class="sidebar-title" data-toggle="submenu-5">
             會員系統管理
           </li>
           <ul class="sub-menu" id="submenu-5">
           <li>
-            <a href="#">會員管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/members/MembersCPB.jsp">會員管理</a>
           </li>
           <li>
-            <a href="#">會員紀念相簿管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">會員紀念相簿管理</a>
           </li>
-          <li>
-            <a href="#">會員紀念相片管理</a>
-          </li>
+
           <li>
             <a href="#">客服信息管理</a>
           </li>
@@ -356,35 +312,6 @@
 
   </div><!--結尾-->
   </div>
-  
-  
-   <!-- 頁尾 -->
-    <footer class="bg-dark text-light text-center py-3">
-        <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-            <h4>聯絡我們</h4>
-            <p>地址: 桃園市中壢區復興路46號</p>
-            <p>电话: 03-4617862</p>
-            <p>Email: ParadisiacCove@hotels.com.tw</p>
-            </div>
-            <div class="col-md-4">
-            <h4>最新優惠</h4>
-            <p>烤肉超值方案。</p>
-            <p>尾牙春酒專案。</p>
-            <p>御膳料理鱘龍魚宴。</p>
-            <p>秋收冬藏 一泊二食住房專案。</p>
-            </div>
-            <div class="col-md-4">
-                <h4><a href="#">ParadisiacCove</a></h4>
-                <p><a href="#">聯絡我們</a></p>
-                <p><a href="#">關於我們</a></p>
-            </div>
-        </div>
-        </div>
-    </footer>
-  
-<!--   JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 

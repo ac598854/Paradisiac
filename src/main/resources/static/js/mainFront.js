@@ -54,54 +54,175 @@ function displayProducts(products) {
         var addToCartButton = document.createElement('button');
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
+		addToCartButton.addEventListener('click', function() {
+			addToCart(product.productName, product.price, product.productId);
+		});
+//         addToCartButton.setAttribute('data-id', product.productId); // 設定產品編號
+//         addToCartButton.setAttribute('data-name', product.productName); // 設定產品名稱
+//         addToCartButton.setAttribute('data-price', product.price); // 設定產品價格
 
-        // addToCartButton.setAttribute('data-id', product.productId); // 設定產品編號
-        // addToCartButton.setAttribute('data-name', product.productName); // 設定產品名稱
-        // addToCartButton.setAttribute('data-price', product.price); // 設定產品價格
-
-        // // 設置點擊事件，不再綁定原本的addToCart函數
-        // addToCartButton.addEventListener('click', function(event) {
-        //     event.stopPropagation(); // 阻止事件冒泡到父元素
-        //
-        //     let prodNo = this.getAttribute('data-id');
-        //     let prodName = this.getAttribute('data-name');
-        //     let prodPrice = this.getAttribute('data-price');
-        //
-        //     $.ajax({
-        //         url: '/Cart', // Servlet 的 URL
-        //         type: 'POST',
-        //         contentType: 'application/json; charset=utf-8',
-        //         data: JSON.stringify({
-        //             prodNo: prodNo,
-        //             prodName: prodName,
-        //             prodPrice: prodPrice,
-        //             action: 'add' // 告訴 Servlet 這是添加操作
-        //         }), // 將實際的產品資訊發送給後端
-        //         dataType: 'json',
-        //         success: function(response) {
-        //             console.log(response); // 處理成功時的回調
-        //         },
-        //         error: function(xhr, status, error) {
-        //             console.error(error); // 處理錯誤時的回調
-        //         }
-        //     });
-        // });
-
-        // //增加右上角的購物車數字
-        // addToCartButton.onclick = addToCart; // 綁定事件
-        // // 更新 addToCartButton 的 onclick 設定
-        // addToCartButton.onclick = function(event) {
-        //     addToCart(event); // 這裡傳遞事件對象
-        // };
+         // 設置點擊事件，不再綁定原本的addToCart函數
+      		addToCartButton.addEventListener('click', function(event) {
+           event.stopPropagation(); 
+           })// 阻止事件冒泡到父元素
+        
+//             let prodNo = this.getAttribute('data-id');
+//             let prodName = this.getAttribute('data-name');
+//             let prodPrice = this.getAttribute('data-price');
+//        
+//             $.ajax({
+//                 url: '/Cart', // Servlet 的 URL
+//                 type: 'POST',
+//                 contentType: 'application/json; charset=utf-8',
+//                 data: JSON.stringify({
+//                     prodNo: prodNo,
+//                     prodName: prodName,
+//                     prodPrice: prodPrice,
+//                     action: 'add' // 告訴 Servlet 這是添加操作
+//                 }), // 將實際的產品資訊發送給後端
+//                 dataType: 'json',
+//                 success: function(response) {
+//                     console.log(response); // 處理成功時的回調
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error(error); // 處理錯誤時的回調
+//                 }
+//             });
+//         });
+//
+//        // //增加右上角的購物車數字
+//        // addToCartButton.onclick = addToCart; // 綁定事件
+//        // // 更新 addToCartButton 的 onclick 設定
+//        // addToCartButton.onclick = function(event) {
+//        //     addToCart(event); // 這裡傳遞事件對象
+//        // };
 
         productDiv.appendChild(addToCartButton);
 
         productDiv.onclick = function() {
-            window.location.href = projectName + `product.html?productId=${product.productId}`;
+            window.location.href = projectName + `/product.html?productId=${product.productId}`;
         };
         productsArea.appendChild(productDiv);
     });
 }
+//==============================加入購物車============================//
+ const cart = {};
+        let cartItemCountElement; // 購物車內數量
+
+        function updateCartItemCount() {
+            let totalProductCount = 0;
+            for (const product in cart) {
+                totalProductCount += cart[product].quantity;
+            }
+            cartItemCountElement.textContent = totalProductCount;
+        }
+
+        function addToCart(productName, price,description) {
+            if (cart[productName]) {
+                cart[productName].quantity++;
+            } else {
+                cart[productName] = {
+                    price: price,
+                    description: description,
+                    quantity: 1
+                };
+            }
+            post();//錯的 會post總數量 好像沒錯 要試看看會員才知道????
+            updateCartItemCount();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            cartItemCountElement = document.getElementById('cartItemCount');
+            reload();
+            
+//            const cartButton = document.getElementById("shoppingCart");
+//            cartButton.addEventListener("click", function () {
+//                const cartPageURL = "cart.html";
+//                window.location.href = cartPageURL;
+//            });
+        });
+    
+//====================POST===========================================//
+
+        function post() {
+           
+            const cartJSON = JSON.stringify(cart);
+            console.log("傳送的數據:" + cartJSON);
+            const dataToSend = { action: 'checkout', cartData: cartJSON };
+
+            fetch('/Paradisiac/Cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(dataToSend)
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw  Error('沒有取得回應');
+                }
+            })
+                .then(data => {
+                    if (data.add) {
+                        alert(data.add);
+                    }
+                });
+        }
+//========================頁面加載時GET====================================//
+        function reload() {
+            fetch('/Paradisiac/Cart?action=loadCart', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                        console.log(response.json());
+                    } else {
+                        throw new Error('沒有取得回應');
+                    }
+                })
+                .then(data => {
+                	
+                    if (data.error) {
+                        console.log(data.error);
+                    } else {
+                        for (const productName in data) {
+                            cart[productName] = data[productName];
+                        }
+
+                        updateCartItemCount();
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 4. 商品搜尋功能
 function searchProducts() {

@@ -460,9 +460,9 @@ ul.navigation {
     var logoutLi= document.getElementById("logoutLi");
     document.getElementById("logoutLi").addEventListener("click", function(e) {
         e.preventDefault(); // 防止連結點選後的默認行為（即跳轉到 #home）
-
+		console.log(1);
         // 透過 JavaScript 重定向到 Servlet 並傳遞 action 參數
-        window.location.href = "login.do?action=stateLogout";
+        window.location.href ="login.do?action=stateLogout";
     });
     
     

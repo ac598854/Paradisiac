@@ -19,8 +19,7 @@ import com.paradisiac.csmessages.model.CsMessagesVO;
 import com.paradisiac.csmessages.service.CsMessagesService;
 import com.paradisiac.members.model.MembersVO;
 import com.paradisiac.members.service.MembersService;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+
 
 @MultipartConfig
 public class CsmessagesServlet<Session> extends HttpServlet {

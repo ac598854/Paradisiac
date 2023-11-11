@@ -12,6 +12,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "photo_album")
 //@NamedQuery(name = "getAllEmps", query = "from Emp where empno > :empno order by empno desc")
+@NamedQuery(name = "getAllPho", query = "from PhoWithAlbDTO where photoNo > :photoNo order by photoNo desc")
 public class PhotoAlbumVO implements java.io.Serializable{
 	@Id
 	@Column(name = "alb_no")
