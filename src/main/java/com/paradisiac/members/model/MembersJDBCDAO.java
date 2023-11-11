@@ -18,8 +18,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	private static final String UPDATE_FRONT = "UPDATE members SET mem_name = ?, mem_mail = ?, mem_pass = ?,mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 	private static final String UPDATE_PASS = "UPDATE members SET mem_pass = ? WHERE mem_no = ?";
 //	private static final String UPDATE_MEMCAPTCHA = "UPDATE members SET mem_captcha = ? WHERE mem_no = ?";
-	private static final String GET_ALL = "SELECT * FROM members ORDER BY mem_no";
-	private static final String GET_ALL_BYSTATUS = "SELECT * FROM members WHERE mem_status = ? ORDER BY mem_no";
+	private static final String GET_ALL = "SELECT * FROM members ORDER BY mem_no DESC";
+	private static final String GET_ALL_BYSTATUS = "SELECT * FROM members WHERE mem_status = ? ORDER BY mem_no DESC";
 	private static final String GET_ONE_BYMEMNO = "SELECT * FROM members WHERE mem_no = ?";
 	private static final String GET_ONE_BYMEMACCOUNT = "SELECT * FROM members WHERE mem_account = ?";
 	private static final String DELETE = "DELETE FROM members WHERE mem_no = ?"; // 之後刪掉(沒有此功能)
@@ -32,7 +32,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(INSERT);//下面set順序要跟sql問號一致
+			pstmt = con.prepareStatement(INSERT);//下面set順序跟sql問號一致
 	
 			pstmt.setString(1, mVO.getMemname());
 			pstmt.setString(2, mVO.getMemmail());
@@ -44,7 +44,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			pstmt.setString(8, mVO.getMemphone());
 			pstmt.setString(9, mVO.getMemaddress());
 			pstmt.setString(10, mVO.getMemcaptcha());
-			pstmt.setBytes(11, mVO.getMempicture());// 預刪功能
+			pstmt.setBytes(11, mVO.getMempicture());
 
 			pstmt.executeUpdate();
 			// Handle any driver errors
@@ -75,8 +75,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 
 	@Override
 	public void updateAll(MembersVO mVO) {
-		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
-		PreparedStatement pstmt = null;// 一個使用者一個連線
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
 		try {
 			Class.forName(driver);
@@ -126,8 +126,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 
 	@Override
 	public void updateBackStatus(MembersVO mVO) {
-		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
-		PreparedStatement pstmt = null;// 一個使用者一個連線
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
 		try {
 			Class.forName(driver);
@@ -166,8 +166,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 
 	@Override
 	public void updateFront(MembersVO mVO) {
-		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
-		PreparedStatement pstmt = null;// 一個使用者一個連線
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
 		try {
 			Class.forName(driver);
@@ -216,8 +216,8 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 
 	@Override
 	public void updatePass(MembersVO mVO) {
-		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
-		PreparedStatement pstmt = null;// 一個使用者一個連線
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
 		try {
 			Class.forName(driver);

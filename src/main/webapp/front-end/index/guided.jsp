@@ -44,10 +44,16 @@
                         <a class="nav-link" href="#">最新活動</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">註冊會員</a>
+                        <a class="nav-link" href='<%=request.getContextPath()%>/front-end/cart/ProductTest.html'>購物商城</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">登入會員</a>
+                        <a class="nav-link" href='<%=request.getContextPath()%>/front-end/members/Signin.jsp'>註冊會員</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='<%=request.getContextPath()%>/front-end/members/Login.jsp'>登入會員</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href='<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp'>(暫)會員專區</a>
                     </li>
                     
 

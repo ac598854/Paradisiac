@@ -110,23 +110,23 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
     <script>
-        window.onload = function() {
-            // 獲取 input 元素
-            var productJsonInput = document.getElementById("productJson");
+//         window.onload = function() {
+//             // 獲取 input 元素
+//             var productJsonInput = document.getElementById("productJson");
 
-            // 檢查是否找到 input 元素
-            if (productJsonInput) {
-                // 獲取 JSON 字符串值
-                var productJsonString = productJsonInput.value;
+//             // 檢查是否找到 input 元素
+//             if (productJsonInput) {
+//                 // 獲取 JSON 字符串值
+//                 var productJsonString = productJsonInput.value;
 
-                // 解析 JSON 字符串為 JavaScript 對象
-                var productData = JSON.parse(productJsonString);
+//                 // 解析 JSON 字符串為 JavaScript 對象
+//                 var productData = JSON.parse(productJsonString);
 
-                // 現在您可以在這裡使用 productData 來處理商品數據
-                // 例如，顯示商品詳細信息或添加到購物車
+//                 // 現在您可以在這裡使用 productData 來處理商品數據
+//                 // 例如，顯示商品詳細信息或添加到購物車
 
-            }
-        };
+//             }
+//         };
         var products = [];
 
         //===============================頁面進入需要先載入的================================================//
@@ -196,7 +196,7 @@
                     option.textContent = j;
                     quantitySelect.appendChild(option);
                 }
-                quantitySelect.value = product.maxQuantity;
+                quantitySelect.value = product.quantity;
                 productTableBody.appendChild(row);
             }
         }
@@ -339,16 +339,17 @@
                         console.log(data.error);
                     } else {
                         products = [];
-                        for (const product in data.items) {
-                            const cartProduct = data.items[product];
+                        for (const productName in data) {
+                            const cartProduct = data[productName];
                             products.push({
-                                name: product,
+                                name: productName,
                                 price: cartProduct.price,
-                                description: cartProduct.description,
-                                maxQuantity: cartProduct.quantity  // 这里的 maxQuantity 可能需要调整
+                                quantity: cartProduct.quantity,
+                                // 如果您希望在表格中显示商品描述，您可以设置一个默认值，例如 "No description"
+                                description: cartProduct.description || "No description"
                             });
-
                         }
+
 
                         generateProductRows();
                     }

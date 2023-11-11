@@ -10,6 +10,7 @@ pageContext.setAttribute("membersVO", membersVO);
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>會員資料新增 - Signin.jsp</title>
 </head>
@@ -113,7 +114,7 @@ pageContext.setAttribute("membersVO", membersVO);
 	<script type="text/javascript">
         var p_file_el = document.getElementById("mempicture");
         var isGetAuthCodeButtonDisabled = false;
-        var countdown = 30; //倒數計時秒數
+        var countdown = 30; //倒數計時
     	var isMemaccountValid = false;//預設驗證帳號
 		var isMemcaptchaValid = false;//預設驗證驗證碼
 
@@ -160,9 +161,8 @@ pageContext.setAttribute("membersVO", membersVO);
          
         // 帳號重複檢查
         $("#memaccount").on('blur', function() {
-        	var memaccount = $("#memaccount").val().trim(); // 去除前後空白
+        	var memaccount = $("#memaccount").val().trim(); 
             if (memaccount === "") {
-                // 如果輸入為空或輸入空白則不做檢查
                 return;
             }
             $.ajax({
@@ -177,7 +177,6 @@ pageContext.setAttribute("membersVO", membersVO);
                         console.log(isMemaccountValid);
                     } else {
                         $('#accountError').text("帳號已存在，請重新輸入");
-//                         $('#memaccount').val('');
                     }
                 }
             		});
@@ -197,7 +196,7 @@ pageContext.setAttribute("membersVO", membersVO);
                     memmail: $("#email").val()
                 },
                 success: function(data) {
-                    // 直接检查整数值，无需解析JSON
+                    // 檢查
                     const responseMessage = parseInt(data);
                     console.log("後臺驗證號碼"+responseMessage);
                     if (responseMessage === 1) {
@@ -235,16 +234,15 @@ $('#submitButton').click(function() {
 	}
     var memname = $("#memname").val();
     var memcaptcha = $("#memcaptcha").val();
-    // 檢查狀態
+
     console.log("帳號驗證最終:"+isMemaccountValid);
     console.log("驗證碼驗證最終"+isMemcaptchaValid);
 
-    // 如果验证通过，将修改隐藏输入框的值
     if (isMemaccountValid &&isMemcaptchaValid) {
         console.log("11111");
-        // 验证通过
+        // 驗證通過
         $("#form1 input[name='action']").val("insert");
-        // 然后提交整个表单
+        //送出
         $("#form1").submit();
         alert("註冊成功");
     } else {
