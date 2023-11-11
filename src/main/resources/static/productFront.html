@@ -183,7 +183,7 @@
           <input type="text" placeholder="Search..." id="searchInput" onkeyup="handleEnter(event)">
           <button onclick="searchProducts()">搜尋</button>
           <li class="nav-item">
-            <a class="nav-link" href="/Paradisiac/cart/cart.html">
+            <a class="nav-link" href='#' id="cart">
               <i class="fas fa-shopping-cart"></i> <span id="cartItemCount">0</span>
             </a>
           </li>
@@ -262,7 +262,10 @@
     <div class="text-center py-3">© 2023 購物商城. All rights reserved.</div>
   </div>
 </footer>
-
 <script src="js/mainFront.js"></script>
+<script>
+	let shoppingMallLink = document.getElementById("cart");
+	shoppingMallLink.href = projectName + "/front-end/cart/cart.html";
+</script>
 </body>
 </html>
