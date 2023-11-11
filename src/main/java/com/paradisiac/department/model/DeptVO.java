@@ -20,7 +20,7 @@ public class DeptVO implements java.io.Serializable{
 	
 	@Expose
 	@Id
-	@Column(name = "dept_no" , updatable = false)
+	@Column(name = "dept_no" , updatable = false) //更新時這個屬性不需輸入
 	private Integer deptNo;
 	
 	@Expose
