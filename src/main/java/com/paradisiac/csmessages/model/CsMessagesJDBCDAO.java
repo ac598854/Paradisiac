@@ -15,7 +15,7 @@ public class CsMessagesJDBCDAO implements CsMessagesDAO_interface{
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "Cha103_11";
+	String passwd = "123456";
 	
 	private static final String INSERT_FRONT = "INSERT INTO cs_messages(mem_no,cs_content,cs_ask_date) VALUES ( ?, ?,NOW())";
 	private static final String GET_ONE_BYCSMSGNO = "SELECT * FROM cs_messages WHERE cs_msg_no = ?";

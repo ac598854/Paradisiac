@@ -244,7 +244,7 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a href="/Paradisiac/front-end/index/index2.jsp">前台首頁</a>
+          <a href="/Paradisiac/front-end/index/index2.jsp">P</a>
         </li>
 
         <li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
