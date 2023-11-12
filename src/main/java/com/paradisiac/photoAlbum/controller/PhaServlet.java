@@ -199,20 +199,5 @@ public class PhaServlet extends HttpServlet {
 	}
 
 		
-//		byte[] byteArray = null;
-//
-//		Part filePart = req.getPart("memImage");
-//		   if(filePart != null &&  filePart.getSize() > 0) {
-//		    InputStream inputStream = filePart.getInputStream();
-//		          ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-//		          int nRead;		          byte[] data = new byte[1024];
-//		          while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-//		              buffer.write(data, 0, nRead);
-//		          }
-//		          buffer.flush();
-//		          byteArray = buffer.toByteArray();
-//		          inputStream.close();
-//		          buffer.close();
-//	}
 
 }//class

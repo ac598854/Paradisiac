@@ -94,7 +94,7 @@
 		}	
 		%>
 		<td><%=empVO.getEmpno()%></td>
-		<td><%=empVO.getDept().getDeptNo()%></td>
+		<td><%=empVO.getDept().getDeptNo()%><%=empVO.getDept().getDeptName()%></td>
 		<td><%=st%></td>
 		<td><%=empVO.getEmpName()%></td>
 		<td><%=empVO.getEmpMail()%></td>

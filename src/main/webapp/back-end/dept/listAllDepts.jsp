@@ -47,12 +47,16 @@
 			<tr>
 				<th>部門編號</th>
 				<th>部門名稱</th>
+				<th>部門狀態</th>
+				<th>功能編號</th>
 			</tr>
 
 			<c:forEach var="dept" items="${deptList}">
 				<tr>
 					<td>${dept.deptNo}</td>
 					<td>${dept.deptName}</td>
+					<td>${dept.deptStatus? '正常' : '凍結'}</td>
+					<td>${dept.fucNo}-${dept.fucVO.fucName}</td> 
 					<td>
 						<FORM METHOD="post" ACTION="<%=request.getContextPath()%>/dept.do" style="margin-bottom: 0px;">			
 							<input type="hidden" name="action" value="getOne_For_Display">

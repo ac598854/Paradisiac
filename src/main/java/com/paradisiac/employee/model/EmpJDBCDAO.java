@@ -10,6 +10,7 @@ import java.util.*;
 import com.paradisiac.employee.model.EmpDAO_interface;
 import com.paradisiac.employee.model.EmpVO;
 import com.paradisiac.department.model.DeptVO;
+import com.paradisiac.department.service.*;
 
 
 public class EmpJDBCDAO implements EmpDAO_interface{
@@ -152,6 +153,7 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		DeptService deptSvc = new DeptServiceImpl();
 
 		try {
 			Class.forName(driver);
@@ -164,12 +166,10 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 
 			while (rs.next()) {
 				// empVo 也稱為 Domain objects, 拿"table欄位"的value
-				empVO = new EmpVO();
-				DeptVO deptVO = new DeptVO();
-				
+				empVO = new EmpVO();				
 				empVO.setEmpno(rs.getInt("emp_no"));
-				
-				deptVO.setDeptNo(rs.getInt("dept_no"));
+
+				DeptVO deptVO = deptSvc.getDeptByDeptno(rs.getInt("dept_no"));
 				empVO.setDeptVO(deptVO);
 
 				empVO.setEmpStatus(rs.getInt("emp_status"));
@@ -201,12 +201,13 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 	@Override
 	//將查詢所有員工視為與資料庫連線寫在dao中, 由addList.jsp建立的dao來取得
 	public List<EmpVO> getAll() {
-		List<EmpVO> list = new ArrayList<EmpVO>();
-		EmpVO empVO = null;
-
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		
+		List<EmpVO> list = new ArrayList<EmpVO>();
+		EmpVO empVO = null;
+		DeptService deptSvc = new DeptServiceImpl();
 		
 		try {
 
@@ -217,12 +218,11 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 
 			while (rs.next()) {
 				// empVO 也稱為 Domain objects
-				empVO = new EmpVO();
-				DeptVO deptVO = new DeptVO();
-				
+				empVO = new EmpVO();				
 				empVO.setEmpno(rs.getInt("emp_no"));
 				
-				deptVO.setDeptNo(rs.getInt("dept_no"));
+				DeptVO deptVO = deptSvc.getDeptByDeptno(rs.getInt("dept_no"));
+				//deptVO.setDeptNo(rs.getInt("dept_no"));
 				empVO.setDeptVO(deptVO);
 				
 				//empVO.setDeptno(rs.getInt("dept_no"));

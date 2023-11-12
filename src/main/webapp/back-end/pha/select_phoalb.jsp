@@ -18,7 +18,7 @@
 </head>
  
 <%@ include file="/back-end/index/back-left_planning.jsp" %>
-<%--<%@ include file='${pageContext.request.contextPath}/back-end/index/back-left_planning.jsp' %>--%>
+
 <body>
 
 	<div class="custom-container">

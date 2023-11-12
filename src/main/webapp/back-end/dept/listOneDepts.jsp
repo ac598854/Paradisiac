@@ -54,6 +54,10 @@
 		    <tr>
 		        <td><label for="deptNo">部門編號:${deptVO.deptNo}</label></td>
 		    </tr>
+		    <tr>
+		        <td><label for="deptNo">功能編號:${deptVO.fucVO.fucName}</label></td>
+		    </tr>
+
 		</table>
 		
 		    <!-- 員工資料 -->
@@ -76,8 +80,8 @@
 		</table>
 	</div>
 	
+<%--
 
-<%-- 
 	<c:if test="${currentPage > 1}">
 		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=1">至第一頁</a>&nbsp;
 	</c:if>
@@ -90,7 +94,7 @@
 	<c:if test="${currentPage != deptPageQty}">     
 		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${deptPageQty}">至最後一頁</a>&nbsp;
 	</c:if>
---%>                                         
+ --%>                                         
 	<br>
 
 	<br><br>

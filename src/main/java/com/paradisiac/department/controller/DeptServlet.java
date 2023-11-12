@@ -13,16 +13,19 @@ import com.paradisiac.department.model.DeptVO;
 import com.paradisiac.department.service.DeptService;
 import com.paradisiac.department.service.DeptServiceImpl;
 import com.paradisiac.employee.model.EmpVO;
+import com.paradisiac.employee.service.EmpService;
 
 @WebServlet("/dept.do")
 public class DeptServlet extends HttpServlet{
 	
 	// 一個 servlet 實體對應一個 service 實體
 	private DeptService deptSvc;
+	private EmpService empSvc;
 	
 	@Override
 	public void init() throws ServletException {
 		deptSvc = new DeptServiceImpl();
+		empSvc = new EmpService();
 	}
 	
 	//設定doGet = doPost
@@ -36,18 +39,18 @@ public class DeptServlet extends HttpServlet{
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		String forwardPath = "";
+		
 		//查單筆或複合查詢
 		switch (action) {
 			case "getAll":
 				forwardPath = getAllDepts(req, res);
 				break;
-////		case "compositeQuery":
-////				forwardPath = getCompositeEmpsQuery(req, res);
-////				break;
 			case "getOne_For_Display":
 				forwardPath = getOne_For_Display(req, res);
 				break;
-				
+			case "insert":
+				forwardPath = insert(req, res);
+				break;
 			default:
 				forwardPath = "/back-end/dept/listOneDept.jsp";
 		}	
@@ -88,6 +91,46 @@ public class DeptServlet extends HttpServlet{
 		req.setAttribute("deptEmpSet", deptEmpSet); //回傳set給JSP, JSP再逐一取出
 		return "/back-end/dept/listOneDepts.jsp";
 	}
+	
+	private String insert(HttpServletRequest req, HttpServletResponse res) {
+		Integer deptNo = Integer.valueOf(req.getParameter("deptNo"));	
+		String deptName = req.getParameter("deptName").trim();
+		Boolean deptStatus = Boolean.valueOf(req.getParameter("deptStatus"));
+		Integer funNo = Integer.valueOf(req.getParameter("fucNo"));	
+		String[] empList = req.getParameterValues("empNo");
+		List<String> errorMsgs = new LinkedList<String>();
+		
+		if(empList == null) {
+			errorMsgs.add("請至少選擇一名員工");
+		}
+		
+		req.setAttribute("errorMsgs", errorMsgs); 		
+		if (!errorMsgs.isEmpty()) {
+			return "/back-end/dept/select_dept_page.jsp";//程式中斷
+		}		
+		
+		//建立部門
+		DeptVO deptVO = new DeptVO();
+		deptVO.setDeptNo(deptNo);
+		deptVO.setDeptName(deptName);
+		deptVO.setDeptStatus(deptStatus);
+		deptVO.setFucNo(funNo);	
+		//加入從屬員工
+
+		Set<EmpVO> emps = new LinkedHashSet<>();
+		for(String empNO : empList) {
+			EmpVO emp = empSvc.getOneEmp(Integer.valueOf(empNO)); //回傳員工物件
+			emp.setDeptVO(deptVO);
+			emps.add(emp);
+		}
+		deptVO.setEmps(emps);
+		//打包完成送出
+		deptSvc.addDept(deptVO);//回傳主鍵PK
+		req.setAttribute("deptNO", deptNo);
+		return "/back-end/dept/select_dept_page.jsp";
+	}
+	
+	
 	
 
 	
