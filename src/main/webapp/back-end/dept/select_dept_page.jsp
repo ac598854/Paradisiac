@@ -43,14 +43,25 @@
 	
 	<form action="${pageContext.request.contextPath}/dept.do" method="post">
 		<table style="width:30%; text-align:center;">
+		<%-- 錯誤表列 --%>
+		<c:if test="${not empty errorMsgs}">
+			<font style="color:red">請修正以下錯誤:</font>
+			<ul>
+				<c:forEach var="message" items="${errorMsgs}">
+					<li style="color:red">${message}</li>
+				</c:forEach>
+			</ul>
+		</c:if>
 			<!-- 部門資料 -->
 			<tr>
+				<th>部門編號</th>
 				<th>部門名稱</th>
 				<th>部門狀態</th>
 				<th>功能設定</th>
 			</tr>
 			<jsp:useBean id="fucSvc" scope="page" class="com.paradisiac.fuc.service.Fuc_ServiceImpl" />
 			<tr>
+				<td><input type="text" name="deptNo"></td>
 				<td><input name="deptName" value="<%= (deptVO==null)? "" : deptVO.getDeptName()%>" ></td>
 				<td>
 					<input type="radio" name="deptStatus"  value="0" ${deptVO.getDeptStatus() == 0 ? 'checked' : ''} size="45"/>凍結
@@ -64,12 +75,116 @@
 			          	</c:forEach>
 					</select>
 				</td>--%>
-			</tr>
-
+			</tr>			
 		</table>
+		<!-- 員工資料 -->
+		<fieldset>
+		<jsp:useBean id="empSvc" scope="page" class="com.paradisiac.employee.service.EmpService" />		
+			<article class="task_container">
+		      <h2 class="title1">新增部門員工</h2>
+		
+		      <div class="task_add_block">
+		        <input type="text" class="task_name" placeholder="輸入員工編號…">
+		        <button type="button" class="task_add">新增</button>
+		      </div>
+		      <%-- 
+		      <div class="task_add_block">
+				選擇員工編號<select name="empNo" id="employeeSelect">
+					<c:forEach var="empVO" items="${empSvc.all}" > 
+			        <option value="${empVO.empno}">${empVO.empno}-${empVO.empName}
+			        </c:forEach>
+				</select>
+		        <button type="button" class="task_add2">新增</button>
+		      </div>--%>
+		
+		      <div class="task_list_parent">
+		        <ul class="task_list">
+		        </ul>
+		      </div>
+		    </article>
+	    </fieldset>
 		<input type="hidden" name="action" value="insert">
 		<input type="submit" value="送出新增">
 	</form>
+	
+	
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<scirpt>
+	===========================
+	<script>
+	$(function(){
+		  // ==== text 欄位新增待辦事項 ===== //
+		  $("input.task_name").on("keyup", function(e){
+		    //console.log(e.which);
+		    if(e.which == 13){ // 按下 Enter 鍵
+		      $("button.task_add").click();
+		    }
+		  });
+		  
+		  // 按下新增按鈕
+		  $("button.task_add").on("click", function(){
+			  let task_text = ($("input.task_name").val()).trim();
+			    if(task_text != ""){
+			    	let list_html = "";
+			    	
+			    	list_html += '<li>';
+			        list_html +=   '<div class="item_flex">';
+			        list_html +=     '<div class="middle_block">';
+			        list_html +=       '<p class="para">' + task_text + '</p>';
+			        list_html +=     '</div>';
+			        list_html +=     '<div class="right_block">';
+			        list_html +=         '<button type="button" class="btn_delete">移除</button>';
+			        list_html +=     '</div>';
+			        list_html +=   '</div>';
+			    	list_html += '</li>';
+			    	
+			        $("ul.task_list").prepend(list_html);
+			        $("input.task_name").val("");
+			    }			  
+		  });
+		  
+		  // 下拉選單
+			$("button.task_add2").on("click", function(){	    
+			    let selectedEmpNo = $("#employeeSelect").val();
+	
+			    let list_html = "";
+			    
+			    list_html += '<li>';
+			    list_html +=   '<div class="item_flex">';
+			    list_html +=     '<div class="middle_block">';
+			    list_html +=       '<p class="para">' + selectedEmpNo + '</p>';
+			    list_html +=       '<input type="hidden" name="empNo" value="' + selectedEmpNo + '">';
+			    list_html +=     '</div>';
+			    list_html +=     '<div class="right_block">';
+			    list_html +=         '<button type="button" class="btn_delete">移除</button>';
+			    list_html +=     '</div>';
+			    list_html +=   '</div>';
+			    list_html += '</li>';
+			    
+			    $("ul.task_list").prepend(list_html);
+			});
+		  
+		  
+	});
+	</script>
+	
+	<script>
+		// ==== 移除待辦事項 ===== /
+		$("ul.task_list").on("click", "button.btn_delete", function(){
+			  let r = confirm("確認移除？");
+			  if (r){
+			    $(this).closest("li").animate({
+			      "opacity": 0
+			    }, 1000, "swing", function(){
+			      $(this).remove();
+			    });
+			  }
+		});
+	</script>
+	===========================
+
+	</scirpt>
+	
 	
 	
 </body>
