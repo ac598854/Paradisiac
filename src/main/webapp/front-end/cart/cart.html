@@ -132,13 +132,9 @@ table {
                         </td>
 					<td class="checkoutButton selected">
 						<div id="productInfo">
-							<form id="cartForm" method="POST" action="/Cart">
-								<!-- 添加一個隱藏的 input 元素來接收商品 JSON 數據 -->
-								<input type="hidden" name="productJson" id="productJson">
-								<!-- 其他購物車內容，例如商品列表、總價格等 -->
-								<button class="btn btn-danger" type="submit">結帳</button>
-								<!-- 提交表單按鈕，當用戶結帳時使用 -->
-							</form>
+							<form id="cartForm">
+                                <input type="hidden" name="productJson" id="productJson">
+                                <button class="btn btn-danger" type="button" onclick="redirectToCheckout()">結帳</button>
 						</div></td>
 				</tr>
 			</tfoot>
@@ -448,6 +444,30 @@ table {
 	                }
 	            })
 		}
+ 
+ 
+		// ==========================處理結帳事件=============================================//
+        function handleCheckout(event) {
+           event.preventDefault(); // 阻止表單的默認提交行為
+
+
+           // 將購物車的商品資料存儲到 sessionStorage
+           sessionStorage.setItem('cartItems', JSON.stringify(products));
+            // 打印即將存儲的數據以供檢查
+           console.log("Storing cart items: ", products);
+
+           // 重定向到 memberCheck 頁面
+           window.location.href = projectName + '/memberCheck.html';
+       }
+
+
+        function redirectToCheckout() {
+           // 將購物車的商品資料存儲到 sessionStorage
+           sessionStorage.setItem('cartItems', JSON.stringify(products));
+
+           // 重定向到 memberCheck 頁面
+           window.location.href = projectName + '/memberCheck.html';
+       }
 
     </script>
 </body>
