@@ -54,18 +54,18 @@ function displayProducts(products) {
         var addToCartButton = document.createElement('button');
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
-		addToCartButton.addEventListener('click', function() {
-			addToCart(product.productName, product.price, product.productId);
-		});
+        addToCartButton.addEventListener('click', function() {
+            addToCart(product.productName, product.price, product.productId);
+        });
 //         addToCartButton.setAttribute('data-id', product.productId); // 設定產品編號
 //         addToCartButton.setAttribute('data-name', product.productName); // 設定產品名稱
 //         addToCartButton.setAttribute('data-price', product.price); // 設定產品價格
 
-         // 設置點擊事件，不再綁定原本的addToCart函數
-      		addToCartButton.addEventListener('click', function(event) {
-           event.stopPropagation(); 
-           })// 阻止事件冒泡到父元素
-        
+        // 設置點擊事件，不再綁定原本的addToCart函數
+        addToCartButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+        })// 阻止事件冒泡到父元素
+
 //             let prodNo = this.getAttribute('data-id');
 //             let prodName = this.getAttribute('data-name');
 //             let prodPrice = this.getAttribute('data-price');
@@ -106,101 +106,101 @@ function displayProducts(products) {
     });
 }
 //==============================加入購物車============================//
- const cart = {};
-        let cartItemCountElement; // 購物車內數量
+const cart = {};
+let cartItemCountElement; // 購物車內數量
 
-        function updateCartItemCount() {
-            let totalProductCount = 0;
-            for (const product in cart) {
-                totalProductCount += cart[product].quantity;
-            }
-            cartItemCountElement.textContent = totalProductCount;
-        }
+function updateCartItemCount() {
+    let totalProductCount = 0;
+    for (const product in cart) {
+        totalProductCount += cart[product].quantity;
+    }
+    cartItemCountElement.textContent = totalProductCount;
+}
 
-        function addToCart(productName, price,description) {
-            if (cart[productName]) {
-                cart[productName].quantity++;
-            } else {
-                cart[productName] = {
-                    price: price,
-                    description: description,
-                    quantity: 1
-                };
-            }
-            post();//錯的 會post總數量 好像沒錯 要試看看會員才知道????
-            updateCartItemCount();
-        }
+function addToCart(productName, price,description) {
+    if (cart[productName]) {
+        cart[productName].quantity++;
+    } else {
+        cart[productName] = {
+            price: price,
+            description: description,
+            quantity: 1
+        };
+    }
+    post();//錯的 會post總數量 好像沒錯 要試看看會員才知道????
+    updateCartItemCount();
+}
 
-        document.addEventListener("DOMContentLoaded", function () {
-            cartItemCountElement = document.getElementById('cartItemCount');
-            reload();
-            
+document.addEventListener("DOMContentLoaded", function () {
+    cartItemCountElement = document.getElementById('cartItemCount');
+    reload();
+
 //            const cartButton = document.getElementById("shoppingCart");
 //            cartButton.addEventListener("click", function () {
 //                const cartPageURL = "cart.html";
 //                window.location.href = cartPageURL;
 //            });
-        });
-    
+});
+
 //====================POST===========================================//
 
-        function post() {
-           
-            const cartJSON = JSON.stringify(cart);
-            console.log("傳送的數據:" + cartJSON);
-            const dataToSend = { action: 'checkout', cartData: cartJSON };
+function post() {
 
-            fetch(projectName + '/Cart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(dataToSend)
-            }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw  Error('沒有取得回應');
-                }
-            })
-                .then(data => {
-                    if (data.add) {
-                        alert(data.add);
-                    }
-                });
+    const cartJSON = JSON.stringify(cart);
+    console.log("傳送的數據:" + cartJSON);
+    const dataToSend = { action: 'checkout', cartData: cartJSON };
+
+    fetch(projectName + '/Cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(dataToSend)
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw  Error('沒有取得回應');
         }
+    })
+        .then(data => {
+            if (data.add) {
+                alert(data.add);
+            }
+        });
+}
 //========================頁面加載時GET====================================//
-        function reload() {
-            fetch(projectName + '/Cart?action=loadCart', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                        console.log(response.json());
-                    } else {
-                        throw new Error('沒有取得回應');
-                    }
-                })
-                .then(data => {
-                	
-                    if (data.error) {
-                        console.log(data.error);
-                    } else {
-                        for (const productName in data) {
-                            cart[productName] = data[productName];
-                        }
+function reload() {
+    fetch(projectName + '/Cart?action=loadCart', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+                console.log(response.json());
+            } else {
+                throw new Error('沒有取得回應');
+            }
+        })
+        .then(data => {
 
-                        updateCartItemCount();
-                    }
-                })
-                .catch(error => {
-                    console.log(error);
-                });
-        };
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                for (const productName in data) {
+                    cart[productName] = data[productName];
+                }
+
+                updateCartItemCount();
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 
 
 
