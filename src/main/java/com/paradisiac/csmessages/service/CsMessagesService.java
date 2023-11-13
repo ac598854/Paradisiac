@@ -1,12 +1,10 @@
 package com.paradisiac.csmessages.service;
 
-import java.sql.Timestamp;
-import java.util.List;
 
+import java.util.List;
 import com.paradisiac.csmessages.model.CsMessagesDAO_interface;
 import com.paradisiac.csmessages.model.CsMessagesJDBCDAO;
 import com.paradisiac.csmessages.model.CsMessagesVO;
-import com.paradisiac.members.model.MembersVO;
 
 public class CsMessagesService {
 	private CsMessagesDAO_interface dao;
