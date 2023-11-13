@@ -5,7 +5,7 @@ import java.util.*;
 
 public interface MembersDAO_interface {
 	
-	  public void insert(MembersVO mVO);
+	  	public void insert(MembersVO mVO);
 	    public void updateAll(MembersVO mVO);
 	    public void updateBackStatus(MembersVO mVO);
 	    public void updateFront(MembersVO mVO);

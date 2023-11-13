@@ -11,7 +11,7 @@
     List<EmpVO> list = empSvc.getAll();
     pageContext.setAttribute("list",list);
     
-    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
+    //EmpVO empVO = (EmpVO) request.getAttribute("empVO");
 
 
 %>
@@ -92,7 +92,8 @@
 
 		<tr>
 			<td>${empVO.empno}</td>
-			<td>${empVO.dept.deptNo}-</td> <%--[${empVO.deptVO.deptName}] --%>
+			<td>${empVO.dept.deptNo}-${empVO.dept.deptName}</td>
+			<%--<td>${empVO.dept.deptNo}-${empVO.dept.deptName}</td> <%--[${empVO.deptVO.deptName}] --%> 
 			<td>${empVO.empStatus== 0 ? '凍結' : (empVO.empStatus == 1 ? '未凍結' : '其他')}</td>
 			<td>${empVO.empName}</td>
 			<td>${empVO.empMail}</td>

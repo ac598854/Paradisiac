@@ -1,22 +1,12 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page import="java.util.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page import="com.paradisiac.csmessages.model.*"%>
-<%@ page import="com.paradisiac.csmessages.controller.*"%>
 <%@ page import="com.paradisiac.csmessages.service.*"%>
-<%
-request.setCharacterEncoding("utf-8");
-
-String keyword = request.getParameter("keyword") != null ? request.getParameter("keyword") : "";
-Integer whereMemno = (Integer) session.getAttribute("memno");
-CsMessagesService csMessagesService = new CsMessagesService();
-List<CsMessagesVO> list = csMessagesService.getAllBycscontent(keyword, whereMemno);
-pageContext.setAttribute("list", list);
-%>
+<%@ page import="com.paradisiac.csmessages.controller.*"%>
 <!DOCTYPE html>
-<html >
 
+<html>
 <head>
 
 <meta charset="UTF-8">
@@ -26,7 +16,7 @@ pageContext.setAttribute("list", list);
 <meta name="description" content="">
 <meta name="author" content="">
 
-<title>會員客服專區</title>
+<title>會員客服訊息</title>
 
 <!-- Bootstrap Core CSS -->
 <link
@@ -225,7 +215,7 @@ ul.navigation {
 	}
 }
 
-/*表格、查詢*/
+/* 表格、查詢部分 */
 .table {
 	width: 100%;
 }
@@ -233,11 +223,7 @@ ul.navigation {
 .container {
 	max-width: 100%;
 	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-.container-fluid {
+	padding-left: 15px;
 	overflow: visible;
 }
 
@@ -315,13 +301,34 @@ ul.navigation {
 .input-group {
 	width: 500px;
 }
+
+#resetButton {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+
+#cscontent, #csreply {
+	height: 300px;
+}
+
+#cscontentHead,#csreplyHead {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#csreply{
+border-radius: 10px;  
+    background-color: #c0c0c0; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    padding: 10px;  
+}
 </style>
 </head>
 
 <body>
 
 	<div id="wrapper" class="">
-
 		<!-- Sidebar -->
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
@@ -329,146 +336,85 @@ ul.navigation {
 				<li class="sidebar-title">會員專區</li>
 				<li><a
 					href="<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp">會員基本資料</a></li>
-				<li class="sidebar-title">訂單管理</li>
-				<li><a href="#">訂房訂單管理</a></li>
-				<li><a href="#">購物訂單管理</a></li>
-				<li><a href="#">活動訂單管理</a></li>
+				<li class="sidebar-title">訂單專區</li>
+				<li><a href="#">訂房訂單查詢</a></li>
+				<li><a href="#">購物訂單查詢</a></li>
+				<li><a href="#">活動訂單查詢</a></li>
 				<li class="sidebar-title">會員服務</li>
-				<li><a href="#">會員紀念相簿</a></li>
+				<li><a href="#">會員客服專區</a></li>
 				<li><a
 					href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp">會員客服專區</a></li>
+				<li><a href="#">會員紀念相簿</a></li>
 			</ul>
 		</div>
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Top Navigation -->
-
 		<ul class="navigation">
-			<li id="logoutLi"><a href="#home">登出</a></li>
+			<li><a href="#home">登出</a></li>
+
 		</ul>
 		<!-- Page Content -->
 		<div id="page-content-wrapper">
 			<a href="#menu-toggle" class="btn btn-success btn-sm"
 				id="menu-toggle">展開畫面</a>
 
-			<div class="container-fluid">
-				<form action="MessageLPF.jsp" method="get">
-					<div class="row">
-						<div class="col-lg-12">
-							<h1>會員客服專區</h1>
-							<div class="form-group2">
-								<label for="csMsgNo">問題關鍵字</label>
-								<div class="input-group">
-									<input type="text" class="form-control" name="keyword"
-										id="keyword" value="<%=keyword%>">
-									<div class="input-group-append"></div>
-								</div>
-							</div>
 
-							<button class="btn btn-primary" type="submit">送出</button>
-						</div>
+			<h1>請輸入您的問題</h1>
+			<div class="container"></div>
+			<div class="container mt-3">
+				<div class="row">
+					<div class="col-12 text-right">
+						<a
+							href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp"
+							class="btn btn-secondary">回上一頁</a>
 					</div>
-				</form>
-			</div>
+					<!-- 第一部分表單 -->
+					<form id="customerForm" method="post" accept-charset="UTF-8"
+						action="csmessages.do">
 
-			<br>
-			<!-- 表格部分 -->
+						<div class="form-group">
+							<label for="cscontent" id="cscontentHead">申訴問題</label>
+							<textarea class="form-control" name="cscontent" id="cscontent"
+								rows="3"><c:out value="${CsVO.cscontent}" /></textarea>
 
-			<div class="container">
-
-				<div class="row mb-4">
-					<div class="col-md-12">
-						<div class="table-responsive" id="table-responsive">
-							<!-- 新增按鈕開始 -->
-							<div class="text-right mb-2">
-								<button class="btn btn-success" id="addButton">新增</button>
-							</div>
-							<!-- 新增按鈕結束 -->
-							<table class="table">
-								<thead>
-									<tr>
-										<th>客服編號</th>
-										<th>申訴內容</th>
-										<th>申訴時間</th>
-										<th>客服狀態</th>
-										<th>動作</th>
-									</tr>
-								</thead>
-								<tbody>
-									<%@ include file="page1.file"%>
-									<c:forEach var="CsMessagesVO" items="${list}"
-										begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-										<tr>
-											<td>${CsMessagesVO.csmsgno}</td>
-											<td>${CsMessagesVO.cscontent}</td>
-											<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
-													pattern="yyyy-MM-dd HH:mm" /></td>
-											<td><c:choose>
-													<c:when test="${not empty CsMessagesVO.csredate}">
-            										已回覆
-        											</c:when>
-													<c:otherwise>
-														<span style="color: red;">未回覆</span>
-													</c:otherwise>
-												</c:choose></td>
-
-											<td><button class="btn btn-primary" id="reviewButton" data-msgno="${CsMessagesVO.csmsgno}">檢視</button></td>
-										</tr>
-									</c:forEach>
-								</tbody>
-							</table>
-							<%@ include file="page2.file"%>
 						</div>
-					</div>
 
+					</form>
+					<br>
+					<!-- 第二部分 -->
+					<form>
+						<div class="form-group">
+							<label for="csreply" id="csreplyHead">客服回覆</label>
+							<p id="csreply">${CsVO.csreply}</p>
+						</div>
+						<div class="form-group">
+							<label for="csredate">回覆時間</label> <input type="text"
+								class="form-control" id="csredate" value="${CsVO.csredate}"
+								readonly>
+						</div>
+					</form>
+					
 				</div>
+
 			</div>
 		</div>
 	</div>
-
+	<!-- Bootstrap JavaScript -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
 	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<!-- Menu Toggle Script -->
 	<script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-
-    // 新增
-    var addButton = document.getElementById("addButton");
-    addButton.addEventListener("click", function() {
-        window.location.href = "<%=request.getContextPath()%>/front-end/csmessages/MessageCPF.jsp";
-    });
-
-    // 檢視   
-	var reviewButtons = document.querySelectorAll("#reviewButton");
-	reviewButtons.forEach(function(button) {
-	button.addEventListener("click", function() {
-    var csmsgno = this.getAttribute("data-msgno");
-	console.log(csmsgno);
-    window.location.href = "csmessages.do?action=getOne_For_CsMsgno_Front&csmsgno=" + csmsgno;
-  });
-});
-
-
-  
-    // 登出
-    var logoutLi= document.getElementById("logoutLi");
-    document.getElementById("logoutLi").addEventListener("click", function(e) {
-        e.preventDefault(); // 防止連結點選後的默認行為（即跳轉到 #home）
-		console.log(1);
-        // 透過 JavaScript 重定向到 Servlet 並傳遞 action 參數
-        window.location.href ="login.do?action=stateLogout";
-    });
-    
-    
-    
-</script>
+				$("#menu-toggle").click(function(e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});
 	
+			</script>
 </body>
-
+<link rel="stylesheet" asset="eduser.css"
+	href="chrome-extension://mjdbhokoopacimoekfgkcoogikbfgngb/assets/eduser.css">
 </html>

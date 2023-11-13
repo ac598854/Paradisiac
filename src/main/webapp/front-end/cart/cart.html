@@ -2,125 +2,196 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>商品列表</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title >購物車</title>
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+	rel="stylesheet">
 
 
 
-    <style>
-        .delete-all-button {
+<style>
+body {
+	background-color: #fff5ee; /* 這裡的#808080代表灰色，你可以根據需要更改顏色 */
+	margin: 0; /* 可以清除body的預設margin，使背景色填滿整個頁面 */
+}
+/* 为包含"删除全部"按钮的<div>元素添加样式 */
+.delete-all-button {
+	position: absolute;
+	top: 30px;
+	right: 75px;
+	padding: 10px;
+}
+
+table {
+	background-color: #ffffff;
+	margin-top: 100px;
+}
+/* 为表格的列添加样式以确保按钮不会遮挡内容 */
+.table th, .table td {
+	position: relative;
+}
+
+/* 样式用于购物车为空消息 */
+#emptyCartMessage {
+	display: none;
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+/* 使用伪元素添加空购物车图标 */
+#emptyCartMessage::before {
+	content: "\1F6D2";
+	/* Unicode字符编码，这里使用购物车图标 */
+	font-size: 100px;
+	display: block;
+}
+#backtoshop {
             position: absolute;
-            top: 30px;
-            right: 75px;
+            top: 10px; /* 調整 top 的值使按鈕出現在表格的上方 */
+            left: 10px; /* 調整 left 的值使按鈕出現在表格的左邊 */
+            right: 10px;
             padding: 10px;
+            font-size: 2em; /* 調整字體大小為 2em 或其他你希望的大小 */
+            background-color: #00ffff;
+            color: #ff0000
         }
 
-        .table th,
-        .table td {
-            position: relative;
-        }
+.payInfoBox {
+    display: flex;
+    flex-direction: row; /* 將元素排列成水平方向 */
+    align-items: center;
+}
 
-        #emptyCartMessage {
-            display: none;
-            text-align: center;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
+.totalPrice {
+    font-size: 1.5em; /* 修改字體大小為 1.5em 或其他你希望的大小 */
+}
 
-        #emptyCartMessage::before {
-            content: "\1F6D2";
-            font-size: 100px;
-            display: block;
-        }
+.totalPrice span {
+    font-weight: bold;
+}
 
-        #backtoshop {
-            position: absolute;
-            top: 30px;
-            right: 180px;
-            padding: 10px;
-        }
-    </style>
+.payInfoBox p {
+    margin: 5px 10px; /* 調整左右邊距，使元素之間有一些間距 */
+    white-space: nowrap;
+    display:inline-block;
+}
+
+</style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>商品列表</h1>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="selectAll" checked> <label class="form-check-label"
-                for="selectAll">全選</label>
-        </div>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>商品名稱</th>
-                    <th>價格</th>
-                    <th>描述</th>
-                    <th>數量</th>
-                </tr>
-            </thead>
-            <tbody id="productTableBody">
-            </tbody>
-        </table>
-        <div class="totalPrice">
-            <strong>總價格: $<span id="totalAmount">0</span></strong>
-        </div>
-    </div>
+	
+	<div class="container">
+		<div>
+			<div>
+				<button  id="backtoshop">
+					<a href="#" id="shoppingMallLink">購物商城</a>
+				</button>
+			</div>
+		</div>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<th></th>
+					<th>商品名稱</th>
+					<th>價格</th>
+					<th>描述</th>
+					<th>數量</th>
+                    <th>
+                        <button class="btn btn-danger" onclick="removeAllProducts()"id="deleteAll">删除全部</button>
+                    </th>
+				</tr>
+			</thead>
+			<tbody id="productTableBody">
+			</tbody>
+		</table>
+		<table class="checkoutBox" id="checkoutBar">
+			<tbody>
+				<tr>
+					<td class="carttitleBox">
+<!-- 						<p class="shopcartInner_title">全選</p> -->
+						<div class="form-check">
+							<input type="checkbox" class="form-check-input" id="selectAll"> 
+							<label class="form-check-label" for="selectAll">全選</label>
+						</div>
+					</td>
+                        <td class="payInfoBox">
+                            <p>總價格: $<span id="totalAmount">0</span></p>
+                            <p>活動共折抵：<span><i>$</i>25,106</span></p>
+                            <p>結帳總金額：<span><i class="totalPriceMoney">$</i><i class="totalPrice">35,766<i></i></i></span></p>
+                        </td>
+					<td class="checkoutButton selected">
+						<div id="productInfo">
+							<form id="cartForm" method="POST" action="/Cart">
+								<!-- 添加一個隱藏的 input 元素來接收商品 JSON 數據 -->
+								<input type="hidden" name="productJson" id="productJson">
+								<!-- 其他購物車內容，例如商品列表、總價格等 -->
+								<button class="btn btn-danger" type="submit">結帳</button>
+								<!-- 提交表單按鈕，當用戶結帳時使用 -->
+							</form>
+						</div></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 
-    <div class="delete-all-button">
-        <button class="btn btn-danger" onclick="removeAllProducts()" id="deleteAll">删除全部</button>
-    </div>
+	
 
-    <div id="emptyCartMessage" style="display: none;">
-        <p>購物車為空</p>
-    </div>
+	<div id="emptyCartMessage" style="display: none;">
+		<p>購物車為空</p>
+	</div>
 
-    <div>
-        <div>
-            <button class="btn btn-danger" id="backtoshop">
-                <a href="/ProductTest.html">回購物商城</a>
-            </button>
-        </div>
-    </div>
+	
 
 
 
 
 
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
-    <script>
-        var products = [];
+	<script>
+//================================動態URL=======================================================//
+		let pathName = window.document.location.pathname;
+		let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+		
+		let shoppingMallLink = document.getElementById("shoppingMallLink");
+		shoppingMallLink.href = projectName + "/productFront.html";
 
-        //===============================頁面進入需要先載入的================================================//
+		
+
+//===============================頁面進入需要先載入的================================================//
         document.addEventListener("DOMContentLoaded", function () {
-        	// 跳轉馬上取得session內的購物車資料(+redis內的)
+        	var products = [];
+            // 跳转马上获取session内的购物车数据(+redis内的)
             getSessionCart().then(function () {
-            	// 從 cart 物件建立新的 products 數組
-                // 初始化總價格
+                // 从 cart 对象中构建新的 products 数组
+                // 初始化总价格
                 var totalAmountElement = document.getElementById("totalAmount");
                 totalAmountElement.textContent = "0";
-                //==========================勾選框相關==================================
-                const selectAllCheckbox = document.getElementById("selectAll");
-                const productCheckboxes = document.querySelectorAll(".productCheckbox");
+//===============================勾選框相關================================================//
+              const selectAllCheckbox = document.getElementById("selectAll");
+              const productCheckboxes = document.querySelectorAll(".productCheckbox");
 
-                selectAllCheckbox.addEventListener("change", function () {
-                    const isChecked = this.checked;
-                    productCheckboxes.forEach(function (checkbox) {
-                        checkbox.checked = isChecked;
-                    });
+              selectAllCheckbox.addEventListener("change", function () {
+                  const isChecked = this.checked;
+                  productCheckboxes.forEach(function (checkbox) {
+                      checkbox.checked = isChecked;
+                  });
 
-                    updateTotalPrice();
-                });
+                  updateTotalPrice();
+              });
 
-                // ====================檢查商品是否為空==========================================
+// ============================檢查商品是否為空=============================================//
                 var productRows = document.querySelectorAll("tbody tr");
                 var emptyCartMessage = document.getElementById("emptyCartMessage");
                 var otherElements = document.querySelectorAll(".container > *");
@@ -133,17 +204,15 @@
                     });
                 }
             });
+
         });
-        // ==========================動態生成表格=============================================//
+// ==========================動態生成表格=============================================//
         function generateProductRows() {
-        	
+
             var productTableBody = document.getElementById("productTableBody");
             for (var i = 0; i < products.length; i++) {
                 console.log(i)
                 var product = products[i];
-//                 var jsonString = product.description;
-//                 var jsonData = JSON.parse(jsonString);
-//                 var description = jsonData.description;
                 var row = document.createElement("tr");
                 row.innerHTML = `
             <td><input type="checkbox" class="productCheckbox"></td>
@@ -165,12 +234,12 @@
                     option.textContent = j;
                     quantitySelect.appendChild(option);
                 }
-                quantitySelect.value = product.maxQuantity;
+                quantitySelect.value = product.quantity;
                 productTableBody.appendChild(row);
             }
         }
 
-
+//================================勾選框相關================================//
         //全選被勾選時改變勾選框
         function updateSelectAll() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
@@ -202,8 +271,6 @@
                 updateSelectAllOnProductChange();
             }
         });
-
-        // 全部被勾選全選框也被選取
         function updateSelectAllOnProductChange() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
             var selectAllCheckbox = document.getElementById("selectAll");
@@ -212,20 +279,19 @@
             });
             selectAllCheckbox.checked = allProductsSelected;
         }
-
-
-     // 刪除單一商品
+//================================刪除單一商品================================//
         function removeProduct(button) {
-            var row = button.parentElement.parentElement; 
-            row.remove();
+            var row = button.parentElement.parentElement; // 取得商品所在的行
+            row.remove(); 
             updateTotalPrice(); 
-            updateSelectAll();
+            updateSelectAll(); // 更新全選複選框
             var productRows = document.querySelectorAll("tbody tr");
             var emptyCartMessage = document.getElementById("emptyCartMessage");
             var deleteAllElement = document.getElementById("deleteAll");
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
+            	// 商品為空，顯示空購物車訊息並隱藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -233,15 +299,14 @@
                 });
             }
         }
-
-        // 删除全部商品
+ //======================================= 删除全部商品================================//
         function removeAllProducts() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
             productCheckboxes.forEach(function (checkbox) {
-                checkbox.checked = false;
+                checkbox.checked = false; // 取消選取所有商品的複選框
             });
 
-            var productRows = document.querySelectorAll("tbody tr"); 
+            var productRows = document.querySelectorAll("tbody tr"); // 取得所有商品行
             productRows.forEach(function (row) {
                 row.remove(); // 删除所有商品行
             });
@@ -255,6 +320,7 @@
             var otherElements = document.querySelectorAll(".container > *");
 
             if (productRows.length === 0) {
+            	// 商品為空，顯示空購物車訊息並隱藏其他元素
                 emptyCartMessage.style.display = "block";
                 otherElements.forEach(function (element) {
                     element.style.display = "none";
@@ -262,8 +328,7 @@
                 });
             }
         }
-
-        //更新總價格
+//=======================================更新總價格================================//
         function updateTotalPrice() {
             var productPrices = document.querySelectorAll(".productPrice");
             var quantities = document.querySelectorAll(".quantity-select");
@@ -284,9 +349,10 @@
 
             totalAmountElement.textContent = totalAmount;
         }
-        //=======================get取得session內資訊================================//
+
+//=======================================get取得session內資訊================================//
         function getSessionCart() {
-            return fetch('/Paradisiac/Cart?action=shoppingCart', {
+            return fetch(projectName + '/Cart?action=shoppingCart', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -304,20 +370,19 @@
                         console.log(data.error);
                     } else {
                         products = [];
-                        for (const product in data.items) {
-                            const cartProduct = data.items[product];
+                        for (const productName in data) {
+                            const cartProduct = data[productName];
                             products.push({
-                                name: product,
+                                name: productName,
                                 price: cartProduct.price,
-                                description: cartProduct.description,
-                                maxQuantity: cartProduct.quantity 
+                                quantity: cartProduct.quantity,
+                                description: cartProduct.description || "No description"
                             });
-                            
                         }
-                        
                         generateProductRows();
                     }
                 });
+
         }
 
 
