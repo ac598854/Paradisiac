@@ -78,6 +78,13 @@ public class DeptVO implements java.io.Serializable{
 		this.deptName = deptName;
 	}
 	
+	public DeptVO(Integer deptNo, String deptName,  Integer fucNo, boolean deptStatus) {
+		this.deptNo = deptNo;
+		this.deptName = deptName;
+		this.fucNo = fucNo;
+		this.deptStatus = deptStatus;
+	}
+	
 	public Integer getDeptNo() {
 		return deptNo;
 	}

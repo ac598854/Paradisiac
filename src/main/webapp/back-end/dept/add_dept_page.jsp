@@ -8,45 +8,99 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>部門系統首頁</title>
-</head>
-<style>
-	table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
-	margin-bottom: 10px;
-    border: 3px ridge Gray;
-    height: 80px;
-    text-align: center;
-  	}
-</style>
 
+<title>Hibernate Demo</title>
+</head>
 <body>
-<table id="table-1">
-   <tr><td><h3>部門系統首頁 Dept: Home</h3><h4></h4></td></tr>	
-</table>
-<ul>
-	<h3>資料查詢：</h3>
-	<li><a href="${pageContext.request.contextPath}/dept.do?action=getAll">List</a> all Depts.  <br><br></li>
+	<h1>新建部門</h1>
+	<a href="${pageContext.request.contextPath}/dept.do?action=getAll">查詢所有部門</a>
+	<br><br>
+	
 	<jsp:useBean id="deptSvc" scope="page" class="com.paradisiac.department.service.DeptServiceImpl" />
-	<li>
 	<form action="${pageContext.request.contextPath}/dept.do" method="post">
-		<b>選擇部門：</b>		
-		<select name="deptNo">
+		<input type="text" name="ename"><br>--%>
+		<p><label>查詢單一部門：</label></p>
+		
+		<select name="deptname">
 		  <c:forEach var="deptVO" items="${deptSvc.all}" > 
           	<option value="${deptVO.deptNo}">${deptVO.deptName}
           </c:forEach>
 		</select>
 		<input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="送出">       
+        <input type="button" value="送出">       
 	</form>
-	</li>
-</ul>	
+	
+	<form id="dept_emp_form" action="${pageContext.request.contextPath}/dept.do" method="post">
+		<table style="width:30%; text-align:center;">
+		<%-- 錯誤表列 --%>
+		<c:if test="${not empty errorMsgs}">
+			<font style="color:red">請修正以下錯誤:</font>
+			<ul>
+				<c:forEach var="message" items="${errorMsgs}">
+					<li style="color:red">${message}</li>
+				</c:forEach>
+			</ul>
+		</c:if>
+			<!-- 部門資料 -->
+			<tr>
+				<th>部門編號</th>
+				<th>部門名稱</th>
+				<th>部門狀態</th>
+				<th>功能設定</th>
+			</tr>
+			<jsp:useBean id="fucSvc" scope="page" class="com.paradisiac.fuc.service.Fuc_ServiceImpl" />
+			<tr>
+				<td><input type="text" name="deptNo"></td>
+				<td><input name="deptName" value="<%= (deptVO==null)? "" : deptVO.getDeptName()%>" ></td>
+				<td>
+					<input type="radio" name="deptStatus"  value="0" ${deptVO.isDeptStatus? 'checked' : ''} size="45"/>凍結
+					<input type="radio" name="deptStatus"  value="1" checked="checked" size="45"/>未凍結 <%--預設未凍結 --%>
+				</td>
+				<td><input name="fucNo" value="<%= (deptVO==null)? "" : deptVO.getFucNo()%>" ></td>
+
+				<%--<td><select name="fucNo">
+					  	<c:forEach var="fucVO" items="${fucSvc.all}" > 
+			          	<option value="${fucVO.fucNo}">${fucVO.fucName}
+			          	</c:forEach>
+					</select>
+				</td>--%>
+			</tr>			
+		</table>
+		<!-- 員工資料 -->
+		<fieldset>
+		<jsp:useBean id="empSvc" scope="page" class="com.paradisiac.employee.service.EmpService" />		
+			<article class="task_container">
+		      <h2 class="title1">新增部門員工</h2>
+		
+		      <%-- <div class="task_add_block">
+		        <input type="text" class="task_name" placeholder="輸入員工編號…">
+		        <button type="button" class="task_add">新增</button>
+		      </div>--%>
+		      
+		      <div class="task_add_block">
+				選擇員工編號<select name="empNo2" id="employeeSelect">
+					<option value="none">請選擇員工編號
+					<c:forEach var="empVO" items="${empSvc.all}" > 
+			        <option value="${empVO.empno}">${empVO.empno}-${empVO.empName}
+			        </c:forEach>
+				</select>
+		        <button type="button" class="task_add2">新增</button>
+		      </div>
+		
+		      <div class="task_list_parent">
+		        <ul class="task_list">
+		        </ul>
+		      </div>
+		    </article>
+	    </fieldset>
+		<input type="hidden" name="action" value="insert">
+		<input type="submit" value="送出新增" onclick="disableSelect()">
+	</form>
 	
 	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
+	<scirpt>
+	===========================
 	<script>
 	$(function(){
 		  // ==== text 欄位新增待辦事項 ===== //

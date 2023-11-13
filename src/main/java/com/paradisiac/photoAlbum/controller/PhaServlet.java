@@ -52,13 +52,8 @@ public class PhaServlet extends HttpServlet {
 			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);
 		}
-		if("compositeQuery".equals(action)) {
-//			forwardPath = getPhaByCompositeQuery(req, res);
-//			res.setContentType("text/html; charset=UTF-8");
-//			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
-//			dispatcher.forward(req, res);
-		}
-		//新增相簿=======================================================
+
+		//新增相簿
 		if("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			// Store this set in the request scope, in case we need to
@@ -83,8 +78,7 @@ public class PhaServlet extends HttpServlet {
 			if(albName == null || albName.trim().length() == 0) {
 				errorMsgs.add("相簿名稱請勿空白");
 			}
-		
-			
+
 			java.sql.Date albDate = null;
 			try {
 				albDate = java.sql.Date.valueOf(req.getParameter("albDate").trim());
@@ -124,11 +118,9 @@ public class PhaServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
 			successView.forward(req, res);
 		}
-		//新增相片(先找相本PK再forward(req, res)出去================================================
+		//新增相片(先找相本PK再forward(req, res)出去
 		if("insertPhoto".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			/***************************1.接收請求參數****************************************/
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
@@ -140,7 +132,7 @@ public class PhaServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
 			successView.forward(req, res);
 		}
-		//刪除==========================================================
+		//刪除相片
 		if("delete".equals(action)) {
 			/***************************1.接收請求參數****************************************/
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
@@ -148,17 +140,32 @@ public class PhaServlet extends HttpServlet {
 			/***************************2.開始查詢資料****************************************/
 			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
 		}
-		//查單筆相簿(含所有照片)=====================================================
-		if("getOne_For_Display".equals(action)) {
-			
+		//查單筆相簿(含所有照片)
+		if("getOne_For_Display".equals(action)) {			
 			forwardPath = getAllPho(req, res);
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);
 
 		}
+		//修改相簿(找PK)
+		if("getOne_For_Update".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			/***************************1.接收請求參數****************************************/
+			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+			/***************************2.開始查詢資料****************************************/
+			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
+			/***************************3.查詢完成,準備轉交(Send the Success view)************/
+			req.setAttribute("phaVO", phaVO);
+			forwardPath = "/back-end/pha/updateOnePha.jsp";//updateOnePha.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
+			successView.forward(req, res);
+		}
+		
 		
 	}//doPost
+	
 	//查全部可瀏覽的頁數===========================================================
 	private String getAllPha(HttpServletRequest req, HttpServletResponse res) { //從ListAll請求
 		String page = req.getParameter("page"); //網址列會有page=空(第一頁) or 第幾頁
@@ -175,7 +182,6 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("currentPage", currentPage);
 
 		return "/back-end/pha/listAllPha.jsp";
-
 	}
 	//查相簿的所有照片=============================================================
 	private String getAllPho(HttpServletRequest req, HttpServletResponse res) {
@@ -194,8 +200,6 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("currentPage", currentPage);
 
 		return "/back-end/pha/listOnePha.jsp";
-
-
 	}
 
 		

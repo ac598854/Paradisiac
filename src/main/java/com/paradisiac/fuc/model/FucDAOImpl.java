@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import com.paradisiac.department.model.DeptVO;
+
 public class FucDAOImpl implements FucDAO_Interface{
 	
 	private SessionFactory factory;
@@ -21,6 +23,13 @@ public class FucDAOImpl implements FucDAO_Interface{
 	public FucVO findByPrimaryKey(Integer fucNo) {
 		return getSession().get(FucVO.class, fucNo);
 	}
+	
+	@Override//下拉選單
+	public List<FucVO> getAll() {
+		List fucList = getSession().createQuery("from FucVO", FucVO.class).list();
+		return fucList;
+	}
+	
 	
 	
 	
@@ -44,11 +53,6 @@ public class FucDAOImpl implements FucDAO_Interface{
 	}
 
 
-	@Override
-	public List<FucVO> getAll() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
+
 
 }

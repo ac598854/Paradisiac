@@ -31,35 +31,27 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-	<h2>相簿查詢</h2>
-	
-	<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do">
-		<b>輸入相簿編號</b> <input type="text" name="albNo">
-		<!-- 所有請求名稱用hidden送出 -->
-		<input type="hidden" name="action" value="getOne_For_Display">
-		<input type="submit" value="送出">
-	</FORM>
-	</div>
+
 	<div class="custom-container">
-	<h2>新增相簿</h2>
+	<h2>修改相簿</h2>
         <form action="${pageContext.request.contextPath}/pha.do" method="post" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="albumNumber">相簿編號</label>
-                        <input type="text" class="form-control" id="albNo" name="albNo" >
+                        <input type="text" class="form-control" id="albNo" name="albNo" value="${phaVO.albNo}" readonly>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="memberNumber">會員編號</label>
-                        <input type="text" class="form-control" id="memNo" name="memNo">
+                        <input type="text" class="form-control" id="memNo" name="memNo" value="${phaVO.memNo}" readonly>
                     </div>
                 </div>
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="albumName">相簿名稱</label>
-                        <input type="text" class="form-control" id="albName" name="albName">
+                        <input type="text" class="form-control" id="albName" name="albName" value="${phaVO.albName}">
                     </div>
                 </div>
             </div>
@@ -67,13 +59,14 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="albumCover" id = "albumCover">相簿封面</label>
+                        <img id="albPhoto" src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo}" alt="相簿封面" class="img-fluid">
                         <input type="file" class="form-control-file" id="albPhoto" name="albPhoto" accept="image/*">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="createTime">相簿建立時間</label>
-                        <input type="date" class="form-control" id="albDate" name="albDate" required>
+                        <input type="date" class="form-control" id="albDate" name="albDate" value="${phaVO.albDate}" required>
                     </div>
                 </div>
             </div>

@@ -36,13 +36,10 @@ public class DeptDAOImpl implements DeptDAO_interface{
 	}
 
 	@Override
-	public Integer update(DeptVO deptVO) {
-		try {
-			getSession().update(deptVO);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}		
+	public DeptVO update(DeptVO deptVO) {
+		getSession().update(deptVO);
+		return deptVO;
+	
 	}
 
 	@Override
