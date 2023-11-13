@@ -106,131 +106,137 @@
 <script>
     let pathName = window.document.location.pathname;
     let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+
     document.addEventListener('DOMContentLoaded', function() {
+        // 获取购物车项目
         const cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
-        if (cartItems) {
+        if (cartItems && cartItems.length > 0) {
             displayCartItems(cartItems);
         } else {
-            // 處理沒有購物車數據的情況，比如顯示錯誤消息或重定向
-            return "購物車是空的";
+            // 如果购物车为空
+            alert("購物車是空的");
+            // 可以考虑重定向到其他页面
         }
+
         // 设置取消按钮的超链接
         let cancelLink = document.getElementById('cancel-button').parentNode;
         cancelLink.href = projectName + '/productFront.html';
 
-        //顯示購物車內的商品
-        function fetchCartItems() {
-            fetch(projectName + '/Cart?action=shoppingCart', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Failed to fetch cart items');
-                    }
-                })
-                .then(cartItems => {
-                    displayCartItems(cartItems);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        }
-
-        function displayCartItems(cartItems) {
-            const tableBody = document.getElementById('cart-items-table').querySelector('tbody');
-            tableBody.innerHTML = ''; // 清空現有內容
-
-            cartItems.forEach(item => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-	            <td>${item.name}</td>
-	            <td>$${item.price}</td>
-	            <td>${item.quantity}</td>
-	            <td>$${item.price * item.quantity}</td>
-	        `;
-                tableBody.appendChild(row);
-            });
-        }
-
-
-        //表單信用卡轉帳選擇
-        document.getElementById('payment-method').addEventListener('change', function() {
-            var paymentMethod = this.value;
-            var creditCardInfo = document.getElementById('credit-card-info');
-            var transferInfo = document.getElementById('transfer-info');
-
-            // Hide both additional fields initially
-            creditCardInfo.style.display = 'none';
-            transferInfo.style.display = 'none';
-
-            if (paymentMethod === 'credit-card') {
-                creditCardInfo.style.display = 'block';
-            } else if (paymentMethod === 'transfer') {
-                transferInfo.style.display = 'block';
-            }
-        });
-
-        document.getElementById('shipping-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // 阻止表單的默認提交行為
-
-            // 獲取 memNo（這裡需要根據您的實際情況進行修改）
-            const memNo = sessionStorage.getItem('memno'); // 假設 memNo 存儲在 sessionStorage
-            if (!memNo) {
-                alert("請先登入.");
-                return; // 或者重定向到登入頁面
-            }
-
-            const recipientName = document.getElementById('recipient-name').value;
-            const recipientAddress = document.getElementById('recipient-address').value;
-            const paymentMethod = document.getElementById('payment-method').value;
-
-            const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-            const buyItemList = cartItems.map(item => ({
-                productId: item.id,
-                quantity: item.quantity
-            }));
-
-            const orderData = {
-                orderName: recipientName,
-                orderPhone: '0912345678', // 可添加用戶輸入選項
-                address: recipientAddress,
-                status: 1, // 根據業務邏輯設置
-                totalAmount: calculateTotalAmount(cartItems),
-                buyItemList: buyItemList
-            };
-
-            fetch(`/members/orders`, { // 使用模板字符串插入 memNo
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(orderData),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('訂單創建失敗: ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('訂單創建成功:', data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-
-        function calculateTotalAmount(cartItems) {
-            return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-        }
-
+        // 给表单添加提交事件处理器
+        document.getElementById('shipping-form').addEventListener('submit', handleFormSubmit);
     });
 
-</script> <!-- 指向您的JavaScript文件 -->
+    // 显示购物车内的商品
+    function displayCartItems(cartItems) {
+        const tableBody = document.getElementById('cart-items-table').querySelector('tbody');
+        tableBody.innerHTML = ''; // 清空现有内容
+
+        cartItems.forEach(item => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+            <td>${item.name}</td>
+            <td>$${item.price}</td>
+            <td>${item.quantity}</td>
+            <td>$${item.price * item.quantity}</td>
+        `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // 表单提交处理器
+    function handleFormSubmit(event) {
+        event.preventDefault(); // 阻止表单的默认提交行为
+
+        // 从 sessionInfo API 获取 memno
+        fetch(`/Paradisiac/members/sessionInfo`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('无法验证用户登录: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data && data.memno) {
+                    submitOrder(data.memno); // 使用 memno 提交订单
+                } else {
+                    alert("請先登入。");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // 提交订单
+    function submitOrder(memNo) {
+        const recipientName = document.getElementById('recipient-name').value;
+        const recipientAddress = document.getElementById('recipient-address').value;
+        const paymentMethod = document.getElementById('payment-method').value;
+
+        const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+        if (cartItems.length === 0) {
+            alert("購物車是空的。");
+            return;
+        }
+
+        const buyItemList = cartItems.map(item => {
+            if (!item.id) {
+                console.error('Missing productId for item:', item);
+                return null; // 或处理错误的逻辑
+            }
+            return {
+                productId: item.id,
+                quantity: item.quantity
+            };
+        }).filter(item => item != null); // 移除任何无效的项
+
+        if (buyItemList.length === 0) {
+            alert("订单中没有有效的商品。");
+            return;
+        }
+
+        const orderData = {
+            orderName: recipientName,
+            orderPhone: '0912345678', // 可以添加用户输入选项
+            address: recipientAddress,
+            status: 1, // 根据业务逻辑设置
+            totalAmount: calculateTotalAmount(cartItems),
+            buyItemList: buyItemList
+        };
+
+        fetch(`/Paradisiac/members/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('订单创建失败: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('订单创建成功:', data);
+                alert('订单创建成功');
+                // 这里可以添加订单创建成功后的处理逻辑，比如重定向到订单页面
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    // 计算购物车总金额
+    function calculateTotalAmount(cartItems) {
+        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    }
+</script>
+
 </body>
 </html>

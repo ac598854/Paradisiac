@@ -5,6 +5,7 @@ import com.paradisiac.product.dto.OrderQueryParams;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.service.OrderService;
 import com.paradisiac.product.util.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Collections;
 
 @Valid
 @RestController
@@ -73,5 +75,14 @@ public class OderController {
         Order order = orderService.getOrderById(orderId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
+    @GetMapping("/members/sessionInfo")
+    public ResponseEntity<?> getSessionInfo(HttpSession session) {
+        Integer memno = (Integer) session.getAttribute("memno");
+        if (memno == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("用戶未登入");
+        }
+        return ResponseEntity.ok(Collections.singletonMap("memno", memno));
     }
 }

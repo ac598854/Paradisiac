@@ -106,7 +106,7 @@ public class OrderDaoImpl implements OrderDao {
     public Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest) {
         String sql = "INSERT INTO psorder(mem_no, total_amount, order_name, order_phone, " +
                 "address, status, created_date, last_modified_date) " +
-                "VALUES(:memNo, :totalAmount, :orderName, :orderPhone, " +
+                "VALUES(:memno, :totalAmount, :orderName, :orderPhone, " +
                 ":address, :status, :createdDate, :lastModifiedDate)";
 
         Map<String, Object> map = new HashMap<>();
