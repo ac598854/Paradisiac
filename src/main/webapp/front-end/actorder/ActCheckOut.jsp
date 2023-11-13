@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -428,21 +427,26 @@ input[type="text"] {
 }
 
 .btn_update, .btn_delete {
-	background-color: #00b0b3;
-    text-align: center;
-    border: none;
-    width: 50px;
-    height: 30px;
-    font-size: 16px;
-    vertical-align: middle;
-    line-height: 30px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-top: 15px;
+	text-align: center;
+	border-radius: 5px; width : 50px;
+	height: 30px;
+	font-size: 16px;
+	vertical-align: middle;
+	line-height: 30px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-top: 15px;
+	margin-right: 20px;
+	color: #0a0a0a;
+	background: #f6fcf7;
+	border-color: #7dc855;
+	width: 50px;
 }
 
-h5 {
-	display: none;
+#row1 {
+	flex-wrap: wrap;
+	margin-right: -15px;
+	margin-left: -15px;
 }
 </style>
 
@@ -564,7 +568,7 @@ h5 {
 							<br>
 						</div>
 						<br>
-						<div class="row" id="participantList"></div>
+						<div class="row1" id="participantList"></div>
 						<hr class="mb-4">
 						<h4 class="mb-3">付款方式</h4>
 						<div class="payment btn-group btn-group-toggle"
@@ -608,7 +612,7 @@ h5 {
 
 					<br>
 					<div class="pay-container" id="pay-container_ATM">
-						<h5>訂單有效時間為24小時，請於24小內轉帳成功後，訂單即成立。</h5>
+						<p style="color: red; font-weight: bold;">訂單有效時間為24小時，請於24小時內轉帳成功後，訂單即成立。</p>
 					</div>
 
 					<br>
@@ -670,8 +674,8 @@ h5 {
 
 							var newRow = document.createElement('div');
 							newRow.className = 'row';
-
-							newRow.innerHTML = '<div><br></diV>'
+							newRow.id = 'addContent';
+							newRow.innerHTML = '<div><br></div>'
 									+ '<div class="col-md-12 mb-6">'
 									+ '<label for="firstName">參加人姓名</label> <input type="text" class="form-control" value="' + participantName + '" disabled>'
 									+ '</div>'
@@ -680,7 +684,6 @@ h5 {
 									+ '</div>'
 									+ '<div class="col-md-12 mb-6">'
 									+ '<label for="firstName">參加人電話</label> <input type="text" class="form-control" value="' + participantTel + '" disabled>'
-									+ '<button type="button" class="btn_update">更新</button><br>'
 									+ '<button type="button" class="btn_delete">移除</button>'
 									+ '</div>' + '<hr class="mb-4">';
 
@@ -693,6 +696,20 @@ h5 {
 							document.getElementById('atn_id_number').value = '';
 							document.getElementById('atn_tel').value = '';
 						});
+
+		//移除參加人
+		$("div.row").on("click", "button.btn_delete", function() {
+			console.log(1);
+			let r = confirm("確認移除？");
+			if (r) {
+				console.log(this);
+				$(this).closest("div.row").animate({
+					"opacity" : 0
+				}, 100, "swing", function() {
+					$(this).remove();
+				});
+			}
+		});
 	</script>
 
 </body>

@@ -17,7 +17,7 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "Cha103_11";
+	String passwd = "123456";
 
 	private static final String INSERT = "INSERT INTO act_attendees(atn_no,act_order_no,atn_name,atn_id_number,atn_tel) VALUES(?,?,?,?,?,?)";
 	private static final String UPDATE = "UPDATE act_attendees SET atn_no=?,act_order_no=?,atn_name=?,atn_id_number=?,atn_tel=? ";
