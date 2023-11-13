@@ -68,36 +68,22 @@
     <div class="address-container">
         <h3>Shipping address</h3>
         <form id="shipping-form">
-            <label for="recipient-name">收件人姓名:</label>
+            <label for="recipient-name">Recipient Name:</label>
             <input type="text" id="recipient-name" name="recipient-name" required>
-            <span class="error-message" style="color: red; display: none;">請輸入收件人姓名！</span>
 
-            <label for="recipient-phone">收件人電話:</label>
-            <input type="tel" id="recipient-phone" name="recipient-phone" pattern="[0-9]{10}" required>
-            <span class="error-message" style="color: red; display: none;">請輸入收件人電話！</span>
-
-            <label for="recipient-address">收件人地址:</label>
+            <label for="recipient-address">Recipient Address:</label>
             <input type="text" id="recipient-address" name="recipient-address" required>
-            <span class="error-message" style="color: red; display: none;">請輸入收件人地址！</span>
 
-            <!-- 支付方式的下拉選單 -->
-            <select id="payment-method" name="payment-method" required onchange="updateStatus(this.value)">
-                <option value="">選擇支付方式</option>
-                <option value="1">信用卡</option>
-                <option value="0">轉帳</option>
+            <label for="payment-method">Payment Method:</label>
+            <select id="payment-method" name="payment-method" required>
+                <option value="">Select a payment method</option>
+                <option value="credit-card">Credit Card</option>
+                <option value="transfer">Transfer</option>
             </select>
-            <!-- 信用卡資訊的文本框 -->
-            <div id="credit-card-info" style="display:none;">
-                <label for="card-number">信用卡號碼:</label>
-                <input type="text" id="card-number" name="card-number" pattern="[0-9]{16}">
-                <span class="error-message" style="color: red; display: none;">請輸入有效卡號</span>
-            </div>
 
-            <!-- 轉帳資訊的文本框 -->
-            <div id="transfer-info" style="display:none;">
-                <label for="account-number">轉帳帳號:</label>
-                <input type="text" id="account-number" name="account-number">
-                <span class="error-message" style="color: red; display: none;">請輸入有效帳戶</span>
+            <div id="credit-card-info" style="display:none;">
+                <label for="card-number">Card Number:</label>
+                <input type="text" id="card-number" name="card-number">
             </div>
 
             <button type="submit">結帳</button>
@@ -107,107 +93,72 @@
         </form>
     </div>
 </div>
+<!-- Existing order summary here, if needed -->
 
 <footer>
     <!-- 頁腳資訊 -->
 </footer>
 
 <script>
-    //==================================獲取當前頁面的路徑名稱==============================================
     let pathName = window.document.location.pathname;
-    //==================================從路徑名稱中提取出項目名稱==============================================
     let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-    //==================================預設狀態為true（信用卡）==============================================
-    let orderStatus = true;
 
-    //==================================當文檔加載完成後，執行以下函數==============================================
     document.addEventListener('DOMContentLoaded', function() {
-        // 從sessionStorage中獲取購物車項目，若無則設為空數組
-        const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-        // 如果購物車不為空，則顯示購物車項目，否則彈出提示
-        if (cartItems.length > 0) {
+        // 获取购物车项目
+        const cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
+        if (cartItems && cartItems.length > 0) {
             displayCartItems(cartItems);
         } else {
-            alert("購物車是空的。");
+            // 如果购物车为空
+            alert("購物車是空的");
+            // 可以考虑重定向到其他页面
         }
 
-        // 獲取取消按鈕的父節點，設定其超連結為項目首頁
+        // 设置取消按钮的超链接
         let cancelLink = document.getElementById('cancel-button').parentNode;
         cancelLink.href = projectName + '/productFront.html';
 
-        // 绑定表单提交事件处理器
-        document.getElementById('shipping-form').addEventListener('submit', function(event) {
-            var isValid = true;
-            var inputs = this.querySelectorAll('input[required]');
-
-            // 前端验证逻辑
-            inputs.forEach(function(input) {
-                var errorSpan = input.nextElementSibling;
-                if (!input.validity.valid) {
-                    errorSpan.style.display = 'inline';
-                    isValid = false;
-                } else {
-                    errorSpan.style.display = 'none';
-                }
-            });
-
-            // 检查支付方式相关的输入
-            var paymentMethod = document.getElementById('payment-method').value;
-            if (paymentMethod === "1" && !document.getElementById('card-number').validity.valid) {
-                document.getElementById('card-number').nextElementSibling.style.display = 'inline';
-                isValid = false;
-            } else if (paymentMethod === "0" && !document.getElementById('account-number').validity.valid) {
-                document.getElementById('account-number').nextElementSibling.style.display = 'inline';
-                isValid = false;
-            }
-
-            // 如果验证通过，调用 handleFormSubmit 处理后续逻辑
-            if (isValid) {
-                handleFormSubmit(event);
-            } else {
-                // 如果验证未通过，阻止表单默认提交行为
-                event.preventDefault();
-            }
-        });
+        // 给表单添加提交事件处理器
+        document.getElementById('shipping-form').addEventListener('submit', handleFormSubmit);
     });
 
-    //==================================顯示購物車項目==============================================
+    // 显示购物车内的商品
     function displayCartItems(cartItems) {
-        // 獲取購物車項目表格的tbody元素
         const tableBody = document.getElementById('cart-items-table').querySelector('tbody');
-        // 清空tbody的內容
-        tableBody.innerHTML = '';
+        tableBody.innerHTML = ''; // 清空现有内容
 
-        // 遍歷購物車項目，為每個項目創建一個表格行
         cartItems.forEach(item => {
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td>${item.name}</td>
-                <td>$${item.price}</td>
-                <td>${item.quantity}</td>
-                <td>$${item.price * item.quantity}</td>
-            `;
+            <td>${item.name}</td>
+            <td>$${item.price}</td>
+            <td>${item.quantity}</td>
+            <td>$${item.price * item.quantity}</td>
+        `;
             tableBody.appendChild(row);
         });
     }
 
-    //==================================處理表單提交==============================================
+    // 表单提交处理器
     function handleFormSubmit(event) {
-        // 防止表單的默認提交行為
-        event.preventDefault();
+        event.preventDefault(); // 阻止表单的默认提交行为
 
-        // 向伺服器發送GET請求，獲取用戶會員編號
+        // 从 sessionInfo API 获取 memno
         fetch(`/Paradisiac/members/sessionInfo`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             }
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('无法验证用户登录: ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
-                // 如果獲取到會員編號，則提交訂單，否則提示用戶登入
                 if (data && data.memno) {
-                    submitOrder(data.memno);
+                    submitOrder(data.memno); // 使用 memno 提交订单
                 } else {
                     alert("請先登入。");
                 }
@@ -217,42 +168,43 @@
             });
     }
 
-    //==================================更新訂單狀態=============================================
-    function updateStatus(value) {
-        // 如果選擇的是信用卡，設置status為true，否則為false
-        orderStatus = value === "1";
-
-        // 根據選擇的支付方式顯示相應的文本框
-        document.getElementById("credit-card-info").style.display = value === "1" ? "block" : "none";
-        document.getElementById("transfer-info").style.display = value === "0" ? "block" : "none";
-    }
-
-    //==================================提交訂單=============================================
+    // 提交订单
     function submitOrder(memNo) {
-        // 獲取收件人名稱和地址
         const recipientName = document.getElementById('recipient-name').value;
-        const recipientPhone = document.getElementById('recipient-phone').value;
         const recipientAddress = document.getElementById('recipient-address').value;
+        const paymentMethod = document.getElementById('payment-method').value;
 
-        // 從sessionStorage中獲取購物車項目
         const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-        // 將購物車項目轉換為訂單項目列表
-        const buyItemList = cartItems.map(item => ({
-            productId: item.productId,  // 確保這裡使用正確的屬性名
-            quantity: item.quantity
-        }));
+        if (cartItems.length === 0) {
+            alert("購物車是空的。");
+            return;
+        }
 
-        // 構建訂單數據
+        const buyItemList = cartItems.map(item => {
+            if (!item.id) {
+                console.error('Missing productId for item:', item);
+                return null; // 或处理错误的逻辑
+            }
+            return {
+                productId: item.id,
+                quantity: item.quantity
+            };
+        }).filter(item => item != null); // 移除任何无效的项
+
+        if (buyItemList.length === 0) {
+            alert("订单中没有有效的商品。");
+            return;
+        }
+
         const orderData = {
             orderName: recipientName,
-            orderPhone: recipientPhone,
+            orderPhone: '0912345678', // 可以添加用户输入选项
             address: recipientAddress,
-            status: orderStatus,
+            status: 1, // 根据业务逻辑设置
             totalAmount: calculateTotalAmount(cartItems),
             buyItemList: buyItemList
         };
 
-        // 向伺服器發送POST請求，提交訂單數據
         fetch(`/Paradisiac/members/orders`, {
             method: 'POST',
             headers: {
@@ -260,24 +212,27 @@
             },
             body: JSON.stringify(orderData),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('订单创建失败: ' + response.statusText);
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('訂單創建成功:', data);
-                alert('訂單創建成功');
-                // 訂單創建成功後，重定向到memberOrders頁面
-                window.location.href = projectName + '/memberOrders.html';
+                console.log('订单创建成功:', data);
+                alert('订单创建成功');
+                // 这里可以添加订单创建成功后的处理逻辑，比如重定向到订单页面
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     }
 
-    //==================================計算購物車總金額=============================================
+    // 计算购物车总金额
     function calculateTotalAmount(cartItems) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     }
 </script>
-
 
 </body>
 </html>

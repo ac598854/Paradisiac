@@ -1,33 +1,13 @@
-//==================================獲取當前頁面的路徑名稱==============================================
 let pathName = window.document.location.pathname;
-//==================================從路徑名稱中提取出項目名稱==============================================
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-//==================================當文檔加載完成後，執行以下函數==============================================
 document.addEventListener('DOMContentLoaded', function() {
-    fetchMemberInfo()
-        .then(memno => fetchOrders(memno))
-        .catch(error => console.error('Error fetching member info:', error));
+    // 這裡 'userId' 應從用戶的登入狀態獲取，這裡僅為示例
+    const userId = 1; // 使用實際從登入狀態或會話獲取的用戶ID
+    fetchOrders(userId);
 });
 
-//==================================獲取會員信息==============================================
-function fetchMemberInfo() {
-    return fetch(projectName + `/members/sessionInfo`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (!data || !data.memno) {
-                throw new Error('Member number not found in session');
-            }
-            return data.memno;
-        });
-}
-//==================================獲取訂單資訊==============================================
-function fetchOrders(memno) {
-    fetch(projectName + `/members/orders`)
+function fetchOrders(userId) {
+    fetch(projectName + `/users/${userId}/orders`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -46,9 +26,7 @@ function fetchOrders(memno) {
         });
 }
 
-//==================================用來追蹤當前展開的訂單ID==============================================
-let currentOpenOrderId = null;
-//==================================建訂單表格==============================================
+let currentOpenOrderId = null; // 用来追踪当前展开的订单ID
 function createOrdersTable(orders) {
     const ordersTableContainer = document.getElementById('ordersTableContainer');
     if (!ordersTableContainer) {
@@ -62,7 +40,7 @@ function createOrdersTable(orders) {
     const thead = document.createElement('thead');
     const headerRow = thead.insertRow();
 
-    ['訂單編號', '訂單日期', '總金額'].forEach(text => {
+    ['Order ID', 'Created Date', 'Total Amount'].forEach(text => {
         const headerCell = document.createElement('th');
         headerCell.textContent = text;
         headerRow.appendChild(headerCell);
@@ -74,8 +52,8 @@ function createOrdersTable(orders) {
     orders.forEach(order => {
         const row = tbody.insertRow();
         row.innerHTML = `<td>${order.orderId}</td>
-	                         <td>${order.createdDate}</td>
-	                         <td>${order.totalAmount}</td>`;
+                         <td>${order.createdDate}</td>
+                         <td>${order.totalAmount}</td>`;
         const detailsRow = tbody.insertRow();
         detailsRow.id = `details-${order.orderId}`;
         detailsRow.style.display = 'none';
@@ -87,7 +65,6 @@ function createOrdersTable(orders) {
     ordersTableContainer.appendChild(table);
 }
 
-//==================================切換訂單詳情的顯示==============================================
 function toggleOrderDetails(order, detailsRow) {
     // 如果點擊的是當前已展開的訂單，則隱藏它
     if (currentOpenOrderId === order.orderId) {
@@ -109,7 +86,7 @@ function toggleOrderDetails(order, detailsRow) {
     detailsRow.style.display = '';
     currentOpenOrderId = order.orderId;
 }
-//==================================創建訂單詳情表格==============================================
+
 function createOrderDetailsTable(orderItems) {
     let table = '<table class="small-table" style="width: 100%">';
     table += '<tr><th>商品名稱</th><th>數量</th><th>金額</th></tr>';

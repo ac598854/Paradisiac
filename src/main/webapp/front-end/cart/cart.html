@@ -91,7 +91,7 @@ table {
 </head>
 
 <body>
-
+	
 	<div class="container" id="shopUrl">
 		<div>
 			<div>
@@ -121,7 +121,7 @@ table {
 				<tr>
 					<td class="carttitleBox">
 						<div class="form-check">
-							<input type="checkbox" class="form-check-input" id="selectAll">
+							<input type="checkbox" class="form-check-input" id="selectAll"> 
 							<label class="form-check-label" for="selectAll">全選</label>
 						</div>
 					</td>
@@ -133,25 +133,24 @@ table {
 					<td class="checkoutButton selected">
 						<div id="productInfo">
 							<form id="cartForm">
-								<input type="hidden" name="productJson" id="productJson">
-								<button class="btn btn-danger" type="button" onclick="redirectToCheckout()">結帳</button>
-							</form>
+                                <input type="hidden" name="productJson" id="productJson">
+                                <button class="btn btn-danger" type="button" onclick="redirectToCheckout()">結帳</button>
 						</div></td>
 				</tr>
 			</tfoot>
 		</table>
 	</div>
-
+	
 	<button id='back'>
 		<a href="#" id="shoppingMallLink2">購物商城</a>
 	</button>
-
+	
 
 	<div id="emptyCartMessage" style="display: none;">
 		<p>購物車為空</p>
 	</div>
 
-
+	
 
 
 
@@ -166,13 +165,13 @@ table {
 //================================動態URL=======================================================//
 		let pathName = window.document.location.pathname;
 		let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-
+		
 		let shoppingMallLink = document.getElementById("shoppingMallLink");
 		let shoppingMallLink2 = document.getElementById("shoppingMallLink2");
 		shoppingMallLink2.href = projectName + "/productFront.html";
 		shoppingMallLink.href = projectName + "/productFront.html";
 
-
+		
 
 //===============================頁面進入需要先載入的================================================//
         document.addEventListener("DOMContentLoaded", function () {
@@ -192,7 +191,7 @@ table {
                   });
 
                   updateTotalPrice();
-
+                  
               });
               cartEmpty();
             });
@@ -205,7 +204,7 @@ table {
                 var emptyCartMessage = document.getElementById("emptyCartMessage");
                 var otherElements = document.querySelectorAll(".container > *");
                 var shoppingMallLink = document.getElementById("back");
-
+                
                 if (products.length === 0 || productRows.length === 0) {
                 	// 商品為空，顯示空購物車訊息並隱藏其他元素
                     emptyCartMessage.style.display = "block";
@@ -215,32 +214,10 @@ table {
                     });
                 }
 		}
-// ==========================處理結帳事件=============================================//
-function handleCheckout(event) {
-	event.preventDefault(); // 阻止表單的默認提交行為
-
-
-	// 將購物車的商品資料存儲到 sessionStorage
-	sessionStorage.setItem('cartItems', JSON.stringify(products));
-	// 打印即將存儲的數據以供檢查
-	console.log("Storing cart items: ", products);
-
-	// 重定向到 memberCheck 頁面
-	window.location.href = projectName + '/memberCheck.html';
-}
-
-
-function redirectToCheckout() {
-	// 將購物車的商品資料存儲到 sessionStorage
-	sessionStorage.setItem('cartItems', JSON.stringify(products));
-
-	// 重定向到 memberCheck 頁面
-	window.location.href = projectName + '/memberCheck.html';
-}
 // ==========================動態生成表格=============================================//
         function generateProductRows() {
             var productTableBody = document.getElementById("productTableBody");
-
+            
             for (var i = 0; i < products.length; i++) {
                 var product = products[i];
                 var row = document.createElement("tr");
@@ -316,12 +293,12 @@ function redirectToCheckout() {
         }
         function removeProduct(button) {
             var row = button.parentElement.parentElement; // 取得商品所在的行
-            row.remove();
-            updateTotalPrice();
+            row.remove(); 
+            updateTotalPrice(); 
             updateSelectAll(); // 更新全選複選框
             cartEmpty();
         }
-
+        
  //======================================= 删除全部商品================================//
         function removeAllProducts() {
             var productCheckboxes = document.querySelectorAll(".productCheckbox");
@@ -334,8 +311,8 @@ function redirectToCheckout() {
                 row.remove(); // 删除所有商品行
             });
             deleteAll();
-            updateTotalPrice();
-            updateSelectAll();
+            updateTotalPrice(); 
+            updateSelectAll(); 
             cartEmpty();
         }
 //=======================================更新總價格================================//
@@ -406,7 +383,7 @@ function redirectToCheckout() {
                 }
                 });
         }
-//=============================刪除一個=====================================================//
+//=============================刪除一個=====================================================//		
         function deleteOne(productName) {
         	const productNameJSON = JSON.stringify({ productName: productName });
             const dataToSend = { action: 'delete', cartData: productNameJSON};
@@ -429,8 +406,8 @@ function redirectToCheckout() {
                         alert(data.delete);
                     }
                 });
-        }
-//=============================刪除全部=====================================================//
+        } 
+//=============================刪除全部=====================================================//	        
         function deleteAll() {
         	const productJSON = JSON.stringify({ });
 			console.log("刪除全部")
@@ -448,7 +425,7 @@ function redirectToCheckout() {
                     throw new Error('沒有取得回應');
                 }
             })
-        }
+        }            
  //=============================變更數量=====================================================//
 		function changeQuantity(productName,quantity) {
 			const productJSON = JSON.stringify({productName: productName , quantity: quantity})
@@ -467,7 +444,30 @@ function redirectToCheckout() {
 	                }
 	            })
 		}
+ 
+ 
+		// ==========================處理結帳事件=============================================//
+        function handleCheckout(event) {
+           event.preventDefault(); // 阻止表單的默認提交行為
 
+
+           // 將購物車的商品資料存儲到 sessionStorage
+           sessionStorage.setItem('cartItems', JSON.stringify(products));
+            // 打印即將存儲的數據以供檢查
+           console.log("Storing cart items: ", products);
+
+           // 重定向到 memberCheck 頁面
+           window.location.href = projectName + '/memberCheck.html';
+       }
+
+
+        function redirectToCheckout() {
+           // 將購物車的商品資料存儲到 sessionStorage
+           sessionStorage.setItem('cartItems', JSON.stringify(products));
+
+           // 重定向到 memberCheck 頁面
+           window.location.href = projectName + '/memberCheck.html';
+       }
 
     </script>
 </body>
