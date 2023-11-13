@@ -1,37 +1,28 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script
-    src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script
-    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<style>
-.container-custom {
-	max-width: 960px;
-	margin: 0 auto;
-	padding: 20px;
-	border: 1px solid #ddd;
-	border-radius: 5px;
-	background-color: #f9f9f9;
-	margin-top: 50px;
-}
 
-.form-group {
-	margin-bottom: 20px;
-}
-</style>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>後端管理頁面</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet"> 
 </head>
-<body>
 
-    <div class="container-custom">
+<body>
+	<%@ include file="back-left.jsp" %>
+			<!-- Page Content -->
+			<div>
+			  <div class="container-custom">
         <h2>CheckIn資料查詢</h2>
-        
         <form method="post" action="${pageContext.request.contextPath}/order.do" class="form-horizontal">
             <div class="form-group">
                 <label class="control-label col-sm-2" for="memName">會員姓名:</label>
@@ -65,6 +56,8 @@
             <input type="hidden" name="action" value="checkInData">
         </form>
     </div>
-
+			</div>
+		<!-- Page Content -->
 </body>
+
 </html>

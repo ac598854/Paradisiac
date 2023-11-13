@@ -88,6 +88,12 @@ public class RoomTypeServiceImpl implements RoomTypeService{
 		return dao.getByCompositeQuery(query);
 	}
 
+	@Override
+	public Integer getTotal(int roomTypeNo) {
+		
+		return dao.getTotal(roomTypeNo);
+	}
+
 	
 
 	

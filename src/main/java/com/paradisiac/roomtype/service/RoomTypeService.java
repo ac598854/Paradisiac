@@ -20,5 +20,8 @@ public interface RoomTypeService {
 	int getPageTotal();
 	
 	List<RoomTypeVO> getRoomTypeVOsByCompositeQuery(Map<String, String[]> map);
-		
+	
+	//取得房型的roomTotal(房間總數)
+	Integer getTotal(int roomTypeNo);
+	
 }

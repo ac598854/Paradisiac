@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import com.paradisiac.roomorder.model.RoomOrderVO;
 
@@ -25,6 +26,11 @@ import com.paradisiac.roomorder.model.RoomOrderVO;
 
 public class RoomOrderDAOImpl implements RoomOrderDAO {
 	private SessionFactory factory;
+	
+	public RoomOrderDAOImpl() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	
 	public RoomOrderDAOImpl(SessionFactory factory) {
 		this.factory = factory;
@@ -49,7 +55,19 @@ public class RoomOrderDAOImpl implements RoomOrderDAO {
 			return -1;
 		}
 	}
-
+	@Override
+	public int updateOrderStatus(Integer roomOrderNo, byte orderStatus) {
+		try {
+			Query query = getSession().createQuery("update RoomOrderVO set orderStatus =:orderStatus where id =:roomOrderNo")
+						.setParameter("orderStatus", orderStatus)
+						.setParameter("roomOrderNo", roomOrderNo);
+			  int result = query.executeUpdate();
+		        return result > 0 ? 1 : 0; // Return 1 if the update was successful, otherwise return 0
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
 	@Override
 	public List<RoomOrderVO> getAll() {
 		return getSession().createQuery("FROM RoomOrderVO", RoomOrderVO.class).list();
@@ -116,4 +134,8 @@ public class RoomOrderDAOImpl implements RoomOrderDAO {
 		//return getSession().createQuery(criteria).getSingleResult();
 		return query.getResultList();
 	}
+
+	
+
+	
 }
