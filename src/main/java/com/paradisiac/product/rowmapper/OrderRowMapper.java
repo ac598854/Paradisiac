@@ -12,7 +12,7 @@ public class OrderRowMapper implements RowMapper<Order> {
     public Order mapRow(ResultSet rs, int i) throws SQLException {
         Order order = new Order();
         order.setOrderId(rs.getInt("order_id"));
-        order.setMemNo(rs.getInt("mem_no"));
+        order.setMemno(rs.getInt("mem_no"));
         order.setTotalAmount(rs.getInt("total_amount"));
         order.setOrderName(rs.getString("order_name"));
         order.setOrderPhone(rs.getInt("order_phone"));

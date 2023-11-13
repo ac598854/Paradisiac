@@ -2,12 +2,12 @@ let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 document.addEventListener('DOMContentLoaded', function() {
     // 這裡 'userId' 應從用戶的登入狀態獲取，這裡僅為示例
-    const memNo = 1; // 使用實際從登入狀態或會話獲取的用戶ID
-    fetchOrders(memNo);
+    const userId = 1; // 使用實際從登入狀態或會話獲取的用戶ID
+    fetchOrders(userId);
 });
 
-function fetchOrders(memNo) {
-    fetch(projectName + `/members/${memNo}/orders`)
+function fetchOrders(userId) {
+    fetch(projectName + `/users/${userId}/orders`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -40,8 +40,7 @@ function createOrdersTable(orders) {
     const thead = document.createElement('thead');
     const headerRow = thead.insertRow();
 
-    // 添加標題列
-    ['Order ID', 'Order Name', 'Order Phone', 'Address', 'Created Date', 'Total Amount'].forEach(text => {
+    ['Order ID', 'Created Date', 'Total Amount'].forEach(text => {
         const headerCell = document.createElement('th');
         headerCell.textContent = text;
         headerRow.appendChild(headerCell);
@@ -53,9 +52,6 @@ function createOrdersTable(orders) {
     orders.forEach(order => {
         const row = tbody.insertRow();
         row.innerHTML = `<td>${order.orderId}</td>
-                         <td>${order.orderName}</td>
-                         <td>${order.orderPhone}</td>
-                         <td>${order.address}</td>
                          <td>${order.createdDate}</td>
                          <td>${order.totalAmount}</td>`;
         const detailsRow = tbody.insertRow();

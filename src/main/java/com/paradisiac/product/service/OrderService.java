@@ -16,7 +16,8 @@ public interface OrderService {
 
     Order getOrderById(Integer orderId);
 
-    Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest);
+    Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest);
 
 
 }
+

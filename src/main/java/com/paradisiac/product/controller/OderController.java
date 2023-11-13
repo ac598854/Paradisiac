@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -23,14 +24,19 @@ public class OderController {
     private OrderService orderService;
 
     //查詢訂單
-    @GetMapping("/members/{memNo}/orders")
+    @GetMapping("/members/orders")
     public ResponseEntity<Page<Order>> getOrders(
-            @PathVariable Integer memNo,
             @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
-            @RequestParam(defaultValue = "0") @Min(0) Integer offset){
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset,
+            HttpSession session){
+
+        Integer memno = (Integer) session.getAttribute("memno");
+        if (memno == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
 
         OrderQueryParams orderQueryParams = new OrderQueryParams();
-        orderQueryParams.setMemNo(memNo);
+        orderQueryParams.setMemno(memno);
         orderQueryParams.setLimit(limit);
         orderQueryParams.setOffset(offset);
 
@@ -54,10 +60,15 @@ public class OderController {
     }
 
     //新增訂單
-    @PostMapping("/members/{memNo}/orders")
-    public ResponseEntity<Order> createOrder(@PathVariable Integer memNo,
-                                         @RequestBody @Valid CreateOrderRequest createOrderRequest){
-        Integer orderId =  orderService.createOrder(memNo, createOrderRequest);
+    @PostMapping("/members/orders")
+    public ResponseEntity<Order> createOrder(
+            @RequestBody @Valid CreateOrderRequest createOrderRequest,HttpSession session){
+        Integer memno = (Integer) session.getAttribute("memno");
+        if (memno == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        Integer orderId =  orderService.createOrder(memno, createOrderRequest);
 
         Order order = orderService.getOrderById(orderId);
 

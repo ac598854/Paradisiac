@@ -49,21 +49,30 @@
 
 </header>
 
-<!-- Product card that will be clicked -->
-<div class="product-card" id="product-card" data-product-id="1">
-    Click here for product details of product 1
-</div>
-
 <!-- Checkout details area where product details will be displayed -->
 <div id="checkout-details">
     <h2>Check Out</h2>
-    <div id="product-details"></div>
+    <table id="cart-items-table" class="table">
+        <thead>
+        <tr>
+            <th>商品名稱</th>
+            <th>單價</th>
+            <th>數量</th>
+            <th>小計</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- 購物車商品將在這裡動態生成 -->
+        </tbody>
+    </table>
     <div class="address-container">
         <h3>Shipping address</h3>
         <form id="shipping-form">
-            <input type="text" name="orderName" placeholder="姓名">
-            <input type="text" name="orderPhone" placeholder="聯絡電話">
-            <input type="text" name="address" placeholder="地址">
+            <label for="recipient-name">Recipient Name:</label>
+            <input type="text" id="recipient-name" name="recipient-name" required>
+
+            <label for="recipient-address">Recipient Address:</label>
+            <input type="text" id="recipient-address" name="recipient-address" required>
 
             <label for="payment-method">Payment Method:</label>
             <select id="payment-method" name="payment-method" required>
@@ -82,18 +91,146 @@
                 <input type="text" id="account-last-digits" name="account-last-digits" pattern="\\d{3}">
             </div>
             <button type="submit">結帳</button>
-            <a href="/productFront.html" class="button-link">
+            <a href="#" class="button-link">
                 <button type="button" id="cancel-button">取消</button>
             </a>
         </form>
     </div>
 </div>
-    <!-- Existing order summary here, if needed -->
+<!-- Existing order summary here, if needed -->
 
 <footer>
     <!-- 頁腳資訊 -->
 </footer>
 
-<script src="/js/memberCheck.js"></script> <!-- 指向您的JavaScript文件 -->
+<script>
+    let pathName = window.document.location.pathname;
+    let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+    document.addEventListener('DOMContentLoaded', function() {
+        const cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
+        if (cartItems) {
+            displayCartItems(cartItems);
+        } else {
+            // 處理沒有購物車數據的情況，比如顯示錯誤消息或重定向
+            return "購物車是空的";
+        }
+        // 设置取消按钮的超链接
+        let cancelLink = document.getElementById('cancel-button').parentNode;
+        cancelLink.href = projectName + '/productFront.html';
+
+        //顯示購物車內的商品
+        function fetchCartItems() {
+            fetch(projectName + '/Cart?action=shoppingCart', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to fetch cart items');
+                    }
+                })
+                .then(cartItems => {
+                    displayCartItems(cartItems);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function displayCartItems(cartItems) {
+            const tableBody = document.getElementById('cart-items-table').querySelector('tbody');
+            tableBody.innerHTML = ''; // 清空現有內容
+
+            cartItems.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+	            <td>${item.name}</td>
+	            <td>$${item.price}</td>
+	            <td>${item.quantity}</td>
+	            <td>$${item.price * item.quantity}</td>
+	        `;
+                tableBody.appendChild(row);
+            });
+        }
+
+
+        //表單信用卡轉帳選擇
+        document.getElementById('payment-method').addEventListener('change', function() {
+            var paymentMethod = this.value;
+            var creditCardInfo = document.getElementById('credit-card-info');
+            var transferInfo = document.getElementById('transfer-info');
+
+            // Hide both additional fields initially
+            creditCardInfo.style.display = 'none';
+            transferInfo.style.display = 'none';
+
+            if (paymentMethod === 'credit-card') {
+                creditCardInfo.style.display = 'block';
+            } else if (paymentMethod === 'transfer') {
+                transferInfo.style.display = 'block';
+            }
+        });
+
+        document.getElementById('shipping-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // 阻止表單的默認提交行為
+
+            // 獲取 memNo（這裡需要根據您的實際情況進行修改）
+            const memNo = sessionStorage.getItem('memno'); // 假設 memNo 存儲在 sessionStorage
+            if (!memNo) {
+                alert("請先登入.");
+                return; // 或者重定向到登入頁面
+            }
+
+            const recipientName = document.getElementById('recipient-name').value;
+            const recipientAddress = document.getElementById('recipient-address').value;
+            const paymentMethod = document.getElementById('payment-method').value;
+
+            const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+            const buyItemList = cartItems.map(item => ({
+                productId: item.id,
+                quantity: item.quantity
+            }));
+
+            const orderData = {
+                orderName: recipientName,
+                orderPhone: '0912345678', // 可添加用戶輸入選項
+                address: recipientAddress,
+                status: 1, // 根據業務邏輯設置
+                totalAmount: calculateTotalAmount(cartItems),
+                buyItemList: buyItemList
+            };
+
+            fetch(`/members/orders`, { // 使用模板字符串插入 memNo
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('訂單創建失敗: ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('訂單創建成功:', data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+        function calculateTotalAmount(cartItems) {
+            return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        }
+
+    });
+
+</script> <!-- 指向您的JavaScript文件 -->
 </body>
 </html>

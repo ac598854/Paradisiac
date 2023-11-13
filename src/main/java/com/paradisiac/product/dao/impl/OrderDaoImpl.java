@@ -103,14 +103,14 @@ public class OrderDaoImpl implements OrderDao {
 
     //創建訂單
     @Override
-    public Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest) {
+    public Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest) {
         String sql = "INSERT INTO psorder(mem_no, total_amount, order_name, order_phone, " +
                 "address, status, created_date, last_modified_date) " +
                 "VALUES(:memNo, :totalAmount, :orderName, :orderPhone, " +
                 ":address, :status, :createdDate, :lastModifiedDate)";
 
         Map<String, Object> map = new HashMap<>();
-        map.put("memNo", memNo);
+        map.put("memno", memno);
         map.put("totalAmount", createOrderRequest.getTotalAmount());
         map.put("orderName", createOrderRequest.getOrderName());
         map.put("orderPhone", createOrderRequest.getOrderPhone());
@@ -170,9 +170,9 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
-        if(orderQueryParams.getMemNo() != null){
-            sql = sql + " AND mem_no = :memNo";
-            map.put("memNo", orderQueryParams.getMemNo());
+        if(orderQueryParams.getMemno() != null){
+            sql = sql + " AND mem_no = :memno";
+            map.put("memno", orderQueryParams.getMemno());
         }
         return sql;
     }

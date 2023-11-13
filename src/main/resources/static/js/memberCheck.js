@@ -1,27 +1,54 @@
 let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-//單一卡片測試加入Check Order
-document.getElementById('product-card').addEventListener('click', function() {
-    const productId = this.dataset.productId;
-    fetch(projectName + `/products/${productId}`)
-        .then(response => response.json())
-        .then(product => {
-            // Display product details in the checkout area
-            const detailsDiv = document.getElementById('product-details');
-            detailsDiv.innerHTML = '<h3>' + product.productName + '</h3>' +
-                '<p>Price: ' + product.price + '</p>' +
-                '<p>Description: ' + product.description + '</p>';
-
-            // Update the checkout form with the product information
-            const form = document.getElementById('shipping-form');
-            form.innerHTML += '<input type="hidden" name="productId" value="' + product.id + '">' +
-                '<input type="hidden" name="productName" value="' + product.name + '">' +
-                '<input type="hidden" name="productPrice" value="' + product.price + '">';
+document.addEventListener('DOMContentLoaded', function() {
+    const cartItems = JSON.parse(sessionStorage.getItem('cartItems'));
+    if (cartItems) {
+        displayCartItems(cartItems);
+    } else {
+        // 處理沒有購物車數據的情況，比如顯示錯誤消息或重定向
+        return "購物車是空的";
+    }
+});
+//顯示購物車內的商品
+function fetchCartItems() {
+    fetch(projectName + '/Cart?action=shoppingCart', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch cart items');
+            }
+        })
+        .then(cartItems => {
+            displayCartItems(cartItems);
         })
         .catch(error => {
             console.error('Error:', error);
         });
-});
+}
+
+function displayCartItems(cartItems) {
+    const tableBody = document.getElementById('cart-items-table').querySelector('tbody');
+    tableBody.innerHTML = ''; // 清空現有內容
+
+    for (const productName in cartItems) {
+        const product = cartItems[productName];
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${productName}</td>
+            <td>$${product.price}</td>
+            <td>${product.quantity}</td>
+            <td>$${product.price * product.quantity}</td>
+        `;
+        tableBody.appendChild(row);
+    }
+}
+
 
 //表單信用卡轉帳選擇
 document.getElementById('payment-method').addEventListener('change', function() {

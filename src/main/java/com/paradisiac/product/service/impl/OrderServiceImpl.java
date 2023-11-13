@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional // 確保兩者同時新增成功，或是同時不新增成功
     @Override
-    public Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest) {
+    public Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest) {
 
         int totalAmount = 0;
         List<OrderItem> orderItemList = new ArrayList<>();
@@ -87,9 +87,9 @@ public class OrderServiceImpl implements OrderService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }else if(product.getStock() < buyItem.getQuantity()){
                 log.warn("The quantity of product {} is insufficient and cannot be purchased. " +
-                        "Remaining inventory {}, want to buy {}",
+                                "Remaining inventory {}, want to buy {}",
                         buyItem.getProductId(), product.getStock(), buyItem.getQuantity());
-                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
 
             //扣除商品庫存
@@ -109,7 +109,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         // 創建訂單
-        Integer orderId = orderDao.createOrder(memNo, createOrderRequest );
+        Integer orderId = orderDao.createOrder(memno, createOrderRequest );
 
         orderDao.createOrderItems(orderId, orderItemList);
 

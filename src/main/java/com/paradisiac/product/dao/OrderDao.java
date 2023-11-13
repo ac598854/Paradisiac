@@ -17,7 +17,7 @@ public interface OrderDao {
 
     List<OrderItem> getOrderItemByOrderId(Integer orderId);
 
-    Integer createOrder(Integer memNo, CreateOrderRequest createOrderRequest);
+    Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest);
 
     void  createOrderItems(Integer orderId, List<OrderItem> orderItemList);
 

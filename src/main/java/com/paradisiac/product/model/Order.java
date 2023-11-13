@@ -6,7 +6,7 @@ import java.util.List;
 public class Order {
 
     private Integer orderId;
-    private Integer memNo;
+    private Integer memno;
     private Integer totalAmount;
     private String orderName;
     private Integer orderPhone;
@@ -25,12 +25,12 @@ public class Order {
         this.orderId = orderId;
     }
 
-    public Integer getMemNo() {
-        return memNo;
+    public Integer getMemno() {
+        return memno;
     }
 
-    public void setMemNo(Integer memNo) {
-        this.memNo = memNo;
+    public void setMemno(Integer memno) {
+        this.memno = memno;
     }
 
     public Integer getTotalAmount() {
@@ -97,3 +97,4 @@ public class Order {
         this.status = status;
     }
 }
+
