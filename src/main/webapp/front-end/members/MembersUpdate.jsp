@@ -13,6 +13,7 @@ pageContext.setAttribute("membersVO", membersVO);
 %>
 <html>
 <head>
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>會員專區資料修改 - MembersUpdate.jsp</title>
 
@@ -65,7 +66,8 @@ th, td {
 }
 </style>
 </head>
-<body bgcolor='white'>
+<body>
+	<%@ include file="/front-end/index/MembersBody.jsp"%>
 
 	<div id="table-1">
 		<!-- Change the table to a div to apply the CSS -->
