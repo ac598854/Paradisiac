@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import com.paradisiac.roomZ.roompicture.entity.RoomPictureVO;
+import com.paradisiac.roomZ.roompicture.entity.RoomPictureeVO;
 import com.paradisiac.util.HibernateUtil;
 public class RoomPictureDAOImpl implements RoomPictureDAO{
 	// SessionFactory 為 thread-safe，可宣告為屬性讓請求執行緒們共用
@@ -23,7 +23,7 @@ public class RoomPictureDAOImpl implements RoomPictureDAO{
 		}
 		
 		@Override
-		public int insert(RoomPictureVO roomPictureVO) {
+		public int insert(RoomPictureeVO roomPictureVO) {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
 				session.beginTransaction();
@@ -42,7 +42,7 @@ public class RoomPictureDAOImpl implements RoomPictureDAO{
 		}
 
 		@Override
-		public int update(RoomPictureVO roomPictureVO) {
+		public int update(RoomPictureeVO roomPictureVO) {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
 				session.beginTransaction();
@@ -60,11 +60,11 @@ public class RoomPictureDAOImpl implements RoomPictureDAO{
 			return -1;
 		}
 		@Override
-		public RoomPictureVO findByPrimaryKey(Integer roomPicrureNo) {
+		public RoomPictureeVO findByPrimaryKey(Integer roomPicrureNo) {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
 				session.beginTransaction();
-				RoomPictureVO roomPictureVO = session.get(RoomPictureVO.class, roomPicrureNo);
+				RoomPictureeVO roomPictureVO = session.get(RoomPictureeVO.class, roomPicrureNo);
 				session.getTransaction().commit();
 				return roomPictureVO;
 			}catch (Exception e) {
@@ -79,11 +79,11 @@ public class RoomPictureDAOImpl implements RoomPictureDAO{
 		}
 
 		@Override
-		public List<RoomPictureVO> getAll() {
+		public List<RoomPictureeVO> getAll() {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
 				session.beginTransaction();
-				List<RoomPictureVO> list = session.createQuery("from RoomPictureVO", RoomPictureVO.class).list();
+				List<RoomPictureeVO> list = session.createQuery("from RoomPictureeVO", RoomPictureeVO.class).list();
 				session.getTransaction().commit();
 				return list;
 			} catch (Exception e) {

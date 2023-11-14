@@ -18,7 +18,7 @@
     </style>
 </head>
 <body>
-    <form method="POST" action="${pageContext.request.contextPath}/roompic/roompic.do" name="form1" enctype="multipart/form-data" >
+    <form method="POST" action="${pageContext.request.contextPath}/roompic/roompic.do?action=insert" name="form1" enctype="multipart/form-data" >
         <div class="container d-flex justify-content-center align-items-center min-vh-100">
             <div class="row border rounded-5 p-3 bg-white shadow box-area">
                 <div class="header-text text-center">
