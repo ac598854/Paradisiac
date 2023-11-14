@@ -22,15 +22,18 @@ public class DeptServiceImpl implements DeptService{
 	}
 
 	@Override
-	public DeptVO addDept(DeptVO dept) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer addDept(DeptVO dept) { 
+		try {
+			dao.insert(dept); 
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 	@Override
 	public DeptVO updateDept(DeptVO dept) {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.update(dept);
 	}
 
 	@Override

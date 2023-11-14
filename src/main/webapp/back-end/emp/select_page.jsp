@@ -31,7 +31,7 @@
 <body bgcolor='white'>
 
 <table id="table-1">
-   <tr><td><h3>員工系統首頁 Emp: Home</h3><h4>( MVC )</h4></td></tr>
+   <tr><td><h3>員工系統首頁 Emp: Home</h3><h4></h4></td></tr>	
 </table>
 
 <p>This is the Home page for IBM Emp: Home</p>
@@ -50,7 +50,6 @@
 
 <ul>
   <li><a href='listAllEmp.jsp'>List</a> all Emps.  <br><br></li>
-  
   
   <li>
     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/emp.do" ><%--這裡寫emp.do繪多生一個emp --%>
