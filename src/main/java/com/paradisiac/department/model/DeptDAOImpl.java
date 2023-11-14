@@ -26,17 +26,20 @@ public class DeptDAOImpl implements DeptDAO_interface{
 	@Override
 	public Integer insert(DeptVO deptVO) {
 		// 回傳給 service 剛新增成功的自增主鍵值
-		return (Integer) getSession().save(deptVO);		
-	}
-
-	@Override
-	public Integer update(DeptVO deptVO) {
+		//return (Integer) getSession().save(deptVO);
 		try {
-			getSession().update(deptVO);
+			getSession().save(deptVO);;
 			return 1;
 		} catch (Exception e) {
 			return -1;
-		}		
+		}	
+	}
+
+	@Override
+	public DeptVO update(DeptVO deptVO) {
+		getSession().update(deptVO);
+		return deptVO;
+	
 	}
 
 	@Override
@@ -74,8 +77,6 @@ public class DeptDAOImpl implements DeptDAO_interface{
 	@Override//顯示在查全部頁面
 	public List<DeptVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-//		Session session = getSession();
-//		session.beginTransaction();
 		return getSession().createQuery("from DeptVO", DeptVO.class)
 				.setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT)
@@ -88,8 +89,6 @@ public class DeptDAOImpl implements DeptDAO_interface{
 	}
 	
 	public List<DeptVO> getDeptsList(){
-//		Session session = getSession();
-//		session.beginTransaction();
 		return getSession().createQuery("from DeptVO", DeptVO.class).list();
 	}
 	

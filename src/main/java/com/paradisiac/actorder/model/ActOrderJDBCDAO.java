@@ -19,10 +19,10 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 	String driver = "com.mysql.cj.jdbc.Driver";
 	String url = "jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei";
 	String userid = "root";
-	String passwd = "Cha103_11";
+	String passwd = "123456";
 
 	private static final String INSERT = "INSERT INTO act_order(act_order_no,mem_no,schd_no,emp_no,order_time,a_atn_num,order_status,pay_method,pay_status,pay_time,order_amount) values (concat(date_format(now(), '%Y%m%d'), '-', lpad(last_insert_id() + 1, 4, '0')), ?, ?, null, (concat(date_format(now()), '-'), ?, true, ?, ?, ?, ?)";
-	private static final String UPDATE_STATUS = "UPDATE ct_order SET order_status=?, pay_status=?, pay_time=? WHERE act_order_no = ?";
+	private static final String UPDATE_ORDERSTATUS = "UPDATE ct_order SET order_status=?, pay_status=?, pay_time=? WHERE act_order_no = ?";
 	private static final String GET_ONE_BYACTODERNO = "SELECT * FROM act_order WHERE act_order_no = ?";
 	private static final String GET_ALL_BYMEMNO= "SELECT * FROM act_order WHERE mem_no = ?";
 	private static final String GET_ALL = "SELECT * FROM act_order";
@@ -86,7 +86,7 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(UPDATE_STATUS);
+			pstmt = con.prepareStatement(UPDATE_ORDERSTATUS );
 			
 			pstmt.setBoolean(1, ActOderVO.getOrderstatus());
 			pstmt.setBoolean(2, ActOderVO.getPaystatus()); 

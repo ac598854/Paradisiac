@@ -103,7 +103,7 @@ const limit = 5; // 每頁的商品數量
 async function fetchProducts() {
     try {
         // 考慮到分頁，我們在請求URL中加入limit和offset參數
-        const response = await fetch(`http://localhost:8080/products?limit=${limit}&offset=${offset}`);
+        const response = await fetch(`http://localhost:8081/products?limit=${limit}&offset=${offset}`);
 
         // 判斷如果成功獲取數據
         if (response.ok) {
@@ -265,7 +265,7 @@ document.getElementById("addProductForm").addEventListener("submit", async funct
     };
 
     try {
-        const response = await fetch("http://localhost:8080/products", {
+        const response = await fetch("http://localhost:8081/products", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -298,7 +298,7 @@ async function editProduct(productId) {
     toggleModal("editProductModal", "overlayEdit", "block");
 
 
-    const productData = await fetch(`http://localhost:8080/products/${productId}`);
+    const productData = await fetch(`http://localhost:8081/products/${productId}`);
     const product = await productData.json();
 
     // 把產品資料填入模態框的輸入欄位
@@ -339,7 +339,7 @@ document.getElementById("editProductForm").addEventListener("submit", async func
     };
 
     try {
-        const response = await fetch(`http://localhost:8080/products/${currentEditingProductId}`, {
+        const response = await fetch(`http://localhost:8081/products/${currentEditingProductId}`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'

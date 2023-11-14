@@ -30,12 +30,13 @@
         }
         
         .photo-content img {
-		    max-width: 30%;  /*添加此行以限制最大宽度 */
-		    height: 200px; /* auto自动调整高度以保持纵横比 */
+		    max-width: 40%;  /*限制最大宽度*/
+		    height: 200px; /* auto自动调整高度 */
             background-color: #eee;
             border: 1px solid #ccc;
             margin: 5px;
         }
+
         /*
         .album .d-flex.justify-content-end {
         position: absolute;
@@ -50,11 +51,11 @@
         }
 
         .album-info {
-        margin-bottom: 50px; /* 调整表格与按钮之间的距离 */
+        margin-bottom: 50px; 
         }
 
         .btn-separator {
-        margin-right: 5px; /* 为按钮之间添加5px的间距 */
+        margin-right: 5px; 
         }
 
     </style>
@@ -98,10 +99,10 @@
                             </tr>
                         </table>
                         <div class="d-flex justify-content-end">
-                        <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/pha.do" style="margin-bottom: 0px;">
+                        <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do" style="margin-bottom: 0px;">
                         	<input type="hidden" name="albNo" value="${pha.albNo}"> 
 							<input type="hidden" name="action" value="getOne_For_Update">
-                            <button class="btn btn-primary mr-2 btn-separator">修改相簿</button>
+                            <button type="submit" class="btn btn-primary mr-2 btn-separator">修改相簿</button>
                         </FORM>
                         <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/pha.do" style="margin-bottom: 0px;">
                         	<input type="hidden" name="albNo" value="${pha.albNo}"> 
@@ -114,34 +115,7 @@
             </div>
         </div>
     	</c:forEach>
-<%-- 
-        <h2>相片管理</h2>
-        <c:if test="${phoPageQty > 0}">
-	  	<b><font color=red>第${currentPage}/${phoPageQty}頁</font></b>
-		</c:if>
-		<div class="album card mb-3">
-			<div class="row g-0">
-				<div class="col-md-8">
-					<div class="card-body">
-						<FORM id= "photoForm" METHOD="post" ACTION="<%=request.getContextPath()%>/pho.do">
-							<div class="photo-content d-flex">
-								<c:forEach var="pha" items="${list}">
-									<input type="checkbox" name="photoNo" id="${pha.photoNo}" value="${pha.photoNo}">										
-									<img src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}" alt="相片1" class="img-fluid">
-								</c:forEach>
-							</div>
-							<div class="d-flex justify-content-end">
-								<button class="btn btn-success mr-2 btn-separator">新增相片</button>
-								<input type="hidden" name="action" value="delete"> 
-								<input type="hidden" name="selectedPhotos" value="selectedPhotos"> 
-								<button class="btn btn-danger" id="delpho">刪除相片</button>
-							</div>
-						</FORM>
-					</div>
-				</div>
-			</div>
-		</div>
---%>
+
 	<c:if test="${currentPage > 1}">
 		<a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=1">至第一頁</a>&nbsp;
 	</c:if>

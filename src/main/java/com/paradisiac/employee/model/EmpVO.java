@@ -81,8 +81,10 @@ public class EmpVO implements java.io.Serializable{
 	}
 	//=======聯合映射=================
 	public DeptVO getDept() {
-		return dept;
+		return dept; 
 	}
+	
+
 	public void setDeptVO(DeptVO dept) {
 		this.dept = dept;
 	}

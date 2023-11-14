@@ -1,8 +1,6 @@
 package com.paradisiac.csmessages.controller;
 
 import java.io.*;
-import java.sql.Timestamp;
-import java.util.*;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,14 +11,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
+
 
 import com.paradisiac.csmessages.model.CsMessagesVO;
 import com.paradisiac.csmessages.service.CsMessagesService;
-import com.paradisiac.members.model.MembersVO;
-import com.paradisiac.members.service.MembersService;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+
+
 
 @MultipartConfig
 public class CsmessagesServlet<Session> extends HttpServlet {
@@ -64,7 +60,6 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 			/*************************** 1.接收請求參數 - 輸入格式的錯誤處理 **********************/
 			Integer csmsgno = Integer.valueOf(req.getParameter("csmsgno"));
-		
 			/*************************** 2開始查詢資料 *****************************************/
 			CsMessagesService csMegSvc = new CsMessagesService();
 			CsMessagesVO CsVO = csMegSvc.getOneByCsmsgno(csmsgno);
@@ -79,6 +74,7 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 			String url = "/front-end/csmessages/MessageCPF_readonly.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交
 			successView.forward(req, res);
+			
 		}
 
 		if ("getAll_For_Empno".equals(action)) {
