@@ -77,17 +77,21 @@ public class LoginHandler extends HttpServlet {
 
 		// 1.會員登出狀態
 		if ("stateLogout".equals(action)) {
-			HttpSession session = req.getSession();
-			// 【從 session 取得memno屬性】
+			HttpSession session = req.getSession(false);
+			
+			
 			Object memno = session.getAttribute("memno");
 			Object location = session.getAttribute("location");
 			session.removeAttribute("memno");
 			session.removeAttribute("location");
 			System.out.println("登出是否還有會員編號"+memno);
 //			System.out.println("登出是否還有location"+location);
-			res.sendRedirect(req.getContextPath() + "/front-end/index/index2.jsp");
+			
+			res.getWriter().write("ok");
+			
+//			res.sendRedirect(req.getContextPath() + "/front-end/index/Index2.jsp");
 		}
-
+		
 		// 2.會員登入狀態，檢查(滿足帳號、密碼、非凍結)、會員登入可用頁面
 		// (1)會員登入:檢查帳號、密碼、帳號狀態是否正確
 		// (2)會員登入後【特定頁面】:如果前一頁時待結帳頁面，導到結帳頁(活動結帳、訂房結帳、購物車結帳)

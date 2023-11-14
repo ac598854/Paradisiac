@@ -60,7 +60,7 @@ public class DeptJDBCDAO implements DeptDAO_interface{
 	}
 	//修改==========================================================
 	@Override
-	public Integer update(DeptVO deptVO) {
+	public DeptVO update(DeptVO deptVO) {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 
@@ -72,14 +72,14 @@ public class DeptJDBCDAO implements DeptDAO_interface{
 			pstmt.setInt(2, deptVO.getDeptNo());
 
 			pstmt.executeUpdate();
-			return 1;
+
 		} catch (SQLException se) {
 			se.printStackTrace();
 			// Clean up JDBC resources
 		} finally {
 			closeResources(con, pstmt, null);
 		}
-		return -1;
+		return deptVO;
 		
 	}
 	//刪除==========================================================

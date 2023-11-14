@@ -1,6 +1,5 @@
 package com.paradisiac.csmessages.model;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 public interface CsMessagesDAO_interface {

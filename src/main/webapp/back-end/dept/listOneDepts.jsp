@@ -7,11 +7,22 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="">
 <%--${pageContext.request.contextPath}/main/main.css --%>
-<title>Insert title here</title>
+<title>部門資料 - listOneDept</title>
 <style>
-    table {
+  table#table-1 {
+	background-color: #CCCCFF;
+    border: 2px solid black;
+    text-align: center;
+    margin: auto;
+  }
+  
+    table#deptContent {
         width: 100%;
         border-collapse: collapse;
+        margin: auto;
+    }
+    table#deptContent th {
+        background-color: #ccc;
     }
     
     th, td {
@@ -19,34 +30,38 @@
         padding: 8px;
         text-align: center;
     }
-    
-    th {
+    table#empContent {
+    	margin: auto;
+    }
+    table#empContent th {
         background-color: #ccc;
     }
     
-    th:nth-child(1), td:nth-child(1){
-        width: 20%; /* 設定固定欄位寬度 */
+    table#empContent th:nth-child(1), td:nth-child(1){
+        width: 20%; /* 員工編號設定固定欄位寬度 */
     }
-    
-    th:nth-child(2), td:nth-child(2),
-    th:nth-child(3), td:nth-child(3){
-        width: 40%; /* 設定固定欄位寬度 */
+    table#empContent th:nth-child(2), td:nth-child(2){
+        width: 20%; /* 員工編號設定固定欄位寬度 */
+    }
+    table#empContent
+    th:nth-child(3), td:nth-child(3),
+    th:nth-child(4), td:nth-child(4){
+        width: 30%; /* 姓名,信箱設定固定欄位寬度 */
     }
 
 
 </style>
 </head>
 <body>
-	<h1>部門列表</h1>
-	<h2>部門員工明細</h2>
-	<%-- 
-	<c:if test="${deptPageQty > 0}">
-  		<b><font color=red>第${currentPage}/${deptPageQty}頁</font></b>
-	</c:if>--%>
-	<br>
-	
+<table id="table-1">
+	<tr><td>
+		 <h3>部門資料 - listOneDept</h3>
+		 <h4><a href="${pageContext.request.contextPath}/back-end/dept/select_dept_page.jsp">回首頁</a></h4>
+	</td></tr>
+</table>
+
 	<div>
-		<table class= dept style="width:30%; text-align:center;">
+		<table id="deptContent"class= dept style="width:30%; text-align:center;">
 			<!-- 部門資料 -->
 			<tr>
 		        <th><label for="deptName">部門名稱:${deptVO.deptName}</label></th>
@@ -54,12 +69,17 @@
 		    <tr>
 		        <td><label for="deptNo">部門編號:${deptVO.deptNo}</label></td>
 		    </tr>
+		    <tr>
+		        <td><label for="deptNo">功能編號:${deptVO.fucVO.fucNo}-${deptVO.fucVO.fucName}</label></td>
+		    </tr>
+
 		</table>
 		
 		    <!-- 員工資料 -->
-		 <table style="width:30%; text-align:center;">  
+		 <table style="width:30%; text-align:center;" id="empContent">  
 			<tr>
 		        <th><label for="empno">員工編號</label></th>
+		        <th><label for="empStatus">員工狀態</label></th>
 		        <th><label for="empName">姓名</label></th>
 		       	<th><label for="empMail">電子信箱</label></th>
 
@@ -67,6 +87,7 @@
 			<c:forEach var="emp" items="${deptEmpSet}">
 			   	<tr>
 			   		<td>${emp.empno}</td>
+			   		<td>${emp.empStatus==0? '凍結' : '正常'}</td>
 			   		<td>${emp.empName}</td>
 			   		<td>${emp.empMail}</td>   
 			    </tr>
@@ -75,25 +96,7 @@
 			</c:forEach>
 		</table>
 	</div>
-	
 
-<%-- 
-	<c:if test="${currentPage > 1}">
-		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=1">至第一頁</a>&nbsp;
-	</c:if>
-	<c:if test="${currentPage - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${currentPage - 1}">上一頁</a>&nbsp;
-	</c:if>                                         
-	<c:if test="${currentPage + 1 <= deptPageQty}"> 
-		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${currentPage + 1}">下一頁</a>&nbsp;
-	</c:if>                                         
-	<c:if test="${currentPage != deptPageQty}">     
-		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${deptPageQty}">至最後一頁</a>&nbsp;
-	</c:if>
---%>                                         
-	<br>
 
-	<br><br>
-	<a href="${pageContext.request.contextPath}/back-end/dept/select_dept_page.jsp">回首頁</a>
 </body>
 </html>

@@ -10,7 +10,7 @@
 
 <html>
 <head>
-<title>員工資料 - listOneEmp.jsp</title>
+<title>員工資料 - listOneEmp</title>
 
 <style>
   table#table-1 {
@@ -48,7 +48,6 @@
 </head>
 <body bgcolor='white'>
 
-<h4>此頁暫練習採用 Script 的寫法取值:</h4>
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneEmp.jsp</h3>
@@ -94,7 +93,7 @@
 		}	
 		%>
 		<td><%=empVO.getEmpno()%></td>
-		<td><%=empVO.getDept().getDeptNo()%></td>
+		<td><%=empVO.getDept().getDeptNo()%><%=empVO.getDept().getDeptName()%></td>
 		<td><%=st%></td>
 		<td><%=empVO.getEmpName()%></td>
 		<td><%=empVO.getEmpMail()%></td>

@@ -202,11 +202,11 @@ pageContext.setAttribute("membersVO", membersVO);
                     if (responseMessage === 1) {
                         $('#captchaError').text("驗證已逾時，請重新驗證");
                         isMemcaptchaValid=false;
-//                         $('#memcaptcha').val('');
+
                     } else if (responseMessage === 3) {
                         $('#captchaError').text("驗證碼錯誤，請重新輸入");
                         isMemcaptchaValid=false;
-//                         $('#memcaptcha').val('');
+
                     } else if (responseMessage === 2) {
                         $('#captchaError').text("驗證成功");
                         isMemcaptchaValid=true;

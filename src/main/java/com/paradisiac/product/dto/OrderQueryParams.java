@@ -1,16 +1,16 @@
 package com.paradisiac.product.dto;
 
 public class OrderQueryParams {
-    private Integer userId;
+    private Integer memno;
     private Integer limit;
     private Integer offset;
 
-    public Integer getUserId() {
-        return userId;
+    public Integer getMemno() {
+        return memno;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setMemno(Integer memno) {
+        this.memno = memno;
     }
 
     public Integer getLimit() {

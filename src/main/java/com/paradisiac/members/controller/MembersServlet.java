@@ -493,7 +493,24 @@ public class MembersServlet<Session> extends HttpServlet {
 			out.print(responseMessage);
 			out.flush();
 		}
-
+		
+		//6.首頁會員狀態判斷
+		if ("indexLogin".equals(action)) {
+			HttpSession session = req.getSession();
+			Object memno = session.getAttribute("memno");
+			System.out.println(memno);
+			Integer responseMessage = null;
+			if(memno != null && !String.valueOf(memno).isEmpty()) {
+				responseMessage = 1;
+				System.out.println("首頁會員");				
+			}else {
+				responseMessage = 0;
+				System.out.println("首頁非會員");
+			}
+			PrintWriter out = res.getWriter();
+			out.print(responseMessage);
+			out.flush();
+		}
 
 	}
 }
