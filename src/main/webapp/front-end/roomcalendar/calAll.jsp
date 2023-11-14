@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <!--  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
 <style>
         .container {
             text-align: center;
@@ -55,7 +55,7 @@
     </div>
     <!-- 動態產生房型資訊 -->
      <div class="container" id="roomInformation">
-        <h2>房型信息</h2>
+      	
     </div>
     <!-- 按下立即預定顯示燈箱內容為訂房確認內容 -->
     <div id="roomInformation" class="container"></div>
@@ -75,10 +75,10 @@
         </div>
     </div>
     <div class="container">
-    <input type="text" id="selectedDate" readonly>
+    <input type="hidden" id="selectedDate" readonly>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script>
+  	<script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script> 
 </body>
 </html>

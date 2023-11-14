@@ -10,6 +10,7 @@ import static com.paradisiac.util.Constants.PAGE_MAX_RESULT;
 import com.paradisiac.roomnum.model.RoomNumDAOImpl;
 import com.paradisiac.roomnum.model.RoomNumVO;
 import com.paradisiac.roomnum.service.*;
+
 import com.paradisiac.roomorder.model.*;
 import com.paradisiac.roomorder.service.*;
 import com.paradisiac.roomtype.service.*;
@@ -300,6 +301,7 @@ public class RoomNumServlet extends HttpServlet {
 				}
 			}
 		}
+		//刪除房間資料
 		if ("delRoomNum".equals(action)) { // 來自listRoomNumDel.jsp	
 			
 			//設定房型下拉選單-顯示房型編號使用
@@ -320,7 +322,7 @@ public class RoomNumServlet extends HttpServlet {
 			/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
 			CRUDupdatePage(roomnumService,currentPage, req, res);
 		}
-		// ===========================更新房間資料===========================
+		//更新房間資料
 		if ("updateRoomNum".equals(action)) { // 來自listRoomNumDel.jsp
 			
 			//設定房型下拉選單
@@ -415,85 +417,73 @@ public class RoomNumServlet extends HttpServlet {
 				}
 				else {
 					errorMessage.add("此房型編號:"+roomTypeNo+"號，設定房間數為"+total+"間，無法再為此房型新增房間。");
-					returnCRUD(roomnumService,req,res);
+					CRUDupdatePage(roomnumService, currentPage, req, res);
 				}
 			}
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			
-			CRUDupdatePage(roomnumService,currentPage, req, res);
-			}		
+
+			CRUDupdatePage(roomnumService, currentPage, req, res);
+		}
+	}
+
+	public void getAllRoomNum(RoomNumServiceImpl roomnumService, HttpServletRequest req, HttpServletResponse res)
+			throws ServletException, IOException {
+		String page = req.getParameter("page");
+		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
+		if (req.getSession().getAttribute("roomnumPageQty") == null) {
+			int roomnumPageQty = roomnumService.getPageTotal();
+			req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
+		}
+		req.setAttribute("roomnumList", roomnumList);
+		req.setAttribute("currentPage", currentPage);
+		String url = "/back-end/roomnum/listAllRoomNums.jsp";
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+		successView.forward(req, res);
+	}
+
+//在進行新增修改刪除時都能停留在原頁面或新增跳轉到新增筆數的頁面
+	public void getAllRoomNumPage(RoomNumServiceImpl roomnumService, int currentPage, HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException {
+		// String page = req.getParameter("page");
+		// int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		// 計算總頁數
+		int roomnumPageQty = roomnumService.getPageTotal();
+		req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
+		// 新增時跳到新增的頁面將第幾頁的頁數填入getAllRoomNums(),會取出該面的集合資料
+		List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
+		req.setAttribute("roomnumList", roomnumList);
+		req.setAttribute("currentPage", currentPage);
+		String url = "/back-end/roomnum/listRoomNums.jsp";
+		RequestDispatcher successView = req.getRequestDispatcher(url);
+		successView.forward(req, res);
 	}
 	
-public void getAllRoomNum(RoomNumServiceImpl roomnumService,HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{ 
-	String page = req.getParameter("page");
-	int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-	List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
-	if (req.getSession().getAttribute("roomnumPageQty") == null) {
+
+//在進行新增修改刪除時都能停留在原頁面或新增跳轉到新增筆數的頁面
+	public void CRUDupdatePage(RoomNumServiceImpl roomnumService, int currentPage, HttpServletRequest req,
+			HttpServletResponse res) throws ServletException, IOException {
+		// String page = req.getParameter("page");
+		// int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+		// 計算總頁數
 		int roomnumPageQty = roomnumService.getPageTotal();
-		req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);}
-	req.setAttribute("roomnumList", roomnumList);
-	req.setAttribute("currentPage", currentPage);
-	String url = "/back-end/roomnum/listAllRoomNums.jsp";
-	RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
-	successView.forward(req, res);
-}
-//在進行新增修改刪除時都能停留在原頁面或新增跳轉到新增筆數的頁面
-public void getAllRoomNumPage(RoomNumServiceImpl roomnumService,int currentPage,HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	//String page = req.getParameter("page");	
-	    //int currentPage = (page == null) ? 1 : Integer.parseInt(page);  
-	    // 計算總頁數
-	    int roomnumPageQty = roomnumService.getPageTotal();
-	    req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
-	    // 新增時跳到新增的頁面將第幾頁的頁數填入getAllRoomNums(),會取出該面的集合資料
-	    List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
-	    req.setAttribute("roomnumList", roomnumList);	
-	    req.setAttribute("currentPage", currentPage);
-	    String url = "/back-end/roomnum/listRoomNums.jsp";
-	    RequestDispatcher successView = req.getRequestDispatcher(url);
-	    successView.forward(req, res);
-}
+		req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
+		// 新增時跳到新增的頁面將第幾頁的頁數填入getAllRoomNums(),會取出該面的集合資料
+		List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
+		req.setAttribute("roomnumList", roomnumList);
+		req.setAttribute("currentPage", currentPage);
+		String url = "/back-end/roomnum/listRoomNumDel.jsp";
+		RequestDispatcher successView = req.getRequestDispatcher(url);
+		successView.forward(req, res);
+	}
 
-
-
-public void returnCRUD(RoomNumServiceImpl roomnumService,HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	String page = req.getParameter("page");	
-	    int currentPage = (page == null) ? 1 : Integer.parseInt(page);  
-	    // 計算總頁數
-	    int roomnumPageQty = roomnumService.getPageTotal();
-	    req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
-	    // 設置當前頁面為包含新數據的頁面
-	    int newPage = calculateNewPageAfterInsertion(roomnumService, currentPage);
-	    List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(newPage);
-	    req.setAttribute("roomnumList", roomnumList);
-	
-	    req.setAttribute("currentPage", newPage);
-
-	    String url = "/back-end/roomnum/listRoomNumDel.jsp";
-	    RequestDispatcher successView = req.getRequestDispatcher(url);
-	    successView.forward(req, res);
-}
-//在進行新增修改刪除時都能停留在原頁面或新增跳轉到新增筆數的頁面
-public void CRUDupdatePage(RoomNumServiceImpl roomnumService,int currentPage,HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-	//String page = req.getParameter("page");	
-	    //int currentPage = (page == null) ? 1 : Integer.parseInt(page);  
-	    // 計算總頁數
-	    int roomnumPageQty = roomnumService.getPageTotal();
-	    req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
-	    // 新增時跳到新增的頁面將第幾頁的頁數填入getAllRoomNums(),會取出該面的集合資料
-	    List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
-	    req.setAttribute("roomnumList", roomnumList);	
-	    req.setAttribute("currentPage", currentPage);
-	    String url = "/back-end/roomnum/listRoomNumDel.jsp";
-	    RequestDispatcher successView = req.getRequestDispatcher(url);
-	    successView.forward(req, res);
-}
 //計算插入數據後的新頁面的輔助方法
-private int calculateNewPageAfterInsertion(RoomNumServiceImpl roomnumService, int currentPage) {	
- int totalRows = roomnumService.getPageTotal(); // 獲取總行數
- int pageSize = PAGE_MAX_RESULT; // 獲取每頁顯示的行數
- // 根據總行數和每頁顯示的行數計算新頁面
- int newPage = (int) Math.ceil((double) totalRows / pageSize);
- return (newPage > 0) ? newPage : 1;
-}
+	private int calculateNewPageAfterInsertion(RoomNumServiceImpl roomnumService, int currentPage) {
+		int totalRows = roomnumService.getPageTotal(); // 獲取總行數
+		int pageSize = PAGE_MAX_RESULT; // 獲取每頁顯示的行數
+		// 根據總行數和每頁顯示的行數計算新頁面
+		int newPage = (int) Math.ceil((double) totalRows / pageSize);
+		return (newPage > 0) ? newPage : 1;
+	}
 
 }
