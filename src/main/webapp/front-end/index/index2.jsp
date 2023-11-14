@@ -104,7 +104,8 @@
 </head>
 <body>
 
-  	<%@ include file="guided.jsp" %>   <!-- 導覽列 -->
+<%--   	<%@ include file="guided.jsp" %>   <!-- 導覽列 --> --%>
+	<div id="dynamicContent"></div>
    
     <div id="image1Carousel" class="carousel slide" data-ride="carousel" data-interval="3000"> <!-- 3秒 -->
         <div class="carousel-inner">
@@ -248,13 +249,38 @@
   	<%@ include file="footer.jsp" %>
 
     <!-- 引入Bootstrap和jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function(){
         $('.carousel').carousel(); // 初始化
         });
-    </script>
+   
+        // 首頁會員狀態判斷
+        $(document).ready(function(){
+        	console.log(1);
+            $.ajax({
+                type: "POST",
+                url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+				success : function(data) {
+											const responseMessage = parseInt(data);
+											if (responseMessage === 1) {
+												// 如果memno存在，引入guided.jsp
+												$("#dynamicContent").load(
+														"guided.jsp");
+											} else if (responseMessage === 0) {
+												// 如果memno不存在，引入test.jsp
+												$("#dynamicContent").load(
+														"guidedSignout.jsp");
+											}
+										},
+										error : function(error) {
+											console.log("AJAX error:", error);
+										}
+									});
+						});
+   
+	</script>
   </body>
 </html>

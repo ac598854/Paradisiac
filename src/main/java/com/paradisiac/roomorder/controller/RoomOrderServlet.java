@@ -103,7 +103,7 @@ public class RoomOrderServlet extends HttpServlet {
 		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
 		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
 
-		boolean payStatusBool = Boolean.parseBoolean(payStatus);
+		byte payStatusBool = Byte.parseByte(payStatus);
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
 		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
 
@@ -147,7 +147,7 @@ public class RoomOrderServlet extends HttpServlet {
 
 		Integer roomOrderNoInt = null;
 
-		// 将字符串参数解析为整数
+		// 
 		Timestamp roomOrderDatedt = null;
 		Date checkinDatedt = null;
 		Date checkoutDatedt = null;
@@ -161,7 +161,7 @@ public class RoomOrderServlet extends HttpServlet {
 		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
 		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
 
-		boolean payStatusBool = Boolean.parseBoolean(payStatus);
+		byte payStatusBool = Byte.parseByte(payStatus);
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
 		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
 

@@ -23,8 +23,6 @@ import com.paradisiac.util.jedispool.JedisUtil;
 
 import redis.clients.jedis.JedisPool;
 
-//import redis.clients.jedis.Jedis;
-//import redis.clients.jedis.JedisPool;
 
 @MultipartConfig
 public class MembersServlet<Session> extends HttpServlet {
@@ -72,20 +70,11 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 		}
 		System.out.println("str" + str);
-		long endTime = System.nanoTime(); // 獲取結束時間
+		long endTime = System.nanoTime();
 		System.out.println("程式執行時間： " + (endTime - startTime) / Math.pow(10, 9) + "s");
 		return str;
 	}
 
-//	public String insertCode(String memmail) {
-//		String code = getAuthCode();
-//		JedisUtil.set(memmail, code);
-////		JedisUtil.expire(memmail);
-////		JedisPool pool = JedisUtil.getJedisPool();
-//		System.out.println("測試jedis-code：" + code);
-////		JedisUtil.shutdownJedisPool();
-//		return code;
-//	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -93,7 +82,7 @@ public class MembersServlet<Session> extends HttpServlet {
 		String action = req.getParameter("action");
 		System.out.println("現在action：" + action);
 
-		if ("getOne_For_Memno".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Memno".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -130,17 +119,17 @@ public class MembersServlet<Session> extends HttpServlet {
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
-				return;// 程式中斷
+				return;
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getOne_For_Memno_SA", membersVOlist); // // 資料庫取出的empVO物件,存入req
+			req.setAttribute("getOne_For_Memno_SA", membersVOlist); 
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		}
 
-		if ("getOne_For_Account".equals(action)) { // 來自select_page.jsp的請求
+		if ("getOne_For_Account".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -175,17 +164,17 @@ public class MembersServlet<Session> extends HttpServlet {
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
-				return;// 程式中斷
+				return;
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getOne_For_Account_SA", membersVOlist); // // 資料庫取出的empVO物件,存入req
+			req.setAttribute("getOne_For_Account_SA", membersVOlist); 
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
 
-		if ("getAll_For_Status".equals(action)) { // 來自select_page.jsp的請求
+		if ("getAll_For_Status".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -199,16 +188,16 @@ public class MembersServlet<Session> extends HttpServlet {
 			if ("3".equals(str)) {
 				MembersService membersService = new MembersService();
 				List<MembersVO> list = membersService.getAll();
-				req.setAttribute("getAll_For_Status", list); // 資料庫取出的empVO物件,存入req
+				req.setAttribute("getAll_For_Status", list); 
 				String url = "/back-end/members/MembersLPB.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);
 			}
 
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/backe-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
-				return;// 程式中斷
+				return;
 			}
 
 			Boolean memstatus = null;
@@ -221,7 +210,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
-				return;// 程式中斷
+				return;
 			}
 
 			/*************************** 2開始查詢資料 *****************************************/
@@ -234,46 +223,42 @@ public class MembersServlet<Session> extends HttpServlet {
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
-				return;// 程式中斷
+				return;
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getAll_For_Status_SA", list); // // 資料庫取出的empVO物件,存入req
+			req.setAttribute("getAll_For_Status_SA", list); 
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		}
 
-		if ("get_all_back".equals(action)) { // 來自update_emp_input.jsp的請求
+		if ("get_all_back".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數(取值) - 輸入格式的錯誤處理 **********************/
-
-			Integer memno = Integer.valueOf(req.getParameter("memno"));// 以編號查詢修改
+			Integer memno = Integer.valueOf(req.getParameter("memno"));
 			MembersService membersService = new MembersService();
 			MembersVO membersVO = membersService.getOneBymemno(memno);
 
 			if (!errorMsgs.isEmpty()) {
-				// req.setAttribute("MembersVO", MembersVO); // 含有輸入格式錯誤的empVO物件,也存入req
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersCPB.jsp");
 				failureView.forward(req, res);
-				return; // 程式中斷
+				return; 
 			}
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("membersVO", membersVO); // 資料庫update成功後,正確的的empVO物件,存入req
+			req.setAttribute("membersVO", membersVO); 
 			String url = "/back-end/members/MembersCPB.jsp";
 			System.out.println("CP頁路徑：" + url);
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); 
 			successView.forward(req, res);
 		}
 
-		if ("update_Back_Status".equals(action)) { // 來自listAllEmp.jsp的請求
+		if ("update_Back_Status".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數 ****************************************/
@@ -286,24 +271,21 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			MembersVO membersVO = new MembersVO();
-			membersVO.setMemstatus(memstatus);
-
-			// Send the use back to the form, if there were errors
+		
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("membersVO", membersVO); // 含有輸入格式錯誤的membersVO物件,也存入req
+				req.setAttribute("membersVO", membersVO); 
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/update_mem_input.jsp");
 				failureView.forward(req, res);
-				return; // 程式中斷
+				return;
 			}
 
 			/*************************** 2.開始查詢資料 ****************************************/
 			MembersService memsSvc = new MembersService();
 			membersVO = memsSvc.updateBackStatus(memno, memstatus);
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-			req.setAttribute("MembersVO", membersVO); // 資料庫取出的empVO物件,存入req
+			req.setAttribute("MembersVO", membersVO); 
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
-			successView.forward(req, res);
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 		}
 
 		if ("update-Front".equals(action)) {
@@ -350,19 +332,19 @@ public class MembersServlet<Session> extends HttpServlet {
 					mempictureData, memno);
 			membersVO = memsSvc.getOneBymemno(memno);// 呈現更新後畫面，用memno取回所有更新資料
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-			req.setAttribute("membersVO", membersVO); // 資料庫取出的物件物件，set在頁面
+			req.setAttribute("membersVO", membersVO); 
 			String url = "/front-end/members/MembersUpdate.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url);// 成功轉交 update_emp_input.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 
 		}
 
-		if ("insert".equals(action)) { // 來自addEmp.jsp的請求
+		if ("insert".equals(action)) { 
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 
-			// 1. 接收請求參數 - 輸入格式的錯誤處理
+			// 1. 格式錯誤處理
 			String memname = req.getParameter("memname");
 			String memmail = req.getParameter("memmail");
 			String memaccount = req.getParameter("memaccount");
@@ -401,7 +383,7 @@ public class MembersServlet<Session> extends HttpServlet {
 					errorMsgs.add("圖片上傳失敗");
 				}
 			} else {
-				// 处理图片部分为空的情况
+				//處理圖片為空補充
 			}
 			;
 
@@ -417,7 +399,7 @@ public class MembersServlet<Session> extends HttpServlet {
 				MembersVO membersVO = memsSvc.Insertmember(memname, memmail, memaccount, mempass, memgender, memid,
 						membir, memphone, memaddress, memcaptcha, mempictureData);
 				req.setAttribute("membersVO", membersVO);
-				String url = "/front-end/members/Login.jsp"; // 新增成功后转发到登录页面
+				String url = "/front-end/members/Login.jsp"; 
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 				System.out.println("新增成功");
@@ -511,22 +493,24 @@ public class MembersServlet<Session> extends HttpServlet {
 			out.print(responseMessage);
 			out.flush();
 		}
+		
+		//6.首頁會員狀態判斷
+		if ("indexLogin".equals(action)) {
+			HttpSession session = req.getSession();
+			Object memno = session.getAttribute("memno");
+			System.out.println(memno);
+			Integer responseMessage = null;
+			if(memno != null && !String.valueOf(memno).isEmpty()) {
+				responseMessage = 1;
+				System.out.println("首頁會員");				
+			}else {
+				responseMessage = 0;
+				System.out.println("首頁非會員");
+			}
+			PrintWriter out = res.getWriter();
+			out.print(responseMessage);
+			out.flush();
+		}
 
-//			if ("delete".equals(action)) { // 來自listAllEmp.jsp
-//				Map<String, String> errorMsgs1 = new LinkedHashMap<String, String>();
-//				req.setAttribute("errorMsgs", errorMsgs1);
-//
-//				/*************************** 1.接收請求參數 ***************************************/
-//				Integer memno = Integer.valueOf(req.getParameter("memno"));
-//
-//				/*************************** 2.開始刪除資料 ***************************************/
-//				MembersService memsSvc = new MembersService();
-//				memsSvc.deleteMember(memno);
-//
-//				/*************************** 3.刪除完成,準備轉交(Send the Success view) ***********/
-//				String url = "/back-end/members/listAllMem.jsp";
-//				RequestDispatcher successView = req.getRequestDispatcher(url);// 刪除成功後,轉交回送出刪除的來源網頁
-//				successView.forward(req, res);
-//			}
 	}
 }

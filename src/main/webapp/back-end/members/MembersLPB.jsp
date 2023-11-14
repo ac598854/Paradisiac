@@ -5,6 +5,8 @@
 <%@ page import="com.paradisiac.members.controller.*"%>
 <%@ page import="com.paradisiac.members.service.*"%>
 
+<%-- <%@ include file=<%=request.getContextPath()%>/"back-end.index.header.jsp" %> --%>
+
 <%
 List<MembersVO> list = null;
 if (request.getAttribute("getOne_For_Memno_SA") != null) {//
@@ -23,7 +25,16 @@ pageContext.setAttribute("list", list);
 
 <html>
 <head>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
 <title>MembersLPB.jsp: 會員管理列表</title>
+
+<!-- 引入Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <style>
 table#table-1 {
@@ -84,6 +95,8 @@ th, td {
 </style>
 
 </head>
+
+<%@ include file="/back-end/index/back-left.jsp" %>
 <body bgcolor='white'>
 
 	<table id="table-1">
@@ -94,7 +107,7 @@ th, td {
 
 	<h3>資料查詢:</h3>
 
-	<%-- 錯誤表列 --%>
+
 	<c:if test="${not empty errorMsgs}">
 		<font style="color: red">請修正以下錯誤:</font>
 		<ul>

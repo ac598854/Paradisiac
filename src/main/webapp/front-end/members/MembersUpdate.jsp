@@ -1,10 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.members.model.*"%>
+<%@ page import="com.paradisiac.members.service.*"%>
+<%@ page import="com.paradisiac.members.controller.*"%>
 <%@ page import="java.util.Base64"%>
 
+<%
+MembersService MemsSvc = new MembersService();
+Integer memno = (Integer) session.getAttribute("memno");// 取memno
+MembersVO membersVO = MemsSvc.getOneBymemno(memno);
+pageContext.setAttribute("membersVO", membersVO);
+%>
 <html>
 <head>
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>會員專區資料修改 - MembersUpdate.jsp</title>
 
@@ -57,7 +66,8 @@ th, td {
 }
 </style>
 </head>
-<body bgcolor='white'>
+<body>
+	<%@ include file="/front-end/index/MembersBody.jsp"%>
 
 	<div id="table-1">
 		<!-- Change the table to a div to apply the CSS -->
