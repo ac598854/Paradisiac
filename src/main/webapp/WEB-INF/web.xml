@@ -46,6 +46,18 @@
 		<servlet-name>LoginHandler</servlet-name>
 		<url-pattern>/back-end/members/login.do</url-pattern>
 	</servlet-mapping>
+	<servlet>
+        <servlet-name>CsmessagesServlet</servlet-name>
+        <servlet-class>com.paradisiac.csmessages.controller.CsmessagesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CsmessagesServlet</servlet-name>
+        <url-pattern>/back-end/csmessages/csmessages.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CsmessagesServlet</servlet-name>
+        <url-pattern>/front-end/csmessages/csmessages.do</url-pattern>
+    </servlet-mapping>
 
 	<listener>
 		<listener-class>com.paradisiac.listener.InitializerListener</listener-class>
@@ -71,6 +83,8 @@
 		<url-pattern>/front-end/actorder/ActCheckOut.jsp</url-pattern>
 		<url-pattern>/front-end/csmessages/MessageCPF.jsp</url-pattern>
 		<url-pattern>/front-end/csmessages/MessageLPF.jsp</url-pattern>
+		<url-pattern>/back-end/roomorder/orderbuy.jsp</url-pattern>
+        <url-pattern>/back-end/roomorder/memvieword.jsp</url-pattern>
 	</filter-mapping>
 
 </web-app>
