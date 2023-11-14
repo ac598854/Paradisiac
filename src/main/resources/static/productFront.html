@@ -198,14 +198,14 @@
 
 <div class="container">
   <div class="row">
-  <!-- 商品種類分類和價格範圍 -->
+    <!-- 商品種類分類和價格範圍 -->
     <aside class="col-md-3">
-  <!--商品種類-->
+      <!--商品種類-->
       <section class="filter">
         <ul class="list-group">
           <li class="list-group-item active" aria-current="true">All Categories</li>
-          <li class="list-group-item">主題商品</li>
-          <li class="list-group-item">精品商品</li>
+          <li class="list-group-item">主題衣服</li>
+          <li class="list-group-item">精品配件</li>
           <li class="list-group-item">主題公仔</li>
           <li class="list-group-item">精品衣服</li>
           <li class="list-group-item">主題日常用品</li>
@@ -223,15 +223,15 @@
       <button onclick="filterByPrice()">篩選</button>
       <button id="prevPage">上一頁</button>
       <button id="nextPage">下一頁</button>
-  </aside>
+    </aside>
 
-      <!-- 商品展示區域 -->
-      <main id="productsArea" class="col-md-8">
-        <div class="card">
+    <!-- 商品展示區域 -->
+    <main id="productsArea" class="col-md-8">
+      <div class="card">
 
-        </div>
-        <!-- 商品資訊將在這裡動態加載，使用JavaScript從後端API取得資料後展示 -->
-      </main>
+      </div>
+      <!-- 商品資訊將在這裡動態加載，使用JavaScript從後端API取得資料後展示 -->
+    </main>
   </div>
 </div>
 
@@ -264,8 +264,8 @@
 </footer>
 <script src="js/mainFront.js"></script>
 <script>
-	let shoppingMallLink = document.getElementById("cart");
-	shoppingMallLink.href = projectName + "/front-end/cart/cart.html";
+  let shoppingMallLink = document.getElementById("cart");
+  shoppingMallLink.href = projectName + "/front-end/cart/cart.html";
 </script>
 </body>
 </html>
