@@ -1,3 +1,17 @@
+let pathName = window.document.location.pathname;
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+window.onpageshow = function(event) {
+    // 檢查是否已經進行過重新載入
+    var hasReloaded = sessionStorage.getItem('hasReloaded');
+
+    if (event.persisted || hasReloaded === null) {
+        // 清除瀏覽器快取
+        window.location.reload(true);
+
+        // 設定標誌表示已經進行過重新載入
+        sessionStorage.setItem('hasReloaded', 'true');
+    }
+};
 // 1. 初始化設定
 window.onload = function() {
     loadProducts();
@@ -6,7 +20,7 @@ window.onload = function() {
 // 2. 載入商品資料
 function loadProducts() {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'http://localhost:8080/products', true);
+    xhr.open('GET', projectName + '/products', true); // 修改為動態路徑
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var productsData = JSON.parse(xhr.responseText);
@@ -15,6 +29,7 @@ function loadProducts() {
     }
     xhr.send();
 }
+
 
 // 3. 顯示商品資料
 function displayProducts(products) {
@@ -27,6 +42,11 @@ function displayProducts(products) {
     }
 
     products.forEach(product => {
+        // 檢查商品狀態，如果是下架狀態，則跳過
+        if (product.status === 'STATUSOff') {
+            return; // 跳過此次迴圈，不渲染該商品
+        }
+
         var productDiv = document.createElement('div');
         productDiv.className = 'productCard';
 
@@ -42,18 +62,189 @@ function displayProducts(products) {
         productPrice.innerText = "NT$ " + product.price;
         productDiv.appendChild(productPrice);
 
+        // 新增Add To Cart按鈕
+        var addToCartButton = document.createElement('button');
+        addToCartButton.className = 'btn btn-primary';
+        addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
+        addToCartButton.addEventListener('click', function() {
+            addToCart(product.productName, product.price, product.description,product.stock,product.productId);
+        });
+//         addToCartButton.setAttribute('data-id', product.productId); // 設定產品編號
+//         addToCartButton.setAttribute('data-name', product.productName); // 設定產品名稱
+//         addToCartButton.setAttribute('data-price', product.price); // 設定產品價格
+
+        // 設置點擊事件，不再綁定原本的addToCart函數
+        addToCartButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+        })// 阻止事件冒泡到父元素
+
+//             let prodNo = this.getAttribute('data-id');
+//             let prodName = this.getAttribute('data-name');
+//             let prodPrice = this.getAttribute('data-price');
+//        
+//             $.ajax({
+//                 url: '/Cart', // Servlet 的 URL
+//                 type: 'POST',
+//                 contentType: 'application/json; charset=utf-8',
+//                 data: JSON.stringify({
+//                     prodNo: prodNo,
+//                     prodName: prodName,
+//                     prodPrice: prodPrice,
+//                     action: 'add' // 告訴 Servlet 這是添加操作
+//                 }), // 將實際的產品資訊發送給後端
+//                 dataType: 'json',
+//                 success: function(response) {
+//                     console.log(response); // 處理成功時的回調
+//                 },
+//                 error: function(xhr, status, error) {
+//                     console.error(error); // 處理錯誤時的回調
+//                 }
+//             });
+//         });
+//
+//        // //增加右上角的購物車數字
+//        // addToCartButton.onclick = addToCart; // 綁定事件
+//        // // 更新 addToCartButton 的 onclick 設定
+//        // addToCartButton.onclick = function(event) {
+//        //     addToCart(event); // 這裡傳遞事件對象
+//        // };
+
+        productDiv.appendChild(addToCartButton);
+
         productDiv.onclick = function() {
-            window.location.href = `product.html?productId=${product.productId}`;
+            window.location.href = projectName + `/product.html?productId=${product.productId}`;
         };
         productsArea.appendChild(productDiv);
     });
 }
+//==============================加入購物車============================//
+const cart = {};
+let cartItemCountElement; // 購物車內數量
+
+function updateCartItemCount() {
+    let totalProductCount = 0;
+    for (const product in cart) {
+        totalProductCount += cart[product].quantity;
+    }
+    cartItemCountElement.textContent = totalProductCount;
+}
+
+function addToCart(productName, price,description,stock,productId) {
+    console.log(productId);
+    if (cart[productName]) {
+        cart[productName].quantity++;
+    } else {
+        cart[productName] = {
+            productId:productId,
+            price: price,
+            description: description,
+            quantity: 1,
+            stock:stock
+        };
+    }
+    console.log(cart);
+    post();
+    updateCartItemCount();
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    cartItemCountElement = document.getElementById('cartItemCount');
+    reload();
+
+//            const cartButton = document.getElementById("shoppingCart");
+//            cartButton.addEventListener("click", function () {
+//                const cartPageURL = "cart.html";
+//                window.location.href = cartPageURL;
+//            });
+});
+
+//====================POST===========================================//
+
+function post() {
+
+    const cartJSON = JSON.stringify(cart);
+    console.log("傳送的數據:" + cartJSON);
+    const dataToSend = { action: 'checkout', cartData: cartJSON };
+
+    fetch(projectName + '/Cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(dataToSend)
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw  Error('沒有取得回應');
+        }
+    })
+        .then(data => {
+            if (data.add) {
+                alert(data.add);
+            }
+        });
+}
+//========================頁面加載時GET====================================//
+function reload() {
+    fetch(projectName + '/Cart', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+                console.log(response.json());
+            } else {
+                throw new Error('沒有取得回應');
+            }
+        })
+        .then(data => {
+
+            if (data.error) {
+                console.log(data.error);
+            } else {
+                for (const productName in data) {
+                    cart[productName] = data[productName];
+                }
+
+                updateCartItemCount();
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 4. 商品搜尋功能
 function searchProducts() {
     const query = document.getElementById('searchInput').value;
     var xhr = new XMLHttpRequest();
-    let apiUrl = 'http://localhost:8080/products?search=' + encodeURIComponent(query);
+    let apiUrl = projectName + '/products?search=' + encodeURIComponent(query);
     xhr.open('GET', apiUrl, true);
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
@@ -77,7 +268,7 @@ const limit = 8;
 
 async function fetchProducts() {
     try {
-        const response = await fetch(`http://localhost:8080/products?limit=${limit}&offset=${offset}`);
+        const response = await fetch(projectName + `/products?limit=${limit}&offset=${offset}`);
         if (response.ok) {
             const data = await response.json();
             const products = data.results;
@@ -121,4 +312,86 @@ document.getElementById('nextPage').addEventListener('click', () => {
     fetchProducts();
 });
 
-fetchProducts();
+
+//6.商品種類點擊
+const categories = [
+    { text: '主題商品', value: 'ParadisiacTheme' },
+    { text: '精品商品', value: 'ParadisiacExquisite' },
+    { text: '主題公仔', value: 'ParadisiacThemeActionFigures' },
+    { text: '精品衣服', value: 'ParadisiacExquisiteCloththing' },
+    { text: '主題日常用品', value: 'ParadisiacThemehousehold' }
+];
+//為每個商品種類添加點擊事件
+document.querySelectorAll('.list-group-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // 移除所有類別上的 "active" 標籤
+        document.querySelectorAll('.list-group-item').forEach(i => {
+            i.classList.remove('active');
+        });
+
+        // 僅對當前點擊的類別加上 "active" 標籤
+        this.classList.add('active');
+
+        // 判斷點擊的是否是 "All Categories"
+        if (this.textContent === 'All Categories') {
+            displayAllProducts(); // 呼叫函數以顯示所有商品
+        } else {
+            // 如果不是 "All Categories"，則找到點擊的類別對應的值
+            const category = categories.find(c => c.text === this.textContent)?.value;
+            if (category) {
+                filterProductsByCategory(category); // 過濾該類別的商品並顯示
+            }
+        }
+    });
+});
+
+// 顯示所有商品的函數
+function displayAllProducts() {
+    $.ajax({
+        url: projectName + '/products', // 不帶類別參數，表示請求所有商品
+        type: 'GET',
+        success: function(response) {
+            if (response && response.results) {
+                displayProducts(response.results);
+            } else {
+                console.error('Unexpected response structure:', response);
+                productsArea.innerHTML = '<p>無法顯示商品資訊，請稍後再試。</p>';
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + status + " - " + error);
+        }
+    });
+}
+// 根據類別過濾商品的函數
+function filterProductsByCategory(categoryValue) {
+    $.ajax({
+        url: projectName + `/products?category=${encodeURIComponent(categoryValue)}`,
+        type: 'GET',
+        success: function(response) {
+            // 確保傳遞給 displayProducts 的是一個陣列
+            if (response && response.results) {
+                // 如果 response.results 是陣列，則直接使用
+                displayProducts(response.results);
+            } else {
+                // 如果 response 就是陣列或其他問題，應進行錯誤處理
+                console.error('Unexpected response structure:', response);
+                // 可以選擇顯示錯誤訊息或者其他用戶友善的處理方式
+                productsArea.innerHTML = '<p>無法顯示商品資訊，請稍後再試。</p>';
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Error: " + status + " - " + error);
+        }
+    });
+}
+
+// //更新購物車的數量
+// function addToCart(event) {
+//     var cartCountElement = document.getElementById('cartCount');
+//     var currentCount = parseInt(cartCountElement.textContent);
+//     cartCountElement.textContent = currentCount + 1;
+//
+//     // 阻止事件冒泡
+//     event.stopPropagation();
+// }

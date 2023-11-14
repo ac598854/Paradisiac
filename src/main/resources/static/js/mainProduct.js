@@ -1,3 +1,5 @@
+let pathName = window.document.location.pathname;
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 // 當頁面加載時取得productId並調用API
 document.addEventListener('DOMContentLoaded', function() {
 
@@ -6,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const productId = urlParams.get('productId');
 
     // 使用productId調用API來獲取商品詳情
-    fetch(`http://localhost:8080/products/${productId}`)
+    fetch(projectName + `/products/${productId}`)
         .then(response => response.json())
         .then(product => {
             displayProductDetail(product);
@@ -19,6 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSimilarProducts();
 });
 
+// 轉換種類名稱的函數
+function convertCategoryToChinese(category) {
+    switch (category) {
+        case 'ParadisiacTheme':
+            return '主題商品';
+        case 'ParadisiacExquisite':
+            return '精品商品';
+        default:
+            return category;  // 如果有其他種類，則直接返回
+    }
+}
 // 顯示商品詳情的函數
 function displayProductDetail(product) {
     const detailDiv = document.getElementById('productDetail');
@@ -34,7 +47,7 @@ function displayProductDetail(product) {
 
     const productDetails = [
         ['商品名稱', product.productName],
-        ['種類', product.category],
+        ['種類', convertCategoryToChinese(product.category)], // 使用轉換函數
         ['價格', "NT$ " + product.price],
         ['庫存', product.stock], // 假設有一個stock屬性
         ['描述', product.description]
@@ -50,7 +63,7 @@ function displayProductDetail(product) {
 }
 
 function loadSimilarProducts() {
-    fetch('http://localhost:8080/products')
+    fetch(projectName + '/products')
         .then(response => response.json())
         .then(data => {
             // 從所有商品中隨機選擇四個

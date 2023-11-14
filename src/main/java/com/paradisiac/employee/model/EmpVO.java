@@ -18,6 +18,16 @@ import com.paradisiac.department.model.DeptVO;
 @Entity
 @Table(name = "employee")
 public class EmpVO implements java.io.Serializable{
+	
+	public EmpVO(){
+		
+	}
+	
+	public EmpVO(Integer empno,String empPass){
+		
+	}
+
+
 	@Expose
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
@@ -71,8 +81,10 @@ public class EmpVO implements java.io.Serializable{
 	}
 	//=======聯合映射=================
 	public DeptVO getDept() {
-		return dept;
+		return dept; 
 	}
+	
+
 	public void setDeptVO(DeptVO dept) {
 		this.dept = dept;
 	}

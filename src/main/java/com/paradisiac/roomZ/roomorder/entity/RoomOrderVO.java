@@ -1,6 +1,7 @@
 package com.paradisiac.roomZ.roomorder.entity;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,7 +18,7 @@ public class RoomOrderVO {
 	@Column(name = "room_order_no", updatable = false)
 	private Integer roomOrderNo;
 	@Column(name = "room_order_date")
-	private Date roomOrderDate;
+	private Timestamp roomOrderDate;
 	@Column(name = "checkin_date")
 	private Date checkinDate;
 	@Column(name = "checkout_date")
@@ -32,8 +33,8 @@ public class RoomOrderVO {
 	private Integer price;
 	@Column(name = "payment_method", columnDefinition = "tinyint")
 	private byte paymentMethod;
-	@Column(name = "pay_status")
-	private boolean payStatus;
+	@Column(name = "pay_status", columnDefinition = "tinyint")
+	private byte payStatus;
 	@Column(name = "order_status", columnDefinition = "tinyint")
 	private byte orderStatus;
 	
@@ -46,10 +47,10 @@ public class RoomOrderVO {
 	public void setRoomOrderNo(Integer roomOrderNo) {
 		this.roomOrderNo = roomOrderNo;
 	}
-	public Date getRoomOrderDate() {
+	public Timestamp getRoomOrderDate() {
 		return roomOrderDate;
 	}
-	public void setRoomOrderDate(Date roomOrderDate) {
+	public void setRoomOrderDate(Timestamp roomOrderDate) {
 		this.roomOrderDate = roomOrderDate;
 	}
 	public Date getCheckinDate() {
@@ -94,10 +95,10 @@ public class RoomOrderVO {
 	public void setPaymentMethod(byte paymentMethod) {
 		this.paymentMethod = paymentMethod;
 	}
-	public boolean isPayStatus() {
+	public byte getPayStatus() {
 		return payStatus;
 	}
-	public void setPayStatus(boolean payStatus) {
+	public void setPayStatus(byte payStatus) {
 		this.payStatus = payStatus;
 	}
 	public byte getOrderStatus() {

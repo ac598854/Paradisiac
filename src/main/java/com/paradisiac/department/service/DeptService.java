@@ -9,7 +9,7 @@ import com.paradisiac.employee.model.EmpVO;
 
 
 public interface DeptService {
-	DeptVO addDept(DeptVO dept);
+	Integer addDept(DeptVO dept);
 	
 	DeptVO updateDept(DeptVO dept);
 	
@@ -18,7 +18,7 @@ public interface DeptService {
 	Set<EmpVO> getDeptByDeptnoE(Integer deptno);
 	
 	DeptVO getDeptByDeptno(Integer deptno);
-	//Set<EmpVO> getDeptByDeptno(Integer deptno);
+
 
 	List<DeptVO> getAllDepts(int currentPage);
 

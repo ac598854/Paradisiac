@@ -11,7 +11,7 @@ public interface DeptDAO_interface {
 	//此介面定義增刪改查方法
 	public Integer insert(DeptVO deptVO);
 	
-	public Integer update(DeptVO deptVO);
+	public DeptVO update(DeptVO deptVO);
 	
 	public Integer delete(Integer deptNo);
 	

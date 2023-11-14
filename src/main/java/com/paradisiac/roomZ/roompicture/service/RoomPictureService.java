@@ -3,7 +3,7 @@ package com.paradisiac.roomZ.roompicture.service;
 import java.util.List;
 
 import com.paradisiac.roomZ.roompicture.dao.RoomPictureDAO;
-import com.paradisiac.roomZ.roompicture.entity.RoomPictureVO;
+import com.paradisiac.roomZ.roompicture.entity.RoomPictureeVO;
 import com.paradisiac.roomZ.roompicture.dao.RoomPictureDAOImpl;
 import com.paradisiac.util.HibernateUtil;
 
@@ -14,12 +14,12 @@ public class RoomPictureService {
 			dao = new RoomPictureDAOImpl(HibernateUtil.getSessionFactory());
 		}
 		
-		 public RoomPictureVO addpic(
+		 public RoomPictureeVO addpic(
                  Integer roomTypeNo,
                  byte[] Pic
 		 ) {
 
-			 RoomPictureVO roomPictureVO = new RoomPictureVO();
+			 RoomPictureeVO roomPictureVO = new RoomPictureeVO();
 			 roomPictureVO.setRoomTypeNo(roomTypeNo);
 			 roomPictureVO.setPic(Pic);
 		     dao.insert(roomPictureVO);
@@ -27,7 +27,7 @@ public class RoomPictureService {
 		 }
 		 
 		
-			public List<RoomPictureVO> getAllpic() {
+			public List<RoomPictureeVO> getAllpic() {
 				
 				 return dao.getAll();
 			}

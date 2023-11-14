@@ -52,9 +52,10 @@ public class getCalendarInfoServlet extends HttpServlet {
 			System.out.println("接收前端資料："+selectDay);
 //			String age = jsonObject.getString("age");
 			// 後端控制台輸出結果
-//			System.out.println("first data: " + name + ", " + age);
+			
 			roomTypeInfojsonStr = rcservice.getCalSingleDTOsForDay(selectDay);
 			// 將資料回傳給前端網頁
+			//System.out.println("first data: "+roomTypeInfojsonStr );
 			response.getWriter().write(roomTypeInfojsonStr);
 		//第2個Get
 		}else if (pathInfo.equals("/Second")) {

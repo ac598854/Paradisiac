@@ -1,34 +1,10 @@
 /* 基本頁面樣式 */
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
+    background-color: lightblue;
     margin: 0;
     padding: 0;
     color: #333;
-}
-
-/* 頁首樣式 */
-header {
-    background-color: lightblue;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5%;
-}
-
-header button {
-    background-color: rebeccapurple;
-    color: #fff;
-    border: none;
-    padding: 5px 15px;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-header button:hover {
-    background-color: rebeccapurple;
 }
 
 /* 導航欄樣式 */
@@ -83,6 +59,22 @@ main {
     padding: 20px;
 }
 
+/* 添加動畫效果 */
+@keyframes clickAnimation {
+    0% { background-color: #f8f9fa; }
+    50% { background-color: #e2e6ea; }
+    100% { background-color: #f8f9fa; }
+}
+.list-group-item {
+    cursor: pointer; /* 設置游標為指針，表示該項目可點擊 */
+    border: none !important; /* 移除邊框 */
+    margin-bottom: -1px !important; /* 負的間隙來重疊邊框 */
+}
+
+.list-group-item:active {
+    animation: clickAnimation 0.5s ease;
+}
+
 /* 商品卡片樣式 */
 .productCard {
     width: calc((100% / 4) - 2%);
@@ -106,7 +98,7 @@ main {
 .productCard img {
     max-width: 100%;
     display: block;
-    margin: 10px auto;
+    margin:  auto;
     max-height: 130px;
 }
 
@@ -122,9 +114,17 @@ main {
     font-size: 16px;
     margin-bottom: 10px;
     position: absolute;
-    bottom: 10px;
     left: 10px;
 }
+
+.productCard button {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    padding: 5px 10px;
+}
+
 
 /* 其他通用樣式 */
 .clearfix::after {

@@ -40,7 +40,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
-                "description, created_date, last_modified_date " +
+                "description, created_date, last_modified_date, status " +
                 "from product where 1=1";
 
         Map<String, Object> map = new HashMap<>();
@@ -62,7 +62,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Product getProductById(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
-                "description, created_date, last_modified_date " +
+                "description, created_date, last_modified_date, status " +
                 "from product where product_id = :productId";
 
         Map<String, Object> map = new HashMap<>();
@@ -80,17 +80,11 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "INSERT INTO product (product_name, category, image_url, price, stock, " +
-                "description, created_date, last_modified_date) " +
+                "description, created_date, last_modified_date, status) " +
                 "VALUES (:productName, :category, :imageUrl, :price, :stock, :description," +
-                ":createdDate, :lastModifiedDate)";
+                ":createdDate, :lastModifiedDate, :status)";
 
-        Map<String, Object> map = new HashMap<>();
-        map.put("productName", productRequest.getProductName());
-        map.put("category", productRequest.getCategory().toString());
-        map.put("imageUrl", productRequest.getImageUrl());
-        map.put("price", productRequest.getPrice());
-        map.put("stock", productRequest.getStock());
-        map.put("description", productRequest.getDescription());
+        Map<String, Object> map = parseProductRequest(productRequest);
 
         Date now = new Date();
         map.put("createdDate", now);
@@ -107,22 +101,27 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
-                "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate" +
+                "price = :price, stock = :stock, description = :description, last_modified_date = :lastModifiedDate, status = :status" +
                 " WHERE product_id = :productId";
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = parseProductRequest(productRequest);
         map.put("productId", productId);
-
-        map.put("productName", productRequest.getProductName());
-        map.put("category", productRequest.getCategory().toString());
-        map.put("imageUrl", productRequest.getImageUrl());
-        map.put("price", productRequest.getPrice());
-        map.put("stock", productRequest.getStock());
-        map.put("description", productRequest.getDescription());
 
         map.put("lastModifiedDate", new Date());
 
         namedParameterJdbcTemplate.update(sql, map);
     }
+
+    @Override
+    public void updateStock(Integer productId, Integer stock) {
+        String sql = "UPDATE product SET stock = :stock WHERE product_id = :productId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        map.put("stock", stock);
+
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
     @Override
     public void deleteProductById(Integer productId) {
         String sql = "DELETE FROM product WHERE product_id = :productId";
@@ -143,5 +142,19 @@ public class ProductDaoImpl implements ProductDao {
         }
 
         return sql;
+    }
+
+    private Map<String, Object> parseProductRequest(ProductRequest productRequest) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productName", productRequest.getProductName());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+        map.put("status", productRequest.getStatus().toString());
+
+        return map;
     }
 }

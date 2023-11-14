@@ -2,12 +2,12 @@ package com.paradisiac.roomZ.roompicture.dao;
 
 import java.util.List;
 
-import com.paradisiac.roomZ.roompicture.entity.RoomPictureVO;
+import com.paradisiac.roomZ.roompicture.entity.RoomPictureeVO;
 
 public interface RoomPictureDAO {
-	int insert(RoomPictureVO roomPictureVO);
-	int update(RoomPictureVO roomPictureVO);
-	RoomPictureVO findByPrimaryKey(Integer roomPictureVO);
+	int insert(RoomPictureeVO roomPictureVO);
+	int update(RoomPictureeVO roomPictureVO);
+	RoomPictureeVO findByPrimaryKey(Integer roomPictureVO);
 	
-	List<RoomPictureVO> getAll();
+	List<RoomPictureeVO> getAll();
 }
