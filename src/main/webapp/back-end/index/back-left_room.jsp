@@ -257,7 +257,7 @@
         </li>
         <ul class="sub-menu" id="submenu-2">
             <li>
-            <a href="#">訂房行事曆</a>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間管理系統</a>
             </li>
             <li>
             <a href="#">訂房房型管理</a>
@@ -269,7 +269,7 @@
             <a href="#">訂房房型圖片管理</a>
             </li>
             <li>
-            <a href="#">訂房房間管理</a>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">訂房房間管理</a>
             </li>
      </ul>
        

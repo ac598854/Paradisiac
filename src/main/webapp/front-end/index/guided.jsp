@@ -37,7 +37,7 @@
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item"><a class="nav-link b" href="#">首頁</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">預訂</a></li>
+					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">聯絡我們</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">最新活動</a></li>
 					<li class="nav-item"><a class="nav-link"

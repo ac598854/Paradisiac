@@ -109,6 +109,7 @@
   $(document).ready(function() {
     updateCalendarDate();
   });
+  
   //從redis讀取每日所有房型資料
   function updateCalendarDate() {
 	  //取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
