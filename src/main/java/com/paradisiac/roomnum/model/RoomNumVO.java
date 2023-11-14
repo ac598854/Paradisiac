@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.NamedQuery;
+
+
 @Entity
 @Table(name = "room_num")
 public class RoomNumVO implements java.io.Serializable{

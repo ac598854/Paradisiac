@@ -33,7 +33,7 @@ public class getCalendarInfoServlet extends HttpServlet {
 		String pathInfo = request.getPathInfo();
 		
 		System.out.println("Request pathInfo: " + pathInfo);
-		//cal.jsp在點選行曆日期後取得每日房型資訊
+		//第1個Get
 		if (pathInfo.equals("/firstGet")) {
 			StringBuilder buffer = new StringBuilder();
 			String roomTypeInfojsonStr ="";

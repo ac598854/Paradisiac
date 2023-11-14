@@ -23,8 +23,7 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 	public RoomOrderServiceImpl() {
 		dao = new RoomOrderDAOImpl(HibernateUtil.getSessionFactory());
 	}
-
-
+	
 	@Override
 	public int addorder(Timestamp roomOrderDate, Date checkinDate, Date checkoutDate, Integer roomTypeNo, Integer memNo,
 			Integer roomAmount, Integer price, byte paymentMethod, byte payStatus, byte orderStatus) {
@@ -112,5 +111,16 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 	public RoomOrderDTO getbyOneCheckIn(Integer id) {
 		
 		return dao.getbyOneCheckIn(id);
-	}	
+	}
+
+	
+
+	@Override
+	public int updateOrderStatus(Integer roomOrderNo, byte orderStatus) {
+		// TODO Auto-generated method stub
+		return dao.updateOrderStatus(roomOrderNo, orderStatus);
+	}
+
+
+	
 }

@@ -59,7 +59,7 @@
          	//超過當天之前的日期不顯示
         	if (day > currentDay || currentMonth > currentDate.getMonth() || currentYear > currentDate.getFullYear()) {
             var dday = String("" + day).padStart(2, '0');
-            cell.innerHTML += "<label class=\"calstatus\" name=\"calstatus\" id=\"" + year + "-" + (month + 1) + "-" + dday + "\"pointer-events:none>" + day + "</label>";
+            cell.innerHTML += "<label class=\"calstatus\" name=\"calstatus\" id=\"" + year + "-" + String(month + 1).padStart(2, '0') + "-" + dday + "\"pointer-events:none>" + day + "</label>";
           } else {
             cell.innerHTML += "--";
           }
@@ -128,8 +128,10 @@
           
           var vdate = item.vdate;
           var aStatus = item.aStatus;
-          var labelId = vdate;          
+          var labelId = vdate; 
+               
           var labelElement = document.getElementById(labelId);
+          console.log("測試:==labelElement:",labelElement,"aStatus:",aStatus,"vdate:",vdate);
          //尋找行事曆上原的日期若有找到則填入狀態○、△、X
           if (labelElement) {
             labelElement.innerHTML +=`&nbsp;&nbsp;` + aStatus;
@@ -139,15 +141,25 @@
       error: function(error) {}
     });
   }
- //依選擇的日期到後端取的房型資料
+  //===================================
+// 動態生成下拉選單
+function generateOptions(start, end, selectedValue, roomTypeNo, vDate) {
+	let options = '';
+	for (let i = start; i <= end; i++) {
+		options += `<option value="${i}">${i}</option>`;
+	}
+	return options;
+}
+//===================================
+//依選擇的日期到後端取得資料
 function getSingleForDay(selectDay) {
-	console.log("取得日期資料：",selectDay);
+	console.log("取得日期資料：", selectDay);
 	const data = { selectDay: selectDay };
 	//取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
 	let pathName = window.document.location.pathname;
-				//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
+	//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
 	let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-			//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
+	//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
 	//roominfo.do -->roomcalendar/getCalendarInfoServlet.java
 	fetch(`${projectName}/roominfo.do/firstGet`, {
 		method: 'POST',
@@ -160,49 +172,98 @@ function getSingleForDay(selectDay) {
 		// response.text()是從servlet取得的資料
 		.then(response => response.json())
 		.then(jsonData => {
+			// ★★★★★動態生成下拉選單generateOptions()================
+			function generateOptions(start, end, selectedValue, roomTypeNo, vDate) {
+  				  let options = '';
+   					 for (let i = start; i <= end; i++) {
+       				 options += `<option value="${i}">${i}</option>`;
+   					 }
+   				 return options;
+			}
+			//★★★★★===============================================
+			
 			const roomInfoContainer = document.getElementById('roomInformation');
-			roomInfoContainer.innerHTML ="";
+			roomInfoContainer.innerHTML = "";
 			console.log(jsonData);
 			jsonData.forEach(item => {
 				//取得檔案所在路徑/cha103g2/front-end/roomcalendar/calAll.jsp <---為了去取得照片所以使用動態取得專案名稱
 				let pathName = window.document.location.pathname;
 				//字串分割後取得專案名稱/cha103g2  <---為了去取得照片所以使用動態取得專案名稱
 				let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-			//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
-				let html = `
-		 	 <div class="container" border p-3>
-			  <div class="row">
-				  <div class="col-md-4">
+				//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
+				//可下訂數量
+				let booking = item.roomTotal - item.rbooking;
+				
+				//可下訂數量不等於0的房型才顯示
+				if (booking != 0) {
+				 // 動態生成下拉選單的 HTML
+    		    let optionsHtml = generateOptions(1, booking, 1, item.roomTypeNo, item.vDate);
+				
+					let html = `
+    				<div class="container" style="border: 1px solid black; padding: 10px;">
+      				  <div class="row">
+         			    <div class="col-md-4">
+               		      <img src=${projectName}/DBGifReader2?picno=${item.roomTypeNo} width="300x">
+            			</div>
+            			<div class="col-md-8 ">
+                			<h2>${item.roomName}</h2>
+                			<p>這是我們酒店提供的最豪華的客房。這個房間設計精美，設有舒適的床和優雅的室內裝潢。</p>
+               			 	<ul class="ul_container" style="list-style-position: block;">
+                   			<div class="row">
+                        		<div class="col-md-6">
+                            	<li>房型編號： ${item.roomTypeNo}</li>
+                            	<li>設施：${item.notice}</li>
+                            	<li>假日：${item.holiDayPrice}</li>
+                            	<li>連假：${item.bridgeHolidayPrice}</li>
+                            	<!-- 將預訂數量改成下拉選單 -->
+                            	<li>
+                            	<!--★★★★★===========動態生成下拉選單=========== -->
+                              <label for="bookingSelect_${item.roomTypeNo}_${item.vDate}">預訂數量：</label>
+            				  <select id="bookingSelect_${item.roomTypeNo}_${item.vDate}" name="bookingSelect" data-roomTypeNo="${item.roomTypeNo}" data-vDate="${item.vDate}">
+             				   ${optionsHtml}
+           					 </select>
+           					 	<!--★★★★★===========動態生成下拉選單=========== -->
+                            </li>
+                        </div>
+                        <div class="col-md-6">
+                           	  <li>日期：${item.vDate}</li>
+                           	  <li>房型：${item.rType}</li>
+                              <li>設施：${item.facility}</li>
+                          	  <li>原價：${item.price}</li>
+                          	  <li>總間數：${item.roomTotal}</li>
+                          	  <li>可下訂數量：${booking}</li>
+                     		  </div>
+                 		  	 </div>
+             		   		</ul>
+             		   		
+              			 <a href="#" class="badge btn-secondary rounded fs-5" onclick="showDetail(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', document.getElementById('bookingSelect_${item.roomTypeNo}_${item.vDate}').value)">立即訂購</a>
 
-					<img src=${projectName}/DBGifReader2?picno=${item.roomTypeNo} width="300x">
-				  </div>
-				  <div class="col-md-8 ">
-					  <h2>${item.roomName}</h2>
-					  <p>這是我們酒店提供的最豪華的客房。這個房間設計精美，設有舒適的床和優雅的室內裝潢。</p>
-					  <ul class="ul_container">
-						  <li>房型編號： ${item.roomTypeNo}</li>
-						  <li>設施：${item.notice}</li>
-						  <li>假日：${item.holiDayPrice}</li>
-						  <li>連假：${item.bridgeHolidayPrice}</li>
-						  <li>日期：${item.vDate}</li>
-						  <li>${item.rType}</li>
-						  <li>設施：${item.facility}</li>
-						  <li>原價：${item.price}</li>
-						  <li>預訂數量：${item.rbooking}</li>
-						 <a href="#" class="badge btn-secondary rounded fs-5" onclick="showDetail(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', ${item.rbooking})">立即訂購</a>
-						 
-					  </ul>
-
-				  </div>
-			  </div>
-		  </div>
-          `;		
-           		console.log("=====vDate:",item.vDate);
+         		  </div>
+         
+       			 </div>
+    			</div>
+				`;
+				
+				console.log("=====vDate:", item.vDate);
 				roomInfoContainer.innerHTML += html;
+				
+				//=========================================================
+
+				// ★★★★★為生成的下拉選單添加事件監聽器
+				const bookingSelect = document.getElementById(`bookingSelect_${item.roomTypeNo}_${item.vDate}`);
+				bookingSelect.addEventListener('change', function() {
+					// 獲取選中的值
+					const selectedBooking = bookingSelect.value;
+					// 調用 showDetail 函數，將選中的值傳遞給它
+					showDetail(item.roomTypeNo, item.vDate, item.roomName, item.rType, item.holiDayPrice, item.bridgeHolidayPrice, item.price, item.notice, item.facility, selectedBooking);
+
+
+				//★★★★★============================================================
+				});
+				} //if的括號
 			});
-			// 将获取的值设置到标签上 <button class="btn btn-primary offset-md-6 onclick="handleReservation(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', ${item.rBooking})">立即預訂</button>
+
 		})
-		.catch(error => console.error('Error:', error));
 }
 	//將按下立即訂房 取出資料顯示在燈箱上面
  function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility, rbooking) {
@@ -222,6 +283,7 @@ function getSingleForDay(selectDay) {
                 <p>注意事項：${notice}</p>
                 <p>設施：${facility}</p>
                 <p>預訂數量：${rbooking}</p>
+                <p>總共：${price*rbooking}元</p>
             `;
 		
 		lightboxContent.innerHTML =html;

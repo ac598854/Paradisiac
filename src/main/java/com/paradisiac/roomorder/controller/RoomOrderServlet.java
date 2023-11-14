@@ -147,7 +147,7 @@ public class RoomOrderServlet extends HttpServlet {
 
 		Integer roomOrderNoInt = null;
 
-		// 
+		// 将字符串参数解析为整数
 		Timestamp roomOrderDatedt = null;
 		Date checkinDatedt = null;
 		Date checkoutDatedt = null;
@@ -161,7 +161,7 @@ public class RoomOrderServlet extends HttpServlet {
 		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
 		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
 
-		byte payStatusBool = Byte.parseByte(payStatus);
+		byte payStatusbyte = Byte.parseByte(payStatus);
 		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
 		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
 
@@ -181,7 +181,7 @@ public class RoomOrderServlet extends HttpServlet {
 		// 如果有確定進入資料庫會有流水編號，再去找流水編號的值，顯示在jsp
 
 		int result = roomOrderService.updateorder(roomOrderNoInt, roomOrderDatedt, checkinDatedt, checkoutDatedt,
-				roomTypeNoInt, memNoInt, roomAmountInt, priceInt, paymentMethod, payStatusBool, orderStatus);
+				roomTypeNoInt, memNoInt, roomAmountInt, priceInt, paymentMethod, payStatusbyte, orderStatus);
 
 		if (result > 0) {
 			System.out.println("更新成功");
