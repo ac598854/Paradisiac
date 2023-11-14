@@ -56,8 +56,6 @@ public class PhaServlet extends HttpServlet {
 		//新增相簿
 		if("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			Integer albNo = null;
@@ -161,6 +159,27 @@ public class PhaServlet extends HttpServlet {
 			forwardPath = "/back-end/pha/updateOnePha.jsp";//updateOnePha.jsp
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
 			successView.forward(req, res);
+		}
+		//修改相簿內容
+		if("insert".equals(action)) {
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
+			
+			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+			Integer memNo = Integer.valueOf(req.getParameter("memNo"));			
+			String albName = req.getParameter("albName").trim();
+			if(albName == null || albName.trim().length() == 0) {
+				errorMsgs.add("相簿名稱請勿空白");
+			}
+			java.sql.Date albDate = null;
+			try {
+				albDate = java.sql.Date.valueOf(req.getParameter("albDate").trim());
+			}catch(Exception e) {
+				errorMsgs.add("相簿建立日期請勿空白");
+			}
+			//開始打包
+			
+			
 		}
 		
 		

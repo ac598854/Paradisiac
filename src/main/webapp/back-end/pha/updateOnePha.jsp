@@ -79,7 +79,6 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label for="albumSubmit">建立相簿</label>
                         <input type="hidden" name="action" value="insert">
                         <button type="submit" class="btn btn-primary" id="albumSubmit">送出</button>
                     </div>
