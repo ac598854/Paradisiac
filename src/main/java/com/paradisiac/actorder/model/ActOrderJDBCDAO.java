@@ -21,8 +21,9 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
-	private static final String INSERT = "INSERT INTO act_order(act_order_no,mem_no,schd_no,emp_no,order_time,a_atn_num,order_status,pay_method,pay_status,pay_time,order_amount) values (concat(date_format(now(), '%Y%m%d'), '-', lpad(last_insert_id() + 1, 4, '0')), ?, ?, null, (concat(date_format(now()), '-'), ?, true, ?, ?, ?, ?)";
-	private static final String UPDATE_ORDERSTATUS = "UPDATE ct_order SET order_status=?, pay_status=?, pay_time=? WHERE act_order_no = ?";
+	private static final String INSERT = "INSERT INTO act_order(mem_no,schd_no,order_time,a_atn_num,order_status,pay_method,pay_status,pay_time,order_amount) values (?, ?, NOW(),true, ?, true, ?, ?, ?)";
+	private static final String UPDATE_BACK_STATUS = "UPDATE act_order SET emp_no=? order_status=?, pay_status=?, pay_time=? WHERE act_order_no = ?";
+	private static final String UPDATE_FRONT_STATUS = "UPDATE act_order SET order_status=? WHERE act_order_no = ?";
 	private static final String GET_ONE_BYACTODERNO = "SELECT * FROM act_order WHERE act_order_no = ?";
 	private static final String GET_ALL_BYMEMNO= "SELECT * FROM act_order WHERE mem_no = ?";
 	private static final String GET_ALL = "SELECT * FROM act_order";
@@ -39,17 +40,16 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT);
 
-			pstmt.setInt(1, ActOderVO.getActorderno());
-			pstmt.setInt(2, ActOderVO.getMemno());
-			pstmt.setInt(3, ActOderVO.getSchdno());
-			pstmt.setInt(4, ActOderVO.getEmpno());
-			pstmt.setTimestamp(5, ActOderVO.getOrdertime());
-			pstmt.setInt(6, ActOderVO.getAatnnum());
-			pstmt.setBoolean(7, ActOderVO.getOrderstatus());
-			pstmt.setInt(8, ActOderVO.getPaymethod());
-			pstmt.setBoolean(9, ActOderVO.getPaystatus());
-			pstmt.setTimestamp(10, ActOderVO.getPaytime());
-			pstmt.setInt(11, ActOderVO.getOrderamount());
+		
+			pstmt.setInt(1, ActOderVO.getMemno());
+			pstmt.setInt(2, ActOderVO.getSchdno());
+			pstmt.setTimestamp(3, ActOderVO.getOrdertime());
+			pstmt.setInt(4, ActOderVO.getAatnnum());
+			pstmt.setBoolean(5, ActOderVO.getOrderstatus());
+			pstmt.setInt(6, ActOderVO.getPaymethod());
+			pstmt.setBoolean(7, ActOderVO.getPaystatus());
+			pstmt.setTimestamp(8, ActOderVO.getPaytime());
+			pstmt.setInt(9, ActOderVO.getOrderamount());
 		
 			pstmt.executeUpdate();
 			// Handle any driver errors
@@ -79,18 +79,20 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 	}
 
 	@Override
-	public void update_status(ActOrderVO ActOderVO) {
+	public void update_Back_Status(ActOrderVO ActOderVO) {
 		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
 		PreparedStatement pstmt = null;// 一個使用者一個連線
 
 		try {
 			Class.forName(driver);
 			con = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con.prepareStatement(UPDATE_ORDERSTATUS );
+			pstmt = con.prepareStatement(UPDATE_BACK_STATUS );
 			
-			pstmt.setBoolean(1, ActOderVO.getOrderstatus());
-			pstmt.setBoolean(2, ActOderVO.getPaystatus()); 
-			pstmt.setTimestamp(3, ActOderVO.getPaytime()); 
+			pstmt.setInt(1, ActOderVO.getEmpno());
+			pstmt.setBoolean(2, ActOderVO.getOrderstatus());
+			pstmt.setBoolean(3, ActOderVO.getPaystatus()); 
+			pstmt.setTimestamp(4, ActOderVO.getPaytime()); 
+			pstmt.setInt(5, ActOderVO.getActorderno()); 
 			
 			pstmt.executeUpdate();
 
@@ -118,6 +120,48 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 			}
 		}
 	}
+	
+	@Override
+	public void update_Front_Status(ActOrderVO ActOderVO) {
+		Connection con = null;// 連線宣告在方法內(為區域變數)，避免共用連線的問題(講義P40上)
+		PreparedStatement pstmt = null;// 一個使用者一個連線
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(UPDATE_FRONT_STATUS );
+			
+
+			pstmt.setBoolean(1, ActOderVO.getOrderstatus());
+			pstmt.setInt(2, ActOderVO.getActorderno()); 
+			
+			pstmt.executeUpdate();
+
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+	}
+	
 	
 	@Override
 	public ActOrderVO get_one_byactoderno(Integer ActOderNo) {
@@ -309,11 +353,8 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 
 	@Override
 	public void insertWithOrder_actAttendees(ActOrderVO ActOderVO, List<ActAttendeesVO> list) {
-//		List<ActOrderVO> list = new ArrayList<ActOrderVO>();
-		Connection con = null;//
-		PreparedStatement pstmt = null;//
-		ActOrderVO ActOrderVO = null;//X
-		ResultSet rs = null;//X
+		Connection con = null;
+		PreparedStatement pstmt = null;
 
 			try {
 
@@ -325,13 +366,16 @@ public class ActOrderJDBCDAO implements ActOrderDAO_interface {
 	    			con.setAutoCommit(false);
 				
 	    		// 先新增訂單主檔
-
 				pstmt = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-
-				String INSERT = "INSERT INTO ACT_ORDER (mem_no, order_amount) VALUES (?, ?)";
-				pstmt = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
-				pstmt.setInt(1, ActOrderVO.getMemno());
-				pstmt.setInt(2, ActOrderVO.getOrderamount());
+				pstmt.setInt(1, ActOderVO.getMemno());
+				pstmt.setInt(2, ActOderVO.getSchdno());
+				pstmt.setTimestamp(3, ActOderVO.getOrdertime());
+				pstmt.setInt(4, ActOderVO.getAatnnum());
+				pstmt.setBoolean(5, ActOderVO.getOrderstatus());
+				pstmt.setInt(6, ActOderVO.getPaymethod());
+				pstmt.setBoolean(7, ActOderVO.getPaystatus());
+				pstmt.setTimestamp(8, ActOderVO.getPaytime());
+				pstmt.setInt(9, ActOderVO.getOrderamount());
 				pstmt.executeUpdate();
 
 

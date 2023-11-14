@@ -86,7 +86,7 @@ th, td {
 					value="${membersVO.mempicture}" size="45" />
 					<div class="round-image-container">
 						<c:choose>
-							<c:when test="${not empty actVO.mempicture}">
+							<c:when test="${not empty membersVO.mempicture}">
 								<img
 									src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(membersVO.mempicture)}"
 									class="round-image" id="preview_img_id">

@@ -125,6 +125,8 @@ public class ActOrderVO implements java.io.Serializable {
 		this.orderamount = orderamount;
 	}
 
+
+
 	
 
 	

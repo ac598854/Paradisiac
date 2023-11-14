@@ -34,11 +34,7 @@ pageContext.setAttribute("membersVO", membersVO);
 		action="<%=request.getContextPath()%>/front-end/members/members.do"
 		name="form1" id="form1" enctype="multipart/form-data">
 
-		<div>
-			<label for="memname">會員姓名:<font color="red"><b>*</b></font></label> <input
-				type="text" id="memname" name="memname" value="${membersVO.memname}" size="45"
-				class="required"  />
-		</div>
+
 
 		<div>
 			<label for="memmail">電子信箱:<font color="red"><b>*</b></font></label> <input
@@ -53,7 +49,11 @@ pageContext.setAttribute("membersVO", membersVO);
 			<button type="button" id="checkCaptchaButton">驗證</button>
 		</div>
 		<div id="captchaError" style="color: red;"></div>
-
+		<div>
+			<label for="memname">會員姓名:<font color="red"><b>*</b></font></label> <input
+				type="text" id="memname" name="memname" value="${membersVO.memname}" size="45"
+				class="required"  />
+		</div>
 		<div>
 			<label for="memaccount">帳號:<font color="red"><b>*</b></font></label>
 			<input type="text" id="memaccount" name="memaccount" 
@@ -193,7 +193,7 @@ pageContext.setAttribute("membersVO", membersVO);
                 url: "<%=request.getContextPath()%>/front-end/members/members.do?action=checkCaptcha",
                 data: {
                     memcaptcha: memcaptcha,
-                    memmail: $("#email").val()
+                    memmail: $("#email").val(),
                 },
                 success: function(data) {
                     // 檢查
@@ -239,7 +239,6 @@ $('#submitButton').click(function() {
     console.log("驗證碼驗證最終"+isMemcaptchaValid);
 
     if (isMemaccountValid &&isMemcaptchaValid) {
-        console.log("11111");
         // 驗證通過
         $("#form1 input[name='action']").val("insert");
         //送出

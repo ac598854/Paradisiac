@@ -1,7 +1,10 @@
 package com.paradisiac.util.jedispool;
+
+import redis.clients.jedis.BasicCommands;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
+
 
 public class JedisUtil {
 	// Singleton單例模式
@@ -20,6 +23,7 @@ public class JedisUtil {
 					config.setMaxIdle(8);
 					config.setMaxWaitMillis(10000);
 					pool = new JedisPool(config, "localhost", 6379);
+				
 				}
 			}
 		}
@@ -32,17 +36,20 @@ public class JedisUtil {
 	}
 
 
-	public static void set(String key, String value) {//同樣key會覆蓋原資料
-	    JedisPool pool = getJedisPool();
+	public static void set(String key, String value) {//同樣key會覆蓋原資料// 會員註冊驗證信
+	    JedisPool pool = getJedisPool();	  
 	    try (Jedis jedis = pool.getResource()) {
-	        jedis.set(key, value);
+	    	jedis.select(2);
+	    	jedis.set(key, value);
+	        
 	    }
 	}
 	
 	public static String get(String key) {
 		String result="";
-	    JedisPool pool = getJedisPool();
+		JedisPool pool = getJedisPool();	
 	    try (Jedis jedis = pool.getResource()) {
+	    	jedis.select(2);
 	    	result=jedis.get(key);
 	    }
 	    return result;
@@ -50,7 +57,7 @@ public class JedisUtil {
 	
 	public static void expire(String key) {
 	    JedisPool pool = getJedisPool();
-	    try (Jedis jedis = pool.getResource()) {
+	    try (Jedis jedis = pool.getResource()) {	
 	    	jedis.expire(key, 30);//10秒
 	    }
 	}
