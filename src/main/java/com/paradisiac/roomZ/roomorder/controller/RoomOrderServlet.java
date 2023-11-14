@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.paradisiac.roomZ.roomorder.entity.RoomOrderVO;
-import com.paradisiac.roomZ.roomorder.service.RoomOrderService;
-import com.paradisiac.roomZ.roomorder.service.RoomOrderServiceImpl;
+import com.paradisiac.roomorder.model.RoomOrderVO;
+import com.paradisiac.roomorder.service.RoomOrderService;
+import com.paradisiac.roomorder.service.RoomOrderServiceImpl;
 import java.text.SimpleDateFormat;
 
 @WebServlet("/order/order.do")
@@ -44,6 +44,11 @@ public class RoomOrderServlet extends HttpServlet{
 		case "getAll":
 			forwardPath = getAll(req, resp);
 			break;
+			
+		case "buyorder":
+			forwardPath = buytype(req, resp);
+			break;
+			
 		case "addorder":
 			forwardPath = addtype(req, resp);
 			break;
@@ -71,7 +76,63 @@ public class RoomOrderServlet extends HttpServlet{
 
 		return "/back-end/roomorder/getAllder.jsp";
 	}
+	private String buytype(HttpServletRequest req, HttpServletResponse resp) {
+		String roomOrderDate = req.getParameter("roomOrderDate");
+//		String checkinDate = req.getParameter("checkinDate");
+//		String checkoutDate = req.getParameter("checkoutDate");
+		String roomTypeNo = req.getParameter("roomTypeNo");
+		String memNo = req.getParameter("memNo");
+		String roomAmount = req.getParameter("roomAmount");
+		String price = req.getParameter("price");
+		//paymentMethod
+//		String payStatus = req.getParameter("payStatus");
+		//orderStatus
+
+		Timestamp roomOrderDatedt = null;
+		Timestamp roomOrderDatenow =  new Timestamp(System.currentTimeMillis());
+		Date checkinDatedt = null;
+		Date checkoutDatedt = null;
+		
+		Integer roomTypeNoInt = null;
+		Integer memNoInt = null;
+		Integer roomAmountInt = null;
+		Integer priceInt = null;
+		
+//		roomOrderDatedt = java.sql.Timestamp.valueOf(req.getParameter("roomOrderDate").trim());
+		checkinDatedt = java.sql.Date.valueOf(req.getParameter("checkinDate").trim());
+		checkoutDatedt = java.sql.Date.valueOf(req.getParameter("checkoutDate").trim());
+
+		
+		
+		byte payStatusBool = Byte.parseByte(req.getParameter("payStatus").trim());
+		byte paymentMethod = Byte.parseByte(req.getParameter("paymentMethod").trim());
+		byte orderStatus = Byte.parseByte(req.getParameter("orderStatus").trim());
+
+		try {
+			roomTypeNoInt = Integer.parseInt(roomTypeNo);
+			memNoInt = Integer.parseInt(memNo);
+			roomAmountInt = Integer.parseInt(roomAmount);
+			priceInt = Integer.parseInt(price);
+		  
+		} catch (NumberFormatException e) {
+		    
+		}
+
+
+		int saved = roomOrderService.addorder(roomOrderDatenow, checkinDatedt, checkoutDatedt, roomTypeNoInt, memNoInt, roomAmountInt, priceInt, paymentMethod, payStatusBool,orderStatus);
+		var result = roomOrderService.findByorderNo(saved);
+
+		if (saved > 0) {
+
+	        System.out.println("新增成功");
+	    } else {
+
+	        System.out.println("新增失敗");
+	    }
 	
+		req.setAttribute("result", result);
+		return "/back-end/roomorder/buycheck.jsp";
+	}
 	private String addtype(HttpServletRequest req, HttpServletResponse resp) {
 
 //		String roomOrderDate = req.getParameter("roomOrderDate");

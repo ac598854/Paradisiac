@@ -13,11 +13,16 @@
 	<br>
 	<a href="${pageContext.request.contextPath}/front-end/roomorder/getOrderInfo.jsp">訂單查詢</a>
 	<br>
-	<a href="${pageContext.request.contextPath}/calender.do?action=getAll">行事曆(全部房型)</a>
+	<a href="${pageContext.request.contextPath}/calender.do?action=getAll">行事曆(全部房型)OK</a>
 	<br> 
 	<a href="${pageContext.request.contextPath}/calender.do?action=getSingle">行事曆(單一房型)</a>
 	<br>
-	<a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">房型查詢</a>
+	<a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">房間查詢OK</a>
+	<br>
+	<a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間刪除-修改-新增OK</a>
+	
+	<br>
+	<a href="${pageContext.request.contextPath}/RoomType.do?action=getRoomTypeNo">下拉選單測試</a>
 	<%-- <a href="${pageContext.request.contextPath}/roominfo.do/firstGet">測試</a> --%>
 </body>
 </html>

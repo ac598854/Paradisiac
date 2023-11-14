@@ -53,6 +53,9 @@ public class RoomOrderDTO {
 	
 	@Column(name="order_status")
 	private byte orderStatus;
+	
+	@Column(name="pay_status")
+	private byte payStatus;
 
 	public RoomOrderDTO() {
 		super();
@@ -61,7 +64,7 @@ public class RoomOrderDTO {
 	
 	public RoomOrderDTO(Integer roomOrderNo, Timestamp roomOrderDate, String memName, String memId, String memPhone,
 			Integer roomTypeNo, String roomName, Integer roomAmount, Integer price, Timestamp checkInDate,
-			Timestamp checkOutDate, byte orderStatus) {
+			Timestamp checkOutDate, byte orderStatus,byte payStatus) {
 		super();
 		this.roomOrderNo = roomOrderNo;
 		this.roomOrderDate = roomOrderDate;
@@ -78,6 +81,14 @@ public class RoomOrderDTO {
 	}
 
 
+
+	public byte getPayStatus() {
+		return payStatus;
+	}
+
+	public void setPayStatus(byte payStatus) {
+		this.payStatus = payStatus;
+	}
 
 	public Integer getRoomOrderNo() {
 		return roomOrderNo;

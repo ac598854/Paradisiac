@@ -19,7 +19,7 @@
 	import org.hibernate.Session;
 	import org.hibernate.SessionFactory;
 	
-	import com.paradisiac.roomZ.roomtype.entity.RoomTypeVO;
+	import com.paradisiac.roomZ.roomtype.entity.RoomTypeeVO;
 	import com.paradisiac.roomZ.roomtype.service.RoomTypeService;
 	import com.paradisiac.roomZ.roomtype.service.RoomTypeServiceImpl;
 	import com.paradisiac.util.HibernateUtil;
@@ -72,7 +72,7 @@
 		
 		private String getAll(HttpServletRequest req, HttpServletResponse resp) {
 	
-			List<RoomTypeVO> all = roomtypeService.getAllOrd();
+			List<RoomTypeeVO> all = roomtypeService.getAllOrd();
 			req.setAttribute("all", all);
 	
 			return "/back-end/roomtype/getAll.jsp";

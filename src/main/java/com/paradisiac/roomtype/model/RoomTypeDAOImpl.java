@@ -73,7 +73,7 @@ public class RoomTypeDAOImpl implements RoomTypeDAO {
 
 	@Override
 	public List<RoomTypeVO> getAll() {
-		System.out.print("RoomTypeDAOImpl: call --> getSession()");
+		
 		return getSession().createQuery("from RoomTypeVO", RoomTypeVO.class).list();
 
 	}
@@ -96,5 +96,16 @@ public class RoomTypeDAOImpl implements RoomTypeDAO {
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from RoomTypeVO", Long.class).uniqueResult();
 	}
+	//取得房型的總數量(RoomNumDAOImpl.java -->update()會來呼叫getTotal())
 
+	@Override
+	public Integer getTotal(int roomTypeno) {
+		
+		return (Integer) getSession().createQuery("select roomTotal from RoomTypeVO where roomTypeno = :roomTypeno")
+		        .setParameter("roomTypeno", roomTypeno)
+		        .uniqueResult();	
+	}
+	
+	
+	
 }

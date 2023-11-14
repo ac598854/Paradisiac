@@ -3,25 +3,25 @@ package com.paradisiac.roomZ.roomtype.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.paradisiac.roomZ.roomtype.entity.RoomTypeVO;
+import com.paradisiac.roomZ.roomtype.entity.RoomTypeeVO;
 
 
 public interface RoomTypeDAO {
 	
-	int insert(RoomTypeVO roomTypeVO);
+	int insert(RoomTypeeVO roomTypeVO);
 
-	int update(RoomTypeVO roomTypeVO);
+	int update(RoomTypeeVO roomTypeVO);
 
 	
-	RoomTypeVO findByFaqNo(Integer RoomTypeNo);
+	RoomTypeeVO findByFaqNo(Integer RoomTypeNo);
 	
 	
-	List<RoomTypeVO> getAll();
+	List<RoomTypeeVO> getAll();
 	
-	List<RoomTypeVO> getOne();
-	List<RoomTypeVO> getTwo();
-	List<RoomTypeVO> getFour();
-	List<RoomTypeVO> getEight();
+	List<RoomTypeeVO> getOne();
+	List<RoomTypeeVO> getTwo();
+	List<RoomTypeeVO> getFour();
+	List<RoomTypeeVO> getEight();
 	
 	
 	long getTotal();

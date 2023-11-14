@@ -17,8 +17,7 @@ import com.paradisiac.roomtype.model.RoomTypeVO;
 import com.paradisiac.roomtype.service.RoomTypeService;
 import com.paradisiac.roomtype.service.RoomTypeServiceImpl;
 
-@WebServlet("/RoomType.do")
-
+    @WebServlet("/RoomType.do")
 	public class RoomTypeServlet extends HttpServlet {
 		// 一個 servlet 實體對應一個 service 實體
 		private RoomTypeService roomtypeService;
@@ -39,6 +38,9 @@ import com.paradisiac.roomtype.service.RoomTypeServiceImpl;
 					break;
 				case "compositeQuery":
 					forwardPath = getCompositeRoomTypesQuery(req, res);
+					break;
+				case "getRoomTypeNo":					
+					forwardPath = getRoomTypeNo(req, res);
 					break;
 				default:
 					forwardPath = "/index.jsp";
@@ -93,6 +95,18 @@ import com.paradisiac.roomtype.service.RoomTypeServiceImpl;
 			return "/front-end/roomtype/listCompositeQueryRoomTypes.jsp";
 		}		
 		
+		private String getRoomTypeNo(HttpServletRequest req, HttpServletResponse res) throws IOException {
+			req.setCharacterEncoding("UTF-8");
+			
+			
+			
+				List<RoomTypeVO> roomtypeList = roomtypeService.getAll();
+				System.out.print(roomtypeList);
+				res.setContentType("text/html; charset=UTF-8");
+				req.setAttribute("roomtypeList", roomtypeList);
+			
+			return "/back-end/roomnum/getRoomNumToMem.jsp";
+		}		
 		@Override
 		protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 			doPost(req, res);

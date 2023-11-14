@@ -16,7 +16,7 @@ public interface RoomOrderService {
 //
 	int updateorder(Integer roomOrderNo ,Timestamp roomOrderDate, Date checkinDate, Date checkoutDate,Integer roomTypeNo,Integer memNo,Integer roomAmount,Integer price,byte paymentMethod,byte payStatus,byte orderStatus);
 //
-
+    int updateOrderStatus(Integer roomOrderNo, byte orderStatus);
 //	
 	List<RoomOrderVO> getAllOrd();
 	

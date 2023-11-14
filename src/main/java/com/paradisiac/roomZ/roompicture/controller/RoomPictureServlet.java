@@ -15,9 +15,9 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.util.*;
 
-import com.paradisiac.roomZ.roompicture.entity.RoomPictureVO;
+import com.paradisiac.roomZ.roompicture.entity.RoomPictureeVO;
 import com.paradisiac.roomZ.roompicture.service.RoomPictureService;
-import com.paradisiac.roomZ.roomtype.entity.RoomTypeVO;
+import com.paradisiac.roomZ.roomtype.entity.RoomTypeeVO;
 
 @WebServlet("/roompic/roompic.do")
 @MultipartConfig
@@ -99,7 +99,7 @@ public class RoomPictureServlet extends HttpServlet{
 		private String getAll(HttpServletRequest req, HttpServletResponse resp) {
 			RoomPictureService roompicSvc = new RoomPictureService();
 			
-			List<RoomPictureVO> all = roompicSvc.getAllpic();;
+			List<RoomPictureeVO> all = roompicSvc.getAllpic();;
 			req.setAttribute("all", all);
 	
 			return "/back-end/roompicture/getAllpic.jsp";

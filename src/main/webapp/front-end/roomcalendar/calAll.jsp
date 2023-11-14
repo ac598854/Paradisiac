@@ -3,33 +3,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+   <!--  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
 <style>
-        .container {
-            text-align: center;
-        }
+.container {
+	text-align: center;
+}
 
-        th {
-            text-align: center;
-        }
+th {
+	text-align: center;
+}
 
-        th.scope {
-            background-color: red;
-            color: white;
-        }
-        .selected {
-            background-color: #007bff;
-            color: white;
-        }
-        .calstatus {
-            padding-right: 20px;
-        }
-    </style>
+th.scope {
+	background-color: red;
+	color: white;
+}
+
+.selected {
+	background-color: #007bff;
+	color: white;
+}
+
+.calstatus {
+	padding-right: 20px;
+}
+
+tr {
+	height: 50px; /* 設定行事曆表格高度 */
+}
+thead tr {
+    height: 50px; /* 設定行事曆表格高度 */
+}
+
+</style>
 </head>
 <body>
+	<%@ include file="/front-end/index/guided.jsp" %>
     <div class="container text-center my-4">
         <button id="prevMonth" class="btn btn-primary">上個月</button>
         <span id="currentMonthYear" class="h4 mx-4">August 2023</span>
@@ -55,7 +66,7 @@
     </div>
     <!-- 動態產生房型資訊 -->
      <div class="container" id="roomInformation">
-        <h2>房型信息</h2>
+      	
     </div>
     <!-- 按下立即預定顯示燈箱內容為訂房確認內容 -->
     <div id="roomInformation" class="container"></div>
@@ -75,10 +86,42 @@
         </div>
     </div>
     <div class="container">
-    <input type="text" id="selectedDate" readonly>
+    <input type="hidden" id="selectedDate" readonly>
     </div>
+    <%@ include file="/front-end/index/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script>
+  	<script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script> 
+	
+	<script>
+	
+	//===========首頁會員狀態判斷===========
+    // 首頁會員狀態判斷
+        $(document).ready(function(){
+        	console.log(1);
+            $.ajax({
+                type: "POST",
+                url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+				success : function(data) {
+											const responseMessage = parseInt(data);
+											if (responseMessage === 1) {
+												// 如果memno存在，引入guided.jsp
+												$("#dynamicContent").load(
+														"guided.jsp");
+											} else if (responseMessage === 0) {
+												// 如果memno不存在，引入test.jsp
+												$("#dynamicContent").load(
+														"guidedSignout.jsp");
+											}
+										},
+										error : function(error) {
+											console.log("AJAX error:", error);
+										}
+									});
+						});
+   
+  
+  //==================
+	</script>
 </body>
 </html>
