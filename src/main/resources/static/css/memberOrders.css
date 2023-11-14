@@ -92,12 +92,13 @@ aside ul li button:hover {
 
 button {
     border:0;
-    background-color:#003C9D;
+    background-color:grey;
     color:#fff;
     border-radius:10px;
     cursor:pointer;
 }
 
+/* �憓�”�璅�撘� */
 .table-responsive {
     margin-top: 20px;
 }
@@ -121,5 +122,14 @@ button {
 
 main {
     margin-bottom: 100px;
+}
+
+/* 分頁 */
+.pagination-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* 根據需要調整間距 */
+    color: black;
 }
 
