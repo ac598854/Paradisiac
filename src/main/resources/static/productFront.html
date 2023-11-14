@@ -151,7 +151,7 @@
 
     button {
       border:0;
-      background-color:#003C9D;
+      background-color:grey;
       color:#fff;
       border-radius:10px;
       cursor:pointer;
@@ -212,18 +212,10 @@
           <li class="list-group-item">主題日常用品</li>
         </ul>
       </section>
-      <!-- 價格篩選區間 -->
-      <section class="filter">
-        <label>價格範圍：</label>
-        <label for="customRange2" class="form-label">Example range</label>
-        <input type="range" class="form-range" min="0" max="5" id="customRange2">
-        <input type="number" id="minPrice" placeholder="最低價格">
-        -
-        <input type="number" id="maxPrice" placeholder="最高價格">
-      </section>
-      <button onclick="filterByPrice()">篩選</button>
-      <button id="prevPage">上一頁</button>
-      <button id="nextPage">下一頁</button>
+
+      <!-- 分頁按鈕容器 -->
+      <div id="paginationContainer" class="pagination-center"></div>
+
     </aside>
 
     <!-- 商品展示區域 -->

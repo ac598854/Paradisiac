@@ -5,6 +5,7 @@ let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
 var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+
 $(document).ready(function(){
     // 加載頁尾
     $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
@@ -253,7 +254,7 @@ async function fetchProducts() {
             const products = data.results;
             total = data.total;
             displayProducts(products);
-            checkButtons(data.total);
+            updatePaginationButtons(total);
         } else {
             console.log("Failed to fetch products");
         }
@@ -262,36 +263,71 @@ async function fetchProducts() {
     }
 }
 
-// 更新分頁按鈕的狀態
-function checkButtons(total) {
-    const prevButton = document.getElementById('prevPage');
-    const nextButton = document.getElementById('nextPage');
+// 更新分頁按鈕
+function updatePaginationButtons() {
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) return;
+    paginationContainer.innerHTML = '';
 
-    if (offset <= 0) {
-        prevButton.disabled = true;
-    } else {
-        prevButton.disabled = false;
+    const totalPages = Math.ceil(total / limit);
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    // 第一頁按鈕
+    const firstPageButton = createPageButton('第一頁', currentPage === 1, () => {
+        offset = 0;
+        fetchProducts();
+    });
+    paginationContainer.appendChild(firstPageButton);
+
+    // 上一頁按鈕
+    const prevPageButton = createPageButton('上一頁', currentPage === 1, () => {
+        if (offset - limit >= 0) {
+            offset -= limit;
+            fetchProducts();
+        }
+    });
+    paginationContainer.appendChild(prevPageButton);
+
+    // 分頁數字按鈕
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPageButton(i.toString(), currentPage === i, () => {
+            offset = (i - 1) * limit;
+            fetchProducts();
+        });
+        paginationContainer.appendChild(pageButton);
     }
 
-    if (offset + limit >= total) {
-        nextButton.disabled = true;
-    } else {
-        nextButton.disabled = false;
-    }
+    // 下一頁按鈕
+    const nextPageButton = createPageButton('下一頁', currentPage === totalPages, () => {
+        if (offset + limit < total) {
+            offset += limit;
+            fetchProducts();
+        }
+    });
+    paginationContainer.appendChild(nextPageButton);
+
+    // 最後一頁按鈕
+    const lastPageButton = createPageButton('最後一頁', currentPage === totalPages, () => {
+        offset = (totalPages - 1) * limit;
+        fetchProducts();
+    });
+    paginationContainer.appendChild(lastPageButton);
 }
 
-//分頁按鈕綁定事件
-document.getElementById('prevPage').addEventListener('click', () => {
-    if (offset - limit >= 0) {
-        offset -= limit;
-        fetchProducts();
-    }
-});
+// 創建分頁按鈕的輔助函數
+function createPageButton(text, disabled, onClick) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.disabled = disabled;
+    button.onclick = onClick;
+    return button;
+}
 
-document.getElementById('nextPage').addEventListener('click', () => {
-    offset += limit;
+
+// 頁面加載時調用 fetchProducts
+window.onload = function() {
     fetchProducts();
-});
+}
 
 
 //==================================商品種類點擊==============================================
