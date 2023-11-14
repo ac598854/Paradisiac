@@ -11,11 +11,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "room_picture")
-public class RoomPictureVO {
+public class RoomPictureeVO {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "photo_no")
+	@Column(name = "picture_no")
 	private Integer pictureNo;
 	@Column(name = "room_type_no")
 	private Integer roomTypeNo;

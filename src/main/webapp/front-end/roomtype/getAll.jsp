@@ -9,8 +9,8 @@ request.setCharacterEncoding("UTF-8");
 %>
 
 <%
-    RoomTypeService typeSvc = new RoomTypeServiceImpl();
-    List<RoomTypeVO> list = typeSvc.getAllOrd();
+RoomTypeService typeSvc = new RoomTypeServiceImpl();
+    List<RoomTypeeVO> list = typeSvc.getAllOrd();
     pageContext.setAttribute("list",list);
 %>
 

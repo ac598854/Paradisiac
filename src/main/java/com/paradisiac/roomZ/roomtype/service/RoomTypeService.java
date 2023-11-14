@@ -2,7 +2,7 @@ package com.paradisiac.roomZ.roomtype.service;
 
 import java.util.List;
 
-import com.paradisiac.roomZ.roomtype.entity.RoomTypeVO;
+import com.paradisiac.roomZ.roomtype.entity.RoomTypeeVO;
 
 public interface RoomTypeService {
 	
@@ -12,14 +12,14 @@ public interface RoomTypeService {
 //
 
 //	
-	List<RoomTypeVO> getAllOrd();
+	List<RoomTypeeVO> getAllOrd();
 	
-	RoomTypeVO findByFaqNo(Integer roomTypeNo);
+	RoomTypeeVO findByFaqNo(Integer roomTypeNo);
 
 	
-	List<RoomTypeVO> getAllOne();
-	List<RoomTypeVO> getAllTwo();
-	List<RoomTypeVO> getAllFour();
-	List<RoomTypeVO> getAllEight();
+	List<RoomTypeeVO> getAllOne();
+	List<RoomTypeeVO> getAllTwo();
+	List<RoomTypeeVO> getAllFour();
+	List<RoomTypeeVO> getAllEight();
 	
 	}
