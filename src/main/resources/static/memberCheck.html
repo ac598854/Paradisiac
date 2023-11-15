@@ -9,47 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- 引入Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<header class="flex-header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/Paradisiac/productFront.html">購物商城</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">首頁</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">關於我們</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">聯絡我們</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                    <input type="text" placeholder="Search..." id="searchInput" onkeyup="handleEnter(event)">
-                    <button onclick="searchProducts()">搜尋</button>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Paradisiac/cart/cart.html">
-                            <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">登入</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<div id="dynamicContent"></div>  <!-- 動態內容的容器 -->
 
-</header>
 
-<!-- Checkout details area where product details will be displayed -->
+
 <div id="checkout-details">
     <h2>Check Out</h2>
     <table id="cart-items-table" class="table">
@@ -109,7 +77,7 @@
 </div>
 
 <footer>
-    <!-- 頁腳資訊 -->
+    <div id="footer"></div>  <!-- 頁尾的容器 -->
 </footer>
 
 <script>
@@ -120,6 +88,34 @@
     //==================================預設狀態為true（信用卡）==============================================
     let orderStatus = true;
 
+    //==================================取得會員servlet URL==============================================
+    var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+
+    $(document).ready(function(){
+        // 加載頁尾
+        $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = contextPath + '/front-end/index/guided.jsp';
+                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
     //==================================當文檔加載完成後，執行以下函數==============================================
     document.addEventListener('DOMContentLoaded', function() {
         // 從sessionStorage中獲取購物車項目，若無則設為空數組

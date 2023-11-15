@@ -1,7 +1,39 @@
+//==================================獲取當前頁面的路徑名稱==============================================
 let pathName = window.document.location.pathname;
+//==================================從路徑名稱中提取出項目名稱==============================================
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+
+//==================================取得會員servlet URL==============================================
+var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+
+$(document).ready(function(){
+    // 加載頁尾
+    $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+
+    // 處理會員登入
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
+        success: function(data) {
+            // ... 登入邏輯
+            const responseMessage = parseInt(data);
+            var guided = contextPath + '/front-end/index/guided.jsp';
+            var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+            if (responseMessage === 1) {
+                $("#dynamicContent").load(guided);
+            } else if (responseMessage === 0) {
+
+                $("#dynamicContent").load(guidedSignout);
+            }
+        },
+        error: function(error) {
+            console.log("AJAX error:", error);
+        }
+    });
+});
+
+//==================================檢查頁面是否需要重新載入以清除快取==============================================
 window.onpageshow = function(event) {
-    // 檢查是否已經進行過重新載入
     var hasReloaded = sessionStorage.getItem('hasReloaded');
 
     if (event.persisted || hasReloaded === null) {
@@ -12,12 +44,13 @@ window.onpageshow = function(event) {
         sessionStorage.setItem('hasReloaded', 'true');
     }
 };
-// 1. 初始化設定
+
+//==================================當頁面加載時，呼叫 loadProducts 函數載入商品資料==============================================
 window.onload = function() {
     loadProducts();
 }
 
-// 2. 載入商品資料
+//==================================載入商品資料==============================================
 function loadProducts() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', projectName + '/products', true); // 修改為動態路徑
@@ -30,8 +63,7 @@ function loadProducts() {
     xhr.send();
 }
 
-
-// 3. 顯示商品資料
+//==================================顯示商品資料==============================================
 function displayProducts(products) {
     var productsArea = document.getElementById('productsArea');
     productsArea.innerHTML = '';
@@ -69,45 +101,11 @@ function displayProducts(products) {
         addToCartButton.addEventListener('click', function() {
             addToCart(product.productName, product.price, product.description,product.stock,product.productId);
         });
-//         addToCartButton.setAttribute('data-id', product.productId); // 設定產品編號
-//         addToCartButton.setAttribute('data-name', product.productName); // 設定產品名稱
-//         addToCartButton.setAttribute('data-price', product.price); // 設定產品價格
 
         // 設置點擊事件，不再綁定原本的addToCart函數
         addToCartButton.addEventListener('click', function(event) {
             event.stopPropagation();
         })// 阻止事件冒泡到父元素
-
-//             let prodNo = this.getAttribute('data-id');
-//             let prodName = this.getAttribute('data-name');
-//             let prodPrice = this.getAttribute('data-price');
-//        
-//             $.ajax({
-//                 url: '/Cart', // Servlet 的 URL
-//                 type: 'POST',
-//                 contentType: 'application/json; charset=utf-8',
-//                 data: JSON.stringify({
-//                     prodNo: prodNo,
-//                     prodName: prodName,
-//                     prodPrice: prodPrice,
-//                     action: 'add' // 告訴 Servlet 這是添加操作
-//                 }), // 將實際的產品資訊發送給後端
-//                 dataType: 'json',
-//                 success: function(response) {
-//                     console.log(response); // 處理成功時的回調
-//                 },
-//                 error: function(xhr, status, error) {
-//                     console.error(error); // 處理錯誤時的回調
-//                 }
-//             });
-//         });
-//
-//        // //增加右上角的購物車數字
-//        // addToCartButton.onclick = addToCart; // 綁定事件
-//        // // 更新 addToCartButton 的 onclick 設定
-//        // addToCartButton.onclick = function(event) {
-//        //     addToCart(event); // 這裡傳遞事件對象
-//        // };
 
         productDiv.appendChild(addToCartButton);
 
@@ -117,6 +115,8 @@ function displayProducts(products) {
         productsArea.appendChild(productDiv);
     });
 }
+
+
 //==============================加入購物車============================//
 const cart = {};
 let cartItemCountElement; // 購物車內數量
@@ -218,29 +218,7 @@ function reload() {
         });
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 4. 商品搜尋功能
+//========================商品搜尋功能====================================//
 function searchProducts() {
     const query = document.getElementById('searchInput').value;
     var xhr = new XMLHttpRequest();
@@ -255,17 +233,19 @@ function searchProducts() {
     xhr.send();
 }
 
+// 處理鍵盤輸入，當按下 Enter 鍵時進行搜尋
 function handleEnter(event) {
     if (event.keyCode === 13) {
         searchProducts();
     }
 }
 
-// 5. 分頁功能
+//==================================分頁功能==============================================
 let total = 0;
 let offset = 0;
 const limit = 8;
 
+// fetchProducts 函數用於獲取並顯示分頁的商品
 async function fetchProducts() {
     try {
         const response = await fetch(projectName + `/products?limit=${limit}&offset=${offset}`);
@@ -274,7 +254,7 @@ async function fetchProducts() {
             const products = data.results;
             total = data.total;
             displayProducts(products);
-            checkButtons(data.total);
+            updatePaginationButtons(total);
         } else {
             console.log("Failed to fetch products");
         }
@@ -283,45 +263,83 @@ async function fetchProducts() {
     }
 }
 
-function checkButtons(total) {
-    const prevButton = document.getElementById('prevPage');
-    const nextButton = document.getElementById('nextPage');
+// 更新分頁按鈕
+function updatePaginationButtons() {
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) return;
+    paginationContainer.innerHTML = '';
 
-    if (offset <= 0) {
-        prevButton.disabled = true;
-    } else {
-        prevButton.disabled = false;
+    const totalPages = Math.ceil(total / limit);
+    const currentPage = Math.floor(offset / limit) + 1;
+
+    // 第一頁按鈕
+    const firstPageButton = createPageButton('第一頁', currentPage === 1, () => {
+        offset = 0;
+        fetchProducts();
+    });
+    paginationContainer.appendChild(firstPageButton);
+
+    // 上一頁按鈕
+    const prevPageButton = createPageButton('上一頁', currentPage === 1, () => {
+        if (offset - limit >= 0) {
+            offset -= limit;
+            fetchProducts();
+        }
+    });
+    paginationContainer.appendChild(prevPageButton);
+
+    // 分頁數字按鈕
+    for (let i = 1; i <= totalPages; i++) {
+        const pageButton = createPageButton(i.toString(), currentPage === i, () => {
+            offset = (i - 1) * limit;
+            fetchProducts();
+        });
+        paginationContainer.appendChild(pageButton);
     }
 
-    if (offset + limit >= total) {
-        nextButton.disabled = true;
-    } else {
-        nextButton.disabled = false;
-    }
+    // 下一頁按鈕
+    const nextPageButton = createPageButton('下一頁', currentPage === totalPages, () => {
+        if (offset + limit < total) {
+            offset += limit;
+            fetchProducts();
+        }
+    });
+    paginationContainer.appendChild(nextPageButton);
+
+    // 最後一頁按鈕
+    const lastPageButton = createPageButton('最後一頁', currentPage === totalPages, () => {
+        offset = (totalPages - 1) * limit;
+        fetchProducts();
+    });
+    paginationContainer.appendChild(lastPageButton);
 }
 
-document.getElementById('prevPage').addEventListener('click', () => {
-    if (offset - limit >= 0) {
-        offset -= limit;
-        fetchProducts();
-    }
-});
+// 創建分頁按鈕的輔助函數
+function createPageButton(text, disabled, onClick) {
+    const button = document.createElement('button');
+    button.textContent = text;
+    button.disabled = disabled;
+    button.onclick = onClick;
+    return button;
+}
 
-document.getElementById('nextPage').addEventListener('click', () => {
-    offset += limit;
+
+// 頁面加載時調用 fetchProducts
+window.onload = function() {
     fetchProducts();
-});
+}
 
 
-//6.商品種類點擊
+//==================================商品種類點擊==============================================
 const categories = [
-    { text: '主題商品', value: 'ParadisiacTheme' },
-    { text: '精品商品', value: 'ParadisiacExquisite' },
+    { text: '主題衣服', value: 'ParadisiacTheme' },
+    { text: '精品配件', value: 'ParadisiacExquisite' },
     { text: '主題公仔', value: 'ParadisiacThemeActionFigures' },
     { text: '精品衣服', value: 'ParadisiacExquisiteCloththing' },
     { text: '主題日常用品', value: 'ParadisiacThemehousehold' }
 ];
-//為每個商品種類添加點擊事件
+
+//商品種類添加點擊事件
 document.querySelectorAll('.list-group-item').forEach(item => {
     item.addEventListener('click', function() {
         // 移除所有類別上的 "active" 標籤
@@ -345,7 +363,8 @@ document.querySelectorAll('.list-group-item').forEach(item => {
     });
 });
 
-// 顯示所有商品的函數
+
+//==================================顯示所有商品==============================================
 function displayAllProducts() {
     $.ajax({
         url: projectName + '/products', // 不帶類別參數，表示請求所有商品
@@ -363,7 +382,9 @@ function displayAllProducts() {
         }
     });
 }
-// 根據類別過濾商品的函數
+
+
+//==================================根據類別過濾商品的函數==============================================
 function filterProductsByCategory(categoryValue) {
     $.ajax({
         url: projectName + `/products?category=${encodeURIComponent(categoryValue)}`,
@@ -385,13 +406,3 @@ function filterProductsByCategory(categoryValue) {
         }
     });
 }
-
-// //更新購物車的數量
-// function addToCart(event) {
-//     var cartCountElement = document.getElementById('cartCount');
-//     var currentCount = parseInt(cartCountElement.textContent);
-//     cartCountElement.textContent = currentCount + 1;
-//
-//     // 阻止事件冒泡
-//     event.stopPropagation();
-// }
