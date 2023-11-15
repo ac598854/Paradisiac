@@ -27,5 +27,7 @@ public interface PhotoAlbumDAO_interface {
 	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo, int currentPage);
 	
 	public int getTotalQty(Integer albNo);
+	
+	public Integer findByMem(Integer memno);
 
 }

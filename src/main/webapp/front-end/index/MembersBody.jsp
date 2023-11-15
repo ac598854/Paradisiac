@@ -353,7 +353,7 @@
           </li>
             <ul class="sub-menu" id="submenu-3">
             <li>
-                <a href="#">會員紀念相簿</a>
+                <a href='${pageContext.request.contextPath}/pha.do?action=getOne_For_Display'>會員紀念相簿</a>
             </li>
             <li>
                 <a href='<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp'>會員客服專區</a>

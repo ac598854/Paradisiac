@@ -14,7 +14,7 @@ import com.paradisiac.employee.service.*;
 import com.paradisiac.department.model.DeptVO;
 import com.paradisiac.employee.model.*;
 
-@WebServlet("/loginemp.do")
+@WebServlet("/loginempN.do")
 public class LoginEmp extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
@@ -66,8 +66,11 @@ public class LoginEmp extends HttpServlet{
 					errorMsgs.add("查無此員工編號");
 					break;
 				case -2:
-					errorMsgs.add("密碼有誤");
+					errorMsgs.add("該員工已凍結");
 					break;
+				case -3:
+					errorMsgs.add("密碼有誤");
+					break;					
 			}
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");//有錯跳回查詢頁面
@@ -77,12 +80,18 @@ public class LoginEmp extends HttpServlet{
 
 			// 登入成功, 導入各部門的功能首頁
 			DeptVO deptVO = empSvc.getOneEmp(empno).getDept();
-			Integer deptNo = deptVO.getDeptNo();
-			switch (deptNo) {
-			case 101: // 業務部,相簿管理
+			Integer fucNo = deptVO.getFucNo();
+			switch (fucNo) {
+			case 101: // 企劃
 				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
-			case 103: // 人資部,員工管理
+			case 102: // 商城
+				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				break;
+			case 103: // 房務
+				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				break;
+			case 104: // 人資
 				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
 				break;
 			}
@@ -98,15 +107,16 @@ public class LoginEmp extends HttpServlet{
 			if(empSvc.getOneEmp(empno) == null) {
 				System.out.println("查無此帳號");
 				return -1;
-			}else { //收到回傳的物件, 接著檢查密碼
-				if(empSvc.getOneEmp(empno).getEmpPass().equals(empPass)) {
-					System.out.println("成功登入");		
-					return 1;
-				}else {
-					System.out.println("密碼有誤");
-					return -2;
-				}
-			}
+			}else if(empSvc.getOneEmp(empno).getEmpStatus() == 0){ //檢查員工狀態
+				System.out.println("該員工已凍結");
+				return -2;
+			}else if(empSvc.getOneEmp(empno).getEmpPass().equals(empPass)){//檢查密碼
+				System.out.println("成功登入");		
+				return 1;
+			}else {
+				System.out.println("密碼有誤");
+				return -3;
+			}				
 	}
 
 
