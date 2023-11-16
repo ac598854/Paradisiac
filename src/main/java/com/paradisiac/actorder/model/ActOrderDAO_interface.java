@@ -6,7 +6,8 @@ import com.paradisiac.actattendees.model.ActAttendeesVO;
 
 public interface ActOrderDAO_interface {
 	public void insert(ActOrderVO ActOderVO);
-	public void update_status(ActOrderVO ActOderVO);
+	public void update_Back_Status(ActOrderVO ActOderVO);
+	public void update_Front_Status(ActOrderVO ActOderVO);
 	public ActOrderVO get_one_byactoderno(Integer ActOderNo);
 	public List<ActOrderVO> get_all_bymemno(Integer MemNo);//會員編號查明細用
 	public List<ActOrderVO> getAll();

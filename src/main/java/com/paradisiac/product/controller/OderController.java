@@ -51,11 +51,16 @@ public class OderController {
         //取得order總數
         Integer count = orderService.countOrder(orderQueryParams);
 
+        // 計算總頁數
+        Integer totalPages = (int) Math.ceil((double) count / limit);
+
         //分頁
         Page<Order> page = new Page<>();
         page.setLimit(limit);
         page.setOffset(offset);
         page.setTotal(count);
+        page.calculatePageData();
+
         page.setResults(orderList);
 
         return ResponseEntity.status(HttpStatus.OK).body(page);

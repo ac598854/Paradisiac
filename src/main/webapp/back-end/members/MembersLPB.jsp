@@ -74,9 +74,7 @@ h4 {
 	color: blue;
 	display: inline;
 }
-</style>
 
-<style>
 table {
 	width: 800px;
 	background-color: white;
@@ -92,13 +90,19 @@ th, td {
 	padding: 5px;
 	text-align: center;
 }
+
+.myWrapper{
+padding:10px
+}
+
 </style>
 
 </head>
 
 <%@ include file="/back-end/index/back-left.jsp" %>
 <body bgcolor='white'>
-
+<div class="myWrapper">
+<div class="myContainer">
 	<table id="table-1">
 		<tr>
 			<td><h3>MembersLPB：會員管理列表</h3>
@@ -199,7 +203,7 @@ th, td {
 		</c:forEach>
 	</table>
 	<%@ include file="page2.file"%>
-
-
+</div>
+</div>
 </body>
 </html>

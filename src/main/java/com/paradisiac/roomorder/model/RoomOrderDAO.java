@@ -12,6 +12,10 @@ public interface RoomOrderDAO {
 
 	int update(RoomOrderVO roomOrderVO);
 	
+	int updateOrderStatus(Integer roomOrderNo, byte orderStatus);
+	
+	
+	
 	RoomOrderVO findByorderNo(Integer roomOrderNo);	
 	
 	List<RoomOrderVO> getAll();	
@@ -23,5 +27,7 @@ public interface RoomOrderDAO {
 	List<RoomOrderDTO> getAllCheckIn();
 	
 	RoomOrderDTO getbyOneCheckIn(Integer id);
+	
+	
 	
 }

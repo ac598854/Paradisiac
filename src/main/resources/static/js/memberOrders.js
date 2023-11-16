@@ -1,13 +1,67 @@
+//==================================獲取當前頁面的路徑名稱==============================================
 let pathName = window.document.location.pathname;
+//==================================從路徑名稱中提取出項目名稱==============================================
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-document.addEventListener('DOMContentLoaded', function() {
-    // 這裡 'userId' 應從用戶的登入狀態獲取，這裡僅為示例
-    const userId = 1; // 使用實際從登入狀態或會話獲取的用戶ID
-    fetchOrders(userId);
+
+//==================================取得會員servlet URL==============================================
+var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+
+$(document).ready(function(){
+    // 加載頁尾
+    $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+
+    // 處理會員登入
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
+        success: function(data) {
+            // ... 登入邏輯
+            const responseMessage = parseInt(data);
+            var guided = contextPath + '/front-end/index/guided.jsp';
+            var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+            if (responseMessage === 1) {
+                $("#dynamicContent").load(guided);
+            } else if (responseMessage === 0) {
+
+                $("#dynamicContent").load(guidedSignout);
+            }
+        },
+        error: function(error) {
+            console.log("AJAX error:", error);
+        }
+    });
 });
 
-function fetchOrders(userId) {
-    fetch(projectName + `/users/${userId}/orders`)
+
+//==================================當文檔加載完成後，執行以下函數==============================================
+document.addEventListener('DOMContentLoaded', function() {
+    fetchMemberInfo()
+        .then(memno => fetchOrders(memno))
+        .catch(error => console.error('Error fetching member info:', error));
+});
+
+//==================================獲取會員信息==============================================
+function fetchMemberInfo() {
+    return fetch(projectName + `/members/sessionInfo`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data || !data.memno) {
+                throw new Error('Member number not found in session');
+            }
+            return data.memno;
+        });
+}
+//==================================獲取訂單資訊==============================================
+function fetchOrders(memno, pageNumber = 1) {
+    const limit = 10;
+    const offset = (pageNumber - 1) * limit;
+
+    fetch(projectName + `/members/orders?limit=${limit}&offset=${offset}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -15,18 +69,21 @@ function fetchOrders(userId) {
             return response.json();
         })
         .then(page => {
-            if (!Array.isArray(page.results)) {
+            if (!page || !page.results) {
                 throw new Error('Expected an array of orders but got: ', page.results);
             }
-            console.log(page); // 檢查API響應的結構
-            createOrdersTable(page.results); // 使用page.results來創建表格
+            createOrdersTable(page.results);
+            createPagination(page, memno); // 確保在這裡調用
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
 }
 
-let currentOpenOrderId = null; // 用来追踪当前展开的订单ID
+
+//==================================用來追蹤當前展開的訂單ID==============================================
+let currentOpenOrderId = null;
+//==================================建訂單表格==============================================
 function createOrdersTable(orders) {
     const ordersTableContainer = document.getElementById('ordersTableContainer');
     if (!ordersTableContainer) {
@@ -40,7 +97,7 @@ function createOrdersTable(orders) {
     const thead = document.createElement('thead');
     const headerRow = thead.insertRow();
 
-    ['Order ID', 'Created Date', 'Total Amount'].forEach(text => {
+    ['訂單編號', '訂單日期', '總金額'].forEach(text => {
         const headerCell = document.createElement('th');
         headerCell.textContent = text;
         headerRow.appendChild(headerCell);
@@ -52,8 +109,8 @@ function createOrdersTable(orders) {
     orders.forEach(order => {
         const row = tbody.insertRow();
         row.innerHTML = `<td>${order.orderId}</td>
-                         <td>${order.createdDate}</td>
-                         <td>${order.totalAmount}</td>`;
+	                         <td>${order.createdDate}</td>
+	                         <td>${order.totalAmount}</td>`;
         const detailsRow = tbody.insertRow();
         detailsRow.id = `details-${order.orderId}`;
         detailsRow.style.display = 'none';
@@ -65,6 +122,7 @@ function createOrdersTable(orders) {
     ordersTableContainer.appendChild(table);
 }
 
+//==================================切換訂單詳情的顯示==============================================
 function toggleOrderDetails(order, detailsRow) {
     // 如果點擊的是當前已展開的訂單，則隱藏它
     if (currentOpenOrderId === order.orderId) {
@@ -86,7 +144,7 @@ function toggleOrderDetails(order, detailsRow) {
     detailsRow.style.display = '';
     currentOpenOrderId = order.orderId;
 }
-
+//==================================創建訂單詳情表格==============================================
 function createOrderDetailsTable(orderItems) {
     let table = '<table class="small-table" style="width: 100%">';
     table += '<tr><th>商品名稱</th><th>數量</th><th>金額</th></tr>';
@@ -96,3 +154,58 @@ function createOrderDetailsTable(orderItems) {
     table += '</table>';
     return table;
 }
+
+//==================================訂單分頁實現==============================================
+function createPagination(page, memno) {
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) return;
+    paginationContainer.innerHTML = '';
+
+    // 第一頁按鈕
+    const firstPageButton = document.createElement('button');
+    firstPageButton.textContent = '第一頁';
+    firstPageButton.disabled = page.currentPage === 1;
+    firstPageButton.onclick = function() {
+        fetchOrders(memno, 1);
+    };
+    paginationContainer.appendChild(firstPageButton);
+
+    // 上一頁按鈕
+    const prevPageButton = document.createElement('button');
+    prevPageButton.textContent = '上一頁';
+    prevPageButton.disabled = page.currentPage === 1;
+    prevPageButton.onclick = function() {
+        fetchOrders(memno, page.currentPage - 1);
+    };
+    paginationContainer.appendChild(prevPageButton);
+
+    // 分頁按鈕
+    for (let i = 1; i <= page.totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.disabled = page.currentPage === i;
+        pageButton.onclick = function() {
+            fetchOrders(memno, i);
+        };
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 下一頁按鈕
+    const nextPageButton = document.createElement('button');
+    nextPageButton.textContent = '下一頁';
+    nextPageButton.disabled = page.currentPage === page.totalPages;
+    nextPageButton.onclick = function() {
+        fetchOrders(memno, page.currentPage + 1);
+    };
+    paginationContainer.appendChild(nextPageButton);
+
+    // 最後一頁按鈕
+    const lastPageButton = document.createElement('button');
+    lastPageButton.textContent = '最後一頁';
+    lastPageButton.disabled = page.currentPage === page.totalPages;
+    lastPageButton.onclick = function() {
+        fetchOrders(memno, page.totalPages);
+    };
+    paginationContainer.appendChild(lastPageButton);
+}
+

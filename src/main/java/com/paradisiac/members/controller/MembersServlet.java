@@ -19,7 +19,9 @@ import org.apache.catalina.connector.Response;
 
 import com.paradisiac.members.model.*;
 import com.paradisiac.members.service.*;
+import com.paradisiac.members.controller.*;
 import com.paradisiac.util.jedispool.JedisUtil;
+
 
 import redis.clients.jedis.JedisPool;
 
@@ -69,7 +71,7 @@ public class MembersServlet<Session> extends HttpServlet {
 				tmp = false;
 			}
 		}
-		System.out.println("str" + str);
+		System.out.println("驗證碼str=" + str);
 		long endTime = System.nanoTime();
 		System.out.println("程式執行時間： " + (endTime - startTime) / Math.pow(10, 9) + "s");
 		return str;
@@ -335,8 +337,8 @@ public class MembersServlet<Session> extends HttpServlet {
 			req.setAttribute("membersVO", membersVO); 
 			String url = "/front-end/members/MembersUpdate.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
+			System.out.println("更新後台會員狀態，後導頁至："+successView );
 			successView.forward(req, res);
-
 		}
 
 		if ("insert".equals(action)) { 
@@ -410,20 +412,17 @@ public class MembersServlet<Session> extends HttpServlet {
 			String memmail = req.getParameter("memmail");
 			String memcaptcha = getAuthCode();
 			JedisUtil.getJedisPool();// 開池
-			JedisUtil.set(memmail, memcaptcha);
+			JedisUtil.set(memmail, memcaptcha);//原始
 			System.out.println("1取得產生的驗證碼=" + memcaptcha);// 取得產生的驗證碼
 			System.out.println("2從redis取回驗證碼=" + JedisUtil.get(memmail));// 從redis取回驗證碼
-//			======寄信
-			MembersVO membersVO = new MembersVO();
+//			======寄信			
+			MembersVO membersVO = new MembersVO();			
 			membersVO.setMemmail(memmail);
 			membersVO.setMemcaptcha(memcaptcha);
 			req.setAttribute("membersVO", membersVO);
-			String subject = "啟用會員驗證信";
-			String ch_name = membersVO.getMemname();
-			String ch_account = membersVO.getMemaccount();
-			String messageText = "Hello! " + ch_name + "\n" + "歡迎加入Paradise bay會員" + "\n" + "您的註冊帳號:" + ch_account
-					+ " 註冊驗證碼: " + "\n" + memcaptcha + "\n" + "請至該網址輸入驗證碼 " + "\n" + "http://localhost:8081"
-					+ req.getContextPath() + "/front-end/member/MemberCaptcha.jsp";
+			String subject = "啟用會員驗證信";	
+			String messageText = "Hello! " + "\n" + "歡迎加入Paradise bay會員" + "\n"+"如無申請Paradise bay會員請忽略此信" + "\n" 
+					+ "您的註冊驗證碼: " + "\n" + memcaptcha + "\n";
 			MailService mail = new MailService();
 			mail.sendMail(memmail, subject, messageText);
 			System.out.println("寄信成功");
@@ -476,6 +475,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			// 開池驗證
 			String tempAuth = JedisUtil.get(memmail);
+//			String tempAuth = MailHander.get(memmail);
 			if (memcaptcha == null) {// 驗證碼輸入不為空
 				responseMessage = 1;
 				System.out.println("連結信已逾時，請重新申請");
@@ -496,9 +496,10 @@ public class MembersServlet<Session> extends HttpServlet {
 		
 		//6.首頁會員狀態判斷
 		if ("indexLogin".equals(action)) {
+			
 			HttpSession session = req.getSession();
 			Object memno = session.getAttribute("memno");
-			System.out.println(memno);
+			System.out.println("indexLogin(首頁有會員編號嗎?)"+memno);
 			Integer responseMessage = null;
 			if(memno != null && !String.valueOf(memno).isEmpty()) {
 				responseMessage = 1;
@@ -509,6 +510,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			PrintWriter out = res.getWriter();
 			out.print(responseMessage);
+			System.out.println(responseMessage);
 			out.flush();
 		}
 

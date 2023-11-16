@@ -270,7 +270,7 @@
 												$("#dynamicContent").load(
 														"guided.jsp");
 											} else if (responseMessage === 0) {
-												// 如果memno不存在，引入test.jsp
+												// 如果memno不存在，引入guidedSignout.jsp
 												$("#dynamicContent").load(
 														"guidedSignout.jsp");
 											}
@@ -281,6 +281,9 @@
 									});
 						});
    
+        
+        
+        
 	</script>
   </body>
 </html>

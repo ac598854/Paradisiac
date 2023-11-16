@@ -22,4 +22,7 @@ public interface RoomTypeDAO {
 	List<RoomTypeVO> getAll(int currentPage);
 	
 	long getTotal();
+	
+	//取得指定房型的total數量
+	Integer getTotal(int roomTypeno);
 }

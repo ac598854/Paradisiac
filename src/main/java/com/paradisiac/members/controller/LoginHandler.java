@@ -78,18 +78,12 @@ public class LoginHandler extends HttpServlet {
 		// 1.會員登出狀態
 		if ("stateLogout".equals(action)) {
 			HttpSession session = req.getSession(false);
-			
-			
 			Object memno = session.getAttribute("memno");
 			Object location = session.getAttribute("location");
 			session.removeAttribute("memno");
 			session.removeAttribute("location");
-			System.out.println("登出是否還有會員編號"+memno);
-//			System.out.println("登出是否還有location"+location);
-			
+			System.out.println("登出是否還有會員編號"+memno);			
 			res.getWriter().write("ok");
-			
-//			res.sendRedirect(req.getContextPath() + "/front-end/index/Index2.jsp");
 		}
 		
 		// 2.會員登入狀態，檢查(滿足帳號、密碼、非凍結)、會員登入可用頁面
@@ -179,6 +173,16 @@ public class LoginHandler extends HttpServlet {
 						res.sendRedirect(shoppingCart);// 如果是點選購物頁面進入登入，則登入後回購物車詳細頁
 						return;
 					}
+					
+					
+					//如果訂房點選結帳頁
+					String roomorderpage=req.getContextPath() + "/back-end/roomorder/orderbuy.jsp";
+					if (location.equals(roomorderpage)) {
+						System.out.println("訂房登入，進入結帳頁");
+						res.sendRedirect(roomorderpage);
+						return;
+					}
+					
 
 					System.out.println("非特定頁面登入，導回首頁");
 					res.sendRedirect(req.getContextPath() + "/front-end/index/index2.jsp");// 如果沒有特定的loginLocation(例如:最新消息)，則將使用者導向到首頁。

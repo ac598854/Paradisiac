@@ -27,9 +27,9 @@
             <form method="Post" action="${pageContext.request.contextPath}/order/order.do?action=addorder">
 
 <!-- 			<div class="form-group"> -->
-<!-- <!-- 			    <label for="roomOrderDate">roomOrderDate：</label> --> -->
+<!-- <!-- 			    <label for="roomOrderDate">roomOrderDate：</label> -->
 <%-- 			    <input type="text" class="form-control" id="roomOrderDate" name="roomOrderDate" value="${roomOrderDate.roomOrderDate}"readonly> --%>
-<!-- <!-- 					<input type="hidden" class="form-control" id="roomOrderDate" name="roomOrderDate" value=""> --> -->
+<!-- <!-- 					<input type="hidden" class="form-control" id="roomOrderDate" name="roomOrderDate" value=""> --> 
 
 <!-- 			</div> -->
 

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -19,11 +20,11 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 	String userid = "root";
 	String passwd = "123456";
 
-	private static final String INSERT = "INSERT INTO act_attendees(atn_no,act_order_no,atn_name,atn_id_number,atn_tel) VALUES(?,?,?,?,?,?)";
-	private static final String UPDATE = "UPDATE act_attendees SET atn_no=?,act_order_no=?,atn_name=?,atn_id_number=?,atn_tel=? ";
+	private static final String INSERT = "INSERT INTO act_attendees(act_order_no,atn_name,atn_id_number,atn_tel) VALUES(?,?,?,?)";
+	private static final String UPDATE = "UPDATE act_attendees SET act_order_no=?,atn_name=?,atn_id_number=?,atn_tel=? WHERE atn_no=? ";
 	private static final String GET_ONE_BYACTORDERNO_ATNNO = "SELECT * FROM act_attendees WHERE act_order_no=? AND atn_no=? ";
 	private static final String GET_ALL = "SELECT * FROM act_attendees";
-	private static final String GET_ACTATTENDEES_BY_ACTORDERNO = "SELECT * FROMact_attendees WHERE act_order_no=? AND atn_no=? ";
+	private static final String GET_ACTATTENDEES_BY_ACTORDERNO = "SELECT * FROM act_attendees WHERE act_order_no=? AND atn_no=? ";
 
 	@Override
 	public void insert(ActAttendeesVO ActAttendeesVO) {
@@ -35,11 +36,11 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT);
 
-			pstmt.setInt(1, ActAttendeesVO.getAtnno());
-			pstmt.setInt(2, ActAttendeesVO.getActorderno());
-			pstmt.setString(3, ActAttendeesVO.getAtnname());
-			pstmt.setString(4, ActAttendeesVO.getAtnidnumber());
-			pstmt.setString(5, ActAttendeesVO.getAtntel());
+		
+			pstmt.setInt(1, ActAttendeesVO.getActorderno());
+			pstmt.setString(2, ActAttendeesVO.getAtnname());
+			pstmt.setString(3, ActAttendeesVO.getAtnidnumber());
+			pstmt.setString(4, ActAttendeesVO.getAtntel());
 
 			pstmt.executeUpdate();
 			// Handle any driver errors
@@ -78,12 +79,13 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE);
 
-			pstmt.setInt(1, ActAttendeesVO.getAtnno());
-			pstmt.setInt(2, ActAttendeesVO.getActorderno());
-			pstmt.setString(3, ActAttendeesVO.getAtnname());
-			pstmt.setString(4, ActAttendeesVO.getAtnidnumber());
-			pstmt.setString(5, ActAttendeesVO.getAtntel());
-
+			
+			pstmt.setInt(1, ActAttendeesVO.getActorderno());
+			pstmt.setString(2, ActAttendeesVO.getAtnname());
+			pstmt.setString(3, ActAttendeesVO.getAtnidnumber());
+			pstmt.setString(4, ActAttendeesVO.getAtntel());
+			pstmt.setInt(5, ActAttendeesVO.getAtnno());
+			
 			pstmt.executeUpdate();
 
 			// Handle any driver errors
@@ -124,7 +126,7 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(GET_ONE_BYACTORDERNO_ATNNO);
 			pstmt.setInt(1, ActOderNo);
-			pstmt.setInt(1, AtnNo);
+			pstmt.setInt(2, AtnNo);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -228,33 +230,30 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 	}
 
 	@Override
-	public void insertWhenOrder_ActOrderInsert(ActAttendeesVO ActAttendeesVO, Connection con) throws ClassNotFoundException {
-		Connection con1 = null;//
-		PreparedStatement pstmt = null;//
-		ActOrderVO ActOrderVO = null;// X
-		ResultSet rs = null;// X
+	public void insertWhenOrder_ActOrderInsert(ActAttendeesVO ActAttendeesVO, java.sql.Connection con) throws ClassNotFoundException {
+		PreparedStatement pstmt = null;
 
 		try {
 			Class.forName(driver);
-			con1 = DriverManager.getConnection(url, userid, passwd);
-			pstmt = con1.prepareStatement(INSERT);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(INSERT);
 
-			pstmt.setInt(1, ActAttendeesVO.getAtnno());
-			pstmt.setInt(2, ActAttendeesVO.getActorderno());
-			pstmt.setString(3, ActAttendeesVO.getAtnname());
-			pstmt.setString(4, ActAttendeesVO.getAtnidnumber());
-			pstmt.setString(5, ActAttendeesVO.getAtntel());
+//			pstmt.setInt(1, ActAttendeesVO.getAtnno());
+			pstmt.setInt(1, ActAttendeesVO.getActorderno());
+			pstmt.setString(2, ActAttendeesVO.getAtnname());
+			pstmt.setString(3, ActAttendeesVO.getAtnidnumber());
+			pstmt.setString(4, ActAttendeesVO.getAtntel());
 
 			pstmt.executeUpdate();
 
 			// Handle any SQL errors
 		} catch (SQLException se) {
-			if (con1 != null) {
+			if (con != null) {
 				try {
 					// 3●設定於當有exception發生時之catch區塊內
 					System.err.print("Transaction is being ");
 					System.err.println("訂單明細錯誤，rolled back");
-					con1.rollback();
+					con.rollback();
 				} catch (SQLException excep) {
 					throw new RuntimeException("rollback error occured. " + excep.getMessage());
 				}
@@ -275,8 +274,62 @@ public class ActAttendeesJDBCDAO implements ActAttendeesDAO_interface {
 
 	@Override
 	public Set<ActAttendeesVO> get_ActAttendees_ByActOderNo_inSet(Integer ActOderNo) {
-		// TODO Auto-generated method stub
-		return null;
+		Set<ActAttendeesVO> set=new LinkedHashSet<ActAttendeesVO>();
+		ActAttendeesVO actAttendeesVO=null;
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt=con.prepareStatement(GET_ACTATTENDEES_BY_ACTORDERNO);
+			pstmt.setInt(1, ActOderNo);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				actAttendeesVO = new ActAttendeesVO();
+
+				actAttendeesVO.setAtnno(rs.getInt("atn_no"));
+				actAttendeesVO.setActorderno(rs.getInt("act_order_no"));
+				actAttendeesVO.setAtnname(rs.getString("atn_name"));
+				actAttendeesVO.setAtnidnumber(rs.getString("atn_id_number"));
+				actAttendeesVO.setAtntel(rs.getString("atn_tel"));
+				set.add(actAttendeesVO);
+			}
+			// Handle any driver errors
+		}catch(ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. "
+					+ e.getMessage());
+			// Handle any SQL errors
+		}catch (SQLException se) {
+			throw new RuntimeException("A database error occured. "
+					+ se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return set;
 	}
 
 	@Override
