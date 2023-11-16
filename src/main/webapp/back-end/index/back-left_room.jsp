@@ -24,7 +24,7 @@
         body {
         overflow-x: hidden;
         font-family: 'Lato', sans-serif;
-        background: #f2f2f2;
+        background: #ffffff;
         }
 
         h1,
@@ -237,8 +237,8 @@
 </head>
 
 <body>
-
-  <div id="wrapper" class="">
+<!-- 控制側邊欄開關的預設值，class=""表示預設是開啟，class="toggled"表示預設值是關閉的 -->
+  <div id="wrapper" class="toggled">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -256,9 +256,7 @@
           訂房系統管理
         </li>
         <ul class="sub-menu" id="submenu-2">
-            <li>
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間管理系統</a>
-            </li>
+            
             <li>
             <a href="#">訂房房型管理</a>
             </li>
@@ -268,8 +266,14 @@
             <li>
             <a href="#">訂房房型圖片管理</a>
             </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/back-end/roomnum/selectCheckInData.jsp">客房登記管理系統</a>
+            </li>           
             <li>
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">訂房房間管理</a>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">退房管理系統</a>
+            </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間管理系統</a>
             </li>
      </ul>
        

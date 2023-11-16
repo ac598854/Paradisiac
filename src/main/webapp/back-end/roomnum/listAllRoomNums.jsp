@@ -9,6 +9,16 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
 <title>房間管理系統</title>
  <style>
+ 		.container{	 			
+ 			position:relative;
+ 			top: -70px;
+ 		}
+ 		.text-center{
+ 		
+ 		position:relative;
+ 			top: -80px;
+ 		
+ 		}
         .table th,
         .table td {
             text-align: center;
@@ -71,9 +81,10 @@
     </style>
 </head>
 <body>
-	<DIV style="text-align:center;"><h1 >房間管理系統</h1></DIV>
-	<div class="container mt-5">
+<%@ include file="/back-end/index/back-left_room.jsp" %>
 	
+	<div class="container mt-5">
+	<DIV style="text-align:center;"><h1 >退房管理系統</h1></DIV>
 	<!-- ==================message==================== -->
 	<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMessage}">
@@ -130,7 +141,8 @@
 								<c:when test="${roomnum.roomStatus == 2}">入住中</c:when>
 								<c:when test="${roomnum.roomStatus == 3}">清潔中</c:when>
 								<c:otherwise>未知狀態</c:otherwise>
-							</c:choose></td>
+							</c:choose>
+						</td>
 						<td>
 							<form method="post"
 								action="<%=request.getContextPath()%>/roomnum.do">
@@ -140,7 +152,7 @@
 								<button type="submit" name="action" value="cleanup"
 									class="btn btn-success" style="width: 100px;" onclick="clearMessages()">清掃完成</button>
 									
-									 <input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
+									 <input type="hidden" name="page" value="${currentPage}"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
 							</form>
 						</td>
 					</tr>

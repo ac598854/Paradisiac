@@ -40,7 +40,8 @@ thead tr {
 </style>
 </head>
 <body>
-	<%@ include file="/front-end/index/guided.jsp" %>
+<div id="dynamicContent"></div>
+	<%-- <%@ include file="/front-end/index/guided.jsp" %> --%>
     <div class="container text-center my-4">
         <button id="prevMonth" class="btn btn-primary">上個月</button>
         <span id="currentMonthYear" class="h4 mx-4">August 2023</span>
@@ -97,30 +98,27 @@ thead tr {
 	
 	//===========首頁會員狀態判斷===========
     // 首頁會員狀態判斷
-        $(document).ready(function(){
-        	console.log(1);
-            $.ajax({
-                type: "POST",
-                url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
-				success : function(data) {
-											const responseMessage = parseInt(data);
-											if (responseMessage === 1) {
-												// 如果memno存在，引入guided.jsp
-												$("#dynamicContent").load(
-														"guided.jsp");
-											} else if (responseMessage === 0) {
-												// 如果memno不存在，引入test.jsp
-												$("#dynamicContent").load(
-														"guidedSignout.jsp");
-											}
-										},
-										error : function(error) {
-											console.log("AJAX error:", error);
-										}
-									});
-						});
-   
-  
+      $(document).ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                const responseMessage = parseInt(data);
+                var  contextPath='<%=request.getContextPath()%>';
+                var guided = contextPath + '/front-end/index/guided.jsp';
+                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
   //==================
 	</script>
 </body>
