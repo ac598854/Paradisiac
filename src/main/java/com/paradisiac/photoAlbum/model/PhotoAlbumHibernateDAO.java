@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
 import com.paradisiac.util.HibernateUtil;
@@ -111,7 +112,14 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 		return pageQty;
 			
 	}
-	
+	//用會員編號查相簿=======================================
+	public Integer findByMem(Integer memno) {
+//		String hql = "SELECT albNo FROM PhotoAlbumVO WHERE memNo = :memno";
+//		Query<Integer> albno = getSession().createQuery(hql, Integer.class).setParameter("memno", memno);
+//		List<Integer> result = albno.getResultList(); 
+//	    return result.isEmpty() ? null : result.get(0);//資料庫設定一位會員只有一本相本
+		return getSession().get(PhotoAlbumVO.class, memno).getAlbNo();
+	}
 
 
 	

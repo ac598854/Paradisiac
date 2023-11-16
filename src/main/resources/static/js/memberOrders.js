@@ -2,6 +2,35 @@
 let pathName = window.document.location.pathname;
 //==================================從路徑名稱中提取出項目名稱==============================================
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+
+//==================================取得會員servlet URL==============================================
+ $(document).ready(function(){
+        // 加載頁尾
+        $("#footer").load(projectName + "/front-end/index/footer.jsp");
+
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
+
+
 //==================================當文檔加載完成後，執行以下函數==============================================
 document.addEventListener('DOMContentLoaded', function() {
     fetchMemberInfo()
@@ -26,8 +55,11 @@ function fetchMemberInfo() {
         });
 }
 //==================================獲取訂單資訊==============================================
-function fetchOrders(memno) {
-    fetch(projectName + `/members/orders`)
+function fetchOrders(memno, pageNumber = 1) {
+    const limit = 10;
+    const offset = (pageNumber - 1) * limit;
+
+    fetch(projectName + `/members/orders?limit=${limit}&offset=${offset}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok: ' + response.statusText);
@@ -35,16 +67,17 @@ function fetchOrders(memno) {
             return response.json();
         })
         .then(page => {
-            if (!Array.isArray(page.results)) {
+            if (!page || !page.results) {
                 throw new Error('Expected an array of orders but got: ', page.results);
             }
-            console.log(page); // 檢查API響應的結構
-            createOrdersTable(page.results); // 使用page.results來創建表格
+            createOrdersTable(page.results);
+            createPagination(page, memno); // 確保在這裡調用
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
 }
+
 
 //==================================用來追蹤當前展開的訂單ID==============================================
 let currentOpenOrderId = null;
@@ -119,3 +152,58 @@ function createOrderDetailsTable(orderItems) {
     table += '</table>';
     return table;
 }
+
+//==================================訂單分頁實現==============================================
+function createPagination(page, memno) {
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) return;
+    paginationContainer.innerHTML = '';
+
+    // 第一頁按鈕
+    const firstPageButton = document.createElement('button');
+    firstPageButton.textContent = '第一頁';
+    firstPageButton.disabled = page.currentPage === 1;
+    firstPageButton.onclick = function() {
+        fetchOrders(memno, 1);
+    };
+    paginationContainer.appendChild(firstPageButton);
+
+    // 上一頁按鈕
+    const prevPageButton = document.createElement('button');
+    prevPageButton.textContent = '上一頁';
+    prevPageButton.disabled = page.currentPage === 1;
+    prevPageButton.onclick = function() {
+        fetchOrders(memno, page.currentPage - 1);
+    };
+    paginationContainer.appendChild(prevPageButton);
+
+    // 分頁按鈕
+    for (let i = 1; i <= page.totalPages; i++) {
+        const pageButton = document.createElement('button');
+        pageButton.textContent = i;
+        pageButton.disabled = page.currentPage === i;
+        pageButton.onclick = function() {
+            fetchOrders(memno, i);
+        };
+        paginationContainer.appendChild(pageButton);
+    }
+
+    // 下一頁按鈕
+    const nextPageButton = document.createElement('button');
+    nextPageButton.textContent = '下一頁';
+    nextPageButton.disabled = page.currentPage === page.totalPages;
+    nextPageButton.onclick = function() {
+        fetchOrders(memno, page.currentPage + 1);
+    };
+    paginationContainer.appendChild(nextPageButton);
+
+    // 最後一頁按鈕
+    const lastPageButton = document.createElement('button');
+    lastPageButton.textContent = '最後一頁';
+    lastPageButton.disabled = page.currentPage === page.totalPages;
+    lastPageButton.onclick = function() {
+        fetchOrders(memno, page.totalPages);
+    };
+    paginationContainer.appendChild(lastPageButton);
+}
+

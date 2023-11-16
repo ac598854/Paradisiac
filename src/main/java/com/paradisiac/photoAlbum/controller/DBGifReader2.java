@@ -91,7 +91,7 @@ public class DBGifReader2 extends HttpServlet {
 	public void init() throws ServletException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei", "root", "cha10312");
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei", "root", "123456");
 		} catch (ClassNotFoundException e) {
 			throw new UnavailableException("Couldn't load JdbcOdbcDriver");
 		} catch (SQLException e) {

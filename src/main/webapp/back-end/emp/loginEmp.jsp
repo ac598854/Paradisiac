@@ -17,7 +17,7 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-	<form method="post" action="<%=request.getContextPath()%>/loginemp.do">
+	<form method="post" action="<%=request.getContextPath()%>/loginempN.do">
 	員工編號<input type="text" name="empno"><br>
 	員工密碼<input type="text" name="empPass">
 	<input type="hidden" name="action" value="loginEmp">

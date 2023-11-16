@@ -79,7 +79,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input type="hidden" name="action" value="insert">
+                        <input type="hidden" name="action" value="update">
                         <button type="submit" class="btn btn-primary" id="albumSubmit">送出</button>
                     </div>
                 </div>

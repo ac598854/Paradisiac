@@ -12,16 +12,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import java.io.FileInputStream;
-
+import com.paradisiac.members.model.MembersVO;
+import com.paradisiac.members.service.MembersService;
+import com.paradisiac.photo.model.PhoWithAlbDTO;
+import com.paradisiac.photoAlbum.model.PhotoAlbumDAO_interface;
+import com.paradisiac.photoAlbum.model.PhotoAlbumHibernateDAO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
 import com.paradisiac.photoAlbum.service.PhotoAlbumServiceImpl;
 import com.paradisiac.photoAlbum.service.PhotoAlbumService_interface;
 import com.paradisiac.util.HibernateUtil;
-import com.paradisiac.photo.model.PhoWithAlbDTO;
-import com.paradisiac.photoAlbum.model.*;
 
 /**
  * Servlet implementation class phaService
@@ -204,8 +206,27 @@ public class PhaServlet extends HttpServlet {
 	}
 	//查相簿的所有照片=============================================================
 	private String getAllPho(HttpServletRequest req, HttpServletResponse res) {
+
+		Integer albNo = null;
+		Integer memno = null;
+		Object memnoStr = req.getSession(false).getAttribute("memno");
 		
-		Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+//		if (memnoObj instanceof Integer) {
+//			System.out.println("Integer");
+//		} else {
+//		    // 處理其他情況，例如 memnoObj 不是 Integer
+//			System.out.println("other");
+//		}
+		
+		//會員查詢相簿 & 後台員工查詢相簿
+		if(memnoStr != null && albNo == null) {
+			memno = Integer.valueOf(req.getParameter("memno"));
+			albNo = phaSvc.getPhaByMem(memno);			
+		}else {
+			albNo = Integer.valueOf(req.getParameter("albNo"));
+			
+		}
+//		
 		String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 		
@@ -217,8 +238,18 @@ public class PhaServlet extends HttpServlet {
 		
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
-
-		return "/back-end/pha/listOnePha.jsp";
+		
+		if(req.getParameter("memno") != null ) {
+			albNo = phaSvc.getPhaByMem(memno);
+			req.setAttribute("albNo", albNo);
+//			HttpSession session = req.getSession();
+//			memno = (Integer) session.getAttribute("memno");
+			
+			return "/back-end/pha/listOnePha_mem.jsp";//front-end/members/listOnePha_mem.jsp
+		}else {
+			return "/back-end/pha/listOnePha.jsp";
+		}
+			
 	}
 
 		

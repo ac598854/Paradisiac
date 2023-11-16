@@ -18,7 +18,7 @@
 		</ul>
 	</c:if>
 	<a href='${pageContext.request.contextPath}/pha.do?action=getAll'>查詢</a>所有相簿
-		
+	<a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">回首頁</a>	
 
 
 	

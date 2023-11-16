@@ -1,4 +1,3 @@
-/* 基本頁面樣式 */
 body {
     font-family: 'Arial', sans-serif;
     background-color: lightblue;
@@ -11,7 +10,6 @@ body {
     text-align: center;
 }
 
-/* 導航欄樣式 */
 nav ul {
     list-style-type: none;
     padding: 0;
@@ -24,7 +22,6 @@ nav li {
     margin: 0 10px;
 }
 
-/* 主要內容區域樣式 */
 .container {
     display: flex;
 }
@@ -95,13 +92,13 @@ aside ul li button:hover {
 
 button {
     border:0;
-    background-color:#003C9D;
+    background-color:grey;
     color:#fff;
     border-radius:10px;
     cursor:pointer;
 }
 
-/* 新增的表格樣式 */
+/* �憓�”�璅�撘� */
 .table-responsive {
     margin-top: 20px;
 }
@@ -119,11 +116,20 @@ button {
 }
 
 .narrow-table {
-    max-width: 80%; /* 或您希望的任何其他寬度 */
-    margin: 0 auto; /* 這會使表格在容器中居中 */
+    max-width: 80%;
+    margin: 0 auto;
 }
 
 main {
-    margin-bottom: 100px; /* 足够的空间以避免被 footer 遮挡 */
+    margin-bottom: 100px;
+}
+
+/* 分頁 */
+.pagination-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px; /* 根據需要調整間距 */
+    color: black;
 }
 

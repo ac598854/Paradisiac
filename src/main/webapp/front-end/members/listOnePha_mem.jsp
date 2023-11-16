@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.photoAlbum.model.*"%>
+
 <!DOCTYPE html>
 
 
@@ -96,9 +97,9 @@
 		<h1 class="text-center">相簿管理</h1>
 		<div>
 			<h2 class="d-flex justify-content-between">
-				瀏覽紀念相簿 <a
+				瀏覽紀念相簿 <%-- <a
 					href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp"
-					class="btn btn-secondary">回首頁</a>
+					class="btn btn-secondary">回首頁</a>--%>
 			</h2>
 		</div>
 
@@ -152,8 +153,8 @@
 							action="<%=request.getContextPath()%>/pho.do">
 							<div class="photo-content">
 								<c:forEach var="pha" items="${list}">
-									<input type="checkbox" name="photoNo" id="${pha.photoNo}"
-										value="${pha.photoNo}">
+									<%-- <input type="checkbox" name="photoNo" id="${pha.photoNo}"
+										value="${pha.photoNo}">--%>
 									<div class="photo-container">
 										<img
 											src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
@@ -164,29 +165,15 @@
 												<td>${pha.photoName}</td>
 											</tr>
 											<tr>
-												<td>相片編號:</td>
-												<td>${pha.photoNo}</td>
+												<td>相片日期:</td>
+												<td>${pha.photoDate}</td>
 											</tr>
 										</table>
 									</div>
 								</c:forEach>
 							</div>
-							<div class="d-flex justify-content-between">
-								<div>
-									<input type="hidden" name="action" value="delete"> <input
-										type="hidden" name="albNo" value="${list[0].albNo}"> <input
-										class="btn btn-danger" type="submit" value="刪除相片">
-								</div>
-								<div></div>
-							</div>
 						</form>
-						<form method="post" action="<%=request.getContextPath()%>/pha.do"
-							class="btn btn-success mr-2 btn-separator">
-							<input type="hidden" name="action" value="insertPhoto"> <input
-								type="submit" value="新增相片"
-								class="btn btn-success mr-2 btn-separator"> <input
-								type="hidden" name="albNo" value="${list[0].albNo}">
-						</form>
+
 					</div>
 				</div>
 			</div>
@@ -208,7 +195,7 @@
 		</c:if>
 		<c:if test="${currentPage != phoPageQty}">
 			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${list[0].albNo}&page=${phoPageQty}">至最後一頁</a>&nbsp;
+				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${albNo}&page=${phoPageQty}">至最後一頁</a>&nbsp;
 		</c:if>
 	</div>
 

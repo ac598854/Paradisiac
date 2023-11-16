@@ -65,5 +65,9 @@ public class PhotoAlbumServiceImpl implements PhotoAlbumService_interface{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	public Integer getPhaByMem(Integer memno) {
+		return dao.findByMem(memno);
+	}
 
 }
