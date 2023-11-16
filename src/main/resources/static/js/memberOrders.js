@@ -4,33 +4,31 @@ let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
-var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+ $(document).ready(function(){
+        // 加載頁尾
+        $("#footer").load(projectName + "/front-end/index/footer.jsp");
 
-$(document).ready(function(){
-    // 加載頁尾
-    $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
 
-    // 處理會員登入
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
-        success: function(data) {
-            // ... 登入邏輯
-            const responseMessage = parseInt(data);
-            var guided = contextPath + '/front-end/index/guided.jsp';
-            var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
-            if (responseMessage === 1) {
-                $("#dynamicContent").load(guided);
-            } else if (responseMessage === 0) {
-
-                $("#dynamicContent").load(guidedSignout);
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
             }
-        },
-        error: function(error) {
-            console.log("AJAX error:", error);
-        }
+        });
     });
-});
 
 
 //==================================當文檔加載完成後，執行以下函數==============================================

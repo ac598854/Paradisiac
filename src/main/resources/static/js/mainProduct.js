@@ -4,33 +4,31 @@ let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
-var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
-
 $(document).ready(function(){
-    // 加載頁尾
-    $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+        // 加載頁尾
+        $("#footer").load(projectName + "/front-end/index/footer.jsp");
 
-    // 處理會員登入
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
-        success: function(data) {
-            // ... 登入邏輯
-            const responseMessage = parseInt(data);
-            var guided = contextPath + '/front-end/index/guided.jsp';
-            var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
-            if (responseMessage === 1) {
-                $("#dynamicContent").load(guided);
-            } else if (responseMessage === 0) {
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
 
-                $("#dynamicContent").load(guidedSignout);
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
             }
-        },
-        error: function(error) {
-            console.log("AJAX error:", error);
-        }
+        });
     });
-});
 
 
 //==================================當頁面加載時取得productId並調用API==============================================
@@ -75,6 +73,7 @@ function convertCategoryToChinese(category) {
 //==================================顯示商品詳情的函數==============================================
 function displayProductDetail(product) {
     const detailDiv = document.getElementById('productDetail');
+    detailDiv.innerHTML = '';  // 清空現有的商品詳情
 
     // 商品圖片
     const productImage = document.createElement('img');
@@ -107,14 +106,20 @@ function loadSimilarProducts() {
     fetch(projectName + '/products')
         .then(response => response.json())
         .then(data => {
+            const productsGrid = document.querySelector('.products-grid');
+            productsGrid.innerHTML = ''; // 清空當前顯示的相似商品
+
             // 從所有商品中隨機選擇四個
             const shuffled = data.results.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 4);
 
-            const productsGrid = document.querySelector('.products-grid');
             selected.forEach(product => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'productCard';
+                productDiv.addEventListener('click', () => {
+                    displayProductDetail(product);  // 更新商品詳情
+                    loadSimilarProducts();          // 重新加載相似商品
+                });
 
                 const productImage = document.createElement('img');
                 productImage.src = product.imageUrl;
@@ -125,7 +130,7 @@ function loadSimilarProducts() {
                 productDiv.appendChild(productName);
 
                 const productPrice = document.createElement('p');
-                productPrice.innerText = "NT$ " + product.price; // 假設price是數字格式
+                productPrice.innerText = "NT$ " + product.price;
                 productDiv.appendChild(productPrice);
 
                 productsGrid.appendChild(productDiv);

@@ -30,7 +30,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link b" href="#">首頁</a>
+                        <a class="nav-link b" href="${pageContext.request.contextPath}	/front-end/index/index2.jsp">首頁</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">客房</a>
@@ -45,7 +45,7 @@
                         <a class="nav-link" href="#">最新活動</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href='<%=request.getContextPath()%>/front-end/cart/ProductTest.html'>購物商城</a>
+                        <a class="nav-link" href="<%= request.getContextPath() %>/productFront.html">購物商城</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href='<%=request.getContextPath()%>/front-end/members/Signin.jsp'>註冊會員</a>
