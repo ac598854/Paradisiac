@@ -163,7 +163,7 @@ public class PhaServlet extends HttpServlet {
 			successView.forward(req, res);
 		}
 		//修改相簿內容
-		if("insert".equals(action)) {
+		if("update".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
@@ -180,8 +180,31 @@ public class PhaServlet extends HttpServlet {
 				errorMsgs.add("相簿建立日期請勿空白");
 			}
 			//開始打包
+			PhotoAlbumVO phaVO = new PhotoAlbumVO(albNo, memNo, albName, albDate);
+			//圖片需轉換成byte
+			byte[] albPhoto = null;
+			Part part = req.getPart("albPhoto");
+			InputStream is = part.getInputStream();
+			albPhoto = new byte[is.available()];
+			is.read(albPhoto);
+			is.close();
+			phaVO.setAlbPhoto(albPhoto);
 			
-			
+			//如有錯誤則將填寫的資料保留傳回更新頁面
+			if(!errorMsgs.isEmpty()) {
+				req.setAttribute("phaVO", phaVO);
+				forwardPath = "/back-end/pha/updateOnePha.jsp";
+				RequestDispatcher failureView = req.getRequestDispatcher(forwardPath);
+				failureView.forward(req, res);
+				return;
+			}
+			//無錯誤, 修改並轉交
+			phaSvc.updatePha(phaVO);
+			req.setAttribute("phaVO", phaVO);
+			forwardPath = "/back-end/pha/updateOnePha.jsp";//updateOnePha.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
+			successView.forward(req, res);
+
 		}
 		
 		
@@ -209,22 +232,25 @@ public class PhaServlet extends HttpServlet {
 
 		Integer albNo = null;
 		Integer memno = null;
-		Object memnoStr = req.getSession(false).getAttribute("memno");
+		//從session取得會員編號
+		Object memnoInt = (Integer)req.getSession(false).getAttribute("memno");
 		
-//		if (memnoObj instanceof Integer) {
-//			System.out.println("Integer");
-//		} else {
-//		    // 處理其他情況，例如 memnoObj 不是 Integer
-//			System.out.println("other");
-//		}
+		if(memnoInt instanceof Integer) {
+			System.out.println("輸入是Integer");
+		}else if(memnoInt instanceof String) {
+			System.out.println("輸入是String");
+		}
 		
+		System.out.println("有取得會員編號"+memnoInt);
+				
 		//會員查詢相簿 & 後台員工查詢相簿
-		if(memnoStr != null && albNo == null) {
-			memno = Integer.valueOf(req.getParameter("memno"));
-			albNo = phaSvc.getPhaByMem(memno);			
+		if(memnoInt != null) {
+			albNo = phaSvc.getPhaByMem((Integer) memnoInt);	
+			System.out.println(memnoInt + "取得相簿編號: "+albNo);
+			req.setAttribute("albNo", albNo);
 		}else {
 			albNo = Integer.valueOf(req.getParameter("albNo"));
-			
+			System.out.println("後台取得相簿編號: "+albNo);
 		}
 //		
 		String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
@@ -239,12 +265,9 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
 		
-		if(req.getParameter("memno") != null ) {
+		if(memnoInt != null) {
 			albNo = phaSvc.getPhaByMem(memno);
-			req.setAttribute("albNo", albNo);
-//			HttpSession session = req.getSession();
-//			memno = (Integer) session.getAttribute("memno");
-			
+			req.setAttribute("albNo", albNo);		
 			return "/back-end/pha/listOnePha_mem.jsp";//front-end/members/listOnePha_mem.jsp
 		}else {
 			return "/back-end/pha/listOnePha.jsp";
