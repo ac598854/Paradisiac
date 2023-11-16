@@ -228,12 +228,11 @@ public class Cart extends HttpServlet {
 	    private Integer price;
 	    private Integer quantity;
 	    private String 	description;
-	    private Integer stock;
 	    
 		@Override
 		public String toString() {
 			return "Product [productId=" + productId + ", price=" + price + ", quantity=" + quantity + ", description="
-					+ description + ", stock=" + stock + "]";
+					+ description + "]";
 		}
 		public Integer getproductId() {
 			return productId;
@@ -258,12 +257,6 @@ public class Cart extends HttpServlet {
 		}
 		public void setDescription(String description) {
 			this.description = description;
-		}
-		public Integer getStock() {
-			return stock;
-		}
-		public void setStock(Integer stock) {
-			this.stock = stock;
 		}
 
 	  

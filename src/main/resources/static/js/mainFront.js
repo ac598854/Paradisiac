@@ -4,21 +4,20 @@ let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
-var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
 
 $(document).ready(function(){
     // 加載頁尾
-    $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+    $("#footer").load(projectName+"/front-end/index/footer.jsp");
 
     // 處理會員登入
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
+        url:  projectName + "/front-end/members/members.do?action=indexLogin",
         success: function(data) {
             // ... 登入邏輯
             const responseMessage = parseInt(data);
-            var guided = contextPath + '/front-end/index/guided.jsp';
-            var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+            var guided = projectName + '/front-end/index/guided.jsp';
+            var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
             if (responseMessage === 1) {
                 $("#dynamicContent").load(guided);
             } else if (responseMessage === 0) {
@@ -129,23 +128,59 @@ function updateCartItemCount() {
     cartItemCountElement.textContent = totalProductCount;
 }
 
-function addToCart(productName, price,description,stock,productId) {
-    console.log(productId);
+function addToCart(productName, price, description, stock,productId) {
     if (cart[productName]) {
-        cart[productName].quantity++;
+        if (cart[productName].quantity >= stock) {
+            Swal.fire({
+			  title: '加入購物車失敗',
+			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName} 的庫存不足，無法再添加更多到購物車中。</span>`,
+			  icon: 'error',
+			    timer: 2000, // 設置自動消失時間（毫秒）
+  				showConfirmButton: false // 不顯示確認按鈕
+			});
+            return; // 超出庫存，不允許再添加
+        } else {
+            cart[productName].quantity++;
+            Swal.fire({
+			  title: '已加入購物車',
+			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
+			  icon: 'success',
+			  timer: 2000, // 設置自動消失時間（毫秒）
+  				showConfirmButton: false // 不顯示確認按鈕
+			});
+        }
     } else {
+		
+        if (stock === 0) {
+            Swal.fire({
+			  title: '加入購物車失敗',
+			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}暫時無法加入購物車，庫存不足。</span>`,
+			  icon: 'error',
+			    timer: 2000, // 設置自動消失時間（毫秒）
+  				showConfirmButton: false // 不顯示確認按鈕
+			});
+            return; 
+        }
+
         cart[productName] = {
-            productId:productId,
+            productId: productId,
             price: price,
             description: description,
             quantity: 1,
-            stock:stock
         };
+        Swal.fire({
+			  title: '已加入購物車',
+			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
+			  icon: 'success',
+			  timer: 2000, // 設置自動消失時間（毫秒）
+  				showConfirmButton: false // 不顯示確認按鈕
+			});
     }
-    console.log(cart);
+
     post();
     updateCartItemCount();
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     cartItemCountElement = document.getElementById('cartItemCount');
@@ -179,11 +214,11 @@ function post() {
             throw  Error('沒有取得回應');
         }
     })
-        .then(data => {
-            if (data.add) {
-                alert(data.add);
-            }
-        });
+//        .then(data => {
+//            if (data.add) {
+//                alert(data.add);
+//            }
+//        });
 }
 //========================頁面加載時GET====================================//
 function reload() {
@@ -196,7 +231,6 @@ function reload() {
         .then(response => {
             if (response.ok) {
                 return response.json();
-                console.log(response.json());
             } else {
                 throw new Error('沒有取得回應');
             }

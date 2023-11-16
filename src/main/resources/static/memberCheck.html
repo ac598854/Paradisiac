@@ -89,21 +89,22 @@
     let orderStatus = true;
 
     //==================================取得會員servlet URL==============================================
-    var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
-
+//     var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+	
+    
     $(document).ready(function(){
         // 加載頁尾
-        $("#footer").load("http://localhost:8081/Paradisiac/front-end/index/footer.jsp");
+        $("#footer").load(projectName +"/front-end/index/footer.jsp");
 
         // 處理會員登入
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081" + projectName + "/front-end/members/members.do?action=indexLogin",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
             success: function(data) {
                 // ... 登入邏輯
                 const responseMessage = parseInt(data);
-                var guided = contextPath + '/front-end/index/guided.jsp';
-                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
                 if (responseMessage === 1) {
                     $("#dynamicContent").load(guided);
                 } else if (responseMessage === 0) {
@@ -192,25 +193,45 @@
         // 防止表單的默認提交行為
         event.preventDefault();
 
-        // 向伺服器發送GET請求，獲取用戶會員編號
-        fetch(`/Paradisiac/members/sessionInfo`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+        var isValid = true;
+        var inputs = document.querySelectorAll('#shipping-form input[required]');
+
+        // 通用的前端验证逻辑
+        inputs.forEach(function(input) {
+            var errorSpan = input.nextElementSibling;
+            if (!input.validity.valid) {
+                errorSpan.style.display = 'inline';
+                isValid = false;
+            } else {
+                errorSpan.style.display = 'none';
             }
-        })
-            .then(response => response.json())
-            .then(data => {
-                // 如果獲取到會員編號，則提交訂單，否則提示用戶登入
-                if (data && data.memno) {
-                    submitOrder(data.memno);
-                } else {
-                    alert("請先登入。");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        });
+
+        // 检查支付方式相关的输入
+        var paymentMethod = document.getElementById('payment-method').value;
+        var cardNumber = document.getElementById('card-number');
+        var accountNumber = document.getElementById('account-number');
+
+        if (paymentMethod === "1") {
+            if (cardNumber.value.trim() === "") {
+                cardNumber.nextElementSibling.style.display = 'inline';
+                isValid = false;
+            } else {
+                cardNumber.nextElementSibling.style.display = 'none';
+            }
+        } else if (paymentMethod === "0") {
+            if (accountNumber.value.trim() === "") {
+                accountNumber.nextElementSibling.style.display = 'inline';
+                isValid = false;
+            } else {
+                accountNumber.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        // 如果验证通过，调用 submitOrder 函數處理提交邏輯
+        if (isValid) {
+            submitOrder();
+        }
     }
 
     //==================================更新訂單狀態=============================================
@@ -235,9 +256,21 @@
         // 將購物車項目轉換為訂單項目列表
         const buyItemList = cartItems.map(item => ({
             productId: item.productId,  // 確保這裡使用正確的屬性名
-            quantity: item.quantity
+            quantity: item.quantity,
         }));
+        
+        //刪除redis內的商品
+        const productNameDelet = cartItems.map(item => ({
+        	productName: item.name
+        }));
+		
+        productNameDelet.forEach(item => {
+        	console.log(item.productName);
+        	deleteOne(item.productName);
+        });
 
+        
+       	
         // 構建訂單數據
         const orderData = {
             orderName: recipientName,
@@ -272,6 +305,27 @@
     function calculateTotalAmount(cartItems) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     }
+  //=============================刪除redis內的商品=====================================================//
+    function deleteOne(productName) {
+		console.log(productName);
+		const productNameJSON = JSON.stringify({ productName: productName });
+		const dataToSend = { action: 'delete', cartData: productNameJSON};
+
+		fetch(projectName + '/Cart', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(dataToSend)
+		}).then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('沒有取得回應');
+			}
+		})
+				
+	}
 </script>
 
 
