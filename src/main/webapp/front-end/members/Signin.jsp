@@ -44,19 +44,19 @@ pageContext.setAttribute("membersVO", membersVO);
 		</div>
 		<div>
 			<label for="memcaptcha">註冊驗證碼：<font color="red"><b>*</b></font></label>
-			<input type="text" id="memcaptcha" name="memcaptcha" 
+			<input type="text" id="memcaptcha" name="memcaptcha"
 				value="${membersVO.memcaptcha}" class="required" />
 			<button type="button" id="checkCaptchaButton">驗證</button>
 		</div>
 		<div id="captchaError" style="color: red;"></div>
 		<div>
 			<label for="memname">會員姓名:<font color="red"><b>*</b></font></label> <input
-				type="text" id="memname" name="memname" value="${membersVO.memname}" size="45"
-				class="required"  />
+				type="text" id="memname" name="memname" value="${membersVO.memname}"
+				size="45" class="required" />
 		</div>
 		<div>
 			<label for="memaccount">帳號:<font color="red"><b>*</b></font></label>
-			<input type="text" id="memaccount" name="memaccount" 
+			<input type="text" id="memaccount" name="memaccount"
 				value="${membersVO.memaccount}" size="45" placeholder="請輸入帳號"
 				class="required" />
 		</div>
@@ -64,8 +64,8 @@ pageContext.setAttribute("membersVO", membersVO);
 
 		<div>
 			<label for="mempass">密碼:<font color="red"><b>*</b></font></label> <input
-				type="password" id="mempass" name="mempass" value="${membersVO.mempass}"
-				size="45" class="required" />
+				type="password" id="mempass" name="mempass"
+				value="${membersVO.mempass}" size="45" class="required" />
 		</div>
 
 		<div>
@@ -79,8 +79,8 @@ pageContext.setAttribute("membersVO", membersVO);
 
 		<div>
 			<label for="memid">身分證字號:<font color="red"><b>*</b></font></label> <input
-				type="text" id="memid" name="memid" value="${membersVO.memid}" size="45"
-				class="required" />
+				type="text" id="memid" name="memid" value="${membersVO.memid}"
+				size="45" class="required" />
 		</div>
 
 		<div>
@@ -90,22 +90,23 @@ pageContext.setAttribute("membersVO", membersVO);
 
 		<div>
 			<label for="memphone">電話:<font color="red"><b>*</b></font></label> <input
-				type="text" id="memphone"  name="memphone" value="${membersVO.memphone}" size="45"
-				class="required" />
+				type="text" id="memphone" name="memphone"
+				value="${membersVO.memphone}" size="45" class="required" />
 		</div>
 
 		<div>
-			<label for="memaddress">地址:</label> <input type="text" id="memaddress"
-				name="memaddress" value="${membersVO.memaddress}" size="45" />
+			<label for="memaddress">地址:</label> <input type="text"
+				id="memaddress" name="memaddress" value="${membersVO.memaddress}"
+				size="45" />
 		</div>
 
 		<div>
 			<label for="mempicture">上傳會員頭像:</label> <input name="mempicture"
 				id="mempicture" type="file" accept="image/*" />
 		</div>
-		<br> <input type="button" value="註冊" name="submitButton" id="submitButton"> <br>
-		        <input type="hidden" name="action" value="insert">
-		<br>
+		<br> <input type="button" value="註冊" name="submitButton"
+			id="submitButton"> <br> <input type="hidden"
+			name="action" value="insert"> <br>
 		<button type="reset" id="reset">重設</button>
 
 	</form>
@@ -174,7 +175,7 @@ pageContext.setAttribute("membersVO", membersVO);
                     if (data.message == 'true') {
                         $('#accountError').text("可用帳號");
                         isMemaccountValid=true;//帳號可用
-                        console.log(isMemaccountValid);
+
                     } else {
                         $('#accountError').text("帳號已存在，請重新輸入");
                     }
@@ -198,7 +199,6 @@ pageContext.setAttribute("membersVO", membersVO);
                 success: function(data) {
                     // 檢查
                     const responseMessage = parseInt(data);
-                    console.log("後臺驗證號碼"+responseMessage);
                     if (responseMessage === 1) {
                         $('#captchaError').text("驗證已逾時，請重新驗證");
                         isMemcaptchaValid=false;
@@ -210,7 +210,6 @@ pageContext.setAttribute("membersVO", membersVO);
                     } else if (responseMessage === 2) {
                         $('#captchaError').text("驗證成功");
                         isMemcaptchaValid=true;
-                    	console.log(isMemcaptchaValid);
                     }
                 }
             });
@@ -218,26 +217,21 @@ pageContext.setAttribute("membersVO", membersVO);
 
 
 $('#submitButton').click(function() {
-	let checkStatus =true;
-	$('.required').each(function(i, obj) {
-	    let  tmp=$(obj).val();
-	    console.log(tmp);
-	    if(!tmp){
-	        alert("尚有必填未填");
-	        checkStatus=false;
-	        return;
-	    }
-	}); 
+
+let checkStatus = true;
+    $('.required').each(function(i, obj) {
+        let tmp = $(obj).val();
+        if (!tmp) {
+            checkStatus = false;
+            return;
+        }
+    });
+
+    if (!checkStatus) {
+        alert("尚有必填未填");
+        return;
+    }
 	
-	if(!checkStatus){
-		return;
-	}
-    var memname = $("#memname").val();
-    var memcaptcha = $("#memcaptcha").val();
-
-    console.log("帳號驗證最終:"+isMemaccountValid);
-    console.log("驗證碼驗證最終"+isMemcaptchaValid);
-
     if (isMemaccountValid &&isMemcaptchaValid) {
         // 驗證通過
         $("#form1 input[name='action']").val("insert");

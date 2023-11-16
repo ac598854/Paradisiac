@@ -9,8 +9,6 @@
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-	
-
 <meta charset="UTF-8">
 <title>Paradisiac Bay-活動結帳頁</title>
 
@@ -729,33 +727,7 @@ input[type="text"] {
 			}
 		});
 		
-		
-		//  // 首頁會員狀態判斷
-//         $(document).ready(function(){
-//         	console.log(1);
-//             $.ajax({
-//                 type: "POST",
-<%--                 url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin", --%>
-// 				success : function(data) {
-// 											const responseMessage = parseInt(data);
-// 											console.log(responseMessage)
-
-//   											if (responseMessage === 1) {
-// 												// 如果memno存在，引入guided.jsp
-// 												$("#dynamicContent").load("/front-end/index/guided.jsp");
-// 											} else if (responseMessage === 0) {
-// 												// 如果memno不存在，引入test.jsp
-// 												$("#dynamicContent").load("/front-end/index/guidedSignout.jsp");
-// 											}
-// 										},
-// 										error : function(error) {
-// 											console.log("AJAX error:", error);
-// 										}
-// 									});
-// 						});
-   
-
-		
+	
 		
 	</script>
 

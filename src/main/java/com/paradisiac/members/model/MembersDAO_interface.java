@@ -10,14 +10,13 @@ public interface MembersDAO_interface {
 	    public void updateBackStatus(MembersVO mVO);
 	    public void updateFront(MembersVO mVO);
 	    public void updatePass(MembersVO mVO);
-//	    public void update_mem_captcha(MembersVO mVO);//不需要
 	    public List<MembersVO> getAll();
 	    public List<MembersVO> getAllBystatus(Boolean memstatus);
 	    public MembersVO getOneBymemno(Integer memno);
 	    public MembersVO getOneBymemaccount(String memaccount);
+	    public MembersVO getOneBymemmail(String memmail);
 	    public void delete(Integer memno);
 	  
-	  //萬用複合查詢(傳入參數型態Map)(回傳 List)
 
 }
 

@@ -6,6 +6,7 @@
 <%@ page import="com.paradisiac.members.service.*"%>
 <%@ page import="java.util.*"%>
 
+
 <%
 MembersVO membersVO = null;
 membersVO = (MembersVO) session.getAttribute("membersVO");
@@ -22,7 +23,7 @@ membersVO = (MembersVO) session.getAttribute("membersVO");
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
 
 <meta charset="UTF-8">
-<title>Paradisiac Bay-登入</title>
+<title>Insert title here</title>
 
 <style>
 body {
@@ -110,7 +111,7 @@ button {
 </style>
 </head>
 <body>
-<%@ include file="/front-end/index/guidedSignout.jsp"%>
+	<div id="dynamicContent"></div>
 	<div class="container">
 		<div class="row m-5 no-gutters shadow-lg">
 			<div class="col-md-6 d-none d-md-block">
@@ -133,6 +134,10 @@ button {
 						</div>
 						<div class="d-flex align-items-center justify-content-between">
 							<div class="d-flex align-items-center">
+								<input name="" type="checkbox" value="" /> <span
+									class="pl-2 font-weight-bold">記住帳號</span>
+							</div>
+							<div>
 								<a
 									href="<%=request.getContextPath()%>/front-end/members/ForgetPass.jsp">忘記密碼?</a>
 							</div>
@@ -153,9 +158,36 @@ button {
 			</div>
 		</div>
 	</div>
+
 </body>
 <%@ include file="/front-end/index/footer.jsp"%>
 <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script>
+	$(document).ready(function(){
+	    $.ajax({
+	        type: "POST",
+	        url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+	        success: function(data) {
+	            const responseMessage = parseInt(data);
+	            var  contextPath='<%=request.getContextPath()%>
+	';
+										var guided = contextPath
+												+ '/front-end/index/guided.jsp';
+										var guidedSignout = contextPath
+												+ '/front-end/index/guidedSignout.jsp';
+										if (responseMessage === 1) {
+											$("#dynamicContent").load(guided);
+										} else if (responseMessage === 0) {
 
+											$("#dynamicContent").load(
+													guidedSignout);
+										}
+									},
+									error : function(error) {
+										console.log("AJAX error:", error);
+									}
+								});
+					});
+</script>
 </html>
