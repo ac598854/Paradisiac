@@ -1,94 +1,147 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
+<!DOCTYPE html>
 <html>
 <head>
-<title>IBM Promotiom: Home</title>
+    <title>IBM Promotion: Home</title>
 
-<style>
-  table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
-	margin-bottom: 10px;
-    border: 3px ridge Gray;
-    height: 80px;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
-  h4 {
-    color: blue;
-    display: inline;
-  }
-</style>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
 
+        #header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        #main-content {
+            margin: 20px;
+        }
+
+        table#table-1 {
+            width: 450px;
+            background-color: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        table#table-1 h3 {
+            color: red;
+            margin: 5px;
+        }
+
+        table#table-1 h4 {
+            color: blue;
+            margin: 5px;
+        }
+
+        h3 {
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            color: #f00;
+        }
+
+        form {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
-<body bgcolor='white'>
+<body>
 
-<table id="table-1">
-   <tr><td><h3> «P¾P±M®×</h3><h4>( MVC )</h4></td></tr>
-</table>
+<div id="header">
+    <h1>IBM Promotion</h1>
+</div>
 
+<div id="main-content">
+    <table id="table-1">
+        <tr>
+            <td>
+                <h3>ä¿ƒéŠ·å°ˆæ¡ˆ</h3>
+                <h4>( MVC )</h4>
+            </td>
+        </tr>
+    </table>
 
-<h3>±M®×¬d¸ß:</h3>
-	
-<%-- ¿ù»~ªí¦C --%>
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">½Ğ­×¥¿¥H¤U¿ù»~:</font>
-	<ul>
-	    <c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
+    <h3>å°ˆæ¡ˆæŸ¥è©¢:</h3>
 
-<ul>
-  <li><a href='listall.jsp'>List</a> all Promotion  <br><br></li>
-  
-  <jsp:useBean id="proSvc" scope="page" class="com.paradisiac.promotion.service.PromotionService" />
-  <li>
-    <FORM METHOD="post" ACTION="promotion" >
-        <b>¿é¤J«P¾P½s¸¹ (¦p101):</b>
-        <input type="text" name="prono">
-        <input type="hidden" name="action" value="getOne_For_Display">
-        <input type="submit" value="°e¥X">
-    </FORM>
-  </li>
-  <li>
-     <FORM METHOD="post" ACTION="promotion" >
-       <b>¿ï¾Ü«P¾P½s¸¹:</b>
-       <select size="1" name="prono">
-         <c:forEach var="proVO" items="${proSvc.all}" > 
-          <option value="${proVO.prono}">${proVO.prono}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="°e¥X">
-    </FORM>
-  </li>
-  
-  <li>
-     <FORM METHOD="post" ACTION="promotion" >
-       <b>¿ï¾Ü«P¾P±M®×¦WºÙ:</b>
-       <select size="1" name="prono">
-         <c:forEach var="proVO" items="${proSvc.all}" > 
-          <option value="${proVO.prono}">${proVO.proname}
-         </c:forEach>   
-       </select>
-       <input type="hidden" name="action" value="getOne_For_Display">
-       <input type="submit" value="°e¥X">
-     </FORM>
-  </li>
-  </ul>
+    <c:if test="${not empty errorMsgs}">
+        <p style="color:red;">è«‹ä¿®æ­£ä»¥ä¸‹éŒ¯èª¤:</p>
+        <ul>
+            <c:forEach var="message" items="${errorMsgs}">
+                <li style="color:red;">${message}</li>
+            </c:forEach>
+        </ul>
+    </c:if>
 
-  
- <ul>
-  <li><a href='add.jsp'>Add</a> a new Emp.</li>
-</ul>
+    <ul>
+        <li><a href='listall.jsp'>List</a> all Promotion</li>
+
+        <jsp:useBean id="proSvc" scope="page" class="com.paradisiac.promotion.service.PromotionService" />
+        <li>
+            <form method="post" action="promotion">
+                <b>è¼¸å…¥ä¿ƒéŠ·ç·¨è™Ÿ (å¦‚101):</b>
+                <input type="text" name="prono">
+                <input type="hidden" name="action" value="getOne_For_Display">
+                <input type="submit" value="é€å‡º">
+            </form>
+        </li>
+        <li>
+            <form method="post" action="promotion">
+                <b>é¸æ“‡ä¿ƒéŠ·ç·¨è™Ÿ:</b>
+                <select size="1" name="prono">
+                    <c:forEach var="proVO" items="${proSvc.all}">
+                        <option value="${proVO.prono}">${proVO.prono}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="action" value="getOne_For_Display">
+                <input type="submit" value="é€å‡º">
+            </form>
+        </li>
+
+        <li>
+            <form method="post" action="promotion">
+                <b>é¸æ“‡ä¿ƒéŠ·å°ˆæ¡ˆåç¨±:</b>
+                <select size="1" name="prono">
+                    <c:forEach var="proVO" items="${proSvc.all}">
+                        <option value="${proVO.prono}">${proVO.proname}</option>
+                    </c:forEach>
+                </select>
+                <input type="hidden" name="action" value="getOne_For_Display">
+                <input type="submit" value="é€å‡º">
+            </form>
+        </li>
+    </ul>
+
+    <ul>
+        <li><a href='add.jsp'>Add</a> a new Emp.</li>
+    </ul>
+</div>
+
 </body>
 </html>

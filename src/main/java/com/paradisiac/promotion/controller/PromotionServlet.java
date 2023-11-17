@@ -153,6 +153,8 @@ public class PromotionServlet extends HttpServlet{
 				proVO.setEnddate(enddate);
 				proVO.setDiscount(discount);
 				proVO.setStatus(status);
+				
+				
 
 			
 				if (!errorMsgs.isEmpty()) {
@@ -253,7 +255,8 @@ public class PromotionServlet extends HttpServlet{
 				proVO = proSvc.addPro(proname,prodes,startdate,enddate,discount,status);
 				
 				/***************************3.新增完成,準備轉交(Send the Success view)***********/
-				String url = "/back-end/promotion/listall.jsp";
+				req.setAttribute("proVO", proVO);
+				String url = "/back-end/promotion/add.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url); 
 				successView.forward(req, res);				
 		}
