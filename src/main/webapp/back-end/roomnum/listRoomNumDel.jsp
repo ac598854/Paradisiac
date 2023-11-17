@@ -12,6 +12,44 @@
 	href="${pageContext.request.contextPath}/main/main.css">
 <title>房間管理系統</title>
 <style>
+.container{	 	
+			
+ 			position:relative;
+ 			top: -72px;
+ 		}
+.text-center{ 		
+ 		position:relative;
+ 			top: -60px; 		
+ 		} 		
+
+.addTable {
+    height: 20px; /* Adjust the height as needed */
+    width: 1107px;
+}
+
+/* Optional: Adjust the height of the cells, input fields, or other elements if needed */
+.addTable td,
+.addTable input {
+    height: 40px; /* Adjust the height as needed */
+    width:150px;
+}
+
+/* Optional: If you want to center the content vertically within each cell */
+.addTable td {
+   text-align: center;
+}
+.addTable select {
+    height: 40px; /* Adjust the height as needed */
+   	position:relative;
+   	top:8px;
+}
+#addbutton {
+    height: 40px; /* Adjust the height as needed */
+   	position:relative;
+    width:100%;
+   
+}
+/*=========================  */
 .table th, .table td {
 	text-align: center;
 	border: 1px solid #dee2e6;
@@ -72,9 +110,7 @@
 	background-color: #0056b3;
 	border-color: #0056b3;
 }
-.container{
-	margin-top: 0px;
-}
+
 </style>
 <!-- 切換按鈕的文字（新增/修改） -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -82,9 +118,10 @@
 <!-- 切換按鈕的文字（新增/修改） -->
 </head>
 <body>
+<%@ include file="/back-end/index/back-left_room.jsp" %>
 	<!-- <DIV style="text-align:center;"><h1 >房間管理系統--新增/修改/刪除</h1></DIV> -->
 	<div class="container mt-5">
-	
+	<DIV style="text-align:center;"><h1 >房間管理系統</h1></DIV>
 	<br>
 		<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMessage}">
@@ -111,11 +148,11 @@
 		</c:if>
 		<%-- 成功表列 --%>
 		<!--===============新增房間=====================  -->
-		  <table class="table table-bordered" >
-        <tbody>            
+		  <table class="addTable table-bordered" >
+        	<tbody>            
             <tr>
             <form method="post"	action="<%=request.getContextPath()%>/roomnum.do">
-                <td colspan="2" class="text-center font-weight-bold bg-primary text-white">新增房間</td>
+                <td colspan="2" class="addRoomNum-center font-weight-bold bg-primary text-white">新增房間</td>
                 <td>房間編號：</td>
                 <td><input type="text" class="form-control" name="roomNum" value="" size="10"></td>            	
                 <td>房型編號：</td>
@@ -131,8 +168,8 @@
 								</div>							
 							<!--================下拉選單===================== -->
 						</td>               
-                <td colspan="2" class="text-center">
-                    <button type="submit" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
+                <td colspan="2" class="addRoomNum-center">
+                    <button type="submit" id="addbutton" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
                 </td>
                 <input type="hidden" name="page" value="${currentPage}">
            </form>
@@ -140,7 +177,8 @@
         </tbody>
     </table>
 		<!--================回首頁=====================  -->
-		<a href="${pageContext.request.contextPath}/index.jsp">回首頁</a>
+		<!-- <a href="${pageContext.request.contextPath}/index.jsp">回首頁</a> -->
+		<!--================顯示頁數=====================  -->
 		<c:if test="${roomnumPageQty > 0}">
 			<b><font color=red>第${currentPage}/${roomnumPageQty}頁</font></b>
 		</c:if>
@@ -191,6 +229,8 @@
 			</tbody>
 		</table>
 	</div>
+	
+	
 	 <div class="text-center">
 	 <c:choose>
         <c:when test="${currentPage > 1}">
