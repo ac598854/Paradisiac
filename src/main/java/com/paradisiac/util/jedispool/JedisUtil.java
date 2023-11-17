@@ -45,7 +45,7 @@ public class JedisUtil {
 	    }
 	}
 	
-	public static String get(String key) {
+	public static String get(String key) {//取信箱
 		String result="";
 		JedisPool pool = getJedisPool();	
 	    try (Jedis jedis = pool.getResource()) {
@@ -54,6 +54,28 @@ public class JedisUtil {
 	    }
 	    return result;
 	}
+	
+	
+	public static void RestPwdset(String key, String value) {//忘記密碼
+	    JedisPool pool = getJedisPool();	  
+	    try (Jedis jedis = pool.getResource()) {
+	    	jedis.select(1);
+	    	jedis.set(key, value);
+	        
+	    }
+	}
+	
+	public static String RestPwdget(String key) {//忘記密碼//取回帳號
+		String result="";
+		JedisPool pool = getJedisPool();	
+	    try (Jedis jedis = pool.getResource()) {
+	    	jedis.select(1);
+	    	result=jedis.get(key);
+	    }
+	    return result;
+	}
+	
+	
 	
 	public static void expire(String key) {
 	    JedisPool pool = getJedisPool();

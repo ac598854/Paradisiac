@@ -37,7 +37,7 @@ public class RoomNumServlet extends HttpServlet {
 		}
 
 			// ======更新房間狀態，當listAllCheckInData.jsp按下checkin按鈕時要更新RoomOrder及RoomNum========================
-		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
+		if ("update".equals(action)) { // 來自listAllCheckInData.jsp的請求
 			//傳送錯誤訊息
 			List<String> errorMessage = new LinkedList<String>();
 			req.setAttribute("errorMessage", errorMessage);
@@ -81,11 +81,33 @@ public class RoomNumServlet extends HttpServlet {
 				errorMessage.add("住房姓名: 只能是中、英文字母 , 且長度必需在2到10之間");
 			}							
 			
+			//取得該訂單已分配房間數量-(當該訂單當天有下訂3間房間時，要以此來判斷已分配幾間房間給該訂單)
+			Integer roomOrderNoCount = null;
+			try {
+				roomOrderNoCount = Integer.valueOf(req.getParameter("roomOrderNoCount").trim());
+			} catch (NumberFormatException e) {
+				roomOrderNoCount = 0;
+				errorMessage.add("訂單房間數請填數字.");
+			}
+			//取得該訂單下訂幾間房間
+			Integer roomAmount = null;
+			try {
+				roomAmount = Integer.valueOf(req.getParameter("roomAmount").trim());
+			} catch (NumberFormatException e) {
+				roomAmount = 0;
+				errorMessage.add("房型編號請填數字.");
+			}
+			
 			/*************************** 2.開始修改資料 *****************************************/			
 			//★★★更新訂單狀態將訂房狀態改變為2，(說明：1表示未入住，2表示已入住-已給過房間號碼)
 			RoomOrderServiceImpl roomorderSvc = new RoomOrderServiceImpl();
 			byte orderStatus = 2;
+			roomOrderNoCount +=1;
+			System.out.println("roomOrderNoCount"+roomOrderNoCount+"==,==roomAmount"+roomAmount);
+			
+			if(roomOrderNoCount==roomAmount) {
 			roomorderSvc.updateOrderStatus(roomOrderNo, orderStatus);
+			}
 			//★★★更新房間狀態
 			// 2表示已入住，這間房間便不可以再分配給下一個人，除非狀態改變為1
 			int status = 2; // 在這直接將status狀態值改變為2
@@ -94,10 +116,14 @@ public class RoomNumServlet extends HttpServlet {
 			RoomNumServiceImpl roomnumSvc = new RoomNumServiceImpl();
 			System.out.println("更新狀態：" + roomnumSvc.updateRoomNumStatus(rnum, roomOrderNo, checkInName, roomStatus));
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			getAllRoomNum(roomnumService, req, res);
+//			getAllRoomNum(roomnumService, req, res);
+			//String url = "/order.do?action=handleCheckIn";
+			String url = "/order.do?action=handleCheckIn&source=update";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listAllRoomNums.jsp
+			successView.forward(req, res);
 		}
 
-		//=====================改變房間狀態-checkout-退房==================================
+				// 改變房間狀態-checkout-退房 -將狀態2(住房中)改變為3(清潔中)
 				if ("checkout".equals(action)) {
 					String page = req.getParameter("page");
 					int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -119,7 +145,7 @@ public class RoomNumServlet extends HttpServlet {
 					    System.out.println("退房-房間號碼========："+rnum);
 					Integer roomOrderNo = null;
 					String checkInName ="";
-					int status = 3; // 在這直接將status狀態值改變為2
+					int status = 3; // 將status狀態值改變為3表示清潔中
 					Byte roomStatus = null;
 					roomStatus = (byte) status;	
 					RoomNumServiceImpl roomnumSvc = new RoomNumServiceImpl();
@@ -130,7 +156,7 @@ public class RoomNumServlet extends HttpServlet {
 					//==========================更新房間狀態===================================
 					getAllRoomNum(roomnumService, req, res);
 				}
-				// =====================改變房間狀態-打掃完成==================================
+				// 改變房間狀態-打掃完成==================================
 				if ("cleanup".equals(action)) {
 					String page = req.getParameter("page");
 					int currentPage = (page == null) ? 1 : Integer.parseInt(page);
@@ -152,7 +178,7 @@ public class RoomNumServlet extends HttpServlet {
 					//Integer rnum = Integer.valueOf(req.getParameter("rnum").trim());
 					Integer roomOrderNo = null;
 					String checkInName = "";
-					int status = 1; // 在這直接將status狀態值改變為2
+					int status = 1; // 在這直接將status狀態值改變為1，清掃完成將狀態改變為可訂房
 					Byte roomStatus = null;
 					roomStatus = (byte) status;
 					RoomNumServiceImpl roomnumSvc = new RoomNumServiceImpl();
@@ -164,7 +190,7 @@ public class RoomNumServlet extends HttpServlet {
 					
 					getAllRoomNum(roomnumService, req, res);
 				}
-		// ==========================房間新增、修改、刪除-=======================
+		// 房間新增、修改、刪除
 		if ("roomNumModify".equals(action)) { // 來自index.jsp	
 			//設定房型下拉選單
 			RoomTypeServiceImpl roomTypeService = new RoomTypeServiceImpl();
@@ -438,7 +464,7 @@ public class RoomNumServlet extends HttpServlet {
 		req.setAttribute("roomnumList", roomnumList);
 		req.setAttribute("currentPage", currentPage);
 		String url = "/back-end/roomnum/listAllRoomNums.jsp";
-		RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listOneEmp.jsp
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listAllRoomNums.jsp
 		successView.forward(req, res);
 	}
 
