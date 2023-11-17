@@ -42,13 +42,9 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 	}
 	//===修改===============================================
 	@Override
-	public int update(PhotoAlbumVO phaVO) {
-		try {
-			getSession().update(phaVO);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}		
+	public PhotoAlbumVO update(PhotoAlbumVO phaVO) {
+		getSession().update(phaVO);
+		return phaVO;		
 	}
 	//===刪除===============================================
 	@Override
@@ -114,11 +110,11 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 	}
 	//用會員編號查相簿=======================================
 	public Integer findByMem(Integer memno) {
-//		String hql = "SELECT albNo FROM PhotoAlbumVO WHERE memNo = :memno";
-//		Query<Integer> albno = getSession().createQuery(hql, Integer.class).setParameter("memno", memno);
-//		List<Integer> result = albno.getResultList(); 
-//	    return result.isEmpty() ? null : result.get(0);//資料庫設定一位會員只有一本相本
-		return getSession().get(PhotoAlbumVO.class, memno).getAlbNo();
+		String hql = "SELECT albNo FROM PhotoAlbumVO WHERE memNo = :memno";
+		Integer pha = (Integer) getSession().createQuery(hql, Integer.class).setParameter("memno", memno).uniqueResult();
+		
+	    return pha;//資料庫設定一位會員只有一本相本
+
 	}
 
 

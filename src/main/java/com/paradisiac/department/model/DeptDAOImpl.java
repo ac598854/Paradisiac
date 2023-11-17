@@ -99,7 +99,7 @@ public class DeptDAOImpl implements DeptDAO_interface{
 		//Session session = getSession();
 		List<Object[]> resultList = getSession().createNativeQuery("SELECT dept_no, dept_name FROM department WHERE emp_no = ? ").getResultList();
 		for (Object[] row : resultList) { 
-			int a = (int) row[0];
+			int a = (int) row[0]; 
 			int b = (int) row[1];
 			int c = (int) row[2];
 			String checkInname = (String) row[3];

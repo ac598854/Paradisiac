@@ -261,7 +261,7 @@
           </li>
             <ul class="sub-menu" id="submenu-3">
             <li>
-                <a href="#">活動類別管理</a>
+                <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
             </li>
             <li>
                 <a href="#">檔期管理</a>
