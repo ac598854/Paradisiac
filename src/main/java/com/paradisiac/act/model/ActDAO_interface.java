@@ -20,7 +20,9 @@ public interface ActDAO_interface {
 	
     public List<ActVO> getAll(int currentPage);
 	
-	long getTotal();	
+	long getTotal();
+	
+	public ActVO insertOrUpdate(ActVO actVO);
 	
 	
 	

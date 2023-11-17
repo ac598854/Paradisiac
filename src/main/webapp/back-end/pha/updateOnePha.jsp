@@ -13,9 +13,13 @@
             border: 1px solid #ccc;
             padding: 20px;
             margin: 0 auto;
+            padding-top: 65px;
+			padding-left: 255px;
+            
         }
     </style>
 </head>
+<%@ include file="/back-end/index/back-left_planning.jsp" %>
 <body>
 	<div class="custom-container">
 

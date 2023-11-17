@@ -3,6 +3,8 @@ package com.paradisiac.act.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
@@ -26,6 +28,7 @@ public class ActVO  implements java.io.Serializable{
 //	private byte[] actPho1;
 //	private byte[] actPho2;
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
 	@Column(name = "act_no", updatable = false)
 	private Integer actNo;
 	@Column(name = "act_name")
@@ -36,13 +39,13 @@ public class ActVO  implements java.io.Serializable{
 	private Integer lowNum;
 	@Column(name = "high_num")
 	private Integer highNum;
-	@Column(name = "act_status", insertable = false)
+	@Column(name = "act_status")
 	private boolean actStatus;
 	@Column(name = "act_content")
 	private String actContent;
-	@Column(name = "act_photo1", columnDefinition = "mediumblobtext", insertable = false)
+	@Column(name = "act_photo1", columnDefinition = "mediumblobtext")
 	private byte[] actPho1;
-	@Column(name = "act_photo2", columnDefinition = "mediumblobtext", insertable = false)
+	@Column(name = "act_photo2", columnDefinition = "mediumblobtext")
 	private byte[] actPho2;
 	
 //==============================
@@ -133,11 +136,10 @@ public class ActVO  implements java.io.Serializable{
 	public void setActPho2(byte[] actPho2) {
 		this.actPho2 = actPho2;
 	}
-
-	public ActVO(Integer actNo, String actName, Integer unitPrice, Integer lowNum, Integer highNum, boolean actStatus,
+	//沒有部門編號跟照片的建構子
+	public ActVO(String actName, Integer unitPrice, Integer lowNum, Integer highNum, boolean actStatus,
 			String actContent) {
 		super();
-		this.actNo = actNo;
 		this.actName = actName;
 		this.unitPrice = unitPrice;
 		this.lowNum = lowNum;
