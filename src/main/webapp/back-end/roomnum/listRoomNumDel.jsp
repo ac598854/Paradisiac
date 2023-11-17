@@ -12,15 +12,14 @@
 	href="${pageContext.request.contextPath}/main/main.css">
 <title>房間管理系統</title>
 <style>
-.container{	 	
-			
- 			position:relative;
- 			top: -72px;
- 		}
+.container{	 				
+ 		position:relative;
+ 		top: -72px;
+}
 .text-center{ 		
  		position:relative;
- 			top: -60px; 		
- 		} 		
+ 		top: -60px; 		
+} 		
 
 .addTable {
     height: 20px; /* Adjust the height as needed */
