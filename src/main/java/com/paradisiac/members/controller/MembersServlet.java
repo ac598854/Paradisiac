@@ -1,12 +1,9 @@
 package com.paradisiac.members.controller;
 
 import java.io.*;
-import java.nio.Buffer;
-import java.sql.Date;
 import java.util.*;
-import javax.servlet.*;
+
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,15 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import org.apache.catalina.connector.Response;
 
 import com.paradisiac.members.model.*;
 import com.paradisiac.members.service.*;
-import com.paradisiac.members.controller.*;
 import com.paradisiac.util.jedispool.JedisUtil;
 
-
-import redis.clients.jedis.JedisPool;
 
 
 @MultipartConfig
@@ -288,6 +281,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			req.setAttribute("MembersVO", membersVO); 
 			String url = "/back-end/members/MembersLPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
 		}
 
 		if ("update-Front".equals(action)) {
@@ -360,11 +354,11 @@ public class MembersServlet<Session> extends HttpServlet {
 					membir = java.sql.Date.valueOf(membirString);
 				} catch (IllegalArgumentException e) {
 					// 日期無效
-					membir = java.sql.Date.valueOf("1970-01-01");
+					membir = java.sql.Date.valueOf("1800-01-01");
 				}
 			} else {
 				// 日期為空
-				membir = java.sql.Date.valueOf("1970-01-01");
+				membir = java.sql.Date.valueOf("1800-01-01");
 			}
 			String memcaptcha = req.getParameter("memcaptcha");
 			String memphone = req.getParameter("memphone");
@@ -475,7 +469,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			// 開池驗證
 			String tempAuth = JedisUtil.get(memmail);
-//			String tempAuth = MailHander.get(memmail);
 			if (memcaptcha == null) {// 驗證碼輸入不為空
 				responseMessage = 1;
 				System.out.println("連結信已逾時，請重新申請");
