@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.paradisiac.department.model.DeptVO;
+import com.paradisiac.department.service.DeptService;
+import com.paradisiac.department.service.DeptServiceImpl;
 import com.paradisiac.employee.model.EmpVO;
-import com.paradisiac.employee.service.*;
+import com.paradisiac.employee.service.EmpService;
 
 /**
  * Servlet implementation class EmpServlet
@@ -31,7 +33,7 @@ public class EmpServlet extends HttpServlet {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
-		
+		DeptService deptSvc = new DeptServiceImpl();
 		// 查單筆======================================================================
 		if ("getOne_For_Display".equals(action)) { // 來自select_page.jsp的請求
 
@@ -111,8 +113,6 @@ public class EmpServlet extends HttpServlet {
 		if ("update".equals(action)) { // 來自update_emp_input.jsp的請求
 			
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			Integer empno = Integer.valueOf(req.getParameter("empno").trim());
@@ -147,7 +147,8 @@ public class EmpServlet extends HttpServlet {
 			
 			EmpVO empVO = new EmpVO(); //把修改的員工資料放進各屬性中
 			
-			DeptVO deptVO = new DeptVO();//聯合映射
+			//DeptVO deptVO = new DeptVO();//聯合映射
+			DeptVO deptVO = deptSvc.getDeptByDeptno(deptno);
 			deptVO.setDeptNo(deptno);
 			
 			empVO.setEmpno(empno);
@@ -187,8 +188,6 @@ public class EmpServlet extends HttpServlet {
 		// 新增======================================================================
 		if ("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
-			// Store this set in the request scope, in case we need to
-			// send the ErrorPage view.
 			req.setAttribute("errorMsgs", errorMsgs);
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
 			Integer empno = null;
@@ -245,8 +244,9 @@ public class EmpServlet extends HttpServlet {
 			}
 			
 			EmpVO empVO = new EmpVO();
-			DeptVO deptVO = new DeptVO();//聯合映射
-			deptVO.setDeptNo(deptno);
+//			DeptVO deptVO = new DeptVO();//聯合映射
+//			deptVO.setDeptNo(deptno);
+			DeptVO deptVO = deptSvc.getDeptByDeptno(deptno);
 			
 			empVO.setEmpno(empno);
 			empVO.setDeptVO(deptVO);
