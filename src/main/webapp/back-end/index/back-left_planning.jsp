@@ -264,6 +264,9 @@
                 <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
             </li>
             <li>
+                <a href="${pageContext.request.contextPath}/back-end/act/add_act.jsp">建立新活動</a>
+            </li>
+            <li>
                 <a href="#">檔期管理</a>
             </li>
             <li>
@@ -272,9 +275,7 @@
             <li>
                 <a href="#">活動參加人名單管理</a>
             </li>
-            <li>
-                <a href="#">活動相片管理</a>
-            </li>
+
         </ul>
             <!--會員-->  
           <li class="sidebar-title" data-toggle="submenu-5">

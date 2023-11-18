@@ -48,11 +48,20 @@ public class ActServlet extends HttpServlet{
 				forwardPath = insertOrUpdate(req, res);
 				break;
 			case "getOne_For_Display":
-				forwardPath = getOneForDisplay(req, res);
+				getOneForDisplay(req, res);
+				forwardPath = "/back-end/act/list_one_act.jsp";
 				break;
-	//		case "update":
-	//			forwardPath = insertOrUpdate(req, res);
-	//			break;
+			case "getOneActAllSchd":
+				getOneForDisplay(req, res);
+				forwardPath = "/back-end/act/list_act_schd.jsp";
+				break;
+			case "getOne_For_Update":
+				getOneForDisplay(req, res);
+				forwardPath = "/back-end/act/update_act.jsp";
+				break;
+			case "update":
+				forwardPath = insertOrUpdate(req, res);
+				break;
 			default:
 				forwardPath = "/back-end/act/add_act.jsp";
 		}	
@@ -86,7 +95,8 @@ public class ActServlet extends HttpServlet{
 			throws IOException, ServletException {
 		List<String> errorMsgs = new LinkedList<String>();
 		Integer actNo = null;
-		if (req.getParameter("actNo") != null) { // 修改
+
+		if (req.getParameter("actNo") != null || req.getParameter("actNo").length() != 0) { // 修改
 			actNo = Integer.valueOf(req.getParameter("actNo"));
 		}
 		String actName = req.getParameter("actName");
@@ -97,7 +107,6 @@ public class ActServlet extends HttpServlet{
 		String actContent = req.getParameter("actContent");
 
 		byte[] actPho1 = null;
-		byte[] actPho2 = null;
 		
 		if(lowNum > highNum) {
 			errorMsgs.add("成團人數須小於上限人數");
@@ -129,21 +138,22 @@ public class ActServlet extends HttpServlet{
 		req.setAttribute("actVO", actVO);
 		String forwardPath = getAllActs(req, res);
 		return forwardPath;
-		//return "/back-end/act/add_act.jsp";
 	}//新增或修改
 	
 	//查單筆活動與檔期
-	public String getOneForDisplay(HttpServletRequest req, HttpServletResponse res) {
+	public void getOneForDisplay(HttpServletRequest req, HttpServletResponse res) {
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
 		
 		Set<SchdVO> actSchdSet = actSvc.getSchdByActno(actNo);
-System.out.println("1:"+actSchdSet.toString());
+		req.setAttribute("actSchdSet", actSchdSet);
+		
 		ActVO actVO = actSvc.getActByActno(actNo);
 		req.setAttribute("actVO", actVO);
-		req.setAttribute("actSchdSet", actSchdSet);
-		return "/back-end/act/list_act_schd.jsp";
+		
+		//return "/back-end/act/list_act_schd.jsp";
 		
 	}
+
 	
 	
 	

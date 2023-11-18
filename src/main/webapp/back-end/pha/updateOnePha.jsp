@@ -35,7 +35,7 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-
+	</div>
 	<div class="custom-container">
 	<h2>修改相簿</h2>
         <form action="${pageContext.request.contextPath}/pha.do" method="post" enctype="multipart/form-data">

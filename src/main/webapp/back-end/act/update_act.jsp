@@ -11,7 +11,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>活動管理系統首頁</title>
+<title>更新活動內容</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
@@ -74,7 +74,7 @@
 <body>
 	<div class="container">
 		<div>
-			<h2>新增活動</h2>
+			<h2>修改活動</h2>
 		<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMsgs}">
 			<font style="color:red">請修正以下錯誤:</font>
@@ -88,44 +88,46 @@
 				<div id="actTableBlock">
 					<div class="actCard">
 						<table class="table table-bordered">
-							<%-- <tr>
+							<tr>
 								<th>活動編號</th>
-								<td><a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>${act.actNo}</a></td>
-							</tr>--%>
+								<td>${actVO.actNo}</td>
+							</tr>
 							<tr>
 								<th>活動名稱</th>
-								<td><input type="text" name=actName required value=${actVO.actName==null? '': actVO.actName}></td>
+								<td><input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName}></td>
 							</tr>
 							<tr>
 								<th>最低成團人數</th>
-								<td><input type="text" name=lowNum required value=${actVO.lowNum==null? '': actVO.lowNum}></td>
+								<td><input type="text" name="lowNum" required value=${actVO.lowNum==null? '': actVO.lowNum}></td>
 							</tr>
 							<tr>
 								<th>最高上限人數</th>
-								<td><input type="text" name=highNum required value=${actVO.highNum==null? '': actVO.highNum}></td>
+								<td><input type="text" name="highNum" required value=${actVO.highNum==null? '': actVO.highNum}></td>
 							</tr>
 							<tr>
 								<th>活動狀態</th>
-								<td><input type="radio" name=actStatus value="true" ${actVO.actStatus? 'checked':'' }>上架
-									<input type="radio" name=actStatus value="false" ${actVO.actStatus? '':'checked' }>下架</td>
+								<td><input type="radio" name="actStatus" value="true" ${actVO.actStatus? 'checked':'' }>上架
+									<input type="radio" name="actStatus" value="false" ${actVO.actStatus? '':'checked' }>下架</td>
 							</tr>
 							<tr>
 								<th>參加費用</th>
-								<td><input type="text" name=unitPrice required value=${actVO.unitPrice==null? '': actVO.unitPrice}></td>
+								<td><input type="text" name="unitPrice" required value=${actVO.unitPrice==null? '': actVO.unitPrice}></td>
 							</tr>
 						</table>
 					</div>
 					<div id="actImageBlock">
 						<label id="actPhoto1">相簿封面</label>
+						<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="相簿封面" class="img-fluid">
 						<input type="file" class="form-control-file" name="actPho1" accept="image/*">
 					</div>
 				</div>
 				<div id="actContent">
 					<p><b>活動內容:</b></p>
-					<textarea name=actContent rows="10" cols="50" placeholder="請輸入" required >${actVO.actContent==null? '': actVO.actContent}</textarea>
+					<textarea name="actContent" rows="10" cols="50" placeholder="請輸入" required >${actVO.actContent==null? '': actVO.actContent}</textarea>
 				</div>
                 <input type="submit" value="送出">
-			    <input type="hidden" name="action"	value="insert">			
+                <input type="hidden" name="actNo"value="${actVO.actNo}">
+			    <input type="hidden" name="action"value="update">			
 			</form>
 		</div>
 	</div>

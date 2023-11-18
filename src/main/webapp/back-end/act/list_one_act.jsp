@@ -14,7 +14,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>活動管理系統首頁</title>
+<title>顯示活動詳情</title>
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
@@ -53,85 +53,80 @@
 #activityTableBlock {
 	border: 1px solid #ddd;
 }
+
+.actContent{
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+.modify-button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 4px;
+}
 </style>
 </head>
 <body>
 	<div class="container">
-		<div id="searchBlock">
-			<h2>查詢活動與檔期</h2>
-		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/act.do">
-			<b>輸入活動編號</b> <input type="text" name="actNo">
-			<input type="hidden" name="action" value="getOneActAllSchd">
-			<input type="submit" value="送出">
-		</FORM>		
-
-		</div>
 		<div>
-			<h2>顯示所有活動</h2>
-			<h3>點選活動編號顯示完整活動內容</h3>
-			<c:if test="${actPageQty > 0}">
-				<b><font color=red>第${currentPage}/${actPageQty}頁</font></b>
-			</c:if>
-			<c:forEach var="act" items="${actList}">
+			<h2>顯示一筆活動資訊</h2>				
 				<div id="activityTableBlock">
 					<!-- 顯示所有活動的區塊 -->
-
 					<div class="activityCard">
 
 						<table class="table table-bordered">
 							<tr>
 								<th>活動編號</th>
-								<td><a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>${act.actNo}</a>
-								<%-- <a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>${act.actNo}</a>--%></td>
-									
+								<td>${actVO.actNo}</td>
 							</tr>
 							<tr>
 								<th>活動名稱</th>
-								<td>${act.actName}</td>
+								<td>${actVO.actName}</td>
 							</tr>
 							<tr>
 								<th>最低成團人數</th>
-								<td>${act.lowNum}</td>
+								<td>${actVO.lowNum}</td>
 							</tr>
 							<tr>
 								<th>最高上限人數</th>
-								<td>${act.highNum}</td>
+								<td>${actVO.highNum}</td>
 							</tr>
 							<tr>
 								<th>活動狀態</th>
-								<td>${act.actStatus?'上架':'下架'}</td>
+								<td>${actVO.actStatus? '上架':'下架'}</td>
 							</tr>
 							<tr>
 								<th>參加費用</th>
-								<td>${act.unitPrice}</td>
+								<td>${actVO.unitPrice}</td>
 							</tr>
 						</table>
 
 					</div>
 					<div id="activityImageBlock">
 						<img
-							src="<%=request.getContextPath()%>/dbg.do?act_no=${act.actNo}"
+							src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}"
 							alt="相簿封面" class="img-fluid">
 					</div>
 
 				</div>
-			</c:forEach>
-			<c:if test="${currentPage > 1}">
-				<a
-					href="${pageContext.request.contextPath}/act.do?action=getAll&page=1">至第一頁</a>&nbsp;
-			</c:if>
-			<c:if test="${currentPage - 1 != 0}">
-				<a
-					href="${pageContext.request.contextPath}/act.do?action=getAll&page=${currentPage - 1}">上一頁</a>&nbsp;
-			</c:if>
-			<c:if test="${currentPage + 1 <= actPageQty}">
-				<a
-					href="${pageContext.request.contextPath}/act.do?action=getAll&page=${currentPage + 1}">下一頁</a>&nbsp;
-			</c:if>
-			<c:if test="${currentPage != actPageQty}">
-				<a
-					href="${pageContext.request.contextPath}/act.do?action=getAll&page=${actPageQty}">至最後一頁</a>&nbsp;
-			</c:if>
+				<div class="actContent">
+				<p><b>活動內容</b></p>				
+				<p>${actVO.actContent}</p>
+				</div>
+				<form>
+				<input type="hidden" name="actNo" value="${actVO.actNo}"> 
+				<input type="hidden" name="action" value="getOne_For_Update">
+				<input type="submit" value="修改" class="modify-button">
+				</form>
 		</div>
 	</div>
 
