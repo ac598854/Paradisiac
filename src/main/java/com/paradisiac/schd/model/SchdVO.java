@@ -65,6 +65,9 @@ public class SchdVO implements java.io.Serializable{
 	private Integer applStatus;
 	
 	//建構子
+	public SchdVO() {
+		
+	}
 	public SchdVO(Integer schdNo, ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Integer unpaidNum,
 			Integer paidNum, Timestamp ancDate, Timestamp drpoSchdDate, Timestamp holdate, Timestamp aplytime,
 			Timestamp cuttime, Integer applStatus) {
@@ -92,10 +95,6 @@ public class SchdVO implements java.io.Serializable{
 		this.unitPrice = unitPrice;
 		this.lowNum = lowNum;
 		this.highNum = highNum;
-		this.unpaidNum = unpaidNum;
-		this.paidNum = paidNum;
-		this.ancDate = ancDate;
-		this.drpoSchdDate = drpoSchdDate;
 		this.holdate = holdate;
 		this.aplytime = aplytime;
 		this.cuttime = cuttime;
@@ -174,7 +173,7 @@ public class SchdVO implements java.io.Serializable{
 	public void setCuttime(Timestamp cuttime) {
 		this.cuttime = cuttime;
 	}
-	public Integer isApplStatus() {
+	public Integer getApplStatus() {
 		return applStatus;
 	}
 	public void setApplStatus(Integer applStatus) {

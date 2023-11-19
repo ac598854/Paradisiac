@@ -42,55 +42,10 @@
 	padding-top: 65px;
 	padding-left: 255px;
 }
-/*
-        .row.g-0 {
-        position: relative;
-        }
-        .d-flex justify-content-end {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-        .photo-content d-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-         ====
-        .photo-content img {
-		    max-width: 50%;  
-		    height: 200px; 
-            background-color: #eee;
-            border: 1px solid #ccc;
-            margin: 5px;
-        }
-        
-        .img-fluid img {
-	        max-width: 100%;
-	        height: auto;
-    	}
-        
-        .album .d-flex.justify-content-end {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        }
 
-        .d-flex.justify-content-end {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        }
-
-        .album-info {
-        margin-bottom: 50px; 
-        }
-
-        .btn-separator {
-        margin-right: 5px; 
-        }*/
 </style>
 </head>
+<%@ include file="/back-end/index/back-left_planning.jsp" %>
 <body>
 	<div class="container">
 		<h1 class="text-center">相簿管理</h1>
@@ -147,14 +102,14 @@
 			=====
 			<div class="album card mb-3">
 				<div class="row g-0">
-					<div class="col-md-8">
+				<div class="col-md-12">
 						<form id="photoForm" method="post"
 							action="<%=request.getContextPath()%>/pho.do">
-							<div class="photo-content">
-								<c:forEach var="pha" items="${list}">
+							<div class="col-md-12">
+								<c:forEach var="pha" items="${list}">									
+									<div class="col-md-4">
 									<input type="checkbox" name="photoNo" id="${pha.photoNo}"
 										value="${pha.photoNo}">
-									<div class="photo-container">
 										<img
 											src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
 											alt="相片1" class="img-fluid">
@@ -171,23 +126,20 @@
 									</div>
 								</c:forEach>
 							</div>
-							<div class="d-flex justify-content-between">
+							<div class="col-md-12">
 								<div>
 									<input type="hidden" name="action" value="delete"> <input
 										type="hidden" name="albNo" value="${list[0].albNo}"> <input
 										class="btn btn-danger" type="submit" value="刪除相片">
 								</div>
-								<div></div>
 							</div>
 						</form>
-						<form method="post" action="<%=request.getContextPath()%>/pha.do"
-							class="btn btn-success mr-2 btn-separator">
-							<input type="hidden" name="action" value="insertPhoto"> <input
-								type="submit" value="新增相片"
-								class="btn btn-success mr-2 btn-separator"> <input
-								type="hidden" name="albNo" value="${list[0].albNo}">
+						<form method="post" action="<%=request.getContextPath()%>/pha.do">
+							<input type="hidden" name="action" value="insertPhoto"> 
+							<input type="submit" value="新增相片" class="btn btn-success mr-2 btn-separator">
+							<input type="hidden" name="albNo" value="${list[0].albNo}">								
 						</form>
-					</div>
+				</div>
 				</div>
 			</div>
 

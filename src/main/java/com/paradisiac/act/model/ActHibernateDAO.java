@@ -46,12 +46,13 @@ public class ActHibernateDAO implements ActDAO_interface{
 	@Override //查單筆活動(所有檔期)
 	public Set<SchdVO> findByPrimaryKeyS(Integer actNo){
 		Set<SchdVO> actSchdSet = getSession().get(ActVO.class, actNo).getSchds(); 
+		System.out.println("hibenatePass");
 		return actSchdSet;
 	}
 
 	@Override //下拉選單
 	public List<ActVO> getAll() {
-		List actList = getSession().createQuery("from ActVO", ActVO.class).list();
+		List<ActVO> actList = getSession().createQuery("from ActVO", ActVO.class).list();
 		return actList;
 	}
 
@@ -67,6 +68,12 @@ public class ActHibernateDAO implements ActDAO_interface{
 	@Override
 	public long getTotal() {
 		return getSession().createQuery("select count(*) from ActVO", Long.class).uniqueResult();
+	}
+	
+	public ActVO insertOrUpdate(ActVO actVO) {
+		getSession().saveOrUpdate(actVO);
+		System.out.println("DAOPass");
+		return actVO;
 	}
 
 

@@ -14,6 +14,9 @@
             border: 1px solid #ccc;
             padding: 20px;
             margin: 0 auto;
+            padding-top: 65px;
+			padding-left: 255px;
+            
         }
     </style>
 </head>

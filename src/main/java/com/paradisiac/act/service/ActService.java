@@ -20,4 +20,6 @@ public interface ActService {
 	List<ActVO> getAllActs();//下拉選單
 
 	int getPageTotal();
+	
+	ActVO addOrUpdateAct(ActVO act);
 }
