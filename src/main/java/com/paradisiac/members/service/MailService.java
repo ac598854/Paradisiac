@@ -1,5 +1,6 @@
 package com.paradisiac.members.service;
 
+import java.io.IOException;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
@@ -10,9 +11,12 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.HTTP;
 
 public class MailService {
-	public void sendMail(String to, String subject, String messageText) {
+	public void sendMail(String to, String subject, String messageText,HttpServletResponse res) throws IOException {
 		final String myGmail = "cha103g2@gmail.com"; 
 		final String myGmailPassword = "nwrovcqusngjdcru"; 
 
@@ -28,8 +32,8 @@ public class MailService {
 				return new PasswordAuthentication(myGmail, myGmailPassword);
 			}
 		});
-
 		try {
+			res.setContentType("application/json;charset=UTF-8");
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(myGmail));
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
@@ -41,10 +45,17 @@ public class MailService {
 			// 設定信中的內容
 			message.setText(messageText);
 			Transport.send(message);
-			System.out.println("Email sent successfully!");
+			System.out.println("Email sent successfully!");		
+			res.getWriter().write("{\"message\":\"寄信成功\"}");
+			
 		} catch (MessagingException e) {
 			System.out.println("Email sending failed!");
+			res.getWriter().write("{\"error\":\"寄信失敗\"}");
 			e.printStackTrace();
+		
+		
 		}
+		
+		
 	}
 }

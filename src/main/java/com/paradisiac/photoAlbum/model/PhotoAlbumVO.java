@@ -36,6 +36,14 @@ public class PhotoAlbumVO implements java.io.Serializable{
 	public PhotoAlbumVO() {
 		super();
 	}
+	
+	public PhotoAlbumVO(Integer albNo,Integer memNo, String albName, Date albDate) {
+		super();
+		this.albNo = albNo;
+		this.memNo = memNo;
+		this.albName = albName;
+		this.albDate = albDate;
+	}
 	//以下為小吳搭配TestHQLQueryProperty.java才會用到的建構子
 	public PhotoAlbumVO(Integer albNo, Integer memNo, String albName, byte[] albPhoto, Date albDate) {
 		super();

@@ -261,7 +261,7 @@
           </li>
             <ul class="sub-menu" id="submenu-3">
             <li>
-                <a href="#">活動類別管理</a>
+                <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
             </li>
             <li>
                 <a href="#">檔期管理</a>
@@ -308,10 +308,11 @@
     
     <div id="page-content-wrapper">
       <a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">側邊欄關閉</a>
+      
     </div>
 
   </div><!--結尾-->
-  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 

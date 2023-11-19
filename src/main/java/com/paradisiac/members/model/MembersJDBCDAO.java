@@ -16,13 +16,13 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 	private static final String UPDATE_ALL = "UPDATE members SET mem_status = ?, mem_name = ?, mem_mail = ?, mem_account = ?, mem_pass = ?, mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
 	private static final String UPDATE_BACK_STATUS = "UPDATE members SET mem_status = ? WHERE mem_no = ?";
 	private static final String UPDATE_FRONT = "UPDATE members SET mem_name = ?, mem_mail = ?, mem_pass = ?,mem_gender = ?, mem_id = ?, mem_bir = ? , mem_phone = ?,mem_address = ?,mem_picture = ? WHERE mem_no = ?";
-	private static final String UPDATE_PASS = "UPDATE members SET mem_pass = ? WHERE mem_no = ?";
-//	private static final String UPDATE_MEMCAPTCHA = "UPDATE members SET mem_captcha = ? WHERE mem_no = ?";
+	private static final String UPDATE_PASS = "UPDATE members SET mem_pass = ? WHERE mem_account = ?";
 	private static final String GET_ALL = "SELECT * FROM members ORDER BY mem_no DESC";
 	private static final String GET_ALL_BYSTATUS = "SELECT * FROM members WHERE mem_status = ? ORDER BY mem_no DESC";
 	private static final String GET_ONE_BYMEMNO = "SELECT * FROM members WHERE mem_no = ?";
 	private static final String GET_ONE_BYMEMACCOUNT = "SELECT * FROM members WHERE mem_account = ?";
-	private static final String DELETE = "DELETE FROM members WHERE mem_no = ?"; // 之後刪掉(沒有此功能)
+	private static final String GET_ONE_BYMEMMAIL = "SELECT * FROM members WHERE mem_mail = ?";
+	private static final String DELETE = "DELETE FROM members WHERE mem_no = ?";
 
 	@Override
 	public void insert(MembersVO mVO) {
@@ -224,7 +224,7 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(UPDATE_PASS);
 			pstmt.setString(1, mVO.getMempass());
-			pstmt.setInt(2, mVO.getMemno());
+			pstmt.setString(2, mVO.getMemaccount());
 
 			pstmt.executeUpdate();
 
@@ -554,6 +554,73 @@ public class MembersJDBCDAO implements MembersDAO_interface {
 		}
 		return mVO;
 	}
+	
+	@Override
+	public MembersVO getOneBymemmail(String memmail) {
+		MembersVO mVO = null;
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			Class.forName(driver);
+			con = DriverManager.getConnection(url, userid, passwd);
+			pstmt = con.prepareStatement(GET_ONE_BYMEMMAIL);
+			pstmt.setString(1, memmail);
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				mVO = new MembersVO();
+				mVO.setMemno(rs.getInt("mem_no"));
+				mVO.setMemstatus(rs.getBoolean("mem_status"));
+				mVO.setMemname(rs.getString("mem_name"));
+				mVO.setMemmail(rs.getString("mem_mail"));
+				mVO.setMemaccount(rs.getString("mem_account"));
+				mVO.setMempass(rs.getString("mem_pass"));
+				mVO.setMemgender(rs.getInt("mem_gender"));
+				mVO.setMemid(rs.getString("mem_id"));
+				mVO.setMembir(rs.getDate("mem_bir"));
+				mVO.setMemphone(rs.getString("mem_phone"));
+				mVO.setMemaddress(rs.getString("mem_address"));
+				mVO.setMemdate(rs.getTimestamp("mem_date"));
+				mVO.setMemcaptcha(rs.getString("mem_captcha"));
+				mVO.setMempicture(rs.getBytes("mem_picture"));
+			}
+			// Handle any driver errors
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Couldn't load database driver. " + e.getMessage());
+			// Handle any SQL errors
+		} catch (SQLException se) {
+			throw new RuntimeException("A database error occured. " + se.getMessage());
+			// Clean up JDBC resources
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (pstmt != null) {
+				try {
+					pstmt.close();
+				} catch (SQLException se) {
+					se.printStackTrace(System.err);
+				}
+			}
+			if (con != null) {
+				try {
+					con.close();
+				} catch (Exception e) {
+					e.printStackTrace(System.err);
+				}
+			}
+		}
+		return mVO;
+	}
+
+	
+	
 
 	@Override
 	public void delete(Integer memno) {

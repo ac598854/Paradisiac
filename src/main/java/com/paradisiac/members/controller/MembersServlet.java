@@ -1,12 +1,9 @@
 package com.paradisiac.members.controller;
 
 import java.io.*;
-import java.nio.Buffer;
-import java.sql.Date;
 import java.util.*;
-import javax.servlet.*;
+
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,16 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import org.apache.catalina.connector.Response;
+import org.json.JSONObject;
 
 import com.paradisiac.members.model.*;
 import com.paradisiac.members.service.*;
-import com.paradisiac.members.controller.*;
 import com.paradisiac.util.jedispool.JedisUtil;
 
-
-import redis.clients.jedis.JedisPool;
-
+import org.mindrot.jbcrypt.BCrypt;
 
 @MultipartConfig
 public class MembersServlet<Session> extends HttpServlet {
@@ -32,6 +26,8 @@ public class MembersServlet<Session> extends HttpServlet {
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
 	}
+
+	JSONObject jsonObject = new JSONObject();
 
 	public static String getAuthCode() {
 		long startTime = System.nanoTime();
@@ -64,7 +60,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			if (flag1 && flag2 && flag3) {
 				for (int i = 0; i < 8; i++) {
-//					System.out.print((char)Arr[i]);
 					str += String.valueOf(((char) Arr[i]));
 
 				}
@@ -77,14 +72,13 @@ public class MembersServlet<Session> extends HttpServlet {
 		return str;
 	}
 
-
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		System.out.println("現在action：" + action);
 
-		if ("getOne_For_Memno".equals(action)) { 
+		if ("getOne_For_Memno".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -125,13 +119,13 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getOne_For_Memno_SA", membersVOlist); 
+			req.setAttribute("getOne_For_Memno_SA", membersVOlist);
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); 
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
 
-		if ("getOne_For_Account".equals(action)) { 
+		if ("getOne_For_Account".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -170,13 +164,13 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getOne_For_Account_SA", membersVOlist); 
+			req.setAttribute("getOne_For_Account_SA", membersVOlist);
 			String url = "/back-end/members/MembersLPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
 
-		if ("getAll_For_Status".equals(action)) { 
+		if ("getAll_For_Status".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
@@ -190,9 +184,9 @@ public class MembersServlet<Session> extends HttpServlet {
 			if ("3".equals(str)) {
 				MembersService membersService = new MembersService();
 				List<MembersVO> list = membersService.getAll();
-				req.setAttribute("getAll_For_Status", list); 
+				req.setAttribute("getAll_For_Status", list);
 				String url = "/back-end/members/MembersLPB.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url); 
+				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 			}
 
@@ -229,9 +223,9 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("getAll_For_Status_SA", list); 
+			req.setAttribute("getAll_For_Status_SA", list);
 			String url = "/back-end/members/MembersLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); 
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
 
@@ -247,14 +241,13 @@ public class MembersServlet<Session> extends HttpServlet {
 			if (!errorMsgs.isEmpty()) {
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersCPB.jsp");
 				failureView.forward(req, res);
-				return; 
+				return;
 			}
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			req.setAttribute("membersVO", membersVO); 
+			req.setAttribute("membersVO", membersVO);
 			String url = "/back-end/members/MembersCPB.jsp";
-			System.out.println("CP頁路徑：" + url);
-			RequestDispatcher successView = req.getRequestDispatcher(url); 
+			RequestDispatcher successView = req.getRequestDispatcher(url);
 			successView.forward(req, res);
 		}
 
@@ -273,9 +266,9 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			MembersVO membersVO = new MembersVO();
-		
+
 			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("membersVO", membersVO); 
+				req.setAttribute("membersVO", membersVO);
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/update_mem_input.jsp");
 				failureView.forward(req, res);
 				return;
@@ -285,9 +278,10 @@ public class MembersServlet<Session> extends HttpServlet {
 			MembersService memsSvc = new MembersService();
 			membersVO = memsSvc.updateBackStatus(memno, memstatus);
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-			req.setAttribute("MembersVO", membersVO); 
+			req.setAttribute("MembersVO", membersVO);
 			String url = "/back-end/members/MembersLPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
+			successView.forward(req, res);
 		}
 
 		if ("update-Front".equals(action)) {
@@ -296,63 +290,80 @@ public class MembersServlet<Session> extends HttpServlet {
 
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			Integer memno = Integer.valueOf(req.getParameter("memno"));
+			MembersService memsSvc = new MembersService();
+			MembersVO membersVO = memsSvc.getOneBymemno(memno);
 			String memname = req.getParameter("memname");
 			String memmail = req.getParameter("memmail");
 			String mempass = req.getParameter("mempass");
+			if (mempass != null && mempass.trim().length() > 0) {
+				String salt = BCrypt.gensalt();
+				mempass = BCrypt.hashpw(mempass, salt);
+				System.out.println("會員專區加密後:" + mempass);
+			} else {		
+				mempass = membersVO.getMempass();
+			}
 			Integer memgender = Integer.valueOf(req.getParameter("memgender"));
 			String memid = req.getParameter("memid");
+			String membirStr = req.getParameter("membir");
 			java.sql.Date membir = null;
-			System.out.println(req.getParameter("membir"));
-			if (req.getParameter("membir") != null && req.getParameter("membir").toString().length() > 0) {
-				membir = java.sql.Date.valueOf(req.getParameter("membir"));
+			if (membirStr != null && membirStr.length() > 0) {
+				membir = java.sql.Date.valueOf(membirStr);
 			}
 			String memphone = req.getParameter("memphone");
-			String memaddress = req.getParameter("memaddress");
+			String memaddress = req.getParameter("memaddress");	
 			Part mempicturePart = req.getPart("mempicture");
-			byte[] mempictureData = null;
-			if (mempicturePart != null) {
-				// 圖片上傳部分不為空，處理上傳的圖片
-				try (InputStream is = mempicturePart.getInputStream()) {
-					ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-					int bytesRead;
-					byte[] data = new byte[1024];
-					while ((bytesRead = is.read(data)) != -1) {
-						buffer.write(data, 0, bytesRead);
+		 
+				byte[] mempictureData = null;
+//				if (mempicturePart != null) {
+					// 圖片上傳部分不為空，處理上傳的圖片
+				if (mempicturePart != null && mempicturePart.getSize() > 0) {
+					try (InputStream is = mempicturePart.getInputStream()) {
+						ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+						int bytesRead;
+						byte[] data = new byte[1024];
+						while ((bytesRead = is.read(data)) != -1) {
+							buffer.write(data, 0, bytesRead);
+						}
+						mempictureData = buffer.toByteArray();
+						buffer.close();
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-					mempictureData = buffer.toByteArray();
-					buffer.close();
-				} catch (IOException e) {
-
-					e.printStackTrace();
+				}else {
+					mempictureData = membersVO.getMempicture();
 				}
-			}
-
+			
 			/*************************** 2.開始查詢資料 ****************************************/
-			MembersVO membersVO = new MembersVO();
-			MembersService memsSvc = new MembersService();
+//			MembersVO membersVO2 = new MembersVO();
+//			MembersService memsSvc2 = new MembersService();
 			memsSvc.updateFront(memname, memmail, mempass, memgender, memid, membir, memphone, memaddress,
 					mempictureData, memno);
 			membersVO = memsSvc.getOneBymemno(memno);// 呈現更新後畫面，用memno取回所有更新資料
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
-			req.setAttribute("membersVO", membersVO); 
+			req.setAttribute("membersVO", membersVO);
 			String url = "/front-end/members/MembersUpdate.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url);
-			System.out.println("更新後台會員狀態，後導頁至："+successView );
 			successView.forward(req, res);
 		}
 
-		if ("insert".equals(action)) { 
+		if ("insert".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-
 			// 1. 格式錯誤處理
-			String memname = req.getParameter("memname");
-			String memmail = req.getParameter("memmail");
-			String memaccount = req.getParameter("memaccount");
-			String mempass = req.getParameter("mempass");
+			String memname = req.getParameter("memname").trim();
+			String memmail = req.getParameter("memmail").trim();
+
+			String memaccount = req.getParameter("memaccount").trim();
+			String UnSlatmempass = req.getParameter("mempass").trim();
+
+			// 加密
+			String salt = BCrypt.gensalt();
+			String mempass = BCrypt.hashpw(UnSlatmempass, salt);
+			System.out.println("加密後:" + mempass);
+
 			Integer memgender = Integer.valueOf(req.getParameter("memgender"));
-			String memid = req.getParameter("memid");
+			String memid = req.getParameter("memid").trim();
 			String membirString = req.getParameter("membir");
 			java.sql.Date membir = null;
 			if (membirString != null && !membirString.isEmpty()) {
@@ -360,15 +371,19 @@ public class MembersServlet<Session> extends HttpServlet {
 					membir = java.sql.Date.valueOf(membirString);
 				} catch (IllegalArgumentException e) {
 					// 日期無效
-					membir = java.sql.Date.valueOf("1970-01-01");
+					membir = java.sql.Date.valueOf("1800-01-01");
 				}
 			} else {
 				// 日期為空
-				membir = java.sql.Date.valueOf("1970-01-01");
+				membir = java.sql.Date.valueOf("1800-01-01");
 			}
-			String memcaptcha = req.getParameter("memcaptcha");
-			String memphone = req.getParameter("memphone");
-			String memaddress = req.getParameter("memaddress");
+			String memcaptcha = req.getParameter("memcaptcha").trim();
+			String memphone = req.getParameter("memphone").trim();
+			String city = req.getParameter("memaddress1");
+			String town = req.getParameter("memaddress2");
+			String address = req.getParameter("memaddress3");
+			String memaddress = city + town + address;
+
 			Part mempicturePart = req.getPart("mempicture");
 			byte[] mempictureData = null;
 			if (mempicturePart != null) {
@@ -385,7 +400,7 @@ public class MembersServlet<Session> extends HttpServlet {
 					errorMsgs.add("圖片上傳失敗");
 				}
 			} else {
-				//處理圖片為空補充
+				// 處理圖片為空補充
 			}
 			;
 
@@ -401,7 +416,7 @@ public class MembersServlet<Session> extends HttpServlet {
 				MembersVO membersVO = memsSvc.Insertmember(memname, memmail, memaccount, mempass, memgender, memid,
 						membir, memphone, memaddress, memcaptcha, mempictureData);
 				req.setAttribute("membersVO", membersVO);
-				String url = "/front-end/members/Login.jsp"; 
+				String url = "/front-end/members/Login.jsp";
 				RequestDispatcher successView = req.getRequestDispatcher(url);
 				successView.forward(req, res);
 				System.out.println("新增成功");
@@ -412,22 +427,19 @@ public class MembersServlet<Session> extends HttpServlet {
 			String memmail = req.getParameter("memmail");
 			String memcaptcha = getAuthCode();
 			JedisUtil.getJedisPool();// 開池
-			JedisUtil.set(memmail, memcaptcha);//原始
+			JedisUtil.set(memmail, memcaptcha);// 原始
 			System.out.println("1取得產生的驗證碼=" + memcaptcha);// 取得產生的驗證碼
 			System.out.println("2從redis取回驗證碼=" + JedisUtil.get(memmail));// 從redis取回驗證碼
 //			======寄信			
-			MembersVO membersVO = new MembersVO();			
+			MembersVO membersVO = new MembersVO();
 			membersVO.setMemmail(memmail);
 			membersVO.setMemcaptcha(memcaptcha);
 			req.setAttribute("membersVO", membersVO);
-			String subject = "啟用會員驗證信";	
-			String messageText = "Hello! " + "\n" + "歡迎加入Paradise bay會員" + "\n"+"如無申請Paradise bay會員請忽略此信" + "\n" 
+			String subject = "啟用會員驗證信";
+			String messageText = "Hello! " + "\n" + "歡迎加入Paradise bay會員" + "\n" + "如無申請Paradise bay會員請忽略此信" + "\n"
 					+ "您的註冊驗證碼: " + "\n" + memcaptcha + "\n";
 			MailService mail = new MailService();
-			mail.sendMail(memmail, subject, messageText);
-			System.out.println("寄信成功");
-			res.getWriter().write("OK");
-
+			mail.sendMail(memmail, subject, messageText, res);
 		}
 
 		if ("checkAccount".equals(action)) {
@@ -475,17 +487,13 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 			// 開池驗證
 			String tempAuth = JedisUtil.get(memmail);
-//			String tempAuth = MailHander.get(memmail);
 			if (memcaptcha == null) {// 驗證碼輸入不為空
 				responseMessage = 1;
-				System.out.println("連結信已逾時，請重新申請");
 			} else if (memcaptcha.equals(tempAuth)) {
 				responseMessage = 2;
-				System.out.println("驗證成功!");
 			} else {
 				responseMessage = 3;
-				System.out.println("驗證碼錯誤，請重新輸入");
-			}			
+			}
 			res.setContentType("text/plain");
 			res.setCharacterEncoding("UTF-8");
 
@@ -493,24 +501,20 @@ public class MembersServlet<Session> extends HttpServlet {
 			out.print(responseMessage);
 			out.flush();
 		}
-		
-		//6.首頁會員狀態判斷
+
+		// 6.首頁會員狀態判斷
 		if ("indexLogin".equals(action)) {
-			
+
 			HttpSession session = req.getSession();
 			Object memno = session.getAttribute("memno");
-			System.out.println("indexLogin(首頁有會員編號嗎?)"+memno);
 			Integer responseMessage = null;
-			if(memno != null && !String.valueOf(memno).isEmpty()) {
+			if (memno != null && !String.valueOf(memno).isEmpty()) {
 				responseMessage = 1;
-				System.out.println("首頁會員");				
-			}else {
+			} else {
 				responseMessage = 0;
-				System.out.println("首頁非會員");
 			}
 			PrintWriter out = res.getWriter();
 			out.print(responseMessage);
-			System.out.println(responseMessage);
 			out.flush();
 		}
 

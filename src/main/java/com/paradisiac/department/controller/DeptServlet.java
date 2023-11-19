@@ -86,7 +86,6 @@ public class DeptServlet extends HttpServlet{
 	private String getOne_For_Display(HttpServletRequest req, HttpServletResponse res) {
 		/*************************** 1.接收請求參數(取得部門編號PK)**********************/
 		Integer deptNo = Integer.valueOf(req.getParameter("deptNo"));
-		//String deptName = req.getParameter("deptName");
 
 		/***************************2.開始查詢資料***********************************/
 		Set<EmpVO> deptEmpSet = deptSvc.getDeptByDeptnoE(deptNo);  //取得員工資料
