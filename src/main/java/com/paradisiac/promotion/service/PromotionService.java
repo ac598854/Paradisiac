@@ -17,9 +17,7 @@ public class PromotionService {
 			 pro = new  PromotionJDBCDAO();
 		}
 
-		public PromotionVO addPro(String proname,String prodes,Date startdate,
-				Date enddate,Double discount,Integer status) 
-		{
+		public PromotionVO addPro(String proname,String prodes,Date startdate,Date enddate,Double discount,Integer status) {
 
 			PromotionVO proVO = new PromotionVO();
 
@@ -30,8 +28,8 @@ public class PromotionService {
 			proVO.setEnddate(enddate);
 			proVO.setDiscount(discount);
 			proVO.setStatus(status);
-			pro.insert(proVO);
-			
+			Integer prono  = pro.insert(proVO);
+			proVO.setProno(prono);
 
 			return proVO;
 		}
