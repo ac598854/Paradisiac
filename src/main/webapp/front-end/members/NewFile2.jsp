@@ -55,7 +55,7 @@ pageContext.setAttribute("membersVO", membersVO);
 
 .toggle-mempass {
 	position: absolute;
-	top: 45px;
+	top: 50px;
 	right: 10px;
 	transform: translateY(-50%);
 	cursor: pointer;
@@ -181,10 +181,8 @@ pageContext.setAttribute("membersVO", membersVO);
 						name="memaddress" class="form-control" id="memaddress" value="${membersVO.memaddress}"
 						placeholder="請輸入地址"> <br>
 				</div>
-				<div class="col-sm-12">
 				<button type="submit" class="btn btn-primary" id="submitButton">提交更新</button>
 				<input type="hidden" name="action" value="update-Front">
-				</div>
 			</div>
 		</form>
 	</div>

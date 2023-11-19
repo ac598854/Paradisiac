@@ -17,6 +17,7 @@ import com.paradisiac.members.service.*;
 import com.paradisiac.util.jedispool.JedisUtil;
 
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class ResetPass extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -71,13 +72,13 @@ public class ResetPass extends HttpServlet {
 				String messageText = "Hello! Paradise bay會員 " + "\n" + "這是您的暫時密碼:" + TempCaptcha + "\n"
 						+ "如無申請變更密碼請忽略此信" + "\n" + "請用此驗證連結" + "http://localhost:8081" + req.getContextPath()
 						+ "/front-end/members/ForgetPass2.jsp" + "，並登錄驗證碼後再變更您的密碼! " + "\n" + "請點選此連結";
-				mail.sendMail(memmail, subject, messageText);
-				System.out.println("寄信成功");
-				// 在成功處理後
-				jsonObject.put("success", "我們已成功寄送新的密碼到您的信箱");
-				res.setContentType("application/json;charset=UTF-8");
-				PrintWriter out = res.getWriter();
-				out.println(jsonObject.toString());
+				mail.sendMail(memmail, subject, messageText,res);
+//				System.out.println("寄信成功");
+//				// 在成功處理後
+//				jsonObject.put("success", "我們已成功寄送新的密碼到您的信箱");
+//				res.setContentType("application/json;charset=UTF-8");
+//				PrintWriter out = res.getWriter();
+//				out.println(jsonObject.toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -131,8 +132,8 @@ public class ResetPass extends HttpServlet {
 			/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 			HttpSession session = req.getSession();
 			String memaccount = (String) session.getAttribute("memaccount");
-			String mempass = req.getParameter("mempass").trim();
-			if (mempass == null || mempass.trim().length() == 0) {// 驗證碼輸入不為空
+			String UnSlatmempass = req.getParameter("mempass").trim();
+			if (UnSlatmempass == null || UnSlatmempass.trim().length() == 0) {// 驗證碼輸入不為空
 				jsonObject.put("error", "密碼: 請勿空白");
 			}
 			if (jsonObject.has("error")) {
@@ -141,6 +142,9 @@ public class ResetPass extends HttpServlet {
 				out.print(jsonObject.toString());
 				return;
 			}
+		    String salt = BCrypt.gensalt();
+		    String mempass = BCrypt.hashpw(UnSlatmempass, salt);	
+		    System.out.println("忘記密碼加密後:"+mempass);
 			/*************************** 2.開始查詢資料 ****************************************/
 			MembersVO membersVO = new MembersVO();
 			MembersService memsSvc = new MembersService();
