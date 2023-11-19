@@ -58,6 +58,14 @@
         <servlet-name>CsmessagesServlet</servlet-name>
         <url-pattern>/front-end/csmessages/csmessages.do</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>ResetPass</servlet-name>
+        <servlet-class>com.paradisiac.members.controller.ResetPass</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ResetPass</servlet-name>
+        <url-pattern>/front-end/members/ResetPass.do</url-pattern>
+    </servlet-mapping>
 
 	<listener>
 		<listener-class>com.paradisiac.listener.InitializerListener</listener-class>

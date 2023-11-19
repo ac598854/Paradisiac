@@ -46,10 +46,10 @@ public class RoomOrderDTO {
 	private Integer price;
 	
 	@Column(name="checkin_date")
-	private Timestamp checkInDate;
+	private Date checkInDate;
 	
 	@Column(name="checkout_date")
-	private Timestamp checkOutDate;
+	private Date checkOutDate;
 	
 	@Column(name="order_status")
 	private byte orderStatus;
@@ -63,8 +63,8 @@ public class RoomOrderDTO {
 	}
 	
 	public RoomOrderDTO(Integer roomOrderNo, Timestamp roomOrderDate, String memName, String memId, String memPhone,
-			Integer roomTypeNo, String roomName, Integer roomAmount, Integer price, Timestamp checkInDate,
-			Timestamp checkOutDate, byte orderStatus,byte payStatus) {
+			Integer roomTypeNo, String roomName, Integer roomAmount, Integer price, Date checkInDate,
+			Date checkOutDate, byte orderStatus,byte payStatus) {
 		super();
 		this.roomOrderNo = roomOrderNo;
 		this.roomOrderDate = roomOrderDate;
@@ -162,19 +162,19 @@ public class RoomOrderDTO {
 		this.price = price;
 	}
 
-	public Timestamp getCheckInDate() {
+	public Date getCheckInDate() {
 		return checkInDate;
 	}
 
-	public void setCheckInDate(Timestamp checkInDate) {
+	public void setCheckInDate(Date checkInDate) {
 		this.checkInDate = checkInDate;
 	}
 
-	public Timestamp getCheckOutDate() {
+	public Date getCheckOutDate() {
 		return checkOutDate;
 	}
 
-	public void setCheckOutDate(Timestamp checkOutDate) {
+	public void setCheckOutDate(Date checkOutDate) {
 		this.checkOutDate = checkOutDate;
 	}
 
