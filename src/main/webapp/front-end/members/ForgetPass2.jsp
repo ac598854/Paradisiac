@@ -136,7 +136,7 @@ button {
 			</div>
 		</div>
 	</div>
-</body>
+
 <%@ include file="/front-end/index/footer.jsp"%>
 <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -144,7 +144,7 @@ button {
 				$(document).ready(function() {
 				    $("#resetPassForm").submit(function(event) {
 				        event.preventDefault();
-				        // 发送AJAX请求 
+ 
 				        $("#errorMessages").empty();
 				        var formData = $(this).serialize();
 				        $.ajax({
@@ -152,9 +152,7 @@ button {
 				            url: "ResetPass.do",
 				            data: formData,
 				            success: function(response) {     
-				            	console.log(1)
 				                if(response.error){
-				                	console.log(2)
 				                    $("#errorMessages").html("<p style='color: red;'>" + response.error + "</p>");				                
 				                } else if (response.success) {
 				                    alert(response.success);
@@ -168,4 +166,5 @@ button {
 														});
 									});
 </script>
+</body>
 </html>

@@ -9,6 +9,8 @@ pageContext.setAttribute("membersVO", membersVO);
 <!DOCTYPE html>
 <html>
 <head>
+
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Paradisiac Bay-註冊會員</title>
@@ -18,50 +20,50 @@ pageContext.setAttribute("membersVO", membersVO);
 <link rel="stylesheet" href="../css/sweetalert2.min.css">
 
 <style>
-body {
-	background:
-		url('https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
-		center center/cover fixed;
-	position: relative;
-}
+/* body { */
+/* 	background: */
+/* 		url('https://images.unsplash.com/photo-1610641818989-c2051b5e2cfd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D') */
+/* 		center center/cover fixed; */
+/* 	position: relative; */
+/* } */
 
-body::before {
-	content: "";
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.7);
-	z-index: -1;
-}
+/* body::before { */
+/* 	content: ""; */
+/* 	position: fixed; */
+/* 	top: 0; */
+/* 	left: 0; */
+/* 	width: 100%; */
+/* 	height: 100%; */
+/* 	background: rgba(0, 0, 0, 0.7); */
+/* 	z-index: -1; */
+/* } */
 
-label {
-	font-weight: 600;
-	color: #666;
-}
+/* label { */
+/* 	font-weight: 600; */
+/* 	color: #666; */
+/* } */
 
-.box8 {
-	box-shadow: 0px 0px 5px 1px #343a40;
-}
+/* .box8 { */
+/* 	box-shadow: 0px 0px 5px 1px #343a40; */
+/* } */
 
-.mx-t3 {
-	margin-top: -3rem;
-}
+/* .mx-t3 { */
+/* 	margin-top: -3rem; */
+/* } */
 
-.jumbotron {
-	background-color: rgba(255, 255, 255, 0.8);
-}
+/* .jumbotron { */
+/* 	background-color: rgba(255, 255, 255, 0.8); */
+/* } */
 
-.form-group {
-	padding: 5px;
-}
+/* .form-group { */
+/* 	padding: 5px; */
+/* } */
 
-label.form-check-label {
-	padding-left: 20px;
-	font-size: 16px;
-	color: blue;
-}
+/* label.form-check-label { */
+/* 	padding-left: 20px; */
+/* 	font-size: 16px; */
+/* 	color: blue; */
+/* } */
 
 #preview {
 	margin-top: 5px;
@@ -91,7 +93,6 @@ label.form-check-label {
 </style>
 </head>
 <body>
-	<%@ include file="/front-end/index/guidedSignout.jsp"%>
 	<div class="container mt-3">
 		<form method="post" name="form1" id="form1" action="members.do"
 			enctype="multipart/form-data">
@@ -154,6 +155,7 @@ label.form-check-label {
 						<p>A151938787</p>
 							<div id="result_Id" style="color: red;"></div>
 				</div>
+				<div id="MemidError" style="color: red;"></div>
 				<div class="col-sm-6 form-group">
 					<label for="membir">生日</label> <input type="date" name="membir"
 						class="form-control" id="membir" placeholder="">
@@ -205,8 +207,8 @@ label.form-check-label {
 		</form>
 	</div>
 
+</body>
 
-<%@ include file="/front-end/index/footer.jsp"%>
 <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="../js/sweetalert2.all.min.js"></script>
@@ -214,7 +216,7 @@ label.form-check-label {
 <script>
 
 
-var p_file_el = document.getElementById('mempicture');
+var p_file_el = document.getElementById("mempicture");
 var isGetAuthCodeButtonDisabled = false;
 var countdown = 30; //倒數計時
 var isMemaccountValid = false;//預設驗證帳號
@@ -410,7 +412,7 @@ function togglePasswordVisibility() {
 //所有欄位濾空白、必填無值提醒
 function checkRequiredFields() {
     var isValid = true;
-    var fieldIds = ["email", "mempass", "memaccount", "memname", "memphone", "memid"];
+    var fieldIds = ["email", "mempass", "memaccount", "memname", "memphone", "memid", "memaddress"];
 
     for (var i = 0; i < fieldIds.length; i++) {
         var fieldId = fieldIds[i];
@@ -449,5 +451,4 @@ $('#submitButton').click(function(e) {
 
 
 </script>
-</body>
 </html>
