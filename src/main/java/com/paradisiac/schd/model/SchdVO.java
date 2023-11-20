@@ -43,25 +43,35 @@ public class SchdVO implements java.io.Serializable{
 	
 	@Column(name = "unit_price")
 	private Integer unitPrice;
+	
 	@Column(name = "low_num")
 	private Integer lowNum;
+	
 	@Column(name = "high_num")
 	private Integer highNum;
+	
 	@Column(name = "unpaid_num") //dafault 0
-	private Integer unpaidNum;
+	private Integer unpaidNum = 0;
+	
 	@Column(name = "paid_num") //dafault 0
-	private Integer paidNum;
-	@Column(name = "anc_date", insertable = false) //null
-	private Timestamp ancDate;  
-	@Column(name = "drop_schd_date", insertable = false) //null
+	private Integer paidNum = 0;
+	
+	@Column(name = "anc_date") //null
+	private Timestamp ancDate; 
+	
+	@Column(name = "drop_schd_date") //null
 	private Timestamp drpoSchdDate;
+	
 	@Column(name = "holddate")
-	private Timestamp holdate;
+	private Timestamp holdDate;
+	
 	@Column(name = "aplytime")
-	private Timestamp aplytime;
+	private Timestamp aplyTime;
+	
 	@Column(name = "cuttime")
-	private Timestamp cuttime;
-	@Column(name = "appl_status", columnDefinition = "TINYINT")
+	private Timestamp cutTime;
+	
+	@Column(name = "appl_status", columnDefinition = "TINYINT")//1:報名中 2:成團 3:未成團 4:因故取消
 	private Integer applStatus;
 	
 	//建構子
@@ -69,8 +79,8 @@ public class SchdVO implements java.io.Serializable{
 		
 	}
 	public SchdVO(Integer schdNo, ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Integer unpaidNum,
-			Integer paidNum, Timestamp ancDate, Timestamp drpoSchdDate, Timestamp holdate, Timestamp aplytime,
-			Timestamp cuttime, Integer applStatus) {
+			Integer paidNum, Timestamp ancDate, Timestamp drpoSchdDate, Timestamp holdDate, Timestamp aplyTime,
+			Timestamp cutTime, Integer applStatus) {
 		super();
 		this.schdNo = schdNo;
 		this.act = act;
@@ -81,13 +91,13 @@ public class SchdVO implements java.io.Serializable{
 		this.paidNum = paidNum;
 		this.ancDate = ancDate;
 		this.drpoSchdDate = drpoSchdDate;
-		this.holdate = holdate;
-		this.aplytime = aplytime;
-		this.cuttime = cuttime;
+		this.holdDate = holdDate;
+		this.aplyTime = aplyTime;
+		this.cutTime = cutTime;
 		this.applStatus = applStatus;
 	}
 	//沒有上下架日期跟付款人/未付款人
-	public SchdVO(Integer schdNo, ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Timestamp holdate, Timestamp aplytime,
+	public SchdVO(ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Timestamp holddate, Timestamp aplytime,
 			Timestamp cuttime, Integer applStatus) {
 		super();
 		this.schdNo = schdNo;
@@ -95,9 +105,9 @@ public class SchdVO implements java.io.Serializable{
 		this.unitPrice = unitPrice;
 		this.lowNum = lowNum;
 		this.highNum = highNum;
-		this.holdate = holdate;
-		this.aplytime = aplytime;
-		this.cuttime = cuttime;
+		this.holdDate = holddate;
+		this.aplyTime = aplytime;
+		this.cutTime = cuttime;
 		this.applStatus = applStatus;
 	}
 	
@@ -155,23 +165,23 @@ public class SchdVO implements java.io.Serializable{
 	public void setDrpoSchdDate(Timestamp drpoSchdDate) {
 		this.drpoSchdDate = drpoSchdDate;
 	}
-	public Timestamp getHoldate() {
-		return holdate;
+	public Timestamp getHoldDate() {
+		return holdDate;
 	}
-	public void setHoldate(Timestamp holdate) {
-		this.holdate = holdate;
+	public void setHoldDate(Timestamp holdDate) {
+		this.holdDate = holdDate;
 	}
-	public Timestamp getAplytime() {
-		return aplytime;
+	public Timestamp getAplyTime() {
+		return aplyTime;
 	}
 	public void setAplytime(Timestamp aplytime) {
-		this.aplytime = aplytime;
+		this.aplyTime = aplyTime;
 	}
-	public Timestamp getCuttime() {
-		return cuttime;
+	public Timestamp getCutTime() {
+		return cutTime;
 	}
-	public void setCuttime(Timestamp cuttime) {
-		this.cuttime = cuttime;
+	public void setCuttime(Timestamp cutTime) {
+		this.cutTime = cutTime;
 	}
 	public Integer getApplStatus() {
 		return applStatus;

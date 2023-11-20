@@ -72,7 +72,6 @@ public class ActHibernateDAO implements ActDAO_interface{
 	
 	public ActVO insertOrUpdate(ActVO actVO) {
 		getSession().saveOrUpdate(actVO);
-		System.out.println("DAOPass");
 		return actVO;
 	}
 

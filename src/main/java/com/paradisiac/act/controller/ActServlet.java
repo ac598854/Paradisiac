@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import com.paradisiac.act.model.ActVO;
-import com.paradisiac.act.service.ActService;
 import com.paradisiac.act.service.ActServiceImpl;
 import com.paradisiac.schd.model.SchdVO;
 
@@ -24,7 +23,7 @@ import com.paradisiac.schd.model.SchdVO;
 @MultipartConfig
 public class ActServlet extends HttpServlet{
 	
-	private ActService actSvc;
+	private ActServiceImpl actSvc;
 	
 	public void init() throws ServletException{
 		actSvc = new ActServiceImpl();
@@ -89,6 +88,7 @@ public class ActServlet extends HttpServlet{
 
 		return "/back-end/act/select_act.jsp";
 	}
+
 
 	// 新增或修改
 	private String insertOrUpdate(HttpServletRequest req, HttpServletResponse res)

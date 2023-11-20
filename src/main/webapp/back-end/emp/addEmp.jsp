@@ -78,7 +78,7 @@ th, td {
 		</ul>
 	</c:if>
 
-	<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/emp.do"
+	<FORM ACTION="${pageContext.request.contextPath}/emp.do"
 		name="form1">
 		<table>
 			<tr>
@@ -103,7 +103,7 @@ th, td {
 				<td><input type="radio" name="empStatus" value="0"
 					${empVO.getEmpStatus() == 0 ? 'checked' : ''} size="45" />凍結 <input
 					type="radio" name="empStatus" value="1" checked="checked"
-					} size="45" />未凍結</td>
+					 size="45" />未凍結</td>
 			</tr>
 			<tr>
 				<td>員工姓名:</td>

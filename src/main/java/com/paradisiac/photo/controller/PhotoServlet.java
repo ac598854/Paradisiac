@@ -47,7 +47,7 @@ public class PhotoServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		
-		//新增相片===================================================
+		//新增相片
 		if("insert".equals(action)) {
 			//錯誤處理
 			List<String> errorMsgs = new LinkedList<String>();

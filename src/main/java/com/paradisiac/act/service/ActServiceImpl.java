@@ -39,7 +39,6 @@ public class ActServiceImpl implements ActService{
 	@Override
 	public Set<SchdVO> getSchdByActno(Integer actno) {
 		Set<SchdVO> actschdSet = dao.findByPrimaryKeyS(actno);
-		System.out.println("3:"+actschdSet.toString());
 		return actschdSet;
 	}
 
@@ -65,7 +64,6 @@ public class ActServiceImpl implements ActService{
 	}
 	
 	public ActVO addOrUpdateAct(ActVO act) {
-		System.out.println("servicePass");
 		return dao.insertOrUpdate(act);		
 	}
 

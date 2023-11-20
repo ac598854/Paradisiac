@@ -115,16 +115,22 @@
             <td>${schd.schdNo}</td>
             <td>${schd.ancDate}</td>
             <td>${schd.drpoSchdDate}</td>
-            <td>${schd.holdate}</td>
-            <td>${schd.aplytime}</td>
-            <td>${schd.cuttime}</td>
+            <td>${schd.holdDate}</td>
+            <td>${schd.aplyTime}</td>
+            <td>${schd.cutTime}</td>
             <td>${schd.unitPrice}</td>
             <td>${schd.lowNum}</td>
             <td>${schd.highNum}</td>
             <td>${schd.unpaidNum}</td>
             <td>${schd.paidNum}</td>
-            <td>${schd.applStatus}</td><%----%>           
-            <td><input type="submit" value="修改" class="modify-button"></td>
+            <td>${schd.applStatus}</td>          
+            <td>
+	            <form action="${pageContext.request.contextPath}/schd.do" method="post">
+	            	<input type="hidden" name="action" value="getOne_For_Update">
+	            	<input type="hidden" name="schdNo" value="${schd.schdNo}">
+	            	<input type="submit" value="修改" class="modify-button">
+	            </form>
+            </td>
         </tr>
         </c:forEach>
     </table>
