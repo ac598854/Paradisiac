@@ -144,7 +144,7 @@ button {
 			</div>
 		</div>
 	</div>
-</body>
+
 <%@ include file="/front-end/index/footer.jsp"%>
 <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -160,11 +160,11 @@ button {
                 url: "ResetPass.do",
                 data: formData,
                 success: function(response) {                 
-                    if (response.error) {
-                        $("#errorMessages").html("<p style='color: red;'>" + response.error + "</p>");
-                    } else if (response.success) {
-                        alert(response.success);
+                     if (response.message) {
+                        alert(response.message);
                         window.location.href = "<%=request.getContextPath()%>/front-end/members/ForgetPass2.jsp";
+                    }else if (response.error) {
+                        $("#errorMessages").html("<p style='color: red;'>" + response.error + "</p>");
                     }
                 },
                 error: function() {
@@ -174,5 +174,5 @@ button {
         });
     });
 </script>
-
+</body>
 </html>

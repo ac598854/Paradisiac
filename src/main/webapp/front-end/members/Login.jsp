@@ -10,8 +10,10 @@
 MembersVO membersVO = null;
 membersVO = (MembersVO) session.getAttribute("membersVO");
 %>
+
 <!DOCTYPE html>
 <html>
+
 <head>
 <!-- 引入Bootstrap CSS -->
 <link rel="stylesheet"
@@ -20,6 +22,7 @@ membersVO = (MembersVO) session.getAttribute("membersVO");
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/sweetalert2.min.css">
 
 <meta charset="UTF-8">
 <title>Paradisiac Bay-登入</title>
@@ -107,10 +110,23 @@ button {
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
 }
+
+#password-container {
+	position: relative;
+}
+
+.toggle-mempass {
+	position: absolute;
+	top: 50%;
+	right: 10px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
 </style>
 </head>
+
 <body>
-<%@ include file="/front-end/index/guidedSignout.jsp"%>
+	<%@ include file="/front-end/index/guidedSignout.jsp"%>
 	<div class="container">
 		<div class="row m-5 no-gutters shadow-lg">
 			<div class="col-md-6 d-none d-md-block">
@@ -122,15 +138,19 @@ button {
 			<div class="col-md-6 bg-white p-5">
 				<h3 class="pb-3">會員登入</h3>
 				<div class="form-style">
-					<form method="post" action="login.do" name="form1">
+					<form method="post" action="login.do" name="form1" id="form1">
 						<div class="form-group pb-3">
 							<input type="text" placeholder="帳號" class="form-control"
-								id="singaccount" name="memaccount" required>
+								id="memaccount" name="memaccount" required>
 						</div>
-						<div class="form-group pb-3">
-							<input type="password" placeholder="密碼" class="form-control"
-								id="mempass" name="mempass" required>
+						<div class="form-group pb-3" id="password-container">
+							<input type="password" name="mempass" class="form-control"
+								id="mempass" placeholder="密碼" required> <span
+								class="toggle-mempass" onclick="togglePasswordVisibility()">👁️</span>
 						</div>
+						<div id="result" style="color: red;"></div>
+						<br> <br>
+
 						<div class="d-flex align-items-center justify-content-between">
 							<div class="d-flex align-items-center">
 								<a
@@ -138,24 +158,95 @@ button {
 							</div>
 						</div>
 						<div class="pb-2">
+						<input type="hidden" name="action" value="loginCheck">
 							<button type="submit"
-								class="btn btn-dark w-100 font-weight-bold mt-2">登入</button>
-							<input type="hidden" name="action" value="loginCheck">
+								class="btn btn-dark w-100 font-weight-bold mt-2"
+								id="submitButton">登入</button>							
 						</div>
-
 					</form>
 					<div class="pt-4 text-center">
 						還不是會員? <a
 							href="<%=request.getContextPath()%>/front-end/members/Signin.jsp">註冊會員</a>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
-</body>
+
 <%@ include file="/front-end/index/footer.jsp"%>
 <script src="https://use.fontawesome.com/f59bcd8580.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="../js/sweetalert2.all.min.js"></script>
+<script>
+	var fieldsValid = true;
 
+	function togglePasswordVisibility() {
+		var passwordInput = document.getElementById('mempass');
+		var toggleButton = document.querySelector('.toggle-mempass');
+
+		if (passwordInput.type === 'password') {
+			passwordInput.type = 'text';
+			toggleButton.textContent = '👁️';
+		} else {
+			passwordInput.type = 'password';
+			toggleButton.textContent = '👁️';
+		}
+	}
+
+	function checkRequiredFields() {
+		var isValid = true;
+		var fieldIds = [ "memaccount", "mempass" ];
+		for (var i = 0; i < fieldIds.length; i++) {
+			var fieldId = fieldIds[i];
+			var inputElement = $("#" + fieldId);
+			if (inputElement.length > 0) {
+				var fieldValue = inputElement.val().trim();
+				if (inputElement.prop("required") && fieldValue === "") {
+					isValid = false;
+					inputElement.val(fieldValue);
+					break;
+				}
+				// 回寫清除空白的值
+				inputElement.val(fieldValue);
+				console.log("回寫值" + inputElement.val());
+			} else {
+				console.error("Element with id '" + fieldId + "' not found.");
+			}
+		}
+		return isValid;
+	}
+
+	$(function() {
+		$("#memaccount, #mempass").on('blur', function() {
+			var fieldsValid = checkRequiredFields();
+			if (!fieldsValid) {
+				document.getElementById("result").innerText = "帳號、密碼請勿空白";
+			} else {
+				document.getElementById("result").innerText = "";
+			}
+		});
+	});
+
+	var error = '${param.error}';
+	if (error === 'noAccount') {
+		console.log("error=" + error);
+		Swal.fire({
+			title : '登入失敗',
+			icon : 'error',
+			text : '帳號或密碼錯誤',
+			showConfirmButton : false,
+			showCloseButton : true,
+			timer : 1500
+		})
+	} else if (error === 'lockAccount') {
+		Swal.fire({
+			title : '登入失敗',
+			icon : 'error',
+			text : '會員已停權，請聯絡客服',
+		})
+	}
+
+	
+</script>
+</body>
 </html>

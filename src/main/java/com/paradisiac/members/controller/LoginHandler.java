@@ -24,6 +24,9 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.paradisiac.members.model.MembersVO;
 import com.paradisiac.members.service.MembersService;
 
+import org.mindrot.jbcrypt.BCrypt;
+import org.json.JSONObject;
+
 @MultipartConfig
 public class LoginHandler extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -54,9 +57,17 @@ public class LoginHandler extends HttpServlet {
 			System.out.println("帳號凍結，3");
 			return 3;
 		}
-
+		String storedHashedPassword=membersVO.getMempass();
+//	    if (BCrypt.checkpw(mempass, storedHashedPassword)) {
+//
+//	    } else {
+//
+//	    }			
 		// 檢查帳號+密碼
-		if (membersVO.getMemaccount().equals(memaccount) && membersVO.getMempass().equals(mempass)) {
+		if (membersVO.getMemaccount().equals(memaccount) && BCrypt.checkpw(mempass, storedHashedPassword)) {
+			 // 使用正确密码验证密码是否正确
+	        boolean flag = BCrypt.checkpw(mempass, storedHashedPassword);
+	        System.out.println("加密比較結果："+flag);			
 			System.out.println("成功登入，4");
 			return 4;
 		} else {
@@ -69,6 +80,7 @@ public class LoginHandler extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		res.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
+		JSONObject jsonObject = new JSONObject();
 		// 1.登出狀態
 		// 2.會員登入狀態，檢查(滿足帳號、密碼)、會員登入後可用頁面
 		// 3.會員註冊檢查(帳號是否已有)【AJAX】
@@ -102,6 +114,7 @@ public class LoginHandler extends HttpServlet {
 			if (memaccount != null) {
 				memaccount = memaccount.trim();
 			}
+		
 			System.out.println(memaccount);
 			if (mempass != null) {
 				mempass = mempass.trim();
@@ -118,21 +131,27 @@ public class LoginHandler extends HttpServlet {
 			}
 
 // 檢查會員帳號、密碼、狀態，可以登入者賦予session會員編號(驗證是否登入會員)
+		
 			if (successLogin(memaccount, mempass, false) == 1) {
-				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
-				System.out.println("無帳號轉址" + URL);
+				System.out.println("無帳號轉址" + location);
+				String URL = req.getContextPath() + "/front-end/members/Login.jsp?error=noAccount";
 				res.sendRedirect(URL);
 				System.out.println("沒有帳號");
 				return;
 			} else if (successLogin(memaccount, mempass, false) == 5) {
-				String URL = req.getContextPath() + "/front-end/members/login.jsp?error=noAccount";
-				res.sendRedirect(URL);
-				System.out.println("密碼錯誤轉址");
-				return;
-			} else if (successLogin(memaccount, mempass, false) == 3) {
+//			    jsonObject.put("error", "帳號或密碼不正確，請再檢查一下");
+//			    res.setContentType("application/json;charset=UTF-8");
+//			    PrintWriter out = res.getWriter();
+//			    out.println(jsonObject.toString());
+//			    System.out.println("確定"+jsonObject.toString());
+				System.out.println("密碼錯誤轉址" + location);
 				String URL = req.getContextPath() + "/front-end/members/Login.jsp?error=noAccount";
 				res.sendRedirect(URL);
-				System.out.println("帳號凍結轉址");
+				return;
+			} else if (successLogin(memaccount, mempass, false) == 3) {
+				System.out.println("帳號凍結轉址" + location);
+				String URL = req.getContextPath() + "/front-end/members/Login.jsp?error=lockAccount";
+				res.sendRedirect(URL);
 				return;
 			} else {
 				// 帳號、密碼、帳號狀態都OK=可以登入
@@ -147,7 +166,7 @@ public class LoginHandler extends HttpServlet {
 
 // ================會員狀態，設定當【location】為特定頁面:購物車、訂房訂購頁、活動訂購頁
 				if(location=="") {
-					
+				
 					session.setAttribute("location", req.getRequestURI());
 					Object location1=session.getAttribute("location");
 					System.out.println("正常登入，設定location:"+location1);
@@ -155,8 +174,7 @@ public class LoginHandler extends HttpServlet {
 					return;
 					
 				}
-				
-				
+								
 				if (location != "") {// 上一個登入位置不為空狀況下
 					System.out.println(location);
 					// 如果是活動訂購頁()，要結帳需要會員

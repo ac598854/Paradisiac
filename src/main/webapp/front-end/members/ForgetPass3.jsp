@@ -141,13 +141,10 @@ button {
         var isMempassValid = true;
 
         $(document).ready(function() {
-            console.log(3);
             $("#mempass").on("input", function() {
                 var password = $("#mempass1").val().trim();
                 var confirmPassword = $("#mempass").val().trim();
-
                 if (password !== confirmPassword) {
-                    console.log(4);
                     $("#errorMessages").html("<p style='color: red;'>" + "密碼不一致" + "</p>");
                 }else{
                 	$("#errorMessages").empty();
@@ -160,12 +157,10 @@ button {
                 var formData = $(this).serialize();
                 $.ajax({
                     type: "POST",
-                    url: "ResetPass.do", // Ensure this URL is correct or use an absolute path
+                    url: "ResetPass.do", 
                     data: formData,
                     success: function(response) {     
-                        console.log(1);
                         if(response.error){
-                            console.log(2);
                             $("#errorMessages").html("<p style='color: red;'>" + response.error + "</p>");				                
                         } else if (response.success) {
                             alert(response.success);
