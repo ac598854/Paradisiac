@@ -28,7 +28,7 @@
 </style>
 </head>
 <body>
-
+<%@ include file="/back-end/index/back-left_room.jsp" %>
     <div class="container-custom">
         <h2>CheckIn資料查詢</h2>
         
