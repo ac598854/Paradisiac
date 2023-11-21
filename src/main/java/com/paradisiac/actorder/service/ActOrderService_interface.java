@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+
 import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.actorder.model.ActOrder;
 import com.paradisiac.employee.model.EmpVO;
@@ -23,7 +24,9 @@ public interface ActOrderService_interface {
 
 	int cancelAct(SchdVO schdVO);//該檔期下所有訂單狀態改變
 
+	int modifyStatus(SchdVO schdNo, Integer orderStatus);
 
+//	List<ActOrder> insertWithActAttendees(ActOrder actOrder , List<ActAttendees> list);
 
 	
 	

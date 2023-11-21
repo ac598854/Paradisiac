@@ -9,7 +9,7 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
+<link rel="stylesheet" href="../css/sweetalert2.min.css">
 <meta charset="UTF-8">
 <title>Paradisiac Bay-活動結帳頁</title>
 
@@ -463,54 +463,60 @@ input[type="text"] {
 		</div>
 	</header>
 	<section class="content">
+		<form class="needs-validation" id="form1"
+			action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do"
+			method="POST">
+			<div class="container"></div>
+			<div class="details shadow">
+				<div class="details__item">
 
-		<div class="container"></div>
-		<div class="details shadow">
-			<div class="details__item">
-
-				<div class="item__image">
-					<img class="image"
-						src="https://images.unsplash.com/photo-1539498508910-091b5e859b1d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-						alt="">
-				</div>
-				<div class="item__details">
-					<div class="item__title">${ActOrder.schdNo}檔期編號</div>
-					<div class="item__price">${ActOrder.unitPrice}活動單價</div>
+					<div class="item__image">
+						<img class="image"
+							src="https://images.unsplash.com/photo-1539498508910-091b5e859b1d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+							alt="">
+					</div>
+					<div class="item__details">
+						<div class="item__title">${ActOrder.schdNo}檔期編號</div>
+						<div class="item__price">${ActOrder.unitPrice}活動單價</div>
+					</div>
 				</div>
 			</div>
-
-		</div>
-		<div class="discount"></div>
-		<div class="container">
-			<div class="py-5 text-center">
-				<hr class="mb-4">
-				<h2>結帳明細</h2>
-			</div>
-			<div class="row">
-				<div class="col-md-4 order-md-2 mb-4">
-					<h4 class="d-flex justify-content-between align-items-center mb-3">
-						<span class="text-muted">訂單總金額</span>
-					</h4>
-					<ul class="list-group mb-3">
-						<li
-							class="list-group-item d-flex justify-content-between lh-condensed">
-							<div>
-								<h6 class="my-0" name="schdNo">${ActOrder.schdNo}檔期編號</h6>
-							</div> 
-						</li>
-						<li class="list-group-item d-flex justify-content-between">單價
-						<input type="text" class="form-control" id="unitPrice" name="unitPrice" value="1000" readonly>
-						<li class="list-group-item d-flex justify-content-between">數量
-						<input type="text" class="form-control" id="countNumDisplay" name="countNumDisplay"readonly>
-						<li class="list-group-item d-flex justify-content-between">總計
-						<input type="text" class="form-control" id="orderAmount" name="orderAmount" value="${ActOrder.orderAmount}" readonly>
-					</ul>
+			<div class="discount"></div>
+			<div class="container">
+				<div class="py-5 text-center">
 					<hr class="mb-4">
+					<h2>結帳明細</h2>
 				</div>
-				<div class="col-md-8 order-md-1">
-					<form class="needs-validation"
-						action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do"
-						method="POST">
+				<div class="row">
+					<div class="col-md-4 order-md-2 mb-4">
+						<h4 class="d-flex justify-content-between align-items-center mb-3">
+							<span class="text-muted">訂單總金額</span>
+						</h4>
+						<ul class="list-group mb-3">
+							<li
+								class="list-group-item d-flex justify-content-between lh-condensed">
+								<div>
+									<h6 class="my-0">${SchdVO.schdNo}檔期編號</h6>
+									<input type="hidden" class="form-control" id="schdNo"
+										name="schdNo" value="${SchdVO.schdNo}">
+								</div>
+							</li>
+							<li class="list-group-item d-flex justify-content-between">單價
+								<input type="text" class="form-control" id="unitPrice"
+								name="unitPrice" value="1000" readonly>
+							<li class="list-group-item d-flex justify-content-between">數量
+								<input type="text" class="form-control" id="countNumDisplay"
+								name="countNumDisplay" readonly>
+							<li class="list-group-item d-flex justify-content-between">總計
+								<input type="text" class="form-control" id="orderAmount"
+								name="orderAmount" value="${ActOrder.orderAmount}" readonly>
+						</ul>
+						<hr class="mb-4">
+					</div>
+					<div class="col-md-8 order-md-1">
+						<!-- 					<form class="needs-validation" -->
+						<!-- <%-- action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do" --%> -->
+						<!-- 						method="POST"> -->
 						<div class=row>
 							<div class="col-md-12 mb-6">
 								<h4 class="mb-3">參加人數</h4>
@@ -522,19 +528,26 @@ input[type="text"] {
 						<h4 class="mb-3">個人資料</h4>
 						<div class="row" id="participant">
 							<div class="col-md-12 mb-6">
-								<label for="atnName">參加人姓名<span class="text-danger">*</span></label> <input type="text"
-									class="form-control" id="atnName"
-									placeholder="報名人若為參加人也須填寫參加人資料" value="${ActOrder.atnName}" required>
+								<label for="atnName">參加人姓名<span class="text-danger">*</span></label>
+								<input type="text" class="form-control" id="atnName"
+									placeholder="報名人若為參加人也須填寫參加人資料" value="${ActOrder.atnName}">
 							</div>
 							<div class="col-md-12 mb-6">
-								<label for="atnIdNumber">參加人身分證字號<span class="text-danger">*</span></label> <input type="text"
+								<label for="atnIdNumber">參加人身分證字號<span
+									class="text-danger">*</span></label> <input type="text"
 									class="form-control" id="atnIdNumber" placeholder="請填寫身分證字號"
-									value="${ActOrder.atnIdNumber}" required>
+									value="${ActOrder.atnIdNumber}" oninput="checkId()">
+								<p>A151938787</p>
+								<div id="result_Id" style="color: red;"></div>
+
 							</div>
 							<div class="col-md-12 mb-6">
-								<label for="atnTel">參加人電話<span class="text-danger">*</span></label> <input type="text"
-									class="form-control" id="atnTel" placeholder="請填寫聯絡手機或電話"
-									value="${ActOrder.atnTel}" required >
+								<label for="atnTel">參加人電話<span class="text-danger">*</span></label>
+								<input type="text" class="form-control" id="atnTel"
+									placeholder="請填寫聯絡手機或電話" value="${ActOrder.atnTel}"
+									oninput="checkPhoneNumber()">
+								<p>0987654321</p>
+								<div id="result" style="color: red;"></div>
 							</div>
 							<div class="col-md-12 mb-6">
 								<br>
@@ -562,22 +575,23 @@ input[type="text"] {
 							<br> <br>
 							<div class="row participant-container">
 								<div class="col-md-12 mb-6">
-									<label for="cc-number">信用卡姓名<span class="text-danger">*</span></label> <input type="text"
-										class="form-control" id="cc-number" placeholder="請填寫信用卡姓名"
-										required>
+									<label for="cc-number">信用卡姓名<span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="cc-number"
+										placeholder="請填寫信用卡姓名" required>
 								</div>
 							</div>
 							<br>
 							<div class="row">
 								<div class="col-md-4 mb-2">
-									<label for="cc-expiration">到期日<span class="text-danger">*</span></label> <input type="month"
-										class="form-control" id="cc-expiration" required>
+									<label for="cc-expiration">到期日<span class="text-danger">*</span></label>
+									<input type="month" class="form-control" id="cc-expiration"
+										required>
 									<div class="invalid-feedback">Expiration date required</div>
 								</div>
 								<div class="col-md-8 mb-3">
-									<label for="cc-cvv">三碼檢查碼<span class="text-danger">*</span></label> <input type="text"
-										class="form-control" id="cc-cvv" placeholder="請填寫信用卡三碼檢查碼"
-										required>
+									<label for="cc-cvv">三碼檢查碼<span class="text-danger">*</span></label>
+									<input type="text" class="form-control" id="cc-cvv"
+										placeholder="請填寫信用卡三碼檢查碼" required>
 								</div>
 							</div>
 						</div>
@@ -585,10 +599,7 @@ input[type="text"] {
 						<button class="btn btn-primary btn-lg btn-block" id="btn-submit"
 							type="submit">結帳</button>
 						<input type="hidden" name="action" value="insert" />
-					</form>
-				</div>
-			</div>
-		</div>
+		</form>
 	</section>
 	<br>
 	<br>
@@ -596,5 +607,88 @@ input[type="text"] {
 	<%@ include file="/front-end/index/footer.jsp"%>
 	<script
 		src="${pageContext.request.contextPath}/front-end/actorder/js/ActCheckOut.js"></script>
+	<script src="../js/sweetalert2.all.min.js"></script>
+	<script>
+		var isMemphoneValid = false;
+		var isMemIdValid = false;
+		var fieldsValid =false;
+		//號碼檢查
+		function checkPhoneNumber() {
+			var phoneInput = document.getElementById("atnTel");
+			var phoneNumber = phoneInput.value.trim().replace(/\D/g, ''); // 刪除空格並刪除非數字字符
+			var mobilePattern = /^09\d{8}$/;
+			var landlinePattern = /^0\d{1,2}\d{6,8}$/;
+			if (mobilePattern.test(phoneNumber)) {
+				document.getElementById("result").innerText = "";
+				isMemphoneValid = true;
+			} else if (landlinePattern.test(phoneNumber)) {
+				document.getElementById("result").innerText = "";
+				isMemphoneValid = true;
+			} else {
+				document.getElementById("result").innerText = "非有效手機、市話號碼格式";
+				isMemphoneValid = false;
+			}
+		}
+
+		function checkId() {
+			var IdInput = document.getElementById("atnIdNumber");
+			var MemId = IdInput.value.trim();
+			var MemIdReg = /^[A-Z][12]\d{8}$/;
+			if (MemIdReg.test(MemId)) {
+				document.getElementById("result_Id").innerText = "";
+				isMemIdValid = true;
+			} else {
+				document.getElementById("result_Id").innerText = "身分字號不符合規格，首字需大寫";
+				isMemIdValid = false;
+			}
+		}
+
+		function checkRequiredFields() {
+			var isValid = true;
+			var fieldIds = [ "cc-number", "cc-cvv", "cc-expiration" ];
+
+			for (var i = 0; i < fieldIds.length; i++) {
+				var fieldId = fieldIds[i];
+				var inputElement = $("#" + fieldId);
+
+				if (inputElement.length > 0) {
+					var fieldValue = inputElement.val().trim();
+
+					if (inputElement.prop("required") && fieldValue === "") {
+						isValid = false;
+						inputElement.val(fieldValue);
+						break;
+					}
+					// 回寫清除空白的值
+					inputElement.val(fieldValue);
+				} 
+			}
+			return isValid;
+		}
+		$('#btn-submit').click(function(e) {
+			e.preventDefault();
+			var fieldsValid = checkRequiredFields();//過濾空白檢查
+			if (isMemphoneValid && isMemIdValid) {
+				// 驗證通過
+				$("#form1 input[name='action']").val("insert");
+				// 送出
+				$("#form1").submit();
+				Swal.fire({
+					title : "訂單送出成功!",
+					icon : "success"
+				})
+			} else {
+				Swal.fire({
+					title : "必填請勿空白!",
+					icon : "error"
+				})
+			}
+		});
+
+	
+		
+	</script>
+
 </body>
+
 </html>

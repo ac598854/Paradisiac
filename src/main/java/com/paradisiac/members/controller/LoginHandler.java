@@ -139,11 +139,7 @@ public class LoginHandler extends HttpServlet {
 				System.out.println("沒有帳號");
 				return;
 			} else if (successLogin(memaccount, mempass, false) == 5) {
-//			    jsonObject.put("error", "帳號或密碼不正確，請再檢查一下");
-//			    res.setContentType("application/json;charset=UTF-8");
-//			    PrintWriter out = res.getWriter();
-//			    out.println(jsonObject.toString());
-//			    System.out.println("確定"+jsonObject.toString());
+//			 
 				System.out.println("密碼錯誤轉址" + location);
 				String URL = req.getContextPath() + "/front-end/members/Login.jsp?error=noAccount";
 				res.sendRedirect(URL);

@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.schd.model.SchdVO;
 
 
@@ -23,7 +24,7 @@ public class ActOrderDAO implements ActOrder_interface{
 	}
 
 	@Override
-	public int inert(ActOrder actOrder) {
+	public int insert(ActOrder actOrder) {
 	
 		return (int) getSession().save(actOrder);
 	}
@@ -62,6 +63,15 @@ public class ActOrderDAO implements ActOrder_interface{
 		
 		return result;
 	}
+
+
+	@Override
+	public ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
 
 
 

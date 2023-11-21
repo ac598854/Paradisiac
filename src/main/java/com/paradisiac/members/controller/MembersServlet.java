@@ -396,11 +396,7 @@ public class MembersServlet<Session> extends HttpServlet {
 					e.printStackTrace();
 					errorMsgs.add("圖片上傳失敗");
 				}
-			} else {
-				// 處理圖片為空補充
 			}
-			;
-
 			if (!errorMsgs.isEmpty()) {
 				// 錯誤停留在註冊頁
 				System.out.println("錯誤停留在註冊頁");

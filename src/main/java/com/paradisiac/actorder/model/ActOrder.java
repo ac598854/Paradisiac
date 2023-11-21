@@ -130,8 +130,8 @@ public class ActOrder implements Serializable {
 		return actAttendees;
 	}
 
-	public void setActAttendees(Set<ActAttendees> actAttendees) {
-		this.actAttendees = actAttendees;
+	public void setActAttendees(Set<ActAttendees> actAttendees2) {
+		this.actAttendees = (Set<ActAttendees>) actAttendees2;
 	}
 
 	@Override
