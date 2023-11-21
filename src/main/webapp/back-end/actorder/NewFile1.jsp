@@ -296,9 +296,6 @@ h1, h2, h3, h4 {
 	vertical-align: middle;
 }
 
-.input-group {
-	margin-bottom: 10px;
-}
 
 .table thead {
 	background-color: #343a40;
@@ -317,7 +314,32 @@ h1, h2, h3, h4 {
 .table tbody tr:nth-child(even) {
 	background-color: #e9ecef;
 }
+.input-group {
+	margin-bottom: 10px;
+}
 
+/* Add this CSS code for styling input fields */
+.table input[type="text"],
+.table select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Style for the submit button */
+.btn-primary {
+    margin-top: 10px;
+}
+
+/* Optional: Add styles for form labels */
+.table td {
+    font-weight: bold;
+    padding-top: 10px;
+}
 .round-image-container {
 	width: 100px;
 	height: 100px;
@@ -336,6 +358,9 @@ h1, h2, h3, h4 {
 .btn-primary {
 	margin-left: 15px;
 }
+
+
+
 </style>
 </head>
 <body>
@@ -374,7 +399,7 @@ h1, h2, h3, h4 {
 			<div class="container-fluid">
 				<!-- 表格-->
 				<div class="container">
-					<h1>會員帳號資料</h1>
+					<h1>活動訂單資料</h1>
 					<div class="row">
 						<div class="col-12 text-right">
 							<a
@@ -386,32 +411,14 @@ h1, h2, h3, h4 {
 							<form method="post" action="members.do" name="form1"
 								enctype="multipart/form-data">
 								<table class="table">
+									
 									<tr>
-										<td>會員頭像:</td>
-										<td><input type="hidden" name="mempicture"
-											value="${membersVO.mempicture}" size="45" />
-											<div class="round-image-container">
-												<c:choose>
-													<c:when test="${not empty membersVO.mempicture}">
-														<img
-															src="data:image/jpeg;base64,${Base64.getEncoder().encodeToString(membersVO.mempicture)}"
-															class="round-image" id="preview_img_id">
-													</c:when>
-													<c:otherwise>
-														<img
-															src="<%=request.getContextPath()%>/images/no-picture-taking.png"
-															class="round-image" id="no_img_id">
-													</c:otherwise>
-												</c:choose>
-											</div></td>
-									</tr>
-									<tr>
-										<td>會員編號:<font color="red"><b>*</b></font></td>
+										<td>活動訂單編號:<font color="red"><b>*</b></font></td>
 										<td><input type="text" class="form-control" id="memno"
 											name="memno" value="${membersVO.memno}" readonly></td>
 									</tr>
 									<tr>
-										<td>帳號狀態:</td>
+										<td>會員編號:</td>
 										<td><select name="memstatus"
 											class="form-control browser-default custom-select">
 												<option value="true"
@@ -422,25 +429,31 @@ h1, h2, h3, h4 {
 									</tr>
 
 									<tr>
-										<td>會員姓名:<font color="red"><b>*</b></font></td>
+										<td>檔期編號:<font color="red"><b>*</b></font></td>
 										<td><input type="text" name="memname"
 											class="form-control" class="custom-file-input"
 											value="${membersVO.memname}" size="45" readonly /></td>
 									</tr>
 									<tr>
-										<td>電子信箱:<font color="red"><b>*</b></font></td>
+										<td>處理員工(編號):<font color="red"><b>*</b></font></td>
 										<td><input type="text" name="memmail"
 											class="form-control" value="${membersVO.memmail}" size="45"
 											readonly /></td>
 									</tr>
 									<tr>
-										<td>帳號:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memaccount"
+										<td>訂單日期:<font color="red"><b>*</b></font></td>
+										<td><input type="date" name="memaccount"
 											class="form-control" value="${membersVO.memaccount}"
 											size="45" readonly /></td>
 									</tr>
 									<tr>
-										<td>性別:</td>
+										<td>報名人數:<font color="red"><b>*</b></font></td>
+										<td><input type="date" name="memaccount"
+											class="form-control" value="${membersVO.memaccount}"
+											size="45" readonly /></td>
+									</tr>
+									<tr>
+										<td>訂單狀態:</td>
 										<td><select name="memgender"
 											class="form-control browser-default custom-select" disabled>
 												<option value="1"
@@ -452,31 +465,39 @@ h1, h2, h3, h4 {
 										</select></td>
 									</tr>
 									<tr>
-										<td>身分證字號:<font color="red"><b>*</b></font></td>
+										<td>付款狀態:</td>
+										<td><select name="memgender"
+											class="form-control browser-default custom-select" disabled>
+												<option value="1"
+													<c:if test="${membersVO.memgender == 1}">selected</c:if>>男</option>
+												<option value="2"
+													<c:if test="${membersVO.memgender == 2}">selected</c:if>>女</option>
+												<option value="3"
+													<c:if test="${membersVO.memgender == 3}">selected</c:if>>其他</option>
+										</select></td>
+									</tr>
+									<tr>
+										<td>訂單總金額:<font color="red"><b>*</b></font></td>
 										<td><input type="text" name="memid" class="form-control"
 											value="${membersVO.memid}" size="45" readonly /></td>
 									</tr>
+					
 									<tr>
-										<td>生日:</td>
-										<td><input type="date" name="membir" class="form-control"
-											value="${membersVO.membir}" size="45" readonly /></td>
-									</tr>
-									<tr>
-										<td>電話:<font color="red"><b>*</b></font></td>
+										<td>參加人姓名A:<font color="red"><b>*</b></font></td>
 										<td><input type="text" name="memphone"
 											class="form-control" value="${membersVO.memphone}" size="45"
 											readonly /></td>
 									</tr>
 									<tr>
-										<td>地址:</td>
-										<td><input type="text" name="memaddress"
-											class="form-control" value="${membersVO.memaddress}"
-											size="45" readonly /></td>
+										<td>參加人身分證字號A:<font color="red"><b>*</b></font></td>
+										<td><input type="text" name="memphone"
+											class="form-control" value="${membersVO.memphone}" size="45"
+											readonly /></td>
 									</tr>
 									<tr>
-										<td>註冊時間:</td>
-										<td><input type="text" name="memdate"
-											class="form-control" value="${membersVO.memdate}" size="45"
+										<td>參加人電話A:<font color="red"><b>*</b></font></td>
+										<td><input type="text" name="memphone"
+											class="form-control" value="${membersVO.memphone}" size="45"
 											readonly /></td>
 									</tr>
 

@@ -30,7 +30,7 @@ request.setCharacterEncoding("utf-8");
 				<div class="col-12">
 					<h1>活動訂單查詢</h1>
 					<div class="form-group2">
-						<label for="csMsgNo">活動檔期</label>
+						<label for="csMsgNo">活動類型</label>
 <!-- 						<div class="input-group"> -->
 <!-- 							<input type="text" class="form-control" name="keyword" -->
 <%-- 								id="keyword" value="<%=keyword%>"> --%>
@@ -58,9 +58,11 @@ request.setCharacterEncoding("utf-8");
 						<thead>
 							<tr>
 								<th>活動訂單編號</th>
+								<th>活動類型</th>
 								<th>活動檔期</th>
 								<th>活動時間</th>
 								<th>訂單狀態</th>
+								<th>付款時間</th>
 								<th>動作</th>
 							</tr>
 						</thead>

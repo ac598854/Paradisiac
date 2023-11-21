@@ -257,16 +257,14 @@ public class MembersServlet<Session> extends HttpServlet {
 			req.setAttribute("errorMsgs", errorMsgs);
 
 			/*************************** 1.接收請求參數 ****************************************/
-			Integer memno = Integer.valueOf(req.getParameter("memno").trim());
+			Integer memno = Integer.valueOf(req.getParameter("memno"));
 			Boolean memstatus = Boolean.valueOf(req.getParameter("memstatus"));
-			if (req.getParameter("memstatus") == null) {
-				errorMsgs.add("帳號狀態請勿不點選");
-			} else {
-				memstatus = Boolean.parseBoolean(req.getParameter("memstatus"));
-			}
-
+//			if (req.getParameter("memstatus") == null) {
+//				errorMsgs.add("帳號狀態請勿不點選");
+//			} else {
+//				memstatus = Boolean.parseBoolean(req.getParameter("memstatus"));
+//			}
 			MembersVO membersVO = new MembersVO();
-
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("membersVO", membersVO);
 				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/update_mem_input.jsp");
@@ -314,7 +312,6 @@ public class MembersServlet<Session> extends HttpServlet {
 			Part mempicturePart = req.getPart("mempicture");
 		 
 				byte[] mempictureData = null;
-//				if (mempicturePart != null) {
 					// 圖片上傳部分不為空，處理上傳的圖片
 				if (mempicturePart != null && mempicturePart.getSize() > 0) {
 					try (InputStream is = mempicturePart.getInputStream()) {

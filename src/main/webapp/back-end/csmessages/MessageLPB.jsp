@@ -35,7 +35,7 @@ List<CsMessagesVO> list = csMessagesService.getAllBystatus(whereCondition, keywo
 pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -374,7 +374,6 @@ h1, h2, h3, h4 {
 		<!-- Top Navigation -->
 		<ul class="navigation">
 			<li><a href="#home">登出</a></li>
-
 		</ul>
 		<!--Page Content -->
 		<div id="page-content-wrapper">
