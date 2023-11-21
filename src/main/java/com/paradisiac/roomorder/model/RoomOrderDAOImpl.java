@@ -135,7 +135,13 @@ public class RoomOrderDAOImpl implements RoomOrderDAO {
 		return query.getResultList();
 	}
 
-	
+	@Override
+	public List<RoomOrderVO> getmemOrd(Integer memno) {
+    return getSession()
+	            .createQuery("FROM RoomOrderVO WHERE mem_no = :memno", RoomOrderVO.class)
+	            .setParameter("memno", memno)
+	            .list();
+	}
 
 	
 }

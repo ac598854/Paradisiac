@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Context>
+	
+    <Resource name="jdbc/TestDB" type="javax.sql.DataSource"
+        url="jdbc:mysql://localhost:3306/cha103g2?serverTimezone=Asia/Taipei"
+        username="root"
+        password="123456"
+        driverClassName="com.mysql.cj.jdbc.Driver"
+        maxActive="8"
+      	maxIdle="4"
+      	maxWait="5000"
+    />
+
+</Context>
