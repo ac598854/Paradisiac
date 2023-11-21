@@ -28,6 +28,6 @@ public interface RoomOrderDAO {
 	
 	RoomOrderDTO getbyOneCheckIn(Integer id);
 	
-	
+	List<RoomOrderVO> getmemOrd(Integer memno);
 	
 }

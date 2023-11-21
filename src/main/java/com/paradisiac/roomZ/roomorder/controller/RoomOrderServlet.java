@@ -44,7 +44,9 @@ public class RoomOrderServlet extends HttpServlet{
 		case "getAll":
 			forwardPath = getAll(req, resp);
 			break;
-			
+		case "getmemord":
+			forwardPath = getmemord(req, resp);
+			break;
 		case "buyorder":
 			forwardPath = buytype(req, resp);
 			break;
@@ -69,6 +71,41 @@ public class RoomOrderServlet extends HttpServlet{
 
 	}
 	
+//	private String getmemord(HttpServletRequest req, HttpServletResponse resp) {
+//
+//		String memNo = req.getParameter("memNo");
+//		Integer memNoInt = Integer.parseInt(memNo);
+//		List<RoomOrderVO> mord = roomOrderService.getmemOrd(memNoInt);
+//		req.setAttribute("mord", mord);
+//
+//		return "/back-end/roomorder/memvieword.jsp";
+//	}
+	private String getmemord(HttpServletRequest req, HttpServletResponse resp) {
+	    String memNo = req.getParameter("memNo");
+	    Integer memNoInt = Integer.parseInt(memNo);
+	    // 添加檢查以確保 memNo 不為 null 且不為空
+	    if (memNo != null && !memNo.isEmpty()) {
+	    	System.out.println("isnotnull");
+	        try {
+	            List<RoomOrderVO> mord = roomOrderService.getmemOrd(memNoInt);
+	            req.setAttribute("mord", mord);
+	        } catch (NumberFormatException e) {
+	            // 處理數字格式異常
+	            e.printStackTrace();
+	            // 或者您可以返回一個錯誤頁面，提醒用戶輸入有效的數字
+	            return "/back-end/roomorder/memvieword.jsp";
+	        }
+	    } else {
+	        // 處理 memNo 為 null 或空的情況
+	        // 或者您可以返回一個錯誤頁面，提醒用戶輸入 memNo
+	    	System.out.println("NULLLLL");
+            List<RoomOrderVO> mord = roomOrderService.getmemOrd(memNoInt);
+            req.setAttribute("mord", mord);
+	    	 return "/back-end/roomorder/memvieword.jsp";
+	    }
+
+	    return "/back-end/roomorder/memvieword.jsp";
+	}
 	private String getAll(HttpServletRequest req, HttpServletResponse resp) {
 
 		List<RoomOrderVO> all = roomOrderService.getAllOrd();
@@ -76,7 +113,7 @@ public class RoomOrderServlet extends HttpServlet{
 
 		return "/back-end/roomorder/getAllder.jsp";
 	}
-	private String buytype(HttpServletRequest req, HttpServletResponse resp) {
+	private String buytype(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String roomOrderDate = req.getParameter("roomOrderDate");
 //		String checkinDate = req.getParameter("checkinDate");
 //		String checkoutDate = req.getParameter("checkoutDate");
@@ -125,13 +162,15 @@ public class RoomOrderServlet extends HttpServlet{
 		if (saved > 0) {
 
 	        System.out.println("新增成功");
+
 	    } else {
 
 	        System.out.println("新增失敗");
 	    }
 	
 		req.setAttribute("result", result);
-		return "/back-end/roomorder/buycheck.jsp";
+
+		return "/back-end/roomorder/calcheck.jsp";
 	}
 	private String addtype(HttpServletRequest req, HttpServletResponse resp) {
 

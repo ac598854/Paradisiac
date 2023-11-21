@@ -266,32 +266,46 @@ function getSingleForDay(selectDay) {
 		})
 }
 	//將按下立即訂房 取出資料顯示在燈箱上面
- function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility, rbooking) {
-            // 填充燈箱內容
-            let lightboxContent = document.getElementById('lightboxContent');
-          
-           
-            let html ="";
-            html = `
-                <h3>房型編號：${roomTypeNo}</h3>
-                <p>日期：${vDate}</p>
-                <p>房間名稱：${roomName}</p>
-                <p>房型：${rType}</p>
-                <p>假日價格：${holiDayPrice}</p>
-                <p>連假價格：${bridgeHolidayPrice}</p>
-                <p>原價：${price}</p>
-                <p>注意事項：${notice}</p>
-                <p>設施：${facility}</p>
-                <p>預訂數量：${rbooking}</p>
-                <p>總共：${price*rbooking}元</p>
-            `;
-		
-		lightboxContent.innerHTML =html;
-		
-            // 顯示燈箱
-            $('#lightbox').modal('show');
-        }
+	function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility, rbooking) {
+    let lightboxContent = document.getElementById('lightboxContent');
+    let originalDate = new Date(vDate);
+    let nextDay = new Date(originalDate.getTime() + 24 * 60 * 60 * 1000);
+    let formattedNextDay = `${nextDay.getFullYear()}-${(nextDay.getMonth() + 1).toString().padStart(2, '0')}-${nextDay.getDate().toString().padStart(2, '0')}`;
 
-//=============================燈箱顯示訂房資訊-日期格式化
+    let html =
+        `<h3>房型編號：${roomTypeNo}</h3>
+        <p>日期：${vDate}</p>
+        <p>日期：${formattedNextDay}</p>
+        <p>房間名稱：${roomName}</p>
+        <p>房型：${rType}</p>
+        <p>假日價格：${holiDayPrice}</p>
+        <p>連假價格：${bridgeHolidayPrice}</p>
+        <p>原價：${price}</p>
+        <p>注意事項：${notice}</p>
+        <p>設施：${facility}</p>
+        <p>預訂數量：${rbooking}</p>`;
+
+    lightboxContent.innerHTML = html;
+    $('#lightbox').modal('show');
+
+    // 創建一個包含所有資訊的物件
+    let roomInfo = {
+        roomTypeNo: roomTypeNo,
+        vDate: vDate,
+        formattedNextDay: formattedNextDay,
+        roomName: roomName,
+        rType: rType,
+        holiDayPrice: holiDayPrice,
+        bridgeHolidayPrice: bridgeHolidayPrice,
+        price: price,
+        notice: notice,
+        facility: facility,
+        rbooking: rbooking
+    };
+
+    // 將資料轉為 JSON 字串，並存儲到 localStorage 中
+    localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+    window.location.href = '/Paradisiac/back-end/roomorder/orderbuy.jsp';
+}
 
 

@@ -28,4 +28,5 @@ public interface RoomOrderService {
 	
 	RoomOrderDTO getbyOneCheckIn(Integer id);
 	
+	List<RoomOrderVO> getmemOrd(Integer memno);
 	}

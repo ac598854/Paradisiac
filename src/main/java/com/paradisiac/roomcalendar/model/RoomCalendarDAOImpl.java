@@ -1,5 +1,6 @@
 package com.paradisiac.roomcalendar.model;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -10,6 +11,9 @@ import org.json.JSONObject;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.paradisiac.roomZ.roomorder.entity.RoomOrderVO;
+import com.paradisiac.roomZ.roomtype.entity.RoomTypeeVO;
+import com.paradisiac.roomcalendar.model.RoomCalendarVO;
 
 import redis.clients.jedis.Jedis;
 public class RoomCalendarDAOImpl implements RoomCalendarDAO {
@@ -26,6 +30,28 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
+	
+	@Override
+	public int insert(RoomCalendarVO roomCalendarVO) {
+		try {
+				getSession().saveOrUpdate(roomCalendarVO);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	@Override
+	public int update(RoomCalendarVO roomCalendarVO) {
+
+		try {
+			getSession().update(roomCalendarVO);
+			return 1;
+		} catch (Exception e) {
+			return -1;
+		}
+	}
+	
+	
 	//查出單一房型每日資料
 	public String getSingleForType(int roomTypeno) {
 		System.out.println("CalSingleDAO:getSingle()-->ready");
@@ -85,6 +111,23 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 
 		}
 		return jsonStr;
+	}
+
+	@Override
+	public RoomCalendarVO findBycalNo(Integer calendarNo) {
+		return getSession().get(RoomCalendarVO.class, calendarNo);
+	}
+	@Override
+	public List<RoomCalendarVO> findByDate(Date targetDate,Integer roomType) {
+	    return getSession()
+	            .createQuery("FROM RoomCalendarVO WHERE cDate = :targetDate AND room_type_no = :roomType", RoomCalendarVO.class)
+	            .setParameter("targetDate", targetDate)
+	            .setParameter("roomType", roomType)
+	            .list();
+	}
+	@Override
+	public List<RoomCalendarVO> getOne() {
+		return getSession().createQuery("FROM RoomCalendarVO WHERE cdate = '${2023-11-30}' ", RoomCalendarVO.class).list();
 	}
 
 	

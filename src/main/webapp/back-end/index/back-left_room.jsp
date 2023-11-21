@@ -20,11 +20,11 @@
 
 
     <style>
-        @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+       @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
         body {
         overflow-x: hidden;
         font-family: 'Lato', sans-serif;
-        background: #f2f2f2;
+        background: #ffffff;
         }
 
         h1,
@@ -128,7 +128,7 @@
         height: 100%;
         margin-left: -250px;
         overflow-y: auto;
-        background: #4d4d4d;
+        background: #f10505c2;
         -webkit-transition: all 0.5s ease;
         -moz-transition: all 0.5s ease;
         -o-transition: all 0.5s ease;
@@ -260,13 +260,13 @@
             <a href="#">訂房行事曆</a>
             </li>
             <li>
-            <a href="#">訂房房型管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">訂房房型管理</a>
             </li>
             <li>
-            <a href="#">訂房訂單管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/roomorder/memvieword.jsp">訂房訂單管理</a>
             </li>
             <li>
-            <a href="#">訂房房型圖片管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/roompicture/addpic.jsp">訂房房型圖片管理</a>
             </li>
             <li>
             <a href="#">訂房房間管理</a>
