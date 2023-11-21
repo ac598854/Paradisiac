@@ -1,6 +1,7 @@
 package com.paradisiac.promotionlist.service;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.paradisiac.promotionlist.model.PromotionListDAO_interface;
 import com.paradisiac.promotionlist.model.PromotionListJDBCDAO;
@@ -16,10 +17,11 @@ public class PromotionService {
 		pro = new PromotionListJDBCDAO(HibernateUtil.getSessionFactory());
 	}
 	
-	public PromotionVO addPro(String proname,String prodes,Date startdate,Date enddate,Double discount,Boolean status) {
+	public PromotionVO addPro(String proname,String prodes,Date startdate,Date enddate,Double discount,Boolean status,String selectedProducts) {
 
 		PromotionVO proVO = new PromotionVO();
-
+		
+		
 		
 		proVO.setProname(proname);
 		proVO.setProdes(prodes);
@@ -27,10 +29,15 @@ public class PromotionService {
 		proVO.setEnddate(enddate);
 		proVO.setDiscount(discount);
 		proVO.setStatus(status);
-		Integer prono  = pro.addPromotionList(proVO);
+		Integer prono  = pro.addPromotionList(proVO,selectedProducts);
 		proVO.setProno(prono);
 
 		return proVO;
 	}
+	
+	public List<PromotionVO> getAll() {
+		return pro.getAll();
+	}
+	
 
 }
