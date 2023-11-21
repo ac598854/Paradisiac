@@ -23,8 +23,7 @@
             </div>
             <div class="col-md-4">
                 <h4><a href="#" style="color: white;">ParadisiacCove</a></h4>
-                <p><a href="#" style="color: white;">聯絡我們</a></p>
-                <p><a href="#" style="color: white;">關於我們</a></p>
+                <p><a href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp" style="color: white;">關於我們</a></p>
             </div>
         </div>
         </div>
