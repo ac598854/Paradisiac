@@ -148,6 +148,8 @@ public class ActVO  implements java.io.Serializable{
 		this.actContent = actContent;
 
 	}
+
+
 	
 	
 

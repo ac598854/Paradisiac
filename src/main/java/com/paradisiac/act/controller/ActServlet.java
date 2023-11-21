@@ -61,6 +61,12 @@ public class ActServlet extends HttpServlet{
 			case "update":
 				forwardPath = insertOrUpdate(req, res);
 				break;
+			case "getAll_Front":
+				forwardPath = getAllActiveActs(req, res);
+				break;
+			case "getAllSchd_Frint":
+				forwardPath = getAllActiveSchds(req, res);
+				break;
 			default:
 				forwardPath = "/back-end/act/add_act.jsp";
 		}	
@@ -96,7 +102,7 @@ public class ActServlet extends HttpServlet{
 		List<String> errorMsgs = new LinkedList<String>();
 		Integer actNo = null;
 
-		if (req.getParameter("actNo") != null || req.getParameter("actNo").length() != 0) { // 修改
+		if (req.getParameter("actNo") != null && req.getParameter("actNo").length() != 0) { // 修改
 			actNo = Integer.valueOf(req.getParameter("actNo"));
 		}
 		String actName = req.getParameter("actName");
@@ -123,21 +129,24 @@ public class ActServlet extends HttpServlet{
 				actPho1 = new byte[is.available()];
 				is.read(actPho1);
 				is.close();
-				actVO.setActPho1(actPho1);
-				System.out.println("轉成byteOK");				
+				actVO.setActPho1(actPho1);		
 		}
 
 		//如果有錯誤處理輸出
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("errorMsgs", errorMsgs); // 含有輸入格式錯誤的物件,也存入req
 			req.setAttribute("actVO", actVO);
-			return "/back-end/act/add_act.jsp";
+			if(req.getParameter("actNo") != null && req.getParameter("actNo").length() != 0) { //跳回修改頁面
+				return "/back-end/act/update_act.jsp";
+			}else {
+				return "/back-end/act/add_act.jsp"; //跳回新增頁面
+			}			
 		}
 		//開始新增或修改
 		actSvc.addOrUpdateAct(actVO);
 		req.setAttribute("actVO", actVO);
 		String forwardPath = getAllActs(req, res);
-		return forwardPath;
+		return forwardPath; //跳回查詢全部活動頁面
 	}//新增或修改
 	
 	//查單筆活動與檔期
@@ -151,6 +160,38 @@ public class ActServlet extends HttpServlet{
 		req.setAttribute("actVO", actVO);
 		
 		//return "/back-end/act/list_act_schd.jsp";
+		
+	}
+	//前端-查全部上架活動
+	private String getAllActiveActs(HttpServletRequest req, HttpServletResponse res) {
+		String page = req.getParameter("page"); 
+		int currentPage = (page == null) ? 1 : Integer.parseInt(page); 
+		
+		List<ActVO> actList = actSvc.getAllActiveActs(currentPage);
+
+		if (req.getSession().getAttribute("actPageQty") == null) {
+			int actPageQty = actSvc.getPageActiveTotal();
+			req.getSession().setAttribute("actPageQty", actPageQty);
+		}		
+		req.setAttribute("actList", actList);
+		req.setAttribute("currentPage", currentPage);
+		
+		//查單筆有效活動有多少檔期>今天,如果有, 則return 1 or -1 ,寫在service 讓jsp直接call
+		//case路徑直接寫死 不要從方法return (方法void只要set值)
+		
+
+		return "/front-end/act_schd/select_act_front.jsp";
+	}
+	//前端-查單筆活動與檔期
+	public String getAllActiveSchds(HttpServletRequest req, HttpServletResponse res) {
+		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
+		
+//		Set<SchdVO> actSchdSet = actSvc.getActiveSchdByActno(actNo);
+//		req.setAttribute("actSchdSet", actSchdSet);
+		
+		ActVO actVO = actSvc.getActByActno(actNo);
+		req.setAttribute("actVO", actVO);		
+		return "/front-end/act_schd/select_schd_front.jsp";
 		
 	}
 

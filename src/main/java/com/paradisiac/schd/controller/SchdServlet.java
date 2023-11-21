@@ -129,7 +129,12 @@ public class SchdServlet extends HttpServlet {
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("errorMsgs", errorMsgs); // 含有輸入格式錯誤的物件,也存入req
 			req.setAttribute("schdVO", schdVO);
-			return "/back-end/schd/update_schd.jsp";
+			if(req.getParameter("schdNo") != null && req.getParameter("schdNo").length() != 0) {
+				return "/back-end/schd/update_schd.jsp"; //導回修改檔期
+			}else {
+				return "/back-end/schd/add_schd.jsp"; //導回新增檔期
+			}
+			
 		}
 		//開始新增或修改
 		schdSvc.addOrUpdateSchd(schdVO);

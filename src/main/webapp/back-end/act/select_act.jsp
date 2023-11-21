@@ -82,7 +82,7 @@
 							<tr>
 								<th>活動編號</th>
 								<td><a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>${act.actNo}</a>
-								<%-- <a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>${act.actNo}</a>--%></td>
+							</td>
 									
 							</tr>
 							<tr>
@@ -109,9 +109,11 @@
 
 					</div>
 					<div id="activityImageBlock">
+					<a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>					
 						<img
 							src="<%=request.getContextPath()%>/dbg.do?act_no=${act.actNo}"
 							alt="相簿封面" class="img-fluid">
+					</a>
 					</div>
 
 				</div>

@@ -267,7 +267,7 @@
                 <a href="${pageContext.request.contextPath}/back-end/act/add_act.jsp">建立新活動</a>
             </li>
             <li>
-                <a href="#">檔期管理</a>
+                <a href="${pageContext.request.contextPath}/back-end/schd/add_schd.jsp">建立新檔期</a>
             </li>
             <li>
                 <a href="#">活動訂單管理</a>

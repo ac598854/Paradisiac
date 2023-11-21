@@ -21,20 +21,20 @@ public class ActServiceImpl implements ActService{
 		dao = new ActHibernateDAO(HibernateUtil.getSessionFactory());
 	}
 
-	@Override
-	public Integer addAct(ActVO act) {
-		try {
-			dao.insert(act);
-			return 1;
-		}catch(Exception e) {
-			return -1;
-		}
-	}
-
-	@Override
-	public ActVO updateAct(ActVO act) {
-		return dao.update(act);
-	}
+//	@Override
+//	public Integer addAct(ActVO act) {
+//		try {
+//			dao.insert(act);
+//			return 1;
+//		}catch(Exception e) {
+//			return -1;
+//		}
+//	}
+//
+//	@Override
+//	public ActVO updateAct(ActVO act) {
+//		return dao.update(act);
+//	}
 
 	@Override
 	public Set<SchdVO> getSchdByActno(Integer actno) {
@@ -66,5 +66,22 @@ public class ActServiceImpl implements ActService{
 	public ActVO addOrUpdateAct(ActVO act) {
 		return dao.insertOrUpdate(act);		
 	}
+	//前端的需求-------
+	public List<ActVO> getAllActiveActs(int currentPage){
+		return dao.getActiveAll(currentPage);
+	}
+	
+	public int getPageActiveTotal() {
+		long total = dao.getActiveTotal();
+		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		return pageQty;
+	}
+	
+//	public Set<SchdVO> getActiveSchdByActno(Integer actno){
+//		Set<SchdVO> actschdSet = dao.findByPrimaryKeyActiveS(actno);
+//		return actschdSet;
+//	}
+	//-------------
+
 
 }
