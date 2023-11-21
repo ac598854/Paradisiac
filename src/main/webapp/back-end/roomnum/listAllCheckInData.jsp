@@ -10,9 +10,9 @@
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
  <style>
-        #checkInName {
-            width: 80px;            
-        }
+#checkInName {
+    width: 80px;            
+}
         
 .container{	 					
  	position:relative;
