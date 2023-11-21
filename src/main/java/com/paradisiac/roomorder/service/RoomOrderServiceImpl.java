@@ -121,7 +121,7 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 
 	@Override
 	public int updateOrderStatus(Integer roomOrderNo, byte orderStatus) {
-		// TODO Auto-generated method stub
+		
 		return dao.updateOrderStatus(roomOrderNo, orderStatus);
 	}
 

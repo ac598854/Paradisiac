@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title>客房登記管理系統</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet"
@@ -28,9 +29,9 @@
 </style>
 </head>
 <body>
-
+<%@ include file="/back-end/index/back-left_room.jsp" %>
     <div class="container-custom">
-        <h2>CheckIn資料查詢</h2>
+        <h2>客房登記管理系統</h2>
         
         <form method="post" action="${pageContext.request.contextPath}/order.do" class="form-horizontal">
             <div class="form-group">
