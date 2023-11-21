@@ -4,14 +4,12 @@
   var calendarBody = document.getElementById("calendarBody");
   var selectedDateInput = document.getElementById("selectedDate");
   var holidays = [];       //存放 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據
-  let holidayMapping={};   //存放日期：平日為1、假日為2、連續假日為3，的映射資料，讓房價可以依這3種狀態分別計價
+  let holidayMapping={};   //存放日期=>key：狀態=>value(平日為1、假日為2、連續假日為3)，的映射資料，讓房價可以依這3種狀態分別計價
   //日期不等於"X跟--，才可以選取 
   var regex = /X|(--)/;
   //點選行事曆日期後顯示在 textbox中
   calendarBody.addEventListener("click", function(event) {
-    var clickedCell = event.target;
-   
-   
+    var clickedCell = event.target;   
     // 移除之前已選取的日期的樣式   
     if (clickedCell.tagName === "TD" && clickedCell.textContent !== "") {
       var selectedCells = document.querySelectorAll(".selected");
@@ -33,9 +31,7 @@
       var day = String(clickedDate.getDate()).padStart(2, '0');
       if (clickedCell.tagName === "TD" && clickedCell.textContent !== "" && !regex.test(clickedCell.textContent)) {
     	  /*===============當選取日期後到後端取出 房型資訊================  */
-    	  var selectDay = year + "-" + month + "-" + day;
-    	//  console.log(selectDay);
-      	 /*  selectedDateInput.value =  year + "/" + month + "/" + day; */
+    	  var selectDay = year + "-" + month + "-" + day;    	
       	 //依擇的日期找出當日所有房型資訊
        	  getSingleForDay(selectDay); 
           /*===============================  */
@@ -47,8 +43,8 @@
   var currentDay = currentDate.getDate() - 1;
   var currentMonth = currentDate.getMonth();
   var currentYear = currentDate.getFullYear(); 	
- //透過 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據
-   holidayData(currentMonth, currentYear);
+  //透過 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據 -一開始就要先取得假日資料之後才能填充至行事曆
+   holidayData(currentMonth, currentYear); 
   //產生行事曆
   function renderCalendar(month, year) {
 	//執行前先刷新頁面  	 
@@ -131,9 +127,7 @@
         currentMonth = 11;
         currentYear--;    
         //★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字
-        holidayData(currentMonth, currentYear);  
-     
-      
+        holidayData(currentMonth, currentYear);       
       }     
       //行事曆重新填充日期
       renderCalendar(currentMonth, currentYear);     
@@ -155,15 +149,6 @@
     renderCalendar(currentMonth, currentYear);      
   });
 
-  renderCalendar(currentMonth, currentYear);
-  $(document).ready(function() {
-  });
- 
-  
-  //=============================取得假日資料並將行事曆標記假日為紅字
-// 用於存儲假日數據的數組
-
-
 // 使用 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據，取得假日資料，再將假日的資料綁定在行事曆上
 function holidayData(currentMonth, currentYear){
 
@@ -180,20 +165,13 @@ fetch(`https://cdn.jsdelivr.net/gh/ruyut/TaiwanCalendar/data/${currentYear}.json
                     .then(response => response.json())
                     .then(nextYearData => {
                         // 合併下一年度的假日資料到今年的假日資料，為了解決跨年度無法計算連續假日問題
-                        holidays = holidays.concat(nextYearData);
-                     //   console.log("取得下一年度假日資料：", nextYearData);
-					 //   console.log("12月合併隔年資料：====",holidays);
-                        // 渲染日历
-                      //  renderCalendar(currentMonth, currentYear);
-                        // updateCalendarDate();
+                        holidays = holidays.concat(nextYearData);                      
                     })
                     .catch(error => console.error('獲取下一年度假日數據時發生錯誤:', error));
             } else {
-                // 不是12月，直接渲染日曆
+                // 不是12月，直接渲染日曆              
                 renderCalendar(currentMonth, currentYear);
-                
-            }
-          
+            }          
         })
 	.catch(error => console.error('獲取假日數據時發生錯誤:', error));
 	
@@ -375,11 +353,9 @@ function getSingleForDay(selectDay) {
 					const selectedBooking = bookingSelect.value;
 					// 調用 showDetail 函數，將選中的值傳遞給它
 					showDetail(item.roomTypeNo, item.vDate, item.roomName, item.rType, item.holiDayPrice, item.bridgeHolidayPrice, item.price, item.notice, item.facility, selectedBooking);
-
-
-				//★★★★★============================================================
+				
 				});
-				} //if的括號
+				} //對映if的括號
 			});
 
 		})

@@ -81,6 +81,7 @@
         }
     </style>
 </head>
+
 <body>
 <%@ include file="/back-end/index/back-left_room.jsp" %>
 	<!-- <DIV id="tatil" style="text-align:center;"><h1 >退房管理系統</h1></DIV> -->
@@ -168,10 +169,10 @@
 							<form method="post"
 								action="<%=request.getContextPath()%>/roomnum.do">
 								<input type="hidden" name="rnum" value="${roomnum.rnum}">
+								<input type="hidden" name="roomOrderNo" value="${roomnum.roomOrderNo}">								
 								<button type="submit" id="checkoutbtn" name="action" value="checkout" class="btn btn-primary">退房</button>
 								<button type="submit" id="cleanupbtn" name="action" value="cleanup"	class="btn btn-success" style="width: 100px;" onclick="clearMessages()">清掃完成</button>
-									
-									 <input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
+								<input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
 							</form>
 						</td>
 						

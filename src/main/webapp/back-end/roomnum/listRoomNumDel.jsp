@@ -20,6 +20,9 @@
  		position:relative;
  		top: -60px; 		
 } 	 */
+.container.mt-5 {
+    padding-left: 200px;
+}
 .addTable {
     height: 20px; /* Adjust the height as needed */
     width: 930px;
