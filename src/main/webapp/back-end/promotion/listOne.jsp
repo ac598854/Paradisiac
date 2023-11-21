@@ -8,71 +8,87 @@ PromotionVO proVO = (PromotionVO) request.getAttribute("proVO");
 
 <html>
 <head>
-<title>促銷資料 - listOnePromotion.jsp</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<title>促銷資料</title>
 
 <style>
-  table#table-1 {
-	background-color: #CCCCFF;
-    border: 2px solid black;
-    text-align: center;
-  }
-  table#table-1 h4 {
-    color: red;
-    display: block;
-    margin-bottom: 1px;
-  }
   h4 {
     color: blue;
     display: inline;
   }
-</style>
-
-<style>
   table {
-	width: 600px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-  }
-  table, th, td {
-    border: 1px solid #CCCCFF;
-  }
-  th, td {
-    padding: 5px;
-    text-align: center;
-  }
+            width: 800px;
+            background-color: white;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+ table, th, td {
+            border: 1px solid #CCCCFF;
+            text-align: center; /* 將文字置中對齊 */
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+            width: 12%;
+        }
 </style>
 
 </head>
 <body bgcolor='white'>
 
-<h4>此頁暫練習採用 Script 的寫法取值:</h4>
-<table id="table-1">
-	<tr><td>
-		 <h3>促銷資料 - listOnePromotion.jsp</h3>
-	</td></tr>
-</table>
+<%@ include file="/back-end/index/back-left_product.jsp" %>
+<table class="table table-bordered">
+        <tr>
+            <td>
+                <h3 style="font-family: 'Arial', sans-serif; font-size: 28px; font-weight: bold;">促銷專案</h3>
+            </td>
+        </tr>
+    </table>
 
-<table>
-	<tr>
-		<th>促銷編號</th>
-		<th>促銷專案名稱</th>
-		<th>促銷專案描述</th>
-		<th>促銷專案開始日期</th>
-		<th>促銷專案結束日期</th>
-		<th>促銷專案折扣</th>
-		<th>促銷專案狀態</th>
-	</tr>
-	<tr>
-		<td><%=proVO.getProno()%></td>
-		<td><%=proVO.getProname()%></td>
-		<td><%=proVO.getProdes()%></td>
-		<td><%=proVO.getStartdate()%></td>
-		<td><%=proVO.getEnddate()%></td>
-		<td><%=proVO.getDiscount()%></td>
-		<td><%=proVO.getStatus()%></td>
-	</tr>
-</table>
+
+<div class="container">
+        <table class="table table-bordered table-striped ">
+            <thead class="thead-dark">
+    <tr>
+        <th style="text-align: center;">促銷編號</th>
+        <th style="text-align: center;">促銷專案名稱</th>
+        <th style="text-align: center;">促銷專案描述</th>
+        <th style="text-align: center;">專案開始日期</th>
+        <th style="text-align: center;">專案結束日期</th>
+        <th style="text-align: center;">促銷專案折扣</th>
+        <th style="text-align: center;">促銷專案狀態</th>
+    </tr>
+	</thead>
+            <tbody>
+                    <tr>
+                        <td><%=proVO.getProno()%></td>
+						<td><%=proVO.getProname()%></td>
+						<td><%=proVO.getProdes()%></td>
+						<td><%=proVO.getStartdate()%></td>
+						<td><%=proVO.getEnddate()%></td>
+						<td><%=proVO.getDiscount()%></td>
+						<td><% 
+						    Integer status = proVO.getStatus();
+						    if (status == 1) {
+						        out.print("上架");
+						    } else if (status == 0) {
+						        out.print("下架");
+						    } else {
+						        out.print(status); // 如果不是 1 或 0，顯示原始狀態值
+						    }
+						    %>
+						</td>
+							
+                    </tr>
+            </tbody>
+        </table>
+</div>
+
+
+
+<script>
+toggleSidebar();
+</script>
 
 </body>
 </html>

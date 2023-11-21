@@ -13,9 +13,13 @@
             border: 1px solid #ccc;
             padding: 20px;
             margin: 0 auto;
+            padding-top: 65px;
+			padding-left: 255px;
+            
         }
     </style>
 </head>
+<%@ include file="/back-end/index/back-left_planning.jsp" %>
 <body>
 	<div class="custom-container">
 
@@ -31,7 +35,7 @@
 			</c:forEach>
 		</ul>
 	</c:if>
-
+	</div>
 	<div class="custom-container">
 	<h2>修改相簿</h2>
         <form action="${pageContext.request.contextPath}/pha.do" method="post" enctype="multipart/form-data">
@@ -79,7 +83,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <input type="hidden" name="action" value="insert">
+                        <input type="hidden" name="action" value="update">
                         <button type="submit" class="btn btn-primary" id="albumSubmit">送出</button>
                     </div>
                 </div>

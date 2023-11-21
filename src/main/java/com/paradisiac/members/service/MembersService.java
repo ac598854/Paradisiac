@@ -1,10 +1,7 @@
 package com.paradisiac.members.service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.List;
 
-import javax.servlet.http.Part;
+import java.util.List;
 
 import com.paradisiac.members.model.MembersDAO_interface;
 import com.paradisiac.members.model.MembersJDBCDAO;
@@ -83,14 +80,14 @@ public class MembersService {
 		MembersVO.setMempicture(mempicture);
 		MembersVO.setMemno(memno);
 		dao.updateFront(MembersVO);
-//		return MembersVO;
+
 	}
 	
-	public MembersVO updatePass(String mempass, Integer memno) {
+	public MembersVO updatePass(String mempass, String memaccount) {
 		
 		MembersVO MembersVO = new MembersVO();
 		MembersVO.setMempass(mempass);
-		MembersVO.setMemno(memno);
+		MembersVO.setMemaccount(memaccount);
 		
 		dao.updatePass(MembersVO);
 		return MembersVO;
@@ -109,6 +106,10 @@ public class MembersService {
 	}
 	public MembersVO getOneBymemaccount(String memaccount) {
 		return dao.getOneBymemaccount(memaccount);
+	}
+
+	public MembersVO getOneBymemmail(String memmail) {
+		return dao.getOneBymemmail(memmail);
 	}
 
 	public void deleteMember(Integer memno) {

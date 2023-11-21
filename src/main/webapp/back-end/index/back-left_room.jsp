@@ -20,7 +20,7 @@
 
 
     <style>
-       @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+        @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
         body {
         overflow-x: hidden;
         font-family: 'Lato', sans-serif;
@@ -128,7 +128,7 @@
         height: 100%;
         margin-left: -250px;
         overflow-y: auto;
-        background: #f10505c2;
+        background: #4d4d4d;
         -webkit-transition: all 0.5s ease;
         -moz-transition: all 0.5s ease;
         -o-transition: all 0.5s ease;
@@ -237,8 +237,8 @@
 </head>
 
 <body>
-
-  <div id="wrapper" class="">
+<!-- 控制側邊欄開關的預設值，class=""表示預設是開啟，class="toggled"表示預設值是關閉的 -->
+  <div id="wrapper" class="toggled">
 
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
@@ -256,20 +256,24 @@
           訂房系統管理
         </li>
         <ul class="sub-menu" id="submenu-2">
+            
             <li>
-            <a href="#">訂房行事曆</a>
+           <a href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">訂房房型管理</a>
             </li>
             <li>
-            <a href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">訂房房型管理</a>
-            </li>
-            <li>
-            <a href="${pageContext.request.contextPath}/back-end/roomorder/memvieword.jsp">訂房訂單管理</a>
+             <a href="${pageContext.request.contextPath}/back-end/roomorder/orderfirst.jsp">訂房訂單管理</a>
             </li>
             <li>
             <a href="${pageContext.request.contextPath}/back-end/roompicture/addpic.jsp">訂房房型圖片管理</a>
             </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/back-end/roomnum/selectCheckInData.jsp">客房登記管理系統</a>
+            </li>           
             <li>
-            <a href="#">訂房房間管理</a>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">退房管理系統</a>
+            </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間管理系統</a>
             </li>
      </ul>
        

@@ -20,5 +20,6 @@ public interface PhotoAlbumService_interface {
 	int getPageTotal();
 	
 	List<PhotoAlbumVO> getPhaByCompositeQuery(Map<String, String[]> map);
-
+	
+	Integer getPhaByMem(Integer memno);
 }

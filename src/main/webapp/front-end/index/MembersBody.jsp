@@ -31,7 +31,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background: #89B0AE;
+        background-color: rgba(0, 0, 0, 0.7);
         /*COLOR*/
         width: 100%;
         height: 61px;
@@ -74,23 +74,13 @@
         .sidebar-nav > .sidebar-brand a:active,
         .sidebar-nav > .sidebar-brand a:hover,
         .sidebar-nav > .sidebar-brand a:visited {
-        background: #89B0AE;
+        background:rgba(0, 0, 0, 0.7);
         /*COLOR*/
         color: #ffffff!important;
         font-size: 24px;
         font-family: 'Lato', sans-serif;
         font-weight: 700;
         border: 0px solid #000!important;
-        }
-
-        .sidebar-nav li a {
-        border-left: 0px solid #000;
-        transition: 0.1s all;
-        }
-
-        .sidebar-nav li a:hover {
-        border-left: 4px solid #BEE3DB;
-        /*COLOR*/
         }
 
         #wrapper {
@@ -103,21 +93,6 @@
 
         #wrapper.toggled {
          padding-left: 250px; 
-        }
-
-        #sidebar-wrapper {
-        z-index: 1000;
-        position: fixed;
-        left: 250px;
-        width: 0;
-        height: 100%;
-        margin-left: -250px;
-        overflow-y: auto;
-        background: #4d4d4d;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
         }
 
         #wrapper.toggled #sidebar-wrapper {
@@ -137,6 +112,33 @@
 
 
         /* Sidebar Styles */
+        #sidebar-wrapper {
+        z-index: 1000;
+        position: fixed;
+        left: 250px;
+        width: 0;
+        height: 100%;
+        margin-left: -250px;
+        overflow-y: auto;
+        background: cadetblue;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+        }
+        
+      	.sidebar-nav li a {
+        border-left: 0px solid #000;
+        transition: 0.1s all;
+        }
+
+        .sidebar-nav li a:hover {
+        border-left: 4px solid #BEE3DB;
+        text-decoration: none;
+        color: #fff;
+        background: rgba(255, 255, 255, 0.2);
+        /*COLOR*/
+        }
 
         .sidebar-nav {
         position: absolute;
@@ -150,19 +152,20 @@
         .sidebar-nav li {
         text-indent: 20px;
         line-height: 40px;
+        list-style-type: none;
         }
 
         .sidebar-nav li a {
         display: block;
         text-decoration: none;
-        color: #999999;
+        color: white;
         }
 
-        .sidebar-nav li a:hover {
-        text-decoration: none;
-        color: #fff;
-        background: rgba(255, 255, 255, 0.2);
-        }
+/*         .sidebar-nav li a:hover { */
+/*         text-decoration: none; */
+/*         color: #fff; */
+/*         background: rgba(255, 255, 255, 0.2); */
+/*         } */
 
         .sidebar-nav li a:active,
         .sidebar-nav li a:focus {
@@ -353,7 +356,7 @@
           </li>
             <ul class="sub-menu" id="submenu-3">
             <li>
-                <a href="#">會員紀念相簿</a>
+                <a href='${pageContext.request.contextPath}/pha.do?action=getOne_For_Display'>會員紀念相簿</a>
             </li>
             <li>
                 <a href='<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp'>會員客服專區</a>

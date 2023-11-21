@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 
@@ -65,11 +66,6 @@ a {
 	align-items: flex-end;
 }
 
-/* .logo .icon { */
-/* 	font-size: 32px; */
-/* 	line-height: 32px; */
-/* 	margin-right: 5px; */
-/* } */
 img {
 	width: 100%;
 	border-radius: 8px 0 0 8px;
@@ -258,11 +254,6 @@ input[type="text"] {
 	text-decoration: none;
 }
 
-.btn .icon {
-	margin-left: 10px;
-	font-size: 20px;
-}
-
 .btn:hover {
 	-webkit-transform: translateY(-1px);
 	transform: translateY(-1px);
@@ -428,7 +419,8 @@ input[type="text"] {
 
 .btn_update, .btn_delete {
 	text-align: center;
-	border-radius: 5px; width : 50px;
+	border-radius: 5px;
+	width: 50px;
 	height: 30px;
 	font-size: 16px;
 	vertical-align: middle;
@@ -448,22 +440,20 @@ input[type="text"] {
 	margin-right: -15px;
 	margin-left: -15px;
 }
+
+.col-md-12 {
+	padding-bottom: 10px;
+}
 </style>
 
 </head>
 
-
-<%@ include file="/front-end/index/guided.jsp"%>
-
 <body>
-
+	<div id="dynamicContent"></div>
 	<header>
 		<div class="container">
 			<div class="navigation">
 
-				<!-- 				<div class="logo"> -->
-				<!-- 					<i class="icon icon-basket"></i>結帳 -->
-				<!-- 				</div> -->
 				<div class="secure">
 					<i class="previous page"><a href="#" class="btn-shop">回上一頁</a></i>
 
@@ -484,10 +474,8 @@ input[type="text"] {
 						alt="">
 				</div>
 				<div class="item__details">
-					<div class="item__title" name="actname">${ActOderVO.actname}活動名稱</div>
-					<div class="item__price" name="unitprice">${ActOderVO.unitprice}活動單價</div>
-					<div class="item__description" id="item__description"
-						name="actcontent">${ActOderVO.actcontent}活動介紹</div>
+					<div class="item__title">${ActOrder.schdNo}檔期編號</div>
+					<div class="item__price">${ActOrder.unitPrice}活動單價</div>
 				</div>
 			</div>
 
@@ -506,58 +494,47 @@ input[type="text"] {
 					<ul class="list-group mb-3">
 						<li
 							class="list-group-item d-flex justify-content-between lh-condensed">
-
-							<h6 class="my-0"></h6> <small class="text-muted">活動名稱/數量</small>
-						</li>
-						<li
-							class="list-group-item d-flex justify-content-between lh-condensed">
 							<div>
-								<h6 class="my-0">${ActOderVO.actname}活動</h6>
-								<small class="text-muted">數量</small>
-							</div> <span class="text-muted">${ActOderVO.unitprice}活動單價</span>
+								<h6 class="my-0" name="schdNo">${ActOrder.schdNo}檔期編號</h6>
+							</div> 
 						</li>
-						<li class="list-group-item d-flex justify-content-between"><span>Total
-								(TWD)</span> <strong>總金額JS換算回傳</strong></li>
+						<li class="list-group-item d-flex justify-content-between">單價
+						<input type="text" class="form-control" id="unitPrice" name="unitPrice" value="1000" readonly>
+						<li class="list-group-item d-flex justify-content-between">數量
+						<input type="text" class="form-control" id="countNumDisplay" name="countNumDisplay"readonly>
+						<li class="list-group-item d-flex justify-content-between">總計
+						<input type="text" class="form-control" id="orderAmount" name="orderAmount" value="${ActOrder.orderAmount}" readonly>
 					</ul>
 					<hr class="mb-4">
 				</div>
 				<div class="col-md-8 order-md-1">
-					<h4 class="mb-3">訂購人資料</h4>
-					<form class="needs-validation" novalidate>
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<label for="firstName">會員編號</label> <input type="text"
-									class="form-control" id="firstName" name="memno" placeholder=""
-									value="${memno}" disabled>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="firstName">訂購人姓名</label> <input type="text"
-									class="form-control" id="firstName" placeholder=""
-									value="${ActOderVO.memname}" required disabled>
-							</div>
-							<div class="col-md-6 mb-3">
-								<label for="firstName">訂購人電話</label> <input type="text"
-									class="form-control" id="firstName" placeholder=""
-									value="${ActOderVO.memname}" required disabled>
+					<form class="needs-validation"
+						action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do"
+						method="POST">
+						<div class=row>
+							<div class="col-md-12 mb-6">
+								<h4 class="mb-3">參加人數</h4>
+								<input type="text" class="form-control" id="aAtnNum"
+									name="aAtnNum" value="" readonly onchange="check()">
 							</div>
 						</div>
-						<hr class="mb-4">
-						<h4 class="mb-3">參加人資料</h4>
+						<br>
+						<h4 class="mb-3">個人資料</h4>
 						<div class="row" id="participant">
 							<div class="col-md-12 mb-6">
-								<label for="firstName">參加人姓名</label> <input type="text"
-									class="form-control" id="atn_name" name="atn_name"
-									placeholder="" value="${memno}" required>
+								<label for="atnName">參加人姓名<span class="text-danger">*</span></label> <input type="text"
+									class="form-control" id="atnName"
+									placeholder="報名人若為參加人也須填寫參加人資料" value="${ActOrder.atnName}" required>
 							</div>
 							<div class="col-md-12 mb-6">
-								<label for="firstName">參加人身分證字號</label> <input type="text"
-									class="form-control" id="atn_id_number" name="atn_id_number"
-									placeholder="" value="${ActOderVO.memname}" required>
+								<label for="atnIdNumber">參加人身分證字號<span class="text-danger">*</span></label> <input type="text"
+									class="form-control" id="atnIdNumber" placeholder="請填寫身分證字號"
+									value="${ActOrder.atnIdNumber}" required>
 							</div>
 							<div class="col-md-12 mb-6">
-								<label for="firstName">參加人電話</label> <input type="text"
-									class="form-control" id="atn_tel" name="atn_tel" placeholder=""
-									value="${ActOderVO.memname}" required>
+								<label for="atnTel">參加人電話<span class="text-danger">*</span></label> <input type="text"
+									class="form-control" id="atnTel" placeholder="請填寫聯絡手機或電話"
+									value="${ActOrder.atnTel}" required >
 							</div>
 							<div class="col-md-12 mb-6">
 								<br>
@@ -576,142 +553,48 @@ input[type="text"] {
 							<label class="payment__type payment__type--cc btn active"
 								id="credit-card"> <input type="radio"
 								name="paymentMethod" id="creditCardRadio" autocomplete="off"
-								checked> <i class="icon icon-credit-card"></i>信用卡
-							</label> <label class="payment__type payment__type--paypal btn" id="ATM">
-								<input type="radio" name="paymentMethod" id="ATMRadio"
-								autocomplete="off"> <i class="icon icon-paypal"></i>銀行匯款
+								checked> <i>信用卡</i>
 							</label>
 						</div>
-					</form>
-					<div class="pay-container" id="pay-container">
-						<div class="row participant-container"></div>
+
+						<div class="pay-container" id="pay-container">
+							<div class="row participant-container"></div>
+							<br> <br>
+							<div class="row participant-container">
+								<div class="col-md-12 mb-6">
+									<label for="cc-number">信用卡姓名<span class="text-danger">*</span></label> <input type="text"
+										class="form-control" id="cc-number" placeholder="請填寫信用卡姓名"
+										required>
+								</div>
+							</div>
+							<br>
+							<div class="row">
+								<div class="col-md-4 mb-2">
+									<label for="cc-expiration">到期日<span class="text-danger">*</span></label> <input type="month"
+										class="form-control" id="cc-expiration" required>
+									<div class="invalid-feedback">Expiration date required</div>
+								</div>
+								<div class="col-md-8 mb-3">
+									<label for="cc-cvv">三碼檢查碼<span class="text-danger">*</span></label> <input type="text"
+										class="form-control" id="cc-cvv" placeholder="請填寫信用卡三碼檢查碼"
+										required>
+								</div>
+							</div>
+						</div>
 						<br> <br>
-						<div class="invalid-feedback">卡上的名字是必填的</div>
-
-						<div class="row participant-container">
-							<div class="col-md-12 mb-6">
-								<label for="cc-number">信用卡姓名</label> <input type="text"
-									class="form-control" id="cc-number" placeholder="" required>
-								<div class="invalid-feedback">信用卡號碼是必填的</div>
-							</div>
-						</div>
-						<br>
-						<div class="row">
-							<div class="col-md-4 mb-2">
-								<label for="cc-expiration">到期日</label> <input type="month"
-									class="form-control" id="cc-expiration" placeholder="" required>
-								<div class="invalid-feedback">Expiration date required</div>
-							</div>
-							<div class="col-md-8 mb-3">
-								<label for="cc-cvv">三碼檢查碼</label> <input type="text"
-									class="form-control" id="cc-cvv" placeholder="" required>
-								<div class="invalid-feedback">Security code required</div>
-							</div>
-						</div>
-					</div>
-
-					<br>
-					<div class="pay-container" id="pay-container_ATM">
-						<p style="color: red; font-weight: bold;">訂單有效時間為24小時，請於24小時內轉帳成功後，訂單即成立。</p>
-					</div>
-
-					<br>
+						<button class="btn btn-primary btn-lg btn-block" id="btn-submit"
+							type="submit">結帳</button>
+						<input type="hidden" name="action" value="insert" />
+					</form>
 				</div>
 			</div>
-			<hr class="mb-4">
-			<button class="btn btn-primary btn-lg btn-block" id="btn-submit"
-				type="submit">結帳</button>
 		</div>
 	</section>
 	<br>
 	<br>
 
 	<%@ include file="/front-end/index/footer.jsp"%>
-
-
-	<script>
-		document
-				.addEventListener(
-						'DOMContentLoaded',
-						function() {
-
-							var creditCardLabel = document
-									.getElementById('credit-card');
-							var ATMLabel = document.getElementById('ATM');
-							var payContainer = document
-									.getElementById('pay-container');
-							var payContainer_ATM = document
-									.getElementById('pay-container_ATM');
-
-							// 信用卡
-							creditCardLabel
-									.addEventListener(
-											'click',
-											function() {
-												payContainer.style.display = "";
-												payContainer_ATM.style.display = "none";
-											});
-
-							// 銀行
-							ATMLabel.addEventListener('click', function() {
-								payContainer.style.display = "none";
-								payContainer_ATM.style.display = "";
-							});
-						});
-
-		document
-				.getElementById('addParticipantBtn')
-				.addEventListener(
-						'click',
-						function() {
-
-							var participantName = document
-									.getElementById('atn_name').value;
-							var participantIdNumber = document
-									.getElementById('atn_id_number').value;
-							var participantTel = document
-									.getElementById('atn_tel').value;
-
-							var newRow = document.createElement('div');
-							newRow.className = 'row';
-							newRow.id = 'addContent';
-							newRow.innerHTML = '<div><br></div>'
-									+ '<div class="col-md-12 mb-6">'
-									+ '<label for="firstName">參加人姓名</label> <input type="text" class="form-control" value="' + participantName + '" disabled>'
-									+ '</div>'
-									+ '<div class="col-md-12 mb-6">'
-									+ '<label for="firstName">參加人身分證字號</label> <input type="text" class="form-control" value="' + participantIdNumber + '" disabled>'
-									+ '</div>'
-									+ '<div class="col-md-12 mb-6">'
-									+ '<label for="firstName">參加人電話</label> <input type="text" class="form-control" value="' + participantTel + '" disabled>'
-									+ '<button type="button" class="btn_delete">移除</button>'
-									+ '</div>' + '<hr class="mb-4">';
-
-							// 添加新的 <div class="row"> 到 id="participantList"
-							document.getElementById('participantList')
-									.appendChild(newRow);
-
-							// 清空輸入框
-							document.getElementById('atn_name').value = '';
-							document.getElementById('atn_id_number').value = '';
-							document.getElementById('atn_tel').value = '';
-						});
-
-		//移除參加人
-		$("div.row").on("click", "button.btn_delete", function() {
-			console.log(1);
-			let r = confirm("確認移除？");
-			if (r) {
-				console.log(this);
-				$(this).closest("div.row").animate({
-					"opacity" : 0
-				}, 100, "swing", function() {
-					$(this).remove();
-				});
-			}
-		});
-	</script>
-
+	<script
+		src="${pageContext.request.contextPath}/front-end/actorder/js/ActCheckOut.js"></script>
 </body>
-
 </html>

@@ -12,6 +12,44 @@
 	href="${pageContext.request.contextPath}/main/main.css">
 <title>房間管理系統</title>
 <style>
+/* .container{	 				
+ 		position:relative;
+ 		top: -72px;
+}
+.text-center{ 		
+ 		position:relative;
+ 		top: -60px; 		
+} 	 */
+.addTable {
+    height: 20px; /* Adjust the height as needed */
+    width: 930px;
+    
+}
+
+/* Optional: Adjust the height of the cells, input fields, or other elements if needed */
+.addTable td,
+.addTable input {
+    height: 40px; /* Adjust the height as needed */
+    width:150px;
+}
+
+/* Optional: If you want to center the content vertically within each cell */
+.addTable td {
+	text-align:center;
+   padding:0;
+}
+.addTable select {
+    height: 40px; /* Adjust the height as needed */
+   	position:relative;
+   	top:8px;
+}
+#addbutton {
+    height: 40px; /* Adjust the height as needed */
+   	position:relative;
+    width:100%;
+   
+}
+/*=========================  */
 .table th, .table td {
 	text-align: center;
 	border: 1px solid #dee2e6;
@@ -82,6 +120,7 @@
 <!-- 切換按鈕的文字（新增/修改） -->
 </head>
 <body>
+<%@ include file="/back-end/index/back-left_room.jsp" %>
 	<!-- <DIV style="text-align:center;"><h1 >房間管理系統--新增/修改/刪除</h1></DIV> -->
 	<div class="container mt-5">
 	
@@ -111,7 +150,7 @@
 		</c:if>
 		<%-- 成功表列 --%>
 		<!--===============新增房間=====================  -->
-		  <table class="table table-bordered" >
+		  <table class="addTable table-bordered" >
         <tbody>            
             <tr>
             <form method="post"	action="<%=request.getContextPath()%>/roomnum.do">
@@ -125,14 +164,14 @@
 								<div class="form-group">
 									<select	class="form-control" id="roomTypeSelect" name="TypeNo">
 										<c:forEach var="roomType" items="${roomTypeList}">
-											<option value="${roomType.roomTypeno}">${roomType.roomTypeno}</option>
+											<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
 										</c:forEach>
 									</select>
 								</div>							
 							<!--================下拉選單===================== -->
 						</td>               
                 <td colspan="2" class="text-center">
-                    <button type="submit" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
+                    <button type="submit" id="addbutton" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
                 </td>
                 <input type="hidden" name="page" value="${currentPage}">
            </form>
@@ -140,7 +179,8 @@
         </tbody>
     </table>
 		<!--================回首頁=====================  -->
-		<a href="${pageContext.request.contextPath}/index.jsp">回首頁</a>
+		<!-- <a href="${pageContext.request.contextPath}/index.jsp">回首頁</a> -->
+		<!--================顯示頁數=====================  -->
 		<c:if test="${roomnumPageQty > 0}">
 			<b><font color=red>第${currentPage}/${roomnumPageQty}頁</font></b>
 		</c:if>
@@ -149,7 +189,7 @@
 			<thead>
 				<tr>
 					<th scope="col">房間號碼</th>
-					<th scope="col">房型</th>
+					<th scope="col">房型名稱</th>
 					<th scope="col">訂單編號</th>
 					<th scope="col">住房姓名</th>
 					<th scope="col">房間狀態</th>
@@ -164,8 +204,23 @@
 						<tr>
 							<td><label>${roomnum.rnum}</label> <input type="hidden"
 								name="rnum" value="${roomnum.rnum}" style="width: 100px;"></td>
-							<td><input type="text" name="roomTypeNo"
-								value="${roomnum.roomTypeNo}" style="width: 100px;"></td>
+							<td>
+								<%-- <input type="text" name="roomTypeNo" value="${roomnum.roomTypeNo}" style="width: 100px;"> --%>
+								<!--================下拉選單===================  --> <select
+								class="form-control" id="roomTypeSelect1" name="roomTypeNo">
+									<c:forEach var="roomType" items="${roomTypeList}">
+										<c:choose>
+											<c:when test="${roomType.roomTypeno eq roomnum.roomTypeNo}">
+												<option value="${roomType.roomTypeno}" selected>${roomType.roomName}</option>
+											</c:when>
+											<c:otherwise>
+												<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
+											</c:otherwise>
+										</c:choose>
+									</c:forEach>
+							</select>
+
+							</td>
 							<td><input type="text" name="roomOrderNo"
 								value="${roomnum.roomOrderNo}" style="width: 100px;"></td>
 							<td><input type="text" name="checkInName"

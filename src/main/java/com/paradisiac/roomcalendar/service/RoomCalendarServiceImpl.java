@@ -21,7 +21,6 @@ public class RoomCalendarServiceImpl implements RoomCalendarService
 		dao = new RoomCalendarDAOImpl(HibernateUtil.getSessionFactory());
 	}
 
-
 	@Override
 	public int addUpdate(Integer roomTypenoInt, Date cDate, Integer roomTotalInt, Integer roomBookingInt,boolean available) {
 		RoomCalendarVO cal = new RoomCalendarVO();
@@ -44,6 +43,7 @@ public class RoomCalendarServiceImpl implements RoomCalendarService
 		cal.setAvailable(available);
 		return dao.update(cal);
 	}	
+	
 	@Override
 	public String getCalAllDTOs() {
 		System.out.println("Service:call DAO.getCalAllDTOs -->ready");
@@ -61,8 +61,7 @@ public class RoomCalendarServiceImpl implements RoomCalendarService
 	public String getCalSingleDTOsForDay(String day) {
 		System.out.println("Service:call DAO.getCalSingleDTOsForDay -->ready");
 		return dao.getSingleForDay(day);
-	}
-
+	}	
 
 	@Override
 	public RoomCalendarVO findBycalNo(Integer calendarNo) {
@@ -78,6 +77,6 @@ public class RoomCalendarServiceImpl implements RoomCalendarService
 	public List<RoomCalendarVO> getOne() {
 		return dao.getOne();
 	}
-
-
 }
+
+

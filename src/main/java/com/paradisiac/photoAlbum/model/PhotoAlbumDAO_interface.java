@@ -11,7 +11,7 @@ public interface PhotoAlbumDAO_interface {
 	
     public int insert(PhotoAlbumVO photoAlbumVO);
     
-    public int update(PhotoAlbumVO photoAlbumVO);
+    public PhotoAlbumVO update(PhotoAlbumVO photoAlbumVO);
     
     public int delete(Integer albNo);
     
@@ -27,5 +27,7 @@ public interface PhotoAlbumDAO_interface {
 	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo, int currentPage);
 	
 	public int getTotalQty(Integer albNo);
+	
+	public Integer findByMem(Integer memno);
 
 }

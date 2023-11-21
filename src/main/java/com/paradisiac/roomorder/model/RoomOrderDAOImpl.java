@@ -134,6 +134,7 @@ public class RoomOrderDAOImpl implements RoomOrderDAO {
 		//return getSession().createQuery(criteria).getSingleResult();
 		return query.getResultList();
 	}
+
 	@Override
 	public List<RoomOrderVO> getmemOrd(Integer memno) {
     return getSession()

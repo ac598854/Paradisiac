@@ -1,6 +1,37 @@
+//==================================獲取當前頁面的路徑名稱==============================================
 let pathName = window.document.location.pathname;
+//==================================從路徑名稱中提取出項目名稱==============================================
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-// 當頁面加載時取得productId並調用API
+
+//==================================取得會員servlet URL==============================================
+$(document).ready(function(){
+        // 加載頁尾
+        $("#footer").load(projectName + "/front-end/index/footer.jsp");
+
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
+
+
+//==================================當頁面加載時取得productId並調用API==============================================
 document.addEventListener('DOMContentLoaded', function() {
 
     // 從 URL 獲取 productId
@@ -21,20 +52,28 @@ document.addEventListener('DOMContentLoaded', function() {
     loadSimilarProducts();
 });
 
-// 轉換種類名稱的函數
+//==================================轉換種類名稱的函數==============================================
 function convertCategoryToChinese(category) {
     switch (category) {
         case 'ParadisiacTheme':
-            return '主題商品';
+            return '主題衣服';
         case 'ParadisiacExquisite':
-            return '精品商品';
+            return '精品配件';
+        case 'ParadisiacThemeActionFigures':
+            return '主題公仔';
+        case 'ParadisiacExquisiteCloththing':
+            return '精品衣服';
+        case 'ParadisiacThemehousehold':
+            return '主題日常用品';
         default:
             return category;  // 如果有其他種類，則直接返回
     }
 }
-// 顯示商品詳情的函數
+
+//==================================顯示商品詳情的函數==============================================
 function displayProductDetail(product) {
     const detailDiv = document.getElementById('productDetail');
+    detailDiv.innerHTML = '';  // 清空現有的商品詳情
 
     // 商品圖片
     const productImage = document.createElement('img');
@@ -62,18 +101,25 @@ function displayProductDetail(product) {
     });
 }
 
+//==================================加載並展示相似商品==============================================
 function loadSimilarProducts() {
     fetch(projectName + '/products')
         .then(response => response.json())
         .then(data => {
+            const productsGrid = document.querySelector('.products-grid');
+            productsGrid.innerHTML = ''; // 清空當前顯示的相似商品
+
             // 從所有商品中隨機選擇四個
             const shuffled = data.results.sort(() => 0.5 - Math.random());
             const selected = shuffled.slice(0, 4);
 
-            const productsGrid = document.querySelector('.products-grid');
             selected.forEach(product => {
                 const productDiv = document.createElement('div');
                 productDiv.className = 'productCard';
+                productDiv.addEventListener('click', () => {
+                    displayProductDetail(product);  // 更新商品詳情
+                    loadSimilarProducts();          // 重新加載相似商品
+                });
 
                 const productImage = document.createElement('img');
                 productImage.src = product.imageUrl;
@@ -84,7 +130,7 @@ function loadSimilarProducts() {
                 productDiv.appendChild(productName);
 
                 const productPrice = document.createElement('p');
-                productPrice.innerText = "NT$ " + product.price; // 假設price是數字格式
+                productPrice.innerText = "NT$ " + product.price;
                 productDiv.appendChild(productPrice);
 
                 productsGrid.appendChild(productDiv);

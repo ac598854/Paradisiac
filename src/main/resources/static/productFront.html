@@ -9,6 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <title>購物商城</title>
 
@@ -150,13 +151,15 @@
 
     button {
       border:0;
-      background-color:#003C9D;
+      background-color:grey;
       color:#fff;
       border-radius:10px;
       cursor:pointer;
     }
 
   </style>
+ <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+ <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
@@ -170,7 +173,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">首頁</a>
+            <a class="nav-link active" aria-current="page" href="/Paradisiac/front-end/index/index2.jsp">首頁</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">關於我們</a>
@@ -198,40 +201,32 @@
 
 <div class="container">
   <div class="row">
-  <!-- 商品種類分類和價格範圍 -->
+    <!-- 商品種類分類和價格範圍 -->
     <aside class="col-md-3">
-  <!--商品種類-->
+      <!--商品種類-->
       <section class="filter">
         <ul class="list-group">
           <li class="list-group-item active" aria-current="true">All Categories</li>
-          <li class="list-group-item">主題商品</li>
-          <li class="list-group-item">精品商品</li>
+          <li class="list-group-item">主題衣服</li>
+          <li class="list-group-item">精品配件</li>
           <li class="list-group-item">主題公仔</li>
           <li class="list-group-item">精品衣服</li>
           <li class="list-group-item">主題日常用品</li>
         </ul>
       </section>
-      <!-- 價格篩選區間 -->
-      <section class="filter">
-        <label>價格範圍：</label>
-        <label for="customRange2" class="form-label">Example range</label>
-        <input type="range" class="form-range" min="0" max="5" id="customRange2">
-        <input type="number" id="minPrice" placeholder="最低價格">
-        -
-        <input type="number" id="maxPrice" placeholder="最高價格">
-      </section>
-      <button onclick="filterByPrice()">篩選</button>
-      <button id="prevPage">上一頁</button>
-      <button id="nextPage">下一頁</button>
-  </aside>
 
-      <!-- 商品展示區域 -->
-      <main id="productsArea" class="col-md-8">
-        <div class="card">
+      <!-- 分頁按鈕容器 -->
+      <div id="paginationContainer" class="pagination-center"></div>
 
-        </div>
-        <!-- 商品資訊將在這裡動態加載，使用JavaScript從後端API取得資料後展示 -->
-      </main>
+    </aside>
+
+    <!-- 商品展示區域 -->
+    <main id="productsArea" class="col-md-8">
+      <div class="card">
+
+      </div>
+      <!-- 商品資訊將在這裡動態加載，使用JavaScript從後端API取得資料後展示 -->
+    </main>
   </div>
 </div>
 
@@ -264,8 +259,8 @@
 </footer>
 <script src="js/mainFront.js"></script>
 <script>
-	let shoppingMallLink = document.getElementById("cart");
-	shoppingMallLink.href = projectName + "/front-end/cart/cart.html";
+  let shoppingMallLink = document.getElementById("cart");
+  shoppingMallLink.href = projectName + "/front-end/cart/cart.html";
 </script>
 </body>
 </html>

@@ -1,12 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<!-- 引入Bootstrap和jQuery JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
   <!-- 頁尾 -->
     <footer class="bg-dark text-light text-center py-3">
         <div class="container">
@@ -25,12 +22,10 @@
             <p>秋收冬藏 一泊二食住房專案。</p>
             </div>
             <div class="col-md-4">
-                <h4><a href="#">ParadisiacCove</a></h4>
-                <p><a href="#">聯絡我們</a></p>
-                <p><a href="#">關於我們</a></p>
+                <h4><a href="#" style="color: white;">ParadisiacCove</a></h4>
+                <p><a href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp" style="color: white;">關於我們</a></p>
             </div>
         </div>
         </div>
     </footer>
-</body>
-</html>
+    

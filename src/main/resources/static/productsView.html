@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>商品管理後台</title>
-<!--    <link rel="stylesheet" href="css/styles.css"> &lt;!&ndash; 引入CSS檔案 &ndash;&gt;-->
+    <!--    <link rel="stylesheet" href="css/styles.css"> &lt;!&ndash; 引入CSS檔案 &ndash;&gt;-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -33,25 +33,6 @@
             margin: 0; /* 移除margin */
             padding: 0; /* 移除padding */
         }
-
-        /* footer樣式 */
-        /*#footer {*/
-        /*    background-color: lightblue;*/
-        /*    padding: 20px 0;*/
-        /*    text-align: center;*/
-        /*    width: 100%; !* 佔滿整個容器的寬度 *!*/
-        /*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
-        /*    margin: 0; !* 移除外邊距 *!*/
-        /*}*/
-
-        /*!* 這個樣式將應用於footer內部的container，如果存在的話 *!*/
-        /*#footer .container {*/
-        /*    width: 100%; !* 佔滿footer的寬度 *!*/
-        /*    max-width: none; !* 移除最大寬度限制 *!*/
-        /*    margin: 0 auto; !* 如果需要在頁面中間對齊 *!*/
-        /*    padding: 0; !* 移除內填充 *!*/
-        /*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
-        /*}*/
 
         /* 導航樣式 */
         nav ul {
@@ -183,7 +164,7 @@
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">儀表板</a>
+                    <a class="nav-link active" aria-current="page" href="/Paradisiac/front-end/index/index2.jsp">首頁</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">訂單管理</a>
@@ -218,8 +199,8 @@
                 <input type="text" id="productName" placeholder="商品名稱"><br>
                 <input type="text" id="imageUrl" placeholder="商品圖片"><br>
                 <select id="addCategorySelect"> <!-- 新增的下拉選單 -->
-                    <option value="ParadisiacTheme">主題商品</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
-                    <option value="ParadisiacExquisite">精品商品</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
+                    <option value="ParadisiacTheme">主題衣服</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
+                    <option value="ParadisiacExquisite">精品配件</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
                     <option value="ParadisiacThemeActionFigures">主題公仔</option>
                     <option value="ParadisiacExquisiteCloththing">精品衣服</option>
                     <option value="ParadisiacThemehousehold">主題日常用品</option>
@@ -269,8 +250,12 @@
             <input type="text" id="editProductName" placeholder="商品名稱"><br>
             <input type="text" id="editImageUrl" placeholder="商品圖片"><br>
             <select id="editCategorySelect"> <!-- 新增的下拉選單 -->
-                <option value="ParadisiacTheme">主題商品</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
-                <option value="ParadisiacExquisite">精品商品</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->             </select>
+                <option value="ParadisiacTheme">主題衣服</option>
+                <option value="ParadisiacExquisite">精品配件</option>
+                <option value="ParadisiacThemeActionFigures">主題公仔</option>
+                <option value="ParadisiacExquisiteCloththing">精品衣服</option>
+                <option value="ParadisiacThemehousehold">主題日常用品</option>
+            </select>
             <br>
             <input type="number" id="editStock" placeholder="庫存"><br>
             <input type="number" id="editPrice" placeholder="價格"><br>
@@ -321,225 +306,230 @@
         </div>
     </footer>
 </div>
-    <script>
-        let pathName = window.document.location.pathname;
-        let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
-        // 新增的初始化下拉選單函數
-        function initCategoryDropdown() {
-            const categories = [
-                { text: '主題商品', value: 'ParadisiacTheme' },
-                { text: '精品商品', value: 'ParadisiacExquisite' },
-                { text: '主題公仔', value: 'ParadisiacThemeActionFigures' },
-                { text: '精品衣服', value: 'ParadisiacExquisiteCloththing' },
-                { text: '主題日常用品', value: 'ParadisiacThemehousehold' }
+<script>
+    //==================================獲取當前頁面的路徑名稱==============================================
+    let pathName = window.document.location.pathname;
+    //==================================從路徑名稱中提取出項目名稱==============================================
+    let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
-            ];
+    //==================================初始化商品類別下拉選單==============================================
+    function initCategoryDropdown() {
+        const categories = [
+            { text: '主題衣服', value: 'ParadisiacTheme' },
+            { text: '精品配件', value: 'ParadisiacExquisite' },
+            { text: '主題公仔', value: 'ParadisiacThemeActionFigures' },
+            { text: '精品衣服', value: 'ParadisiacExquisiteCloththing' },
+            { text: '主題日常用品', value: 'ParadisiacThemehousehold' }
 
-            // 初始化新增商品的狀態下拉選單
-            const addCategorySelectElement = document.getElementById("addCategorySelect");
-            addCategorySelectElement.innerHTML = '';  // 清空選項
+        ];
 
-            // 初始化編輯商品的狀態下拉選單
-            const editCategorySelectElement = document.getElementById("editCategorySelect");
-            editCategorySelectElement.innerHTML = '';  // 清空選項
+        // 初始化新增商品的狀態下拉選單
+        const addCategorySelectElement = document.getElementById("addCategorySelect");
+        addCategorySelectElement.innerHTML = '';  // 清空選項
 
-            categories.forEach(category => {
-                const option1 = document.createElement("option");
-                option1.value = category.value;
-                option1.innerText = category.text;
-                addCategorySelectElement.appendChild(option1);
+        // 初始化編輯商品的狀態下拉選單
+        const editCategorySelectElement = document.getElementById("editCategorySelect");
+        editCategorySelectElement.innerHTML = '';  // 清空選項
 
-                const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
-                editCategorySelectElement.appendChild(option2);
-            });
+        categories.forEach(category => {
+            const option1 = document.createElement("option");
+            option1.value = category.value;
+            option1.innerText = category.text;
+            addCategorySelectElement.appendChild(option1);
+
+            const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
+            editCategorySelectElement.appendChild(option2);
+        });
+    }
+    //==================================初始化商品狀態下拉選單==============================================
+    function initStatusDropdown() {
+        const statuses = [
+            { text: '上架', value: 'STATUSOn' },
+            { text: '下架', value: 'STATUSOff' }
+        ];
+
+        // 初始化新增商品的狀態下拉選單
+        const addStatusSelectElement = document.getElementById("addStatusSelect");
+        addStatusSelectElement.innerHTML = '';  // 清空選項
+
+        // 初始化編輯商品的狀態下拉選單
+        const editStatusSelectElement = document.getElementById("editStatusSelect");
+        editStatusSelectElement.innerHTML = '';  // 清空選項
+
+        statuses.forEach(status => {
+            const option1 = document.createElement("option");
+            option1.value = status.value;
+            option1.innerText = status.text;
+            addStatusSelectElement.appendChild(option1);
+
+            const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
+            editStatusSelectElement.appendChild(option2);
+        });
+    }
+
+
+    //==================================顯示模態框及背景==============================================
+    function toggleModal(modalId, overlayId, display) {
+        const modalElement = document.getElementById(modalId);
+        const overlayElement = document.getElementById(overlayId);
+
+        if (modalElement && overlayElement) {
+            modalElement.style.display = display;
+            overlayElement.style.display = display;
+        } else {
+            console.error("Element not found: ", modalId, overlayId);
         }
+    }
+    //==================================隱藏模態框及背景==============================================
+    function hideAllModals() {
+        toggleModal("addProductModal", "overlay", "none");
+        toggleModal("editProductModal", "overlayEdit", "none");
+    }
 
-        function initStatusDropdown() {
-            const statuses = [
-                { text: '上架', value: 'STATUSOn' },
-                { text: '下架', value: 'STATUSOff' }
-            ];
-
-            // 初始化新增商品的狀態下拉選單
-            const addStatusSelectElement = document.getElementById("addStatusSelect");
-            addStatusSelectElement.innerHTML = '';  // 清空選項
-
-            // 初始化編輯商品的狀態下拉選單
-            const editStatusSelectElement = document.getElementById("editStatusSelect");
-            editStatusSelectElement.innerHTML = '';  // 清空選項
-
-            statuses.forEach(status => {
-                const option1 = document.createElement("option");
-                option1.value = status.value;
-                option1.innerText = status.text;
-                addStatusSelectElement.appendChild(option1);
-
-                const option2 = option1.cloneNode(true); // 複製選項以添加到另一個下拉選單
-                editStatusSelectElement.appendChild(option2);
-            });
-        }
-
-
-
-        // 顯示或隱藏模態框及背景
-        function toggleModal(modalId, overlayId, display) {
-            const modalElement = document.getElementById(modalId);
-            const overlayElement = document.getElementById(overlayId);
-
-            if (modalElement && overlayElement) {
-                modalElement.style.display = display;
-                overlayElement.style.display = display;
-            } else {
-                console.error("Element not found: ", modalId, overlayId);
-            }
-        }
-
-        function hideAllModals() {
-            toggleModal("addProductModal", "overlay", "none");
-            toggleModal("editProductModal", "overlayEdit", "none");
-        }
-
-        document.addEventListener("DOMContentLoaded",function(){
-            // 初始化下拉選單
-            initCategoryDropdown();
-            initStatusDropdown();
-            // 顯示新增商品模態框
-            document.getElementById("addProductButton").addEventListener("click", function() {
-                toggleModal("addProductModal", "overlay", "block");
-            });
-
-            // 點擊模態框外面的區域時，隱藏所有模態框
-            document.getElementById("overlay").addEventListener("click", hideAllModals);
-            document.getElementById("overlayEdit").addEventListener("click", hideAllModals);
-
-            // 在取消按鈕上添加點擊事件來隱藏模態框
-            // document.getElementById("addCancelBtn").addEventListener("click", hideAllModals);
-            // document.getElementById("editCancelBtn").addEventListener("click", hideAllModals);
-
-            // 初始化：調用fetchProducts函數來獲取和顯示商品數據
-            fetchProducts();
+    document.addEventListener("DOMContentLoaded",function(){
+        // 初始化下拉選單
+        initCategoryDropdown();
+        initStatusDropdown();
+        // 顯示新增商品模態框
+        document.getElementById("addProductButton").addEventListener("click", function() {
+            toggleModal("addProductModal", "overlay", "block");
         });
 
+        // 點擊模態框外面的區域時，隱藏所有模態框
+        document.getElementById("overlay").addEventListener("click", hideAllModals);
+        document.getElementById("overlayEdit").addEventListener("click", hideAllModals);
 
-        let total = 0; // 全局變數
-        let offset = 0; // 初始偏移量
-        const limit = 5; // 每頁的商品數量
-        // 逐行解釋
-        // 定義一個非同步函數來獲取商品數據
-        async function fetchProducts() {
-            try {
-                // 考慮到分頁，我們在請求URL中加入limit和offset參數
-                const response = await fetch(projectName + `/products?limit=${limit}&offset=${offset}`);
+        // 在取消按鈕上添加點擊事件來隱藏模態框
+        // document.getElementById("addCancelBtn").addEventListener("click", hideAllModals);
+        // document.getElementById("editCancelBtn").addEventListener("click", hideAllModals);
 
-                // 判斷如果成功獲取數據
-                if (response.ok) {
-                    // 將返回的JSON數據轉換為JavaScript對象
-                    const data = await response.json();
-                    // 假設後端回傳的物件有一個名為 "results" 的陣列
-                    const products = data.results;
-                    total = data.total;  // 更新總數
-                    // 調用函數來顯示商品數據
-                    displayProducts(products);
-
-                    // 檢查按鈕的禁用條件
-                    checkButtons(data.total);
-                } else {
-                    console.log("Failed to fetch products");
-                }
-            } catch (error) {
-                console.error("An error occurred:", error);
-            }
-        }
-        function checkButtons(total) {
-            const prevButton = document.getElementById('prevPage');
-            const nextButton = document.getElementById('nextPage');
-            const firstButton = document.getElementById('firstPage');
-            const lastButton = document.getElementById('lastPage');
-
-            if (offset <= 0) {
-                prevButton.disabled = true;
-                firstButton.disabled = true;  // 如果已在第一頁，禁用第一頁按鈕
-            } else {
-                prevButton.disabled = false;
-                firstButton.disabled = false;
-            }
-
-            if (offset + limit >= total) {
-                nextButton.disabled = true;
-                lastButton.disabled = true;   // 如果已在最後一頁，禁用最後一頁按鈕
-            } else {
-                nextButton.disabled = false;
-                lastButton.disabled = false;
-            }
-        }
-
-        // 上一頁和下一頁的事件監聽
-        document.getElementById('prevPage').addEventListener('click', () => {
-            if (offset - limit >= 0) {
-                offset -= limit;
-                fetchProducts();
-            }
-        });
-
-        document.getElementById('nextPage').addEventListener('click', () => {
-            offset += limit;
-            fetchProducts();
-        });
-        // 第一頁和最後一頁的事件監聽
-        document.getElementById('firstPage').addEventListener('click', () => {
-            offset = 0;
-            fetchProducts();
-        });
-
-        document.getElementById('lastPage').addEventListener('click', () => {
-            if (total % limit === 0) {
-                offset = total - limit;
-            } else {
-                offset = total - (total % limit);
-            }
-            fetchProducts();
-        });
-
-
-        // 當頁面載入時，首次調用fetchProducts以獲取商品數據
+        // 初始化：調用fetchProducts函數來獲取和顯示商品數據
         fetchProducts();
+    });
 
-        // 轉換狀態的函數
-        function convertCategoryToText(category) {
-            switch (category) {
-                case 'ParadisiacTheme':
-                    return '主題商品';
-                case 'ParadisiacExquisite':
-                    return '精品商品';
-                case 'ParadisiacThemeActionFigures':
-                    return '主題公仔';
-                case 'ParadisiacExquisiteCloththing':
-                    return '精品衣服';
-                case 'ParadisiacThemehousehold':
-                    return '主題日常用品';
-                default:
-                    return category;  // 如果有其他狀態，則直接返回
+
+    let total = 0; // 全局變數
+    let offset = 0; // 初始偏移量
+    const limit = 5; // 每頁的商品數量
+    //==================================獲取商品數據==============================================
+    async function fetchProducts() {
+        try {
+            // 考慮到分頁，我們在請求URL中加入limit和offset參數
+            const response = await fetch(projectName + `/products?limit=${limit}&offset=${offset}`);
+
+            // 判斷如果成功獲取數據
+            if (response.ok) {
+                // 將返回的JSON數據轉換為JavaScript對象
+                const data = await response.json();
+                // 假設後端回傳的物件有一個名為 "results" 的陣列
+                const products = data.results;
+                total = data.total;  // 更新總數
+                // 調用函數來顯示商品數據
+                displayProducts(products);
+
+                // 檢查按鈕的禁用條件
+                checkButtons(data.total);
+            } else {
+                console.log("Failed to fetch products");
             }
+        } catch (error) {
+            console.error("An error occurred:", error);
         }
-        // 轉換狀態的函數
-        function convertStatusToText(status) {
-            switch (status) {
-                case 'STATUSOn':
-                    return '上架';
-                case 'STATUSOff':
-                    return '下架';
-                default:
-                    return status;  // 如果有其他狀態，則直接返回
-            }
+    }
+
+
+    //==================================檢查分頁按鈕的狀態（是否禁用）=============================================
+    function checkButtons(total) {
+        const prevButton = document.getElementById('prevPage');
+        const nextButton = document.getElementById('nextPage');
+        const firstButton = document.getElementById('firstPage');
+        const lastButton = document.getElementById('lastPage');
+
+        if (offset <= 0) {
+            prevButton.disabled = true;
+            firstButton.disabled = true;  // 如果已在第一頁，禁用第一頁按鈕
+        } else {
+            prevButton.disabled = false;
+            firstButton.disabled = false;
         }
 
-        // 顯示商品數據
-        function displayProducts(products) {
-            const tbody = document.getElementById('productTbody');
-            tbody.innerHTML = ''; // 清空表格
-            products.forEach(product => {
-                // 創建一行新的表格內容
-                const row = `<tr>
+        if (offset + limit >= total) {
+            nextButton.disabled = true;
+            lastButton.disabled = true;   // 如果已在最後一頁，禁用最後一頁按鈕
+        } else {
+            nextButton.disabled = false;
+            lastButton.disabled = false;
+        }
+    }
+
+    //==================================綁定分頁按鈕的事件監聽器=============================================
+    document.getElementById('prevPage').addEventListener('click', () => {
+        if (offset - limit >= 0) {
+            offset -= limit;
+            fetchProducts();
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+        offset += limit;
+        fetchProducts();
+    });
+    // 第一頁和最後一頁的事件監聽
+    document.getElementById('firstPage').addEventListener('click', () => {
+        offset = 0;
+        fetchProducts();
+    });
+
+    document.getElementById('lastPage').addEventListener('click', () => {
+        if (total % limit === 0) {
+            offset = total - limit;
+        } else {
+            offset = total - (total % limit);
+        }
+        fetchProducts();
+    });
+    // 當頁面載入時，首次調用fetchProducts以獲取商品數據
+    fetchProducts();
+
+    //==================================轉換種類的函數=============================================
+    function convertCategoryToText(category) {
+        switch (category) {
+            case 'ParadisiacTheme':
+                return '主題衣服';
+            case 'ParadisiacExquisite':
+                return '精品配件';
+            case 'ParadisiacThemeActionFigures':
+                return '主題公仔';
+            case 'ParadisiacExquisiteCloththing':
+                return '精品衣服';
+            case 'ParadisiacThemehousehold':
+                return '主題日常用品';
+            default:
+                return category;  // 如果有其他狀態，則直接返回
+        }
+    }
+
+
+    //================================== 轉換狀態的函數=============================================
+    function convertStatusToText(status) {
+        switch (status) {
+            case 'STATUSOn':
+                return '上架';
+            case 'STATUSOff':
+                return '下架';
+            default:
+                return status;  // 如果有其他狀態，則直接返回
+        }
+    }
+
+
+    //==================================顯示商品數據==============================================
+    function displayProducts(products) {
+        const tbody = document.getElementById('productTbody');
+        tbody.innerHTML = ''; // 清空表格
+        products.forEach(product => {
+            // 創建一行新的表格內容
+            const row = `<tr>
             <td>${product.productId}</td>
             <td><img src="${product.imageUrl}" alt="${product.productName}" width="200"></td>
             <td>${product.productName}</td>
@@ -552,154 +542,154 @@
                 <button onclick="editProduct(${product.productId})">編輯</button>
             </td>
             </tr>`;
-                // 將新的表格內容加到tbody中
-                tbody.innerHTML += row;
+            // 將新的表格內容加到tbody中
+            tbody.innerHTML += row;
+        });
+    }
+    // 初始化：調用fetchProducts函數來獲取和顯示商品數據
+    fetchProducts();
+
+
+    //==================================新增商品的表單提交處理==============================================
+    document.getElementById("addProductForm").addEventListener("submit", async function(event) {
+        // 取得下拉選單中選定的商品類別
+        const selectedCategory = document.getElementById("addCategorySelect").value;
+        const selectedStatus = document.getElementById("addStatusSelect").value;
+
+        event.preventDefault();  // 阻止表單的預設提交行為
+
+        const productName = document.getElementById("productName").value;
+        const price = document.getElementById("price").value;
+        // 使用下拉選單的選定值作為商品類別
+        const category = selectedCategory;
+        const imageUrl = document.getElementById("imageUrl").value;
+        const stock = document.getElementById("stock").value;
+        const description = document.getElementById("description").value;
+        const status = selectedStatus // 新增這一行
+        console.log(status);
+
+        // 取得其他欄位...
+
+        const productData = {
+            productName,
+            price,
+            category,
+            imageUrl,
+            stock,
+            description,
+            status
+            // 其他欄位...
+        };
+
+        try {
+            const response = await fetch(projectName + "/products", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
             });
-        }
-        // 初始化：調用fetchProducts函數來獲取和顯示商品數據
-        fetchProducts();
 
-        // 新增商品
-        document.getElementById("addProductForm").addEventListener("submit", async function(event) {
-            // 取得下拉選單中選定的商品類別
-            const selectedCategory = document.getElementById("addCategorySelect").value;
-            const selectedStatus = document.getElementById("addStatusSelect").value;
-
-            event.preventDefault();  // 阻止表單的預設提交行為
-
-            const productName = document.getElementById("productName").value;
-            const price = document.getElementById("price").value;
-            // 使用下拉選單的選定值作為商品類別
-            const category = selectedCategory;
-            const imageUrl = document.getElementById("imageUrl").value;
-            const stock = document.getElementById("stock").value;
-            const description = document.getElementById("description").value;
-            const status = selectedStatus // 新增這一行
-            console.log(status);
-
-            // 取得其他欄位...
-
-            const productData = {
-                productName,
-                price,
-                category,
-                imageUrl,
-                stock,
-                description,
-                status
-                // 其他欄位...
-            };
-
-            try {
-                const response = await fetch(projectName + "/products", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(productData)
-                });
-
-                if (response.status === 201) {
-                    // 關閉模態框
-                    hideAllModals();  // 使用此函數直接關閉模態框和overlay
-                    // 重新載入商品列表
-                    await fetchProducts();
-                } else {
-                    console.log("新增商品失敗");
-                }
-            } catch (error) {
-                console.error("新增商品時發生錯誤:", error);
+            if (response.status === 201) {
+                // 關閉模態框
+                hideAllModals();  // 使用此函數直接關閉模態框和overlay
+                // 重新載入商品列表
+                await fetchProducts();
+            } else {
+                console.log("新增商品失敗");
             }
-        });
+        } catch (error) {
+            console.error("新增商品時發生錯誤:", error);
+        }
+    });
 
-        // 修改商品
-        let currentEditingProductId = null;  // 儲存當前正在編輯的商品 ID
-        // 編輯商品函數
-        async function editProduct(productId) {
-            currentEditingProductId = productId;  // 設定當前正在編輯的商品 ID
+    //==================================儲存當前正在編輯的商品 ID==============================================
+    let currentEditingProductId = null;
+    //==================================編輯商品函數==============================================
+    async function editProduct(productId) {
+        currentEditingProductId = productId;  // 設定當前正在編輯的商品 ID
 
-            const selectedCategory = document.getElementById("editCategorySelect").value;
+        const selectedCategory = document.getElementById("editCategorySelect").value;
 
-            // 顯示模態框和 overlay
-            toggleModal("editProductModal", "overlayEdit", "block");
+        // 顯示模態框和 overlay
+        toggleModal("editProductModal", "overlayEdit", "block");
 
 
-            const productData = await fetch(projectName + `/products/${productId}`);
-            const product = await productData.json();
+        const productData = await fetch(projectName + `/products/${productId}`);
+        const product = await productData.json();
 
-            // 把產品資料填入模態框的輸入欄位
-            // （這邊省略了具體代碼，但概念就是把 product 物件的各個屬性填入對應的 input 欄位）
-            document.getElementById("editProductName").value = product.productName;
-            document.getElementById("editPrice").value = product.price;
-            document.getElementById("editCategorySelect").value = product.category;
-            document.getElementById("editImageUrl").value = product.imageUrl;
-            document.getElementById("editStock").value = product.stock;
-            document.getElementById("editDescription").value = product.description;
-            document.getElementById("editStatusSelect").value = product.status;
+        // 把產品資料填入模態框的輸入欄位
+        document.getElementById("editProductName").value = product.productName;
+        document.getElementById("editPrice").value = product.price;
+        document.getElementById("editCategorySelect").value = product.category;
+        document.getElementById("editImageUrl").value = product.imageUrl;
+        document.getElementById("editStock").value = product.stock;
+        document.getElementById("editDescription").value = product.description;
+        document.getElementById("editStatusSelect").value = product.status;
 
+    }
+
+    //==================================編輯商品的表單提交==============================================
+    document.getElementById("editProductForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        // 從輸入欄位中取得編輯後的商品資料
+        const productName = document.getElementById("editProductName").value;
+        const price = document.getElementById("editPrice").value;
+        const category = document.getElementById("editCategorySelect").value;
+        const imageUrl = document.getElementById("editImageUrl").value;
+        const stock = document.getElementById("editStock").value;
+        const description = document.getElementById("editDescription").value;
+        const status = document.getElementById("editStatusSelect").value;
+        console.log(status);
+        // 取得其他欄位...
+
+        const productData = {
+            productName,
+            price,
+            category,
+            imageUrl,
+            stock,
+            description,
+            status
+        };
+
+        try {
+            const response = await fetch(projectName + `/products/${currentEditingProductId}`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(productData)
+            });
+
+            if (response.status === 200) {
+                // 重新載入商品列表
+                await fetchProducts();
+            } else {
+                console.log("編輯商品失敗");
+            }
+        } catch (error) {
+            console.error("編輯商品時發生錯誤:", error);
         }
 
-        // 編輯商品的表單提交
-        document.getElementById("editProductForm").addEventListener("submit", async function(event) {
-            event.preventDefault();
+        // 使用 hideAllModals 函數來隱藏模態框和 overlay
+        hideAllModals();
+    });
 
-            // 從輸入欄位中取得編輯後的商品資料
-            const productName = document.getElementById("editProductName").value;
-            const price = document.getElementById("editPrice").value;
-            const category = document.getElementById("editCategorySelect").value;
-            const imageUrl = document.getElementById("editImageUrl").value;
-            const stock = document.getElementById("editStock").value;
-            const description = document.getElementById("editDescription").value;
-            const status = document.getElementById("editStatusSelect").value;
-            console.log(status);
-            // 取得其他欄位...
-
-            const productData = {
-                productName,
-                price,
-                category,
-                imageUrl,
-                stock,
-                description,
-                status
-            };
-
-            try {
-                const response = await fetch(projectName + `/products/${currentEditingProductId}`, {
-                    method: "PUT",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(productData)
-                });
-
-                if (response.status === 200) {
-                    // 重新載入商品列表
-                    await fetchProducts();
-                } else {
-                    console.log("編輯商品失敗");
-                }
-            } catch (error) {
-                console.error("編輯商品時發生錯誤:", error);
-            }
-
-            // 使用 hideAllModals 函數來隱藏模態框和 overlay
-            hideAllModals();
-        });
-
-        function filterProductsByStatus() {
-            const status = document.getElementById('displayStatus').value;
-            const rows = document.getElementById('productTbody').rows;
-
-            for (let i = 0; i < rows.length; i++) {
-                const rowStatus = rows[i].getAttribute('data-status'); // 假設每行都有一個data-status屬性表示商品的狀態
-                if (status === 'ALL' || status === rowStatus) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
-    </script>
+    // function filterProductsByStatus() {
+    //     const status = document.getElementById('displayStatus').value;
+    //     const rows = document.getElementById('productTbody').rows;
+    //
+    //     for (let i = 0; i < rows.length; i++) {
+    //         const rowStatus = rows[i].getAttribute('data-status'); // 假設每行都有一個data-status屬性表示商品的狀態
+    //         if (status === 'ALL' || status === rowStatus) {
+    //             rows[i].style.display = '';
+    //         } else {
+    //             rows[i].style.display = 'none';
+    //         }
+    //     }
+    // }
+</script>
 </body>
 </html>

@@ -261,10 +261,13 @@
           </li>
             <ul class="sub-menu" id="submenu-3">
             <li>
-                <a href="#">活動類別管理</a>
+                <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
             </li>
             <li>
-                <a href="#">檔期管理</a>
+                <a href="${pageContext.request.contextPath}/back-end/act/add_act.jsp">建立新活動</a>
+            </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/back-end/schd/add_schd.jsp">建立新檔期</a>
             </li>
             <li>
                 <a href="#">活動訂單管理</a>
@@ -272,9 +275,7 @@
             <li>
                 <a href="#">活動參加人名單管理</a>
             </li>
-            <li>
-                <a href="#">活動相片管理</a>
-            </li>
+
         </ul>
             <!--會員-->  
           <li class="sidebar-title" data-toggle="submenu-5">
@@ -308,10 +309,11 @@
     
     <div id="page-content-wrapper">
       <a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">側邊欄關閉</a>
+      
     </div>
 
   </div><!--結尾-->
-  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 

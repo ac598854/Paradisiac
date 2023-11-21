@@ -18,7 +18,7 @@
 	
 	<jsp:useBean id="deptSvc" scope="page" class="com.paradisiac.department.service.DeptServiceImpl" />
 	<form action="${pageContext.request.contextPath}/dept.do" method="post">
-		<input type="text" name="ename"><br>--%>
+
 		<p><label>查詢單一部門：</label></p>
 		
 		<select name="deptname">
@@ -52,9 +52,9 @@
 			<tr>
 				<td><input type="text" name="deptNo"></td>
 				<td><input name="deptName" value="<%= (deptVO==null)? "" : deptVO.getDeptName()%>" ></td>
-				<td>
-					<input type="radio" name="deptStatus"  value="0" ${deptVO.isDeptStatus? 'checked' : ''} size="45"/>凍結
-					<input type="radio" name="deptStatus"  value="1" checked="checked" size="45"/>未凍結 <%--預設未凍結 --%>
+				<td><input type="radio" name="deptStatus"  value="1" ${deptVO.deptStatus? 'checked' : ''} size="45"/>未凍結
+					<input type="radio" name="deptStatus"  value="0" ${deptVO.deptStatus? '' : 'checked'} size="45"/>凍結
+					
 				</td>
 				<td><input name="fucNo" value="<%= (deptVO==null)? "" : deptVO.getFucNo()%>" ></td>
 
@@ -99,8 +99,8 @@
 	
 	
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-	<scirpt>
-	===========================
+
+
 	<script>
 	$(function(){
 		  // ==== text 欄位新增待辦事項 ===== //
@@ -184,7 +184,7 @@
 			  }
 		});
 	</script>
-	===========================
+
 
 	</scirpt>
 	

@@ -41,7 +41,7 @@ public class Cart extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		// ==========是會員從redis內取得=================================
 		if (memno != null) {
-			System.out.println("是會員從redis取");
+//			System.out.println("是會員從redis取");
 			Jedis jedis = new Jedis("localhost", 6379);
 			String redisDataString = jedis.get("guest" + memno);
 //			System.out.println(redisDataString);
@@ -53,14 +53,14 @@ public class Cart extends HttpServlet {
 				return;
 			}
 			if(redisDataString == null && sessionDataString == null) {
-				System.out.println("redis沒有,session沒有");
+//				System.out.println("redis沒有,session沒有");
 				JSONObject emptyCartJSON = new JSONObject();
 				response.getWriter().write(emptyCartJSON.toString());
 				jedis.close();
 				return;
 			}
 			if(redisDataString == null && sessionDataString != null) {
-				System.out.println("redis沒有,session有");
+//				System.out.println("redis沒有,session有");
 				JSONObject sessionDataJSON = new JSONObject(sessionDataString);
 				jedis.set("guest" + memno, sessionDataJSON.toString());
 				session.removeAttribute("cart");
@@ -74,7 +74,7 @@ public class Cart extends HttpServlet {
 				JSONObject redisDataJSON = new JSONObject(redisDataString);//必須要不是空值的地方才可以轉
 				if (sessionDataString != null) {
 					JSONObject sessionDataJSON = new JSONObject(sessionDataString);
-					System.out.println("session內有,redis也有");
+//					System.out.println("session內有,redis也有");
 					for (String key : sessionDataJSON.keySet()) {
 						Object productObject = sessionDataJSON.getJSONObject(key);
 						int sessionquantity = ((JSONObject) productObject).getInt("quantity");
@@ -98,11 +98,11 @@ public class Cart extends HttpServlet {
 		}
 		// ==========不是會員從session內取得=================================
 		if (memno == null) {
-				System.out.println("不是會員從session取得");
+//				System.out.println("不是會員從session取得");
 				if (sessionDataString != null) {
 					response.getWriter().write(sessionDataString);
 				} else {
-					System.out.println("不是會員且session是空的");
+//					System.out.println("不是會員且session是空的");
 					JSONObject errorResponse = new JSONObject();
 					errorResponse.put("error", "購物車為空");
 					response.getWriter().write(errorResponse.toString());
@@ -121,7 +121,7 @@ public class Cart extends HttpServlet {
 			stringBuilder.append(line);
 		}
 		JSONObject jsonData = new JSONObject(stringBuilder.toString());
-		System.out.println("post進來的數據:"+stringBuilder);
+//		System.out.println("post進來的數據:"+stringBuilder);
 		// 取得json內的資料
 		String action = jsonData.getString("action");
 		String data = jsonData.getString("cartData");// 購物車資訊
@@ -134,7 +134,7 @@ public class Cart extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		if (memno != null) {
 			if ("checkout".equals(action)) {
-				System.out.println("是會員存redis");
+//				System.out.println("是會員存redis");
 				Jedis jedis = new Jedis("localhost", 6379);
 				jedis.set("guest" + memno, data);// 改memno
 
@@ -165,7 +165,7 @@ public class Cart extends HttpServlet {
 
 		if (memno == null) {
 			if ("checkout".equals(action)) {
-				System.out.println("不是會員存入session");
+//				System.out.println("不是會員存入session");
 				session.setAttribute("cart", data);
 				JSONObject addResponse = new JSONObject();
 				addResponse.put("add", "已加入購物車");
@@ -228,12 +228,11 @@ public class Cart extends HttpServlet {
 	    private Integer price;
 	    private Integer quantity;
 	    private String 	description;
-	    private Integer stock;
 	    
 		@Override
 		public String toString() {
 			return "Product [productId=" + productId + ", price=" + price + ", quantity=" + quantity + ", description="
-					+ description + ", stock=" + stock + "]";
+					+ description + "]";
 		}
 		public Integer getproductId() {
 			return productId;
@@ -258,12 +257,6 @@ public class Cart extends HttpServlet {
 		}
 		public void setDescription(String description) {
 			this.description = description;
-		}
-		public Integer getStock() {
-			return stock;
-		}
-		public void setStock(Integer stock) {
-			this.stock = stock;
 		}
 
 	  

@@ -21,7 +21,6 @@
 <body>
 	<link rel="stylesheet"
 		href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
 	<!-- 導覽列 -->
 	<nav class="navbar navbar-expand-lg navbar-light fixed-navbar"
 		style="background-color: transparent; background-color: rgba(0, 0, 0, 0.7);">
@@ -35,13 +34,15 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item"><a class="nav-link b" href="#">首頁</a></li>
+					<li class="nav-item">
+    					<a class="nav-link b" href="${pageContext.request.contextPath}/front-end/index/index2.jsp">首頁</a>
+					</li>
 					<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">預訂</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">聯絡我們</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">最新活動</a></li>
+					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
+					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a></li>
+					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href='<%=request.getContextPath()%>/front-end/cart/ProductTest.html'>購物商城</a>
+						href="<%= request.getContextPath() %>/productFront.html">購物商城</a>
 					</li>
 					<li class="nav-item"><a class="nav-link"
 						href='<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp'>會員專區</a>

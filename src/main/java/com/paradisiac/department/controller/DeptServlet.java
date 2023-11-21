@@ -40,7 +40,6 @@ public class DeptServlet extends HttpServlet{
 		String action = req.getParameter("action");
 		String forwardPath = "";
 		
-		//查單筆或複合查詢
 		switch (action) {
 			case "getAll":
 				forwardPath = getAllDepts(req, res);
@@ -87,7 +86,6 @@ public class DeptServlet extends HttpServlet{
 	private String getOne_For_Display(HttpServletRequest req, HttpServletResponse res) {
 		/*************************** 1.接收請求參數(取得部門編號PK)**********************/
 		Integer deptNo = Integer.valueOf(req.getParameter("deptNo"));
-		//String deptName = req.getParameter("deptName");
 
 		/***************************2.開始查詢資料***********************************/
 		Set<EmpVO> deptEmpSet = deptSvc.getDeptByDeptnoE(deptNo);  //取得員工資料
@@ -103,8 +101,16 @@ public class DeptServlet extends HttpServlet{
 		String deptName = req.getParameter("deptName").trim();
 		Boolean deptStatus = Boolean.valueOf(req.getParameter("deptStatus"));
 		Integer funNo = Integer.valueOf(req.getParameter("fucNo"));	
-		String[] empList = req.getParameterValues("empNo");
+		String[] empList = req.getParameterValues("empNo");		
+		Set<EmpVO> emps = new LinkedHashSet<>();
 		List<String> errorMsgs = new LinkedList<String>();
+		
+		DeptVO deptVO = new DeptVO();
+		//建立部門		
+		deptVO.setDeptNo(deptNo);
+		deptVO.setDeptName(deptName);
+		deptVO.setDeptStatus(deptStatus);
+		deptVO.setFucNo(funNo);	
 		
 		if(empList == null || empList.length == 0 || "none".equals(empList[0])) { //(empList == null || empList.length == 0) && "none".equals(empList[0])
 			errorMsgs.add("請至少選擇一名員工");
@@ -112,24 +118,19 @@ public class DeptServlet extends HttpServlet{
 		
 		req.setAttribute("errorMsgs", errorMsgs); 		
 		if (!errorMsgs.isEmpty()) {
+			req.setAttribute("deptVO", deptVO);
 			return "/back-end/dept/select_dept_page.jsp";//程式中斷
-		}		
-		
-		//建立部門
-		DeptVO deptVO = new DeptVO();
-		deptVO.setDeptNo(deptNo);
-		deptVO.setDeptName(deptName);
-		deptVO.setDeptStatus(deptStatus);
-		deptVO.setFucNo(funNo);	
-		//加入從屬員工
+		}	
 
-		Set<EmpVO> emps = new LinkedHashSet<>();
+		
 		for(String empNO : empList) {
 			EmpVO emp = empSvc.getOneEmp(Integer.valueOf(empNO)); //回傳員工物件
 			emp.setDeptVO(deptVO);
 			emps.add(emp);
 		}
+		//加入從屬員工
 		deptVO.setEmps(emps);
+
 		//打包完成送出
 		deptSvc.addDept(deptVO);//回傳主鍵PK
 		req.setAttribute("deptNo", deptNo);
@@ -153,8 +154,7 @@ public class DeptServlet extends HttpServlet{
 		if (deptName == null || deptName.trim().length() == 0) {
 			errorMsgs.add("部門名稱請勿空白");
 		}
-		//檢查是否有未凍結員工
-		
+		//檢查是否有未凍結員工		
 		int validEmp = 0;
 		if(deptStatus == false) {
 			Set<EmpVO> deptEmpSet = deptSvc.getDeptByDeptnoE(deptNo); 

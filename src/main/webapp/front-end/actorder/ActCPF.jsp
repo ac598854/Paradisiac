@@ -25,6 +25,20 @@
 	font-size: 20px;
 	font-weight: bold;
 }
+
+.form-control {
+	display: block;
+	width: 100%;
+	height: 38px;
+	padding: 7px 12px;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #555555;
+	background-color: #ffffff;
+	background-image: none;
+	border: 1px solid #e7e7e7;
+	border-radius: 4px;
+}
 </style>
 </head>
 
@@ -35,82 +49,92 @@
 		<div class="row">
 			<div class="col-12 text-right">
 				<a
-					href="<%=request.getContextPath()%>/front-end/csmessages/MessageLPF.jsp"
+					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp"
 					class="btn btn-secondary">回上一頁</a>
 			</div>
-
-				<form method="post" action="members.do" name="form1"
-		enctype="multipart/form-data">
-		<table>
-			<tr>
-				<td>活動訂單編號:<font color="red"><b>*</b></font></td>
-				<td><input type="hidden" name="memno"
-					value="${membersVO.memno}" readonly size="45" />${membersVO.memno}</td>
-			</tr>
-			<tr>
-				<td>訂單狀態:</td>
-				<td><select name="memstatus">
-						<option value="true"
-							${membersVO.memstatus == true ? 'selected' : ''}>訂單成立</option>
-						<option value="false"
-							${membersVO.memstatus == false ? 'selected' : ''}>取消訂單</option>
-				</select></td>
-			</tr>
-
-			<tr>
-				<td>活動類型:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="memname"
-					value="${membersVO.memname}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>活動檔期:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="memmail"
-					value="${membersVO.memmail}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>活動時間:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="memmail"
-					value="${membersVO.memmail}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>訂購人姓名:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="memaccount"
-					value="${membersVO.memaccount}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>參加人姓名A:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="mempass"
-					value="${membersVO.mempass}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>參加人身分證字號A:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="mempass"
-					value="${membersVO.mempass}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>參加人電話A:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="mempass"
-					value="${membersVO.mempass}" size="45" readonly /></td>
-			</tr>
-			<tr>
-				<td>付款方式:<font color="red"><b>*</b></font></td>
-				<td><input type="text" name="mempass"
-					value="${membersVO.mempass}" size="45" readonly /></td>
-			</tr>
-		
-			<tr>
-				<td>付款時間:</td>
-				<td><input type="TEXT" name="memdate"
-					value="${membersVO.memdate}" size="45" readonly /></td>
-			</tr>
-
-		</table>
-		<br> <input type="hidden" name="action"
-			value="update_Back_Status"> <input type="submit" value="送出修改">
-
-	</FORM>
-			<br>
 		</div>
+		<div class="container">
+			<div class="table-responsive">
+				<form method="post" action="members.do" name="form1"
+					enctype="multipart/form-data">
+					<table class="table">
+
+						<tr>
+							<td>活動訂單編號:<font color="red"><b>*</b></font></td>
+							<td><input type="text" class="form-control" id="memno"
+								name="memno" value="${membersVO.memno}" readonly></td>
+						</tr>
+						<tr>
+							<td>會員編號:</td>
+							<td><select name="memstatus"
+								class="form-control browser-default custom-select">
+									<option value="true"
+										${membersVO.memstatus == true ? 'selected' : ''}>正常</option>
+									<option value="false"
+										${membersVO.memstatus == false ? 'selected' : ''}>凍結</option>
+							</select></td>
+						</tr>
+
+						<tr>
+							<td>檔期編號:<font color="red"><b>*</b></font></td>
+							<td><input type="text" name="memname" class="form-control"
+								class="custom-file-input" value="${membersVO.memname}" size="45"
+								readonly /></td>
+						</tr>
+						<tr>
+							<td>訂單日期:<font color="red"><b>*</b></font></td>
+							<td><input type="date" name="memaccount"
+								class="form-control" value="${membersVO.memaccount}" size="45"
+								readonly /></td>
+						</tr>
+						<tr>
+							<td>報名人數:<font color="red"><b>*</b></font></td>
+							<td><input type="date" name="memaccount"
+								class="form-control" value="${membersVO.memaccount}" size="45"
+								readonly /></td>
+						</tr>
+						<tr>
+							<td>訂單狀態:</td>
+							<td><select name="memgender"
+								class="form-control browser-default custom-select" disabled>
+									<option value="1"
+										<c:if test="${membersVO.memgender == 1}">selected</c:if>>男</option>
+									<option value="2"
+										<c:if test="${membersVO.memgender == 2}">selected</c:if>>女</option>
+									<option value="3"
+										<c:if test="${membersVO.memgender == 3}">selected</c:if>>其他</option>
+							</select></td>
+						</tr>
+						<tr>
+							<td>訂單總金額:<font color="red"><b>*</b></font></td>
+							<td><input type="text" name="memid" class="form-control"
+								value="${membersVO.memid}" size="45" readonly /></td>
+						</tr>
+
+						<tr>
+							<td>參加人姓名A:<font color="red"><b>*</b></font></td>
+							<td><input type="text" name="memphone" class="form-control"
+								value="${membersVO.memphone}" size="45" readonly /></td>
+						</tr>
+						<tr>
+							<td>參加人身分證字號A:<font color="red"><b>*</b></font></td>
+							<td><input type="text" name="memphone" class="form-control"
+								value="${membersVO.memphone}" size="45" readonly /></td>
+						</tr>
+						<tr>
+							<td>參加人電話A:<font color="red"><b>*</b></font></td>
+							<td><input type="text" name="memphone" class="form-control"
+								value="${membersVO.memphone}" size="45" readonly /></td>
+						</tr>
+
+					</table>
+					<br> <input type="hidden" name="action"
+						value="update_Back_Status"> <input type="submit"
+						class="btn btn-primary" value="送出修改">
+				</form>
+			</div>
+		</div>
+		<br>
 	</div>
 
 	<!-- Menu Toggle Script -->

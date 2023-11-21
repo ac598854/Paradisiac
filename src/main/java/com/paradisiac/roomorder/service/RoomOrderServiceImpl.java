@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 //import org.springframework.transaction.annotation.Transactional;
 
 import com.paradisiac.roomorder.model.RoomOrderDAO;
@@ -18,8 +17,6 @@ import com.paradisiac.roomorder.model.RoomOrderDAOImpl;
 import com.paradisiac.roomorder.model.RoomOrderDTO;
 import com.paradisiac.roomorder.model.RoomOrderVO;
 import com.paradisiac.util.HibernateUtil;
-
-
 
 @Service
 @Transactional

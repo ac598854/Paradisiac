@@ -6,7 +6,6 @@ import java.util.*;
 import com.paradisiac.roomZ.roomorder.entity.RoomOrderVO;
 import com.paradisiac.roomcalendar.model.RoomCalendarVO;
 
-
 public interface RoomCalendarDAO {
 		
 	String getAll();

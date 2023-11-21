@@ -32,8 +32,8 @@ public class PhotoAlbumServiceImpl implements PhotoAlbumService_interface{
 
 	@Override
 	public PhotoAlbumVO updatePha(PhotoAlbumVO phaVO) {
-		// TODO Auto-generated method stub
-		return null;
+		dao.update(phaVO);
+		return phaVO;
 	}
 
 	@Override
@@ -64,6 +64,10 @@ public class PhotoAlbumServiceImpl implements PhotoAlbumService_interface{
 	public List<PhotoAlbumVO> getPhaByCompositeQuery(Map<String, String[]> map) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	public Integer getPhaByMem(Integer memno) {
+		return dao.findByMem(memno);
 	}
 
 }

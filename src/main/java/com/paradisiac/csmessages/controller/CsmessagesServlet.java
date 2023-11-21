@@ -180,7 +180,6 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 
 			// 1. 接收請求參數 - 輸入格式的錯誤處理
 			String cscontent = req.getParameter("cscontent");
-			System.out.println("客戶問題：" + cscontent);
 			HttpSession session = req.getSession();
 			Integer memno = (Integer) session.getAttribute("memno");
 			System.out.println("測試取得放入session的會員編號" + memno);// 測試用
@@ -202,32 +201,7 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 			}
 		}
 		
-		
-//		if ("get_all_back".equals(action)) {
-//			List<String> errorMsgs = new LinkedList<String>();
-//			req.setAttribute("errorMsgs", errorMsgs);
-//
-//			/*************************** 1.接收請求參數(取值) - 輸入格式的錯誤處理 **********************/
-//			Integer csmsgno  = Integer.valueOf(req.getParameter("csmsgno "));
-//			CsMessagesService csMegSvc = new CsMessagesService();
-//			CsMessagesVO CsVO = csMegSvc.getOneByCsmsgno(csmsgno );
-//
-//			if (!errorMsgs.isEmpty()) {
-//				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/csmessages/MessageLPB.jsp");
-//				failureView.forward(req, res);
-//				return; 
-//			}
-//
-//			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-//			req.setAttribute("CsVO", CsVO); 
-//			String url = "/back-end/members/MembersCPB.jsp";
-//			
-//			RequestDispatcher successView = req.getRequestDispatcher(url); 
-//			successView.forward(req, res);
-//		}
-		
-		
-		
+	
 		if ("update_Back".equals(action)) { 
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);

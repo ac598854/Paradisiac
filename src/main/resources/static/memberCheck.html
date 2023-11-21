@@ -9,47 +9,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <!-- 引入Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<header class="flex-header">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/Paradisiac/productFront.html">購物商城</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">首頁</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">關於我們</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">聯絡我們</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav ms-auto">
-                    <input type="text" placeholder="Search..." id="searchInput" onkeyup="handleEnter(event)">
-                    <button onclick="searchProducts()">搜尋</button>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Paradisiac/cart/cart.html">
-                            <i class="fas fa-shopping-cart"></i> <span id="cartCount">0</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">登入</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<div id="dynamicContent"></div>  <!-- 動態內容的容器 -->
 
-</header>
 
-<!-- Checkout details area where product details will be displayed -->
+
 <div id="checkout-details">
     <h2>Check Out</h2>
     <table id="cart-items-table" class="table">
@@ -109,7 +77,7 @@
 </div>
 
 <footer>
-    <!-- 頁腳資訊 -->
+    <div id="footer"></div>  <!-- 頁尾的容器 -->
 </footer>
 
 <script>
@@ -120,6 +88,35 @@
     //==================================預設狀態為true（信用卡）==============================================
     let orderStatus = true;
 
+    //==================================取得會員servlet URL==============================================
+//     var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
+	
+    
+    $(document).ready(function(){
+        // 加載頁尾
+        $("#footer").load(projectName +"/front-end/index/footer.jsp");
+
+        // 處理會員登入
+        $.ajax({
+            type: "POST",
+            url: projectName + "/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                // ... 登入邏輯
+                const responseMessage = parseInt(data);
+                var guided = projectName + '/front-end/index/guided.jsp';
+                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
     //==================================當文檔加載完成後，執行以下函數==============================================
     document.addEventListener('DOMContentLoaded', function() {
         // 從sessionStorage中獲取購物車項目，若無則設為空數組
@@ -196,25 +193,45 @@
         // 防止表單的默認提交行為
         event.preventDefault();
 
-        // 向伺服器發送GET請求，獲取用戶會員編號
-        fetch(`/Paradisiac/members/sessionInfo`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+        var isValid = true;
+        var inputs = document.querySelectorAll('#shipping-form input[required]');
+
+        // 通用的前端验证逻辑
+        inputs.forEach(function(input) {
+            var errorSpan = input.nextElementSibling;
+            if (!input.validity.valid) {
+                errorSpan.style.display = 'inline';
+                isValid = false;
+            } else {
+                errorSpan.style.display = 'none';
             }
-        })
-            .then(response => response.json())
-            .then(data => {
-                // 如果獲取到會員編號，則提交訂單，否則提示用戶登入
-                if (data && data.memno) {
-                    submitOrder(data.memno);
-                } else {
-                    alert("請先登入。");
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        });
+
+        // 检查支付方式相关的输入
+        var paymentMethod = document.getElementById('payment-method').value;
+        var cardNumber = document.getElementById('card-number');
+        var accountNumber = document.getElementById('account-number');
+
+        if (paymentMethod === "1") {
+            if (cardNumber.value.trim() === "") {
+                cardNumber.nextElementSibling.style.display = 'inline';
+                isValid = false;
+            } else {
+                cardNumber.nextElementSibling.style.display = 'none';
+            }
+        } else if (paymentMethod === "0") {
+            if (accountNumber.value.trim() === "") {
+                accountNumber.nextElementSibling.style.display = 'inline';
+                isValid = false;
+            } else {
+                accountNumber.nextElementSibling.style.display = 'none';
+            }
+        }
+
+        // 如果验证通过，调用 submitOrder 函數處理提交邏輯
+        if (isValid) {
+            submitOrder();
+        }
     }
 
     //==================================更新訂單狀態=============================================
@@ -239,9 +256,21 @@
         // 將購物車項目轉換為訂單項目列表
         const buyItemList = cartItems.map(item => ({
             productId: item.productId,  // 確保這裡使用正確的屬性名
-            quantity: item.quantity
+            quantity: item.quantity,
         }));
+        
+        //刪除redis內的商品
+        const productNameDelet = cartItems.map(item => ({
+        	productName: item.name
+        }));
+		
+        productNameDelet.forEach(item => {
+        	console.log(item.productName);
+        	deleteOne(item.productName);
+        });
 
+        
+       	
         // 構建訂單數據
         const orderData = {
             orderName: recipientName,
@@ -276,6 +305,27 @@
     function calculateTotalAmount(cartItems) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
     }
+  //=============================刪除redis內的商品=====================================================//
+    function deleteOne(productName) {
+		console.log(productName);
+		const productNameJSON = JSON.stringify({ productName: productName });
+		const dataToSend = { action: 'delete', cartData: productNameJSON};
+
+		fetch(projectName + '/Cart', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json;charset=utf-8'
+			},
+			body: JSON.stringify(dataToSend)
+		}).then(response => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				throw new Error('沒有取得回應');
+			}
+		})
+				
+	}
 </script>
 
 

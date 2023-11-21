@@ -12,16 +12,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import java.io.FileInputStream;
-
+import com.paradisiac.members.model.MembersVO;
+import com.paradisiac.members.service.MembersService;
+import com.paradisiac.photo.model.PhoWithAlbDTO;
+import com.paradisiac.photoAlbum.model.PhotoAlbumDAO_interface;
+import com.paradisiac.photoAlbum.model.PhotoAlbumHibernateDAO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
 import com.paradisiac.photoAlbum.service.PhotoAlbumServiceImpl;
 import com.paradisiac.photoAlbum.service.PhotoAlbumService_interface;
 import com.paradisiac.util.HibernateUtil;
-import com.paradisiac.photo.model.PhoWithAlbDTO;
-import com.paradisiac.photoAlbum.model.*;
 
 /**
  * Servlet implementation class phaService
@@ -161,7 +163,7 @@ public class PhaServlet extends HttpServlet {
 			successView.forward(req, res);
 		}
 		//修改相簿內容
-		if("insert".equals(action)) {
+		if("update".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			
@@ -178,8 +180,31 @@ public class PhaServlet extends HttpServlet {
 				errorMsgs.add("相簿建立日期請勿空白");
 			}
 			//開始打包
+			PhotoAlbumVO phaVO = new PhotoAlbumVO(albNo, memNo, albName, albDate);
+			//圖片需轉換成byte
+			byte[] albPhoto = null;
+			Part part = req.getPart("albPhoto");
+			InputStream is = part.getInputStream();
+			albPhoto = new byte[is.available()];
+			is.read(albPhoto);
+			is.close();
+			phaVO.setAlbPhoto(albPhoto);
 			
-			
+			//如有錯誤則將填寫的資料保留傳回更新頁面
+			if(!errorMsgs.isEmpty()) {
+				req.setAttribute("phaVO", phaVO);
+				forwardPath = "/back-end/pha/updateOnePha.jsp";
+				RequestDispatcher failureView = req.getRequestDispatcher(forwardPath);
+				failureView.forward(req, res);
+				return;
+			}
+			//無錯誤, 修改並轉交
+			phaSvc.updatePha(phaVO);
+			req.setAttribute("phaVO", phaVO);
+			forwardPath = "/back-end/pha/select_phoalb.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
+			successView.forward(req, res);
+
 		}
 		
 		
@@ -204,8 +229,30 @@ public class PhaServlet extends HttpServlet {
 	}
 	//查相簿的所有照片=============================================================
 	private String getAllPho(HttpServletRequest req, HttpServletResponse res) {
+
+		Integer albNo = null;
+		Integer memno = null;
+		//從session取得會員編號
+		Object memnoInt = (Integer)req.getSession(false).getAttribute("memno");
 		
-		Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+		if(memnoInt instanceof Integer) {
+			System.out.println("輸入是Integer");
+		}else if(memnoInt instanceof String) {
+			System.out.println("輸入是String");
+		}
+		
+		System.out.println("有取得會員編號"+memnoInt);
+				
+		//會員查詢相簿 & 後台員工查詢相簿
+		if(memnoInt != null) {
+			albNo = phaSvc.getPhaByMem((Integer) memnoInt);	
+			System.out.println(memnoInt + "取得相簿編號: "+albNo);
+			req.setAttribute("albNo", albNo);
+		}else {
+			albNo = Integer.valueOf(req.getParameter("albNo"));
+			System.out.println("後台取得相簿編號: "+albNo);
+		}
+	
 		String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 		
@@ -217,8 +264,15 @@ public class PhaServlet extends HttpServlet {
 		
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
-
-		return "/back-end/pha/listOnePha.jsp";
+		
+		if(memnoInt != null) {
+			albNo = phaSvc.getPhaByMem(memno);
+			req.setAttribute("albNo", albNo);		
+			return "/back-end/pha/listOnePha_mem.jsp";
+		}else {
+			return "/back-end/pha/listOnePha.jsp";
+		}
+			
 	}
 
 		

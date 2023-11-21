@@ -5,201 +5,492 @@
 <%@ page import="com.paradisiac.members.controller.*"%>
 <%@ page import="com.paradisiac.members.service.*"%>
 
-<%-- <%@ include file=<%=request.getContextPath()%>/"back-end.index.header.jsp" %> --%>
-
 <%
 List<MembersVO> list = null;
 if (request.getAttribute("getOne_For_Memno_SA") != null) {//
-    list = (List<MembersVO>) request.getAttribute("getOne_For_Memno_SA");
+	list = (List<MembersVO>) request.getAttribute("getOne_For_Memno_SA");
 } else if (request.getAttribute("getAll_For_Status_SA") != null) {//查狀態
-    list = (List<MembersVO>) request.getAttribute("getAll_For_Status_SA");
+	list = (List<MembersVO>) request.getAttribute("getAll_For_Status_SA");
 } else if (request.getAttribute("getOne_For_Account_SA") != null) {
-    list = (List<MembersVO>) request.getAttribute("getOne_For_Account_SA");
+	list = (List<MembersVO>) request.getAttribute("getOne_For_Account_SA");
 } else {
-    // 列出全部
-    MembersService memSvc = new MembersService();
-    list = memSvc.getAll();
+	// 列出全部
+	MembersService memSvc = new MembersService();
+	list = memSvc.getAll();
 }
 pageContext.setAttribute("list", list);
 %>
-
+<!DOCTYPE html>
 <html>
 <head>
-
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
-<title>MembersLPB.jsp: 會員管理列表</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, shrink-to-fit=no, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<title>會員帳號管理</title>
 
 <!-- 引入Bootstrap CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+<!-- CSS -->
 <style>
-table#table-1 {
-	width: 450px;
-	background-color: #CCCCFF;
-	margin-top: 5px;
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
+body {
+	overflow-x: hidden;
+	font-family: 'Lato', sans-serif;
+	background: #f2f2f2;
+}
+
+h1, h2, h3, h4 {
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+}
+
+/* Toggle Styles */
+#menu-toggle {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+ul.navigation {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: #8E44AD;
+	/*COLOR*/
+	width: 100%;
+	height: 61px;
+}
+
+.navigation li {
+	float: right;
+}
+
+.navigation li a {
+	display: block;
+	color: white;
+	text-align: center;
+	padding: 20px 16px;
+	text-decoration: none;
+	transition: 0.1s all;
+}
+
+.navigation li a:hover {
+	background-color: #783993;
+	/*COLOR*/
+}
+
+.container-fluid {
+	/* 	max-width: 1100px; */
+	/* 	margin-top: 10px; */
+	max-width: 100%;
+	margin-top: 10px;
+	padding: 0;
+	overflow: hidden;
+}
+
+.sidebar-nav>.sidebar-title {
+	color: #dddddd;
+	text-transform: uppercase;
+	margin-bottom: -10px;
+	font-size: 14px;
+}
+
+.sidebar-nav>.sidebar-brand a, .sidebar-nav>.sidebar-brand a:active,
+	.sidebar-nav>.sidebar-brand a:hover, .sidebar-nav>.sidebar-brand a:visited
+	{
+	background: #783993;
+	/*COLOR*/
+	color: #ffffff !important;
+	font-size: 24px;
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+	border: 0px solid #000 !important;
+}
+
+.sidebar-nav li a {
+	border-left: 0px solid #000;
+	transition: 0.1s all;
+}
+
+.sidebar-nav li a:hover {
+	border-left: 4px solid #783993;
+	/*COLOR*/
+}
+
+#wrapper {
+	padding-left: 0;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+	padding-left: 250px;
+}
+
+#sidebar-wrapper {
+	z-index: 1000;
+	position: fixed;
+	left: 250px;
+	width: 0;
+	height: 100%;
+	margin-left: -250px;
+	overflow-y: auto;
+	background: #4d4d4d;
+	-webkit-transition: all 0.5s ease;
+	-moz-transition: all 0.5s ease;
+	-o-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+	width: 250px;
+}
+
+#page-content-wrapper {
+	width: 100%;
+	position: absolute;
+	padding: 15px;
+}
+
+#wrapper.toggled #page-content-wrapper {
+	position: absolute;
+	margin-right: -250px;
+}
+
+/* Sidebar Styles */
+.sidebar-nav {
+	position: absolute;
+	top: 0;
+	width: 250px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.sidebar-nav li {
+	text-indent: 20px;
+	line-height: 40px;
+}
+
+.sidebar-nav li a {
+	display: block;
+	text-decoration: none;
+	color: #999999;
+}
+
+.sidebar-nav li a:hover {
+	text-decoration: none;
+	color: #fff;
+	background: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar-nav li a:active, .sidebar-nav li a:focus {
+	text-decoration: none;
+}
+
+.sidebar-nav>.sidebar-brand {
+	height: 65px;
+	font-size: 18px;
+	line-height: 60px;
+}
+
+.sidebar-nav>.sidebar-brand a: hover {
+	border: 0px solid #000 !important;
+}
+
+/*調整h1 */
+.col-lg-12 {
+	/* 	padding: 0 0 0 10%; */
+	
+}
+
+@media ( min-width :768px) {
+	#wrapper {
+		padding-left: 250px;
+	}
+	#wrapper.toggled {
+		padding-left: 0;
+	}
+	#sidebar-wrapper {
+		width: 250px;
+	}
+	#wrapper.toggled #sidebar-wrapper {
+		width: 0;
+	}
+	#page-content-wrapper {
+		padding: 20px;
+		position: relative;
+	}
+	#wrapper.toggled #page-content-wrapper {
+		position: relative;
+		margin-right: 0;
+	}
+}
+
+/* 原始*/
+h1, h2, h3, h4 {
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+}
+
+.table {
+	width: 100%;
+}
+
+.container {
+	max-width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.table-data {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.col-md-3 {
+	width: 50%;
+}
+
+#keyword, #resStatus {
+	width: 420px;
+}
+
+.table-data .col-md-2 {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	background-color: #f8f9fa;
 	margin-bottom: 10px;
-	border: 3px ridge Gray;
-	height: 80px;
-	text-align: center;
+	text-align: left;
+	vertical-align: middle;
 }
 
-table#table-1 h4 {
-	color: red;
-	display: block;
-	margin-bottom: 1px;
+.table-data .col-md-2:nth-child(odd) {
+	background-color: #e9ecef;
 }
 
-h4 {
-	color: blue;
-	display: inline;
+.table-data .col-md-2:nth-child(1) {
+	background-color: #007bff;
+	color: #fff;
+	width: 10%;
 }
 
-table#table-1 {
-	background-color: #CCCCFF;
-	border: 2px solid black;
-	text-align: center;
+.table-data .col-md-2:nth-child(2) {
+	background-color: #28a745;
+	color: #fff;
+	width: 20%;
 }
 
-table#table-1 h4 {
-	color: red;
-	display: block;
-	margin-bottom: 1px;
+.table-data .col-md-2:nth-child(3) {
+	background-color: #ffc107;
+	width: 30%;
 }
 
-h4 {
-	color: blue;
-	display: inline;
+.table-data .col-md-2:nth-child(4) {
+	background-color: #dc3545;
+	color: #fff;
+	width: 20%;
+}
+
+.table-data .col-md-2:nth-child(5) {
+	background-color: #17a2b8;
+	color: #fff;
+	width: 20%;
+}
+
+.table-data .col-md-2 th {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.input-group {
+	margin-bottom: 10px;
+}
+
+.table thead {
+	background-color: #343a40;
+	color: #fff;
+}
+
+.table tbody tr:nth-child(odd) {
+	background-color: #f8f9fa;
+}
+
+.table tbody tr:nth-child(even) {
+	background-color: #e9ecef;
 }
 </style>
-
-<style>
-table {
-	width: 800px;
-	background-color: white;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-table, th, td {
-	border: 1px solid #CCCCFF;
-}
-
-th, td {
-	padding: 5px;
-	text-align: center;
-}
-</style>
-
 </head>
+<body>
+	<div id="wrapper" class="">
 
-<%@ include file="/back-end/index/back-left.jsp" %>
-<body bgcolor='white'>
+		<!-- Sidebar -->
+		<div id="sidebar-wrapper">
+			<ul class="sidebar-nav">
+				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
+				<li class="sidebar-title">員工權限管理</li>
+				<li class="sidebar-title">會員管理</li>
+				<li><a
+					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li>
+				<li><a href="#">會員相簿管理</a></li>
+				<li><a
+					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li>
+				<li class="sidebar-title">最新消息管理</li>
+				<li class="sidebar-title">訂房管理</li>
+				<li class="sidebar-title">商城管理</li>
+				<li class="sidebar-title">活動管理</li>
+				<li><a href="#">活動類別管理</a></li>
+				<li><a href="#">檔期管理</a></li>
+				<li><a href="#">活動訂單管理</a></li>
+			</ul>
+		</div>
+		<!-- /#sidebar-wrapper -->
 
-	<table id="table-1">
-		<tr>
-			<td><h3>MembersLPB：會員管理列表</h3>
-		</tr>
-	</table>
-
-	<h3>資料查詢:</h3>
-
-
-	<c:if test="${not empty errorMsgs}">
-		<font style="color: red">請修正以下錯誤:</font>
-		<ul>
-			<c:forEach var="message" items="${membersVO.errorMsgs}">
-				<li style="color: red">${membersVO.message}</li>
-			</c:forEach>
+		<!-- Top Navigation -->
+		<ul class="navigation">
+			<li><a href="#home">登出</a></li>
 		</ul>
-	</c:if>
+		<!--Page Content -->
+		<div id="page-content-wrapper">
+			<a href="#menu-toggle" class="btn btn-success btn-sm"
+				id="menu-toggle">展開畫面</a>
+			<div class="container-fluid">
 
-	<ul>
-		<li>
-			<FORM METHOD="post" ACTION="members.do">
-				<b>輸入會員編號(103):</b> <input type="text" name="memno"> <input
-					type="hidden" name="action" value="getOne_For_Memno"> <input
-					type="submit" value="送出">
-			</FORM>
-		</li>
+				<div class="col-lg-12">
+					<h1>會員帳號管理</h1>
+					<!-- 查詢 -->
+					<div class="row mb-4">
+						<div class="col-md-3">
+							<form method="post" action="members.do">
+								<label for="keyword">會員編號查詢</label>
+								<div class="input-group">
+									<input type="text" class="form-control" name="memno" id="memno">
+									<input type="hidden" name="action" value="getOne_For_Memno">
+									<input type="submit" value="送出" class="btn btn-primary">
+									<div class="input-group-append"></div>
+								</div>
+							</form>
+						</div>
 
-		<li>
-			<FORM METHOD="post" ACTION="members.do">
-				<b>輸入會員帳號 :</b> <input type="text" name="memaccount"> <input
-					type="hidden" name="action" value="getOne_For_Account"> <input
-					type="submit" value="送出">
-			</FORM>
-		</li>
+						<div class="col-md-3">
+							<form method="post" action="members.do">
+								<label for="resStatus">會員帳號查詢</label>
+								<div class="input-group">
+									<input type="text" name="memaccount" class="form-control">
+									<input type="hidden" name="action" value="getOne_For_Account">
+									<input type="submit" value="送出" class="btn btn-primary">
+								</div>
+							</form>
+						</div>
+						<div class="col-md-3">
+							<form method="post" ACTION="members.do">
+								<label for="resStatus">會員帳號狀態查詢</label>
+								<div class="input-group">
+									<select name="memstatus" id="memstatus_dropdown"
+										class="form-control">
+										<option value="3">請選擇</option>
+										<option value="true">正常</option>
+										<option value="false">凍結</option>
+									</select>
+									<div class="input-group-append"></div>
+									<input type="hidden" name="action" value="getAll_For_Status">
+									<input type="submit" value="送出" class="btn btn-primary">
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				<!-- 表格-->
+				<div class="container">
+					<div class="row mb-4">
+						<div class="col-md-12">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th>會員編號</th>
+											<th>帳號狀態</th>
+											<th>姓名</th>
+											<th>帳號</th>
+											<th>電子信箱</th>
+											<th>生日</th>
+											<th>電話</th>
+											<th>註冊時間</th>
+											<th>動作</th>
+										</tr>
+									</thead>
 
-		<jsp:useBean id="MembersService" scope="page"
-			class="com.paradisiac.members.service.MembersService" />
-
-		<li>
-			<form method="post" action="members.do">
-				<label for="memstatus_dropdown"><b>選擇帳號狀態:</b></label> <select
-					name="memstatus" id="memstatus_dropdown">
-					<option value="3">請選擇</option>
-					<option value="true">正常</option>
-					<option value="false">凍結</option>
-				</select> <input type="hidden" name="action" value="getAll_For_Status">
-				<!-- 				value=action名> -->
-				<input type="submit" value="送出">
-			</form>
-		</li>
-
-
-	</ul>
-
-
-	<h3>列表</h3>
-	<table>
-		<tr>
-			<th>會員編號</th>
-			<th>帳號狀態</th>
-			<th>姓名</th>
-			<th>帳號</th>
-			<th>電子信箱</th>
-			<th>手機</th>
-			<th>地址</th>
-			<th>註冊時間</th>
-			<th>修改</th>
-		</tr>
-		<%@ include file="page1.file"%>
-		<c:forEach var="MembersVO" items="${list}" begin="<%=pageIndex%>"
-			end="<%=pageIndex+rowsPerPage-1%>">
-
-			<tr>
-				<td>${MembersVO.memno}</td>
-				<td><c:choose>
-						<c:when test="${MembersVO.memstatus == true}">
+									<tbody>
+										<%@ include file="page1.file"%>
+										<c:forEach var="MembersVO" items="${list}"
+											begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+											<tr>
+												<td>${MembersVO.memno}</td>
+												<td><c:choose>
+														<c:when test="${MembersVO.memstatus == true}">
             				正常
         				</c:when>
-						<c:when test="${MembersVO.memstatus == false}">
-							<span style="color: red;">凍結</span>
-						</c:when>
-					</c:choose></td>
-				<td>${MembersVO.memname}</td>
-				<td>${MembersVO.memaccount}</td>
-				<td>${MembersVO.memmail}</td>
-				<td>${MembersVO.membir}</td>
-				<td>${MembersVO.memphone}</td>
-				<td>${MembersVO.memdate}</td>
+														<c:when test="${MembersVO.memstatus == false}">
+															<span style="color: red;">凍結</span>
+														</c:when>
+													</c:choose></td>
+												<td>${MembersVO.memname}</td>
+												<td>${MembersVO.memaccount}</td>
+												<td>${MembersVO.memmail}</td>
+												<td>${MembersVO.membir}</td>
+												<td>${MembersVO.memphone}</td>
+												<td>${MembersVO.memdate}</td>
 
-				<td>
-					<FORM METHOD="post" ACTION="members.do" style="margin-bottom: 0px;">
-						<input type="submit" value="修改"> <input type="hidden"
-							name="memno" value="${MembersVO.memno}"> <input
-							type="hidden" name="action" value="get_all_back">
-					</FORM>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
-	<%@ include file="page2.file"%>
+												<td>
+													<form method="post" action="members.do"
+														style="margin-bottom: 0px;">
+														<input type="submit" value="修改" class="btn btn-primary"> <input
+															type="hidden" name="memno" value="${MembersVO.memno}">
+														<input type="hidden" name="action" value="get_all_back">
+													</form>
+												</td>
+											</tr>
+										</c:forEach>
+									</tbody>
+								</table>
+								<%@ include file="page2.file"%>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+	<!-- Menu Toggle Script -->
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
 </body>
 </html>
+

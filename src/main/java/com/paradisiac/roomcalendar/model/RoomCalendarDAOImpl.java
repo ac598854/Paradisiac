@@ -129,6 +129,4 @@ public class RoomCalendarDAOImpl implements RoomCalendarDAO {
 	public List<RoomCalendarVO> getOne() {
 		return getSession().createQuery("FROM RoomCalendarVO WHERE cdate = '${2023-11-30}' ", RoomCalendarVO.class).list();
 	}
-
-	
 }
