@@ -1,6 +1,5 @@
 package com.paradisiac.promotionlist.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.LinkedList;
@@ -37,7 +36,6 @@ public class PromotionListServlet extends HttpServlet{
 
 					List<String> errorMsgs = new LinkedList<String>();
 					request.setAttribute("errorMsgs", errorMsgs);
-
 					/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 					String proname = request.getParameter("proname");
 					String Reg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
@@ -80,7 +78,16 @@ public class PromotionListServlet extends HttpServlet{
 						discount = 0.9;
 						errorMsgs.add("專案折扣請填數字且在0.1到0.99之間.");
 					}
-
+					String selectedProducts = null;
+					try {
+						selectedProducts = request.getParameter("selectedProducts");
+						if(selectedProducts == null || selectedProducts == "") {
+							throw new Exception();
+						}
+					} catch (Exception e) {
+						errorMsgs.add("請選擇折扣商品");
+					}
+					
 					Boolean status = Boolean.valueOf(request.getParameter("status").trim());
 					
 					
@@ -106,7 +113,7 @@ public class PromotionListServlet extends HttpServlet{
 
 					// 提交資料到資料庫
 					PromotionService proSvc = new PromotionService();
-					proVO = proSvc.addPro(proname, prodes, startdate, enddate, discount, status);
+					proVO = proSvc.addPro(proname, prodes, startdate, enddate, discount, status,selectedProducts);
 
 					// 取得新建的資料編號
 					Integer prono = proVO.getProno();

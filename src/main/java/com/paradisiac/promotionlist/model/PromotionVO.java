@@ -1,6 +1,7 @@
 package com.paradisiac.promotionlist.model;
 
-import java.util.Date;
+
+import java.sql.Date;
 import java.util.Set;
 
 import javax.persistence.CascadeType;

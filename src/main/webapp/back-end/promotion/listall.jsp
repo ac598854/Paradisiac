@@ -2,15 +2,17 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.paradisiac.promotion.model.*"%>
-<%@ page import="com.paradisiac.promotion.service.*"%>
+<%@ page import="com.paradisiac.promotionlist.model.*"%>
+<%@ page import="com.paradisiac.promotionlist.service.*"%>
 
 <%
     PromotionService proSvc = new PromotionService();
     List<PromotionVO> list = proSvc.getAll();
     pageContext.setAttribute("list", list);
 %>
- <jsp:useBean id="proServic" scope="page" class="com.paradisiac.promotion.service.PromotionService" />
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,12 +61,12 @@
     <div style="display: flex; align-items: center; margin-left: 20px;">
         <b style="white-space: nowrap;">選擇促銷編號:</b>
         <select class="form-control" id="selectProno" name="prono" style="margin-left: 10px;">
-            <c:forEach var="proVO" items="${proServic.all}" >
+            <c:forEach var="proVO" items="${list}" >
                 <option value="${proVO.prono}">${proVO.prono}</option>
             </c:forEach>
         </select>
     </div>
-	<a href="add.jsp" class="btn btn-primary" style="margin-left: 370px;">新增專案</a>
+	<a href="#" class="btn btn-primary" style="margin-left: 370px;" id="add">新增專案</a>
     <button id="showAllBtn" class="btn btn-primary" style="margin-left:10px;">顯示所有專案</button>
 </div>
 
@@ -81,7 +83,6 @@
         <th style="text-align: center;">專案結束日期</th>
         <th style="text-align: center;">促銷專案折扣</th>
         <th style="text-align: center;">促銷專案狀態</th>
-<!--         <th style="text-align: center;">新增促銷商品</th> -->
         <th style="text-align: center;">修改</th>
     </tr>
 </thead>
@@ -96,10 +97,10 @@
                         <td>${proVO.discount}</td>
                         <td>
 						    <c:choose>
-						        <c:when test="${proVO.status eq 1}">
+						        <c:when test="${proVO.status eq true}">
 						            上架
 						        </c:when>
-						        <c:when test="${proVO.status eq 0}">
+						        <c:when test="${proVO.status eq false}">
 						            下架
 						        </c:when>
 						        <c:otherwise>
@@ -107,16 +108,9 @@
 						        </c:otherwise>
 						    </c:choose>
 						</td>
-<!--                         <td> -->
-<%--                             <form method="post" action="<%=request.getContextPath()%>/back-end/promotion/promotion" style="margin-bottom: 0px;"> --%>
-<!--                                 <input type="submit" value="新增促銷商品" class="btn btn-primary"> -->
-<%--                                 <input type="hidden" name="prono" value="${proVO.prono}"> --%>
-<!--                                 <input type="hidden" name="action" value="getOne_For_Update"> -->
-<!--                             </form> -->
-<!--                         </td> -->
                         <td>
                             <form method="post" action="<%=request.getContextPath()%>/back-end/promotion/promotion" style="margin-bottom: 0px;">
-                                <input type="submit" value="修改/新增促銷商品" class="btn btn-primary">
+                                <input type="submit" value="修改" class="btn btn-primary">
                                 <input type="hidden" name="prono" value="${proVO.prono}">
                                 <input type="hidden" name="action" value="getOne_For_Update">
                             </form>
@@ -148,6 +142,10 @@
         }
     %>
 		<script>
+	    
+	    var addLink = document.getElementById('add');
+	 	addLink.setAttribute('href', projectName+"/back-end/promotion/add.jsp");
+
 			toggleSidebar();
 			  document.addEventListener("DOMContentLoaded", function() {
 			    // 監聽表單提交事件

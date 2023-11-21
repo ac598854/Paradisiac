@@ -8,40 +8,50 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <!--  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
 <style>
-.container {
-	text-align: center;
-}
 
-th {
-	text-align: center;
-}
+		.roomName{
+		    text-align:left;
+		    position:relative;
+		    left:25px;
+		}
+		.calendarNote{
+			text-align:left;
+			font-size:10px;
+		}
+		.col-md-4 img {
+            margin: 10px; /* 添加10px的外邊距，可根據需要調整 */
+            margin-top:10px;
+        }
+		
+		td{
+			height:50px;
+		}
+		.holiday {
+  			color: red;
+		}
+        .container {
+            text-align: center;
+        }
 
-th.scope {
-	background-color: red;
-	color: white;
-}
+        th {
+            text-align: center;
+        }
 
-.selected {
-	background-color: #007bff;
-	color: white;
-}
-
-.calstatus {
-	padding-right: 20px;
-}
-
-tr {
-	height: 50px; /* 設定行事曆表格高度 */
-}
-thead tr {
-    height: 50px; /* 設定行事曆表格高度 */
-}
-
-</style>
+        th.scope {
+            background-color: red;
+            color: white;
+        }
+        .selected {
+            background-color: #007bff;
+            color: white;
+        }
+        .calstatus {
+            padding-right: 20px;
+        }
+    </style>
 </head>
 <body>
-<div id="dynamicContent"></div>
-	<%-- <%@ include file="/front-end/index/guided.jsp" %> --%>
+	<%@ include file="/front-end/index/guided.jsp" %>
     <div class="container text-center my-4">
         <button id="prevMonth" class="btn btn-primary">上個月</button>
         <span id="currentMonthYear" class="h4 mx-4">August 2023</span>
@@ -67,7 +77,7 @@ thead tr {
     </div>
     <!-- 動態產生房型資訊 -->
      <div class="container" id="roomInformation">
-      	
+    <div class=calendarNote>說明：○表示：當日所有房型都無人訂房，△表示：當日還有剩餘房型可選擇，X表示：當日所有房型皆無空房，且無法顯示當日房型資訊，--表示：無效不可訂房。</div>
     </div>
     <!-- 按下立即預定顯示燈箱內容為訂房確認內容 -->
     <div id="roomInformation" class="container"></div>
@@ -89,13 +99,10 @@ thead tr {
     <div class="container">
     <input type="hidden" id="selectedDate" readonly>
     </div>
-    <%@ include file="/front-end/index/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   	<script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script> 
-	
-	<script>
-	
+<script>	
 	//===========首頁會員狀態判斷===========
     // 首頁會員狀態判斷
       $(document).ready(function(){
