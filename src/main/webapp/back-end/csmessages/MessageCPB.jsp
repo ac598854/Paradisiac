@@ -311,20 +311,30 @@ ul.navigation {
 	border-color: #6c757d;
 }
 
+.btn-secondary {
+	color: #fff;
+	background-color: #6c757d;
+	border-color: #6c757d;
+}
+
+.text-right {
+	text-align: right !important;
+}
+
 #cscontent, #csreply {
 	height: 300px;
 }
 
-#cscontentHead, #csreplyHead,#csmsgnoHead {
+#cscontentHead, #csreplyHead, #csmsgnoHead {
 	font-size: 20px;
 	font-weight: bold;
 }
 
-#cscontent{
-	border-radius: 10px;  
-    background-color: #c0c0c0;  
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);  
-    padding: 10px;  
+#cscontent {
+	border-radius: 10px;
+	background-color: #c0c0c0;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	padding: 10px;
 }
 </style>
 </head>
@@ -374,14 +384,17 @@ ul.navigation {
 					</div>
 					<!-- 第一部分表單 -->
 					<form id="customerForm" method="post" accept-charset="UTF-8"
-						action="csmessages.do">									
-						<div class="form-group">									
+						action="csmessages.do">
+						<div class="form-group">
 							<label for="cscontent" id="cscontentHead">申訴問題</label>
-							<p id="cscontent"><span>${CsVO.cscontent}</span></p>
+							<p id="cscontent">
+								<span>${CsVO.cscontent}</span>
+							</p>
 						</div>
-						<div class="form-group">									
+						<div class="form-group">
 							<label for="csaskate">申訴時間</label> <input type="text"
-								class="form-control" id="csredate" value="${CsVO.csaskdate}"readonly>
+								class="form-control" id="csredate" value="${CsVO.csaskdate}"
+								readonly>
 						</div>
 					</form>
 					<br>
@@ -389,9 +402,9 @@ ul.navigation {
 					<form id="csreplyForm" method="post" accept-charset="UTF-8"
 						action="csmessages.do">
 						<div class="form-group">
-							<label for="csmsgno" id="csmsgnoHead">客服編號</label> 
-							<input type="text" name="csmsgno"class="form-control" id="csmsgno" value="${CsVO.csmsgno}"
-								readonly>
+							<label for="csmsgno" id="csmsgnoHead">客服編號</label> <input
+								type="text" name="csmsgno" class="form-control" id="csmsgno"
+								value="${CsVO.csmsgno}" readonly>
 						</div>
 						<div class="form-group">
 							<label for="csreply" id="csreplyHead">客服回覆</label>
@@ -406,8 +419,6 @@ ul.navigation {
 					</form>
 				</div>
 			</div>
-
-
 		</div>
 
 	</div>
