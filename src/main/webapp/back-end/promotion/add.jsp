@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.paradisiac.promotion.model.*" %>
+<%@ page import="com.paradisiac.promotionlist.model.*" %>
 <%@ page import="java.util.*"%>
 <%PromotionVO proVO=(PromotionVO) request.getAttribute("proVO"); %>
 <%@ page import="javax.servlet.http.HttpSession" %>
@@ -60,6 +60,11 @@ response.setDateHeader("Expires", 0); // Proxies.
                                     height: 151px;
                                     /* height:  151px; */
                                 }
+                           .card-body {
+    line-height: 1; /* 設定文字行高，可以根據需要進行調整 */
+}
+
+                                
                     </style>
                 </head>
                 <%@ include file="/back-end/index/back-left_product.jsp" %>
@@ -75,6 +80,7 @@ response.setDateHeader("Expires", 0); // Proxies.
 									    </div>
 									</div>
 									<br>
+									<div style="margin-left: 85px ">
                                         <%-- 錯誤表列 --%>
                                             <c:if test="${not empty errorMsgs}">
                                                 <font style="color:red">請修正以下錯誤:</font>
@@ -84,15 +90,16 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                     </c:forEach>
                                                 </ul>
                                             </c:if>
+                                            </div>
                                             <FORM METHOD="post"  ACTION="<%=request.getContextPath() %>/PromotionListServlet" name="form1" id="mainForm">
                                                 <table>
                                                     <tr>
                                                         <td class="text-start"><label for="proname" class="form-label">促銷專案名稱:</label></td>
-                                                        <td><input type="TEXT" class="form-control mb-3" name="proname" value="<%= (proVO==null)? " 夏季特惠" : proVO.getProname()%>" size="30"/></td>
+                                                        <td><input type="TEXT" class="form-control mb-3" name="proname" id="proname" value="夏季特惠" size="30"/></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start"><label for="proname" class="form-label">促銷專案描述:</label></td>
-                                                        <td><input type="TEXT" class="form-control mb-3" name="prodes" value="<%= (proVO==null)? " 熱銷商品優惠" : proVO.getProdes()%>" size="30"/></td>
+                                                        <td><input type="TEXT" class="form-control mb-3" name="prodes" id="prodes" value="熱銷商品優惠"  size="30"/></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start">促銷專案開始日期:</td>
@@ -104,7 +111,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start">促銷專案折扣:</td>
-                                                        <td><input type="TEXT" class="form-control mb-3" name="discount" value="<%= (proVO==null)? " 0.80" : proVO.getDiscount()%>" size="30"/></td>
+                                                        <td><input type="TEXT" class="form-control mb-3"  id="discountInput" name="discount"  id="discount"  value="0.80" size="30"/></td>
                                                     </tr>
                                                     <tr>
                                                         <td class="text-start">促銷專案狀態:</td>
@@ -121,30 +128,35 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                 <br>
                                                  <input type="hidden" id="selectedProducts" name="selectedProducts" value="">
                                                 <input type="hidden" name="action" value="add_promotion">
-                                                <input type="submit" class="btn btn-primary" value="送出新增">
+                                                <input type="submit" class="btn btn-primary" value="送出新增" onclick="return validateForm()">
                                             </FORM>
                                     </div>
                                 </div>
 								<div class="col-lg-6 col-md-8">
-								    <div class="row row-cols-1 row-cols-md-4 g-4">
-								        <c:forEach var="ProductVO" items="${list}">
-								            <div class="col">
-								                <div class="card">
-								                    <img src="${ProductVO.imageUrl}" class="card-img-top" alt="Product Image" style="height: 100px; object-fit: cover;">
-								                    <div class="card-body">
-								                        <h5 class="card-title">${ProductVO.productName}</h5>
-								                        <p class="card-text">${ProductVO.price}</p>
-								                        <input class="form-check-input" type="checkbox" value="${ProductVO.productno}">
-								                        <label class="form-check-label" for="checkboxId"></label>
-								                    </div>
-								                </div>
-								            </div>
-								        </c:forEach>
-								    </div>
+								   <div class="row row-cols-1 row-cols-md-3 g-4">
+									    <c:forEach var="ProductVO" items="${list}">
+									        <div class="col">
+									            <div class="card" style="width: 18rem;height: 230px;">
+									                <img src="${ProductVO.imageUrl}" class="card-img-top" alt="Product Image" style="height: 100px; object-fit: cover;">
+									                <div class="card-body">
+									                    <h5 class="card-title">${ProductVO.productName}</h5>
+									                    <p><span class="original-price-label">原價：</span><span class="card-text originalPrice">${ProductVO.price}</span></p>
+									                    <p class="card-text"><span class="discountedPrice"></span></p>
+									                    <input class="form-check-input" type="checkbox" value="${ProductVO.productno}">
+									                    <label class="form-check-label" for="checkboxId"></label>
+									                </div>
+									            </div>
+									        </div>
+									    </c:forEach>
+									</div>
 								</div>
                             </div>
                         </div>
-
+						        <div class="d-flex justify-content-end">
+						            <button id="prevPage" class="btn btn-primary me-2">上一頁</button>
+						            <button id="nextPage" class="btn btn-primary">下一頁</button>
+						        </div>
+						 
 
 
 
@@ -153,7 +165,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                             startdate=new java.sql.Date(System.currentTimeMillis()); } java.sql.Date enddate=null; try {
                             enddate=proVO.getEnddate(); } catch (Exception e) { enddate=new
                             java.sql.Date(System.currentTimeMillis()); } %>
-                            
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script src="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.js"></script>
                             <script src="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.datetimepicker.full.js"></script>
                             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -167,7 +179,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                             <script>
                             toggleSidebar();
                                 $.datetimepicker.setLocale('zh');
-                                $('#f_date1').datetimepicker({
+                                $('#f_date1').datetimepicker({	
                                     theme: '',              //theme: 'dark',
                                     timepicker: false,       //timepicker:true,
                                     step: 1,                //step: 60 (這是timepicker的預設間隔60分鐘)
@@ -211,6 +223,166 @@ response.setDateHeader("Expires", 0); // Proxies.
                                     // 然後再提交表單
                                     form.submit();
                                 });
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const discountInput = document.getElementById('discountInput');
+                                    const originalPriceElement = document.querySelectorAll('.originalPrice');
+                                    console.log(originalPriceElement)
+                                    
+                                    // 更新折扣價格的函數
+                                   function updateDiscountedPrices() {
+									    const discount = parseFloat(discountInput.value);
+									    
+									    const discountedPriceElements = document.querySelectorAll('.discountedPrice');
+									    
+									    discountedPriceElements.forEach((discountedPriceElement, index) => {
+									        const priceElement = originalPriceElement[index];
+									        const price = parseFloat(priceElement.textContent);
+									        const discountedPrice = price * discount;
+									
+									        if (!isNaN(discountedPrice)) {
+									            discountedPriceElement.innerText = "折扣價：" + discountedPrice.toFixed(0);
+									        } else {
+									            discountedPriceElement.innerText = "折扣價：N/A";
+									        }
+									    });
+									}
+                                    
+                                    // 當網頁載入完成時，直接計算並更新折扣價格
+                                    updateDiscountedPrices();
+                                    
+                                    // 監聽折扣輸入欄位的變動事件，更新折扣價格
+                                    discountInput.addEventListener('input', updateDiscountedPrices);
+                                });
+                //======================================錯誤驗證================================================//                
+                                function validateForm() {
+								    const checkboxes = document.querySelectorAll('.form-check-input');
+								    const proname = document.getElementById('proname').value;
+								    const prodes = document.getElementById('prodes').value;
+								    const discount = parseFloat(document.getElementById('discountInput').value);
+								    const startDate = document.getElementById('f_date1').value;
+								    const endDate = document.getElementById('f_date2').value;
+								    const pronameRegex = /^[a-zA-Z0-9\u4e00-\u9fa5\s.,()&$!#-]+$/;
+								    const prodesRegex = /^[a-zA-Z0-9\u4e00-\u9fa5\s.,()&$!#-]+$/;
+								    
+								    let atLeastOneChecked = false;
+								
+								    checkboxes.forEach(checkbox => {
+								        if (checkbox.checked) {
+								            atLeastOneChecked = true;
+								        }
+								    });
+								
+								    if (!atLeastOneChecked) {
+								        Swal.fire({
+								            icon: 'warning',
+								            title: 'Oops...',
+								            text: '請至少選擇一項商品！',
+								            confirmButtonText: '確定'
+								        });
+								        return false; // 阻止表單送出
+								    }
+								    if (!pronameRegex.test(proname)) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: '專案名稱不可有特殊符號！',
+                                            confirmButtonText: '確定'
+                                        });
+                                        return false;
+                                    }
+
+                                    if (!prodesRegex.test(prodes)) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: '專案描述不可有特殊符號！',
+                                            confirmButtonText: '確定'
+                                        });
+                                        return false;
+                                    }
+                                    if (isNaN(discount) || discount < 0.01 || discount > 0.99) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: '專案折扣請輸入0.01到0.99！',
+                                            confirmButtonText: '確定'
+                                        });
+                                        return false;
+                                    }
+                                    if (startDate.trim() === '' || endDate.trim() === '') {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: '請輸入開始日期和結束日期！',
+                                            confirmButtonText: '確定'
+                                        });
+                                        return false;
+                                    }
+                                    
+                                    const start = new Date(startDate);
+                                    const end = new Date(endDate);
+
+                                    if (end < start) {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Oops...',
+                                            text: '結束日期不能早於開始日期！',
+                                            confirmButtonText: '確定'
+                                        });
+                                        return false;
+                                    }
+								
+								    // 如果有選擇商品，允許表單送出
+								    return true;
+								}
+                //=============================卡片分頁=======================================//
+                // 在文檔載入完成後執行
+document.addEventListener('DOMContentLoaded', function() {
+    const cards = document.querySelectorAll('.col'); // 取得所有卡片元素
+    const cardsPerPage = 6; // 每頁顯示的卡片數量
+    const totalCards = cards.length; // 總卡片數量
+    let currentPage = 1; // 目前頁數
+
+    // 根據目前頁數和每頁顯示數量計算要顯示的卡片範圍
+    function showCards() {
+        const startIndex = (currentPage - 1) * cardsPerPage;
+        const endIndex = startIndex + cardsPerPage;
+
+        // 隱藏所有卡片
+        cards.forEach(card => {
+            card.style.display = 'none';
+        });
+
+        // 顯示符合範圍的卡片
+        for (let i = startIndex; i < endIndex && i < totalCards; i++) {
+            cards[i].style.display = 'block';
+        }
+    }
+
+    // 初始化時顯示第一頁卡片
+    showCards();
+
+    // 切換至下一頁
+    document.getElementById('nextPage').addEventListener('click', function() {
+        if (currentPage < Math.ceil(totalCards / cardsPerPage)) {
+            currentPage++;
+            showCards();
+        }
+    });
+
+    // 切換至上一頁
+    document.getElementById('prevPage').addEventListener('click', function() {
+        if (currentPage > 1) {
+            currentPage--;
+            showCards();
+        }
+    });
+});
+
+								
+
+
+
                             </script>
                     </body>
 
