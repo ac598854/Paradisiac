@@ -22,21 +22,21 @@ public class ActHibernateDAO implements ActDAO_interface{
 		return factory.getCurrentSession();
 	}
 	//新增
-	@Override
-	public int insert(ActVO actVO) {
-		try {
-			getSession().save(actVO);
-			return 1;
-		} catch (Exception e) {
-			return -1;
-		}	
-	}
-	//修改
-	@Override
-	public ActVO update(ActVO actVO) {
-		getSession().update(actVO);
-		return actVO;	
-	}
+//	@Override
+//	public int insert(ActVO actVO) {
+//		try {
+//			getSession().save(actVO);
+//			return 1;
+//		} catch (Exception e) {
+//			return -1;
+//		}	
+//	}
+//	//修改
+//	@Override
+//	public ActVO update(ActVO actVO) {
+//		getSession().update(actVO);
+//		return actVO;	
+//	}
 
 	@Override //查單筆活動
 	public ActVO findByPrimaryKey(Integer actNo) {
@@ -74,6 +74,28 @@ public class ActHibernateDAO implements ActDAO_interface{
 		getSession().saveOrUpdate(actVO);
 		return actVO;
 	}
-
+	//前端的需求-------
+	public List<ActVO> getActiveAll(int currentPage){
+		int first = (currentPage - 1) * PAGE_MAX_RESULT; //布林
+		return getSession().createQuery("from ActVO where actStatus=:status", ActVO.class)
+				.setParameter("status", true)
+				.setFirstResult(first)
+				.setMaxResults(PAGE_MAX_RESULT)
+				.list();
+	}
+	
+	@Override
+	public long getActiveTotal() {
+		return getSession().createQuery("select count(*) from ActVO where actStatus=:status", Long.class)
+				.setParameter("status", true)
+				.uniqueResult();
+	}
+	
+//	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo){
+//		Set<SchdVO> actSchdSet = getSession().get(ActVO.class, actNo)
+//				.createQuery("select count(*) from ActVO where actStatus=:status", Long.class).list();
+//		return actSchdSet;
+//	}
+	//-------------
 
 }

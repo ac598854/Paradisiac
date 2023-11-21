@@ -101,18 +101,14 @@ h2 {
                 <td>${schdVO.schdNo}</td>
                 <jsp:useBean id="actSvc" scope="page" class="com.paradisiac.act.service.ActServiceImpl" />
 					<th>活動類別</th>
-					<td><select size="1" name="actNo">
-						<c:forEach var="actVO" items="${actSvc.allActs}">
-							<option value="${actVO.actNo}" ${(schdVO.act.actNo==null)?'':'selected' }>${actVO.actNo}-${actVO.actName}
-						</c:forEach>
-					</select></td>
+					<td>${schdVO.act.actNo}-${schdVO.act.actName}</td>
 					<th>報名狀態</th>
 					<%--1:報名中 2:成團 3:未成團 4:因故取消 --%>
 					<td><select name="applStatus">
-						<option value="1">1-報名中</option>
-						<option value="2">2-成團</option>
-						<option value="3">3-未成團</option>
-						<option value="4">4-因故取消</option>
+						<option value="1" ${(schdVO.applStatus==1)?'selected':'' }>1-報名中</option>
+						<option value="2" ${(schdVO.applStatus==2)?'selected':'' }>2-成團</option>
+						<option value="3" ${(schdVO.applStatus==3)?'selected':'' }>3-未成團</option>
+						<option value="4" ${(schdVO.applStatus==4)?'selected':'' }>4-因故取消</option>
 					</select></td>
 				</tr>
 				<tr>
@@ -147,6 +143,7 @@ h2 {
 
 			</table>
 			<input type="hidden" name="action" value="update"> 
+			<input type="hidden" name="actNo" value="${schdVO.act.actNo}">
 			<input type="hidden" name="schdNo" value="${schdVO.schdNo}">
 			<input type="submit" value="送出" class="modify-button">
 		</form>

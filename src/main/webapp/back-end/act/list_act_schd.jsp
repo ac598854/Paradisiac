@@ -109,7 +109,11 @@
             <th>已繳費人數</th>
             <th>報名狀態</th>
             <th>操作</th>
-        </tr> 
+        </tr>
+<%-- 
+<c:set var="actSchdSet" value="${actSchdSet}" />
+ <c:out value="${actSchdSet}" />
+ <%@ include file="page1.file" %>--%>
         <c:forEach var="schd" items="${actSchdSet}">
         <tr> 
             <td>${schd.schdNo}</td>
@@ -123,7 +127,12 @@
             <td>${schd.highNum}</td>
             <td>${schd.unpaidNum}</td>
             <td>${schd.paidNum}</td>
-            <td>${schd.applStatus}</td>          
+            <td>
+			    ${schd.applStatus == 1 ? '1-報名中' : 
+			      (schd.applStatus == 2 ? '2-成團' : 
+			        (schd.applStatus == 3 ? '3-未成團' : 
+			          (schd.applStatus == 4 ? '4-因故取消' : '')))}
+			</td>         
             <td>
 	            <form action="${pageContext.request.contextPath}/schd.do" method="post">
 	            	<input type="hidden" name="action" value="getOne_For_Update">
@@ -134,6 +143,7 @@
         </tr>
         </c:forEach>
     </table>
+
 </div>
 </body>
 </html>
