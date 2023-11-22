@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.transaction.annotation.Transactional;
 
 import com.paradisiac.roomorder.model.RoomOrderDAO;
@@ -16,6 +18,8 @@ import com.paradisiac.roomorder.model.RoomOrderDTO;
 import com.paradisiac.roomorder.model.RoomOrderVO;
 import com.paradisiac.util.HibernateUtil;
 
+@Service
+@Transactional
 public class RoomOrderServiceImpl implements RoomOrderService{
 	private RoomOrderDAO dao;
 
@@ -117,10 +121,14 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 
 	@Override
 	public int updateOrderStatus(Integer roomOrderNo, byte orderStatus) {
-		// TODO Auto-generated method stub
+		
 		return dao.updateOrderStatus(roomOrderNo, orderStatus);
 	}
 
+	@Override
+	public List<RoomOrderVO> getmemOrd(Integer memno) {
+		return dao.getmemOrd(memno);
+	}
 
 	
 }

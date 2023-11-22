@@ -201,7 +201,7 @@ public class PhaServlet extends HttpServlet {
 			//無錯誤, 修改並轉交
 			phaSvc.updatePha(phaVO);
 			req.setAttribute("phaVO", phaVO);
-			forwardPath = "/back-end/pha/updateOnePha.jsp";//updateOnePha.jsp
+			forwardPath = "/back-end/pha/select_phoalb.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
 			successView.forward(req, res);
 
@@ -252,7 +252,7 @@ public class PhaServlet extends HttpServlet {
 			albNo = Integer.valueOf(req.getParameter("albNo"));
 			System.out.println("後台取得相簿編號: "+albNo);
 		}
-//		
+	
 		String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 		
@@ -268,7 +268,7 @@ public class PhaServlet extends HttpServlet {
 		if(memnoInt != null) {
 			albNo = phaSvc.getPhaByMem(memno);
 			req.setAttribute("albNo", albNo);		
-			return "/back-end/pha/listOnePha_mem.jsp";//front-end/members/listOnePha_mem.jsp
+			return "/back-end/pha/listOnePha_mem.jsp";
 		}else {
 			return "/back-end/pha/listOnePha.jsp";
 		}

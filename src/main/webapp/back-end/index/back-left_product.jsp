@@ -268,7 +268,7 @@
                 <a href="#">商品相片管理</a>
             </li>
             <li>
-                <a href="#">促銷專案管理</a>
+                <a href="#" id="promotionLeft">促銷專案管理</a>
             </li>
             <li>
                 <a href="#">促銷商品管理</a>
@@ -286,7 +286,7 @@
       <li><a href="#home">功能暫未定</a></li>
       <li><a href="#home">功能暫未定</a></li>
       <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
+      <li><a href="#" id="promotion">促銷專案管理</a></li>
     </ul>
     
     <div id="page-content-wrapper">
@@ -300,6 +300,11 @@
 
   <!-- Menu Toggle Script -->
   <script>
+  	function toggleSidebar() {
+	  $(document).ready(function(){
+	    $("#wrapper").addClass("toggled");
+	  });
+	}
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
@@ -333,8 +338,13 @@
                 }
               });
             });
-
-
+        let pathName = window.document.location.pathname;
+	    let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+	    
+         var topLink = document.getElementById('promotion');
+         var listLink = document.getElementById('promotionLeft');
+         topLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
+         listLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
   </script>
 
 </body>

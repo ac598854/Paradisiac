@@ -14,6 +14,9 @@
             border: 1px solid #ccc;
             padding: 20px;
             margin: 0 auto;
+            padding-top: 65px;
+			padding-left: 255px;
+            
         }
     </style>
 </head>
@@ -37,13 +40,6 @@
 		</ul>
 	</c:if>
 	<h2>相簿查詢</h2>
-	
-	<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do">
-		<b>輸入會員編號</b> <input type="text" name="memno">
-		<!-- 所有請求名稱用hidden送出 -->
-		<input type="hidden" name="action" value="getOne_For_Display">
-		<input type="submit" value="送出">
-	</FORM>
 	
 	<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do">
 		<b>輸入相簿編號</b> <input type="text" name="albNo">

@@ -8,9 +8,9 @@ import com.paradisiac.schd.model.SchdVO;
 
 public interface ActDAO_interface {
 	
-    public int insert(ActVO actVO);
-    
-    public ActVO update(ActVO actVO);
+//    public int insert(ActVO actVO);
+//    
+//    public ActVO update(ActVO actVO);
     
     public ActVO findByPrimaryKey(Integer actNo);
     //查所有檔期
@@ -20,7 +20,16 @@ public interface ActDAO_interface {
 	
     public List<ActVO> getAll(int currentPage);
 	
-	long getTotal();	
+	long getTotal();
+	
+	public ActVO insertOrUpdate(ActVO actVO);
+	//前端-------
+	long getActiveTotal();
+	
+	public List<ActVO> getActiveAll(int currentPage);
+	
+//	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo);
+	//----------
 	
 	
 	

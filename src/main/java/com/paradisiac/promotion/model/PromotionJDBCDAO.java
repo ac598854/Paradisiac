@@ -5,8 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.hibernate.hql.spi.id.cte.CteValuesListUpdateHandlerImpl;
 
 public class PromotionJDBCDAO implements PromotionDAO_interface{
 		String driver = "com.mysql.cj.jdbc.Driver";
@@ -16,8 +19,9 @@ public class PromotionJDBCDAO implements PromotionDAO_interface{
 		
 		private static final String INSERT_STMT = 
 				"INSERT INTO  promotion(promotion_name,promotion_describition,promotion_start_date,promotion_end_date,promotion_discount,promotion_status)VALUES (?, ?, ?, ?, ?, ?)";
-			private static final String GET_ALL_STMT = 
-				"SELECT promotion_no,promotion_name,promotion_describition,promotion_start_date,promotion_end_date,promotion_discount,promotion_status FROM promotion order by promotion_no";
+		private static final String GET_ALL_STMT = 
+			    "SELECT promotion_no, promotion_name, promotion_describition, promotion_start_date, promotion_end_date, promotion_discount, promotion_status " +
+			    "FROM promotion ORDER BY promotion_no DESC";
 			private static final String GET_ONE_STMT = 
 				"SELECT promotion_no,promotion_name,promotion_describition,promotion_start_date,promotion_end_date,promotion_discount,promotion_status FROM promotion where promotion_no = ?";
 			private static final String DELETE = 
@@ -25,14 +29,15 @@ public class PromotionJDBCDAO implements PromotionDAO_interface{
 			private static final String UPDATE = 
 				"UPDATE promotion set  promotion_name=?, promotion_describition=?, promotion_start_date=?, promotion_end_date=?, promotion_discount=?,promotion_status=?  where promotion_no = ?";
 			@Override
-			public void insert(PromotionVO proVO) {
+			public Integer insert(PromotionVO proVO) {
 				Connection con = null;
 				PreparedStatement pstmt = null;
 
 				try {
 					Class.forName(driver);
 					con = DriverManager.getConnection(url, userid, passwd);
-					pstmt = con.prepareStatement(INSERT_STMT);
+					pstmt = con.prepareStatement(INSERT_STMT, Statement.RETURN_GENERATED_KEYS);
+
 
 					
 					pstmt.setString(1, proVO.getProname());
@@ -42,10 +47,20 @@ public class PromotionJDBCDAO implements PromotionDAO_interface{
 					pstmt.setDouble(5, proVO.getDiscount());
 					pstmt.setInt(6, proVO.getStatus());
 
-					pstmt.executeUpdate();
+					int affectedRows = pstmt.executeUpdate();
 
-					// Handle any SQL errors
-				}  catch (ClassNotFoundException e) {
+					if (affectedRows == 0) {
+					    System.out.println("新增失敗");
+					}
+
+					ResultSet generatedKeys = pstmt.getGeneratedKeys();
+					if (generatedKeys.next()) {
+					    Integer primaryKey = generatedKeys.getInt(1); // 取得自增主鍵的值
+					    return primaryKey;
+					} else {
+					    throw new RuntimeException("無法取得自增主鍵值");
+					}
+				}catch (ClassNotFoundException e) {
 					throw new RuntimeException("Couldn't load database driver. "
 							+ e.getMessage());
 					// Handle any SQL errors
@@ -69,7 +84,6 @@ public class PromotionJDBCDAO implements PromotionDAO_interface{
 						}
 					}
 				}
-
 			}
 			@Override
 			public void update(PromotionVO proVO) {

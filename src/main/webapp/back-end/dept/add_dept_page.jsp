@@ -52,9 +52,9 @@
 			<tr>
 				<td><input type="text" name="deptNo"></td>
 				<td><input name="deptName" value="<%= (deptVO==null)? "" : deptVO.getDeptName()%>" ></td>
-				<td>
-					<input type="radio" name="deptStatus"  value="0" ${deptVO.isDeptStatus? 'checked' : ''} size="45"/>凍結
-					<input type="radio" name="deptStatus"  value="1" checked="checked" size="45"/>未凍結 <%--預設未凍結 --%>
+				<td><input type="radio" name="deptStatus"  value="1" ${deptVO.deptStatus? 'checked' : ''} size="45"/>未凍結
+					<input type="radio" name="deptStatus"  value="0" ${deptVO.deptStatus? '' : 'checked'} size="45"/>凍結
+					
 				</td>
 				<td><input name="fucNo" value="<%= (deptVO==null)? "" : deptVO.getFucNo()%>" ></td>
 

@@ -60,6 +60,7 @@
 
     </style>
 </head>
+<%@ include file="/back-end/index/back-left_planning.jsp" %>
 <body>
     <div class="container">
         <h1 class="text-center">相簿管理</h1>

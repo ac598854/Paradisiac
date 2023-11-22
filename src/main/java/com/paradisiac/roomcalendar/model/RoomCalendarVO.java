@@ -20,23 +20,23 @@ public class RoomCalendarVO implements java.io.Serializable{
 	@Column(name = "room_type_no")
 	private Integer roomTypeno;
 	
-	@Column(name = "cdata")
+	@Column(name = "cdate")
 	private Date cDate;
 	
 	@Column(name = "room_total")
 	private Integer roomTotal;
 	
-	@Column(name = "room_booking")
+	@Column(name = "room_booking", columnDefinition = "bigint")
 	private Integer roomBooking;
 	
-	@Column(name = "available")
-	private Byte available;	
+	@Column(name = "abailable")
+	private boolean available;	
 	
 	public Integer getCalendarNo() {
 		return calendarNo;
 	}
-	public void setCalendarNO(Integer calendarNO) {
-		this.calendarNo = calendarNO;
+	public void setCalendarNo(Integer calendarNo) {
+		this.calendarNo = calendarNo;
 	}
 	public Integer getRoomTypeno() {
 		return roomTypeno;
@@ -62,11 +62,17 @@ public class RoomCalendarVO implements java.io.Serializable{
 	public void setRoomBooking(Integer roomBooking) {
 		this.roomBooking = roomBooking;
 	}
-	public Byte getAvailable() {
+	public boolean getAvailable() {
 		return available;
 	}
-	public void setAvailable(Byte available) {
+	public void setAvailable(boolean available) {
 		this.available = available;
 		
+	}
+	@Override
+	public String toString() {
+		return "RoomCalendarVO [calendarNo=" + calendarNo + ", roomTypeno=" + roomTypeno + ", cDate=" + cDate
+				+ ", roomTotal=" + roomTotal + ", roomBooking=" + roomBooking + ", available=" + available + "]";
 	}	
+
 }
