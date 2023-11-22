@@ -16,6 +16,10 @@
   <style>
     /* 基本頁面樣式 */
     body {
+      background-image: url('https://cha103-29.s3.ap-northeast-1.amazonaws.com/pexels-jeff-ibera-1320755.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
       font-family: 'Arial', sans-serif;
       background-color: lightblue;
       margin: 0;
@@ -23,23 +27,27 @@
       color: #333;
     }
 
-    /* 導航欄樣式 */
-    nav ul {
-      list-style-type: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      background-color: #eee;
+    /* 將整個導航欄背景設為透明 */
+    .flex-header, .navbar, .bg-light, .navbar-light, .container-fluid, .navbar-collapse {
+      background: transparent !important; /* 使用 !important 確保覆蓋所有相關樣式 */
+      border: none !important; /* 移除邊框，如果有的話 */
     }
 
-    nav li {
-      margin: 0 10px;
+    /* 如果 nav 標籤有背景顏色，也設為透明 */
+    nav {
+      background-color: transparent !important;
     }
 
-    /* 主要內容區域樣式 */
-    .container {
-      display: flex;
+    /* 確保導航連結和品牌名稱在透明背景下仍然可見 */
+    .navbar-brand, .nav-link, .navbar-toggler-icon {
+      color: #333; /* 或者您希望的任何顏色 */
     }
+
+    /* 如果有透明的背景，您可能也想要移除陰影或者其他裝飾效果 */
+    .navbar, .navbar-light .navbar-nav .nav-link {
+      box-shadow: none !important;
+    }
+
 
     aside {
       flex: 1;
@@ -74,6 +82,15 @@
       flex: 4;
       padding: 20px;
     }
+
+    /* 將分頁按鈕固定在視窗的右下角，位於頁腳上方 */
+    #paginationContainer {
+      position: fixed;
+      right: 10px; /* 右邊距離 */
+      bottom: 10px; /* 距離頁腳的高度，可以根據需要調整 */
+      z-index: 100; /* 確保分頁按鈕顯示在最上層 */
+    }
+
 
     /* 添加動畫效果 */
     @keyframes clickAnimation {
@@ -158,15 +175,15 @@
     }
 
   </style>
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
 <header class="flex-header">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/productFront.html">購物商城</a>
+      <a class="navbar-brand" href="/Paradisiac/productFront.html">購物商城</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
