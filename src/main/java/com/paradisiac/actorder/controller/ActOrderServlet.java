@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.paradisiac.act.model.ActVO;
+import com.paradisiac.act.service.ActServiceImpl;
 import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.actattendees.service.ActAttendeesService;
 import com.paradisiac.actorder.model.ActOrder;
@@ -33,10 +34,15 @@ import com.paradisiac.schd.model.SchdVO;
 
 public class ActOrderServlet extends HttpServlet {
 
-	private static final long serialVersionUID = 1L;
+	private ActOrderService actOrderServ;
+
+	public void init() throws ServletException {
+		actOrderServ = new ActOrderService();
+	}
 
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		doPost(req, res);
+
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -44,40 +50,44 @@ public class ActOrderServlet extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		HttpSession session = req.getSession();
+		String forwardPath = "";
+
 		switch (action) {
 		case "insert":
 			insert(req, res);
 			break;
-		case "test":
-			test(req, res);
-			break;
 		case "getOne_For_ActOrderNo":
 			getOne_For_ActOrderNo(req, res);
+			return;
+		case "getAll":
+			forwardPath = getAllListPage(req, res);
 			break;
 		default:
 			break;
 		}
-
+		res.setContentType("text/html; charset=UTF-8");
+		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+		dispatcher.forward(req, res);
 	}
 
-	private void test(HttpServletRequest req, HttpServletResponse res) throws IOException {
-
-		String aAtnNum = req.getParameter("aAtnNum");
-		List<ActAttendees> list = new LinkedList<>();
-		for (int i = 0; i < Integer.parseInt(aAtnNum); i++) {
-			ActAttendees actAttendees = new ActAttendees();
-			actAttendees.setAtnName(req.getParameter("atnName[" + i + "]"));
-			actAttendees.setAtnIdNumber(req.getParameter("atnIdNumber[" + i + "]"));
-			actAttendees.setAtnTel(req.getParameter("atnTel[" + i + "]"));
-
-			list.add(actAttendees);
-		}
-
-		for (ActAttendees actAttendees : list) {
-			System.out.println(actAttendees);
-		}
-		res.getWriter().write("ok");
-	}
+//	private void test(HttpServletRequest req, HttpServletResponse res) throws IOException {
+//
+//		String aAtnNum = req.getParameter("aAtnNum");
+//		List<ActAttendees> list = new LinkedList<>();
+//		for (int i = 0; i < Integer.parseInt(aAtnNum); i++) {
+//			ActAttendees actAttendees = new ActAttendees();
+//			actAttendees.setAtnName(req.getParameter("atnName[" + i + "]"));
+//			actAttendees.setAtnIdNumber(req.getParameter("atnIdNumber[" + i + "]"));
+//			actAttendees.setAtnTel(req.getParameter("atnTel[" + i + "]"));
+//
+//			list.add(actAttendees);
+//		}
+//
+//		for (ActAttendees actAttendees : list) {
+//			System.out.println(actAttendees);
+//		}
+//		res.getWriter().write("ok");
+//	}
 
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
@@ -108,7 +118,7 @@ public class ActOrderServlet extends HttpServlet {
 			ActOrderService actOrderServ = new ActOrderService();
 			Integer actOrderNo = actOrderServ.addActOrder(memNo, schdVO, null, null, aAtnNum, orderStatus, orderAmount,
 					null);// 抓訂單編號
-
+			System.out.println(actOrderNo);
 			ActOrder actOrder = actOrderServ.getOneByActOrderNo(actOrderNo);// 把訂單編號塞進物件(明細的Service編號是物件)
 			for (ActAttendees actAttendees : list) {
 				ActAttendeesService actAttendeesSer = new ActAttendeesService();
@@ -117,10 +127,11 @@ public class ActOrderServlet extends HttpServlet {
 			}
 //			======寄信	
 			MembersService memsSvc = new MembersService();
-			MembersVO membersVO = memsSvc.getOneBymemno(memNo);// 查詢資料庫是否對應	
-			String memmail=membersVO.getMemmail();
+			MembersVO membersVO = memsSvc.getOneBymemno(memNo);// 查詢資料庫是否對應
+			String memmail = membersVO.getMemmail();
 			String subject = "Paradise bay活動訂單成立通知";
-			String messageText = "Hello! Paradise bay會員您好" + "\n" +"訂單編號："+actOrderNo+"\n"+"訂單總金額："+orderAmount+ "\n" +"感謝您的訂購Paradise bay活動，我們會盡速處理" ;
+			String messageText = "Hello! Paradise bay會員您好" + "\n" + "訂單編號：" + actOrderNo + "\n" + "訂單總金額：" + orderAmount
+					+ "\n" + "感謝您的訂購Paradise bay活動，我們會盡速處理";
 			MailService mail = new MailService();
 			mail.sendMail(memmail, subject, messageText, res);
 			res.sendRedirect(req.getContextPath() + "/front-end/index/index2.jsp");
@@ -131,10 +142,13 @@ public class ActOrderServlet extends HttpServlet {
 
 	private void getOne_For_ActOrderNo(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
+		res.setContentType("text/html;charset=UTF-8");
+		
+		
 		try {
 			String actOrderNoStr = req.getParameter("actOrderNo");
 
-			if (actOrderNoStr == null || (actOrderNoStr.trim()).length() == 0) {
+			if (actOrderNoStr == null || actOrderNoStr.trim().length() == 0) {
 				String URL = req.getContextPath() + "/back-end/actorder/ActLPB.jsp?error=noActOrder";
 				res.sendRedirect(URL);
 				System.out.println("沒有輸入訂單編號");
@@ -158,8 +172,10 @@ public class ActOrderServlet extends HttpServlet {
 				System.out.println("無資料");
 				return;
 			}
-			req.setAttribute("Actorder", actorder);
-			String url = "/back-end/actorder/ActLPB.jsp.";
+			System.out.println(actorder.getSchdVO().getSchdNo() + " /schdNo");
+			System.out.println(actorder + " /actorder");
+			req.setAttribute("actOrder", actorder);
+			String url = "/back-end/actorder/ActCP.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
 			successView.forward(req, res);
 		} catch (Exception e) {
@@ -168,6 +184,38 @@ public class ActOrderServlet extends HttpServlet {
 			System.out.println("無法取得資料");
 			return;
 		}
+
+	}
+
+//	分頁
+	private String getAllListPage(HttpServletRequest req, HttpServletResponse res) {
+		String page = req.getParameter("page");
+		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
+
+		List<ActOrder> orderList = actOrderServ.getAllByStatusPage(currentPage);
+
+		if (req.getSession().getAttribute("actPageQty") == null) {
+			int actPageQty = actOrderServ.getPageActOrderTotal();
+			req.getSession().setAttribute("actPageQty", actPageQty);
+		}
+
+		req.setAttribute("orderList", orderList);
+		req.setAttribute("currentPage", currentPage);
+
+		return "/back-end/actorder/ActLPB.jsp";
+	}
+
+	private String getAllLP(HttpServletRequest req, HttpServletResponse res) {
+		List<ActOrder> orderList = actOrderServ.getAll();
+		req.setAttribute("orderList", orderList);
+		return "/back-end/actorder/ActLPB.jsp";
 	}
 
 }
+//	private String getAll(HttpServletRequest req, HttpServletResponse res) {
+//		
+//		ActAttendeesService actAttendeesSer=new ActAttendeesService();
+//		
+//	
+//	
+//	}

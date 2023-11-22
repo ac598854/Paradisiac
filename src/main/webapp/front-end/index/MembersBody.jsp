@@ -347,7 +347,7 @@
             <a href="#">購物訂單查詢</a>
             </li>
             <li>
-            <a href="#">活動訂單查詢</a>
+            <a href="${pageContext.request.contextPath}/fron-end/actorder/ActLPB.jsp">活動訂單查詢</a>
             </li>
      </ul>
             <!--會員服務-->  
@@ -372,11 +372,11 @@
 				href='<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp'>會員專區</a>
 			</li>
 			<li class="nav-item"><a class="nav-link"
-				href='<%=request.getContextPath()%>/front-end/cart/ProductTest.html'>購物商城</a>
+				href='<%=request.getContextPath()%>/productFront.html'>購物商城</a>
 			</li>
-			<li class="nav-item"><a class="nav-link" href="#">最新活動</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">聯絡我們</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">預訂</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/act.do?action=getAll_Front">最新活動</a></li>
+			<li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/front-end/other/ContectUs.jsp">關於我們</a></li>
+			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
 			<li class="nav-item"><a class="nav-link" href='<%=request.getContextPath()%>/front-end/index/index2.jsp'>首頁</a></li>
 		</ul>

@@ -369,9 +369,9 @@ h1, h2, h3, h4 {
 <!-- 			<li><a href="#home">登出</a></li> -->
 <!-- 		</ul> -->
 		<!--Page Content -->
-		<div id="page-content-wrapper">
-			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">展開畫面</a>
+<!-- 		<div id="page-content-wrapper"> -->
+<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
+<!-- 				id="menu-toggle">展開畫面</a> -->
 			<div class="container-fluid">
 				<!-- 表格-->
 				<div class="container">

@@ -378,8 +378,8 @@ h1, h2, h3, h4 {
 <!-- 		</ul> -->
 		<!--Page Content -->
 		<div id="page-content-wrapper">
-			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">展開畫面</a>
+<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
+<!-- 				id="menu-toggle">展開畫面</a> -->
 			<div class="container-fluid">
 
 				<form action="MessageLPB.jsp" method="get">

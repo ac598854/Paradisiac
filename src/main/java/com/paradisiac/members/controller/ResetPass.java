@@ -69,7 +69,7 @@ public class ResetPass extends HttpServlet {
 				String memmail = membersVO.getMemmail();
 				MailService mail = new MailService();
 				String subject = "變更密碼通知信";
-				String messageText = "Hello! Paradise bay會員 " + "\n" + "這是您的暫時密碼:" + TempCaptcha + "\n"
+				String messageText = "Hello! Paradise bay會員 " + "\n" + "這是您的驗證碼:" + TempCaptcha + "\n"
 						+ "如無申請變更密碼請忽略此信" + "\n" + "請用此驗證連結" + "http://localhost:8081" + req.getContextPath()
 						+ "/front-end/members/ForgetPass2.jsp" + "，並登錄驗證碼後再變更您的密碼! " + "\n" + "請點選此連結";
 				mail.sendMail(memmail, subject, messageText,res);

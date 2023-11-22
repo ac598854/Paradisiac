@@ -1,37 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.paradisiac.csmessages.model.*"%>
-<%@ page import="com.paradisiac.csmessages.controller.*"%>
-<%@ page import="com.paradisiac.csmessages.service.*"%>
+<%@ page import="com.paradisiac.actorder.model.*"%>
+<%@ page import="com.paradisiac.actorder.controller.*"%>
+<%@ page import="com.paradisiac.actorder.service.*"%>
+<%@ page import="com.paradisiac.actattendees.model.*"%>
+<%@ page import="com.paradisiac.actattendees.controller.*"%>
+<%@ page import="com.paradisiac.actattendees.service.*"%>
 <%
-request.setCharacterEncoding("utf-8");
-
-String resStatus = request.getParameter("resStatus") != null ? request.getParameter("resStatus") : "0";
-String keyword = request.getParameter("keyword") != null ? request.getParameter("keyword") : "";
-
-StringBuffer whereCondition = new StringBuffer("");
-if (keyword.trim().length() > 0) {//有輸入關鍵字
-	whereCondition.append("  cs_content LIKE ?  ");
-}
-//下拉式選單resStatus 有 0 , 1, 2三種狀態
-if (!resStatus.equals("0") && whereCondition.length() > 0) {//全部+有輸入關鍵字
-	whereCondition.append(" and ");
-}
-if (resStatus.equals("1")) {//有處理(員編)
-	whereCondition.append(" emp_no is not NULL ");
-} else if (resStatus.equals("2")) {//未處理(員編)
-	whereCondition.append(" emp_no is NULL ");
-}
-
-if (whereCondition.length() > 0) {//判斷是否有無處理+輸入關鍵字
-	whereCondition = new StringBuffer(" Where " + whereCondition);
-}
-
-System.out.println("29=" + whereCondition);
-CsMessagesService csMessagesService = new CsMessagesService();
-List<CsMessagesVO> list = csMessagesService.getAllBystatus(whereCondition, keyword);
+List<ActOrder> list = null;
+ActOrderService actOrderServ = new ActOrderService();
+list = actOrderServ.getAll();
 pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
@@ -244,189 +226,140 @@ ul.navigation {
 	#page-content-wrapper {
 		padding: 20px;
 		position: relative;
-		
 	}
 	#wrapper.toggled #page-content-wrapper {
 		position: relative;
 		margin-right: 0;
 	}
-}
 
-/* 原始*/
-h1, h2, h3, h4 {
-	font-family: 'Lato', sans-serif;
-	font-weight: 700;
-}
-
-.table {
-	width: 100%;
-}
-
-.container {
-	max-width: 100%;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-.table-data {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
-
-.col-md-3 {
-	width: 50%;
-}
-
-#keyword, #resStatus {
-	width: 420px;
-}
-
-.table-data .col-md-2 {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ccc;
-	background-color: #f8f9fa;
-	margin-bottom: 10px;
-	text-align: left;
-	vertical-align: middle;
-}
-
-.table-data .col-md-2:nth-child(odd) {
-	background-color: #e9ecef;
-}
-
-.table-data .col-md-2:nth-child(1) {
-	background-color: #007bff;
-	color: #fff;
-	width: 10%;
-}
-
-.table-data .col-md-2:nth-child(2) {
-	background-color: #28a745;
-	color: #fff;
-	width: 20%;
-}
-
-.table-data .col-md-2:nth-child(3) {
-	background-color: #ffc107;
-	width: 30%;
-}
-
-.table-data .col-md-2:nth-child(4) {
-	background-color: #dc3545;
-	color: #fff;
-	width: 20%;
-}
-
-.table-data .col-md-2:nth-child(5) {
-	background-color: #17a2b8;
-	color: #fff;
-	width: 20%;
-}
-
-.table-data .col-md-2 th {
-	text-align: left;
-	vertical-align: middle;
-}
-
-.input-group {
-	margin-bottom: 10px;
-}
-
-.table thead {
-	background-color: #343a40;
-	color: #fff;
-}
-
-.table tbody tr:nth-child(odd) {
-	background-color: #f8f9fa;
-}
-
-.table tbody tr:nth-child(even) {
-	background-color: #e9ecef;
+	/* 原始*/
+	h1, h2, h3, h4 {
+		font-family: 'Lato', sans-serif;
+		font-weight: 700;
+	}
+	.table {
+		width: 100%;
+	}
+	.container {
+		max-width: 100%;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+	.table-data {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+	}
+	.col-md-3 {
+		width: 50%;
+	}
+	#keyword, #resStatus {
+		width: 420px;
+	}
+	.table-data .col-md-2 {
+		width: 100%;
+		padding: 10px;
+		border: 1px solid #ccc;
+		background-color: #f8f9fa;
+		margin-bottom: 10px;
+		text-align: left;
+		vertical-align: middle;
+	}
+	.table-data .col-md-2:nth-child(odd) {
+		background-color: #e9ecef;
+	}
+	.table-data .col-md-2:nth-child(1) {
+		background-color: #007bff;
+		color: #fff;
+		width: 10%;
+	}
+	.table-data .col-md-2:nth-child(2) {
+		background-color: #28a745;
+		color: #fff;
+		width: 20%;
+	}
+	.table-data .col-md-2:nth-child(3) {
+		background-color: #ffc107;
+		width: 30%;
+	}
+	.table-data .col-md-2:nth-child(4) {
+		background-color: #dc3545;
+		color: #fff;
+		width: 20%;
+	}
+	.table-data .col-md-2:nth-child(5) {
+		background-color: #17a2b8;
+		color: #fff;
+		width: 20%;
+	}
+	.table-data .col-md-2 th {
+		text-align: left;
+		vertical-align: middle;
+	}
+	.input-group {
+		margin-bottom: 10px;
+	}
+	.table thead {
+		background-color: #343a40;
+		color: #fff;
+	}
+	.table tbody tr:nth-child(odd) {
+		background-color: #f8f9fa;
+	}
+	.table tbody tr:nth-child(even) {
+		background-color: #e9ecef;
+	}
 }
 </style>
 <%@ include file="/back-end/index/back-left_planning.jsp"%>
 </head>
 <body>
-<!-- 	<div id="wrapper" class=""> -->
 
-<!-- 		<!-- Sidebar --> 
-<!-- 		<div id="sidebar-wrapper"> -->
-<!-- 			<ul class="sidebar-nav"> -->
-<!-- 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li> -->
-<!-- 				<li class="sidebar-title">員工權限管理</li> -->
-<!-- 				<li class="sidebar-title">會員管理</li> -->
-<!-- 				<li><a -->
-<%-- 					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li> --%>
-<!-- 				<li><a href="#">會員相簿管理</a></li> -->
-<!-- 				<li><a -->
-<%-- 					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li> --%>
-<!-- 				<li class="sidebar-title">最新消息管理</li> -->
-<!-- 				<li class="sidebar-title">訂房管理</li> -->
-<!-- 				<li class="sidebar-title">商城管理</li> -->
-<!-- 				<li class="sidebar-title">活動管理</li> -->
-<!-- 				<li><a href="#">活動類別管理</a></li> -->
-<!-- 				<li><a href="#">檔期管理</a></li> -->
-<!-- 				<li><a href="#">活動訂單管理</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-<!-- 		<!-- /#sidebar-wrapper --> -->
+	<!--Page Content -->
+	<div id="page-content-wrapper" style="padding-left: 250px;">
+		<!-- 		<a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">展開畫面</a> -->
+		<div class="container-fluid">
 
-<!-- 		<!-- Top Navigation --> -->
-<!-- 		<ul class="navigation"> -->
-<!-- 			<li><a href="#home">登出</a></li> -->
+			<!-- 				<form action="ActLPB.jsp" method="get"> -->
+			<div class="col-lg-12">
+				<h1>活動訂單管理</h1>
 
-<!-- 		</ul> -->
-		<!--Page Content -->
-		<div id="page-content-wrapper" style="padding-left: 250px;">
-			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">展開畫面</a>
-			<div class="container-fluid">
-
-				<form action="MessageLPB.jsp" method="get">
-					<div class="col-lg-12">
-						<h1>活動訂單管理</h1>
-
-						<!-- 查詢 -->
-
-						<div class="row mb-4">
-							<div class="col-md-3">
-								<label for="keyword">活動類型</label>
-								<div class="input-group">
-									<input type="text" class="form-control" name="keyword"
-										id="keyword" value="<%=keyword%>">
-									<div class="input-group-append"></div>
-								</div>
-							</div>
-							<div class="col-md-3">
-								<label for="keyword">活動檔期</label>
-								<div class="input-group">
-									<input type="text" class="form-control" name="keyword"
-										id="keyword" value="<%=keyword%>">
-									<div class="input-group-append"></div>
-								</div>
-							</div>
-
-							<div class="col-md-3">
-								<label for="resStatus">訂單狀態</label>
-								<div class="input-group">
-									<select class="form-control" id="resStatus" name="resStatus">
-										<option <%=resStatus.equals("0") ? "selected" : ""%> value="0">全部</option>
-										<option <%=resStatus.equals("1") ? "selected" : ""%> value="1">(有員工編號)有處理</option>
-										<option <%=resStatus.equals("2") ? "selected" : ""%> value="2">(無員工編號)未處理</option>
-									</select>
-									<div class="input-group-append"></div>
-								</div>
-							</div>
+				<!-- 查詢 -->
+				<div class="row mb-4">
+					<div class="col-md-3">
+						<label for="actOrderNo">訂單編號</label>
+						<div class="input-group">
+							<input type="text" class="form-control" name="actOrderNo"
+								id="actOrderNo">
+							<div class="input-group-append"></div>
 						</div>
-						<button class="btn btn-primary" id="btn submit" type="submit">送出</button>
-						<br> <br>
 					</div>
-				</form>
-				<!-- 表格-->
+					<div class="col-md-3">
+						<label for="schdNo">活動檔期</label>
+						<div class="input-group">
+							<input type="text" class="form-control" name="schdNo" id="schdNo">
+							<div class="input-group-append"></div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label for="orderStatus">訂單狀態</label>
+						<div class="input-group">
+							<select class="form-control" id="orderStatus" name="orderStatus">
+								<option value="2">全部</option>
+								<option value="1">訂單成立</option>
+								<option value="0">訂單取消</option>
+							</select>
+							<div class="input-group-append"></div>
+						</div>
+					</div>
+				</div>
+				<button class="btn btn-primary" id="btSubmit" type="submit">送出</button>
+				<br> <br>
+			</div>
+			<!-- 				</form> -->
+			<!-- 表格-->
+			<FORM METHOD="post" ACTION="ActOrder.do">
 				<div class="container">
 					<div class="row mb-4">
 						<div class="col-md-12">
@@ -435,39 +368,42 @@ h1, h2, h3, h4 {
 									<thead>
 										<tr>
 											<th>活動訂單編號</th>
-											<th>活動類型</th>
-											<th>活動檔期</th>
+											<th>會員編號(姓名)</th>
+											<th>活動名稱</th>
+											<th>檔期編號</th>
 											<th>訂單狀態</th>
-											<th>訂單金額</th>
+											<th>訂單成立時間</th>
 											<th>動作</th>
 										</tr>
 									</thead>
 
 									<tbody>
 										<%@ include file="page1.file"%>
-										<c:forEach var="CsMessagesVO" items="${list}"
+										<c:forEach var="ActOrder" items="${list}"
 											begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
 											<tr>
-												<td>${CsMessagesVO.csmsgno}</td>
-												<td>${CsMessagesVO.memno}</td>
-												<td>${CsMessagesVO.cscontent}</td>
-												<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
-														pattern="yyyy-MM-dd HH:mm" /></td>
+												<td>${ActOrder.actOrderNo}</td>
+												<td>${ActOrder.memNo}</td>
+												<td>${ActOrder.schdVO.act.actName}</td>
+												<td>${ActOrder.schdVO.schdNo}</td>
 												<td><c:choose>
-														<c:when test="${not empty CsMessagesVO.csredate}">
-            										已回覆
-        											</c:when>
-														<c:otherwise>
-															<span style="color: red;">未回覆</span>
-														</c:otherwise>
+														<c:when test="${ActOrder.orderStatus == 1}">
+            				成立
+        				</c:when>
+														<c:when test="${ActOrder.orderStatus== 0}">
+															<span style="color: red;">取消</span>
+														</c:when>
 													</c:choose></td>
+												<td>${ActOrder.orderTime}</td>
+<%-- <c:set var="formattedDateTime" value="${ActOrder.orderTime.format(java.time.format.DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))}" /> --%>
+<%-- <td>${formattedDateTime}</td> --%>
 												<td>
-													<FORM METHOD="post" ACTION="csmessages.do">
-														<input type="submit" value="回覆" class="btn btn-primary">
-														<input type="hidden" name="csmsgno"
-															value="${CsMessagesVO.csmsgno}"> <input
-															type="hidden" name="action" value="getOne_For_CsMsgno">
-													</FORM>
+													<form method="post" action="ActOrder.do">
+														<button type="submit" class="btn btn-primary">修改</button>
+														<input type="hidden" name="actOrderNo"
+															value="${ActOrder.actOrderNo}"> 
+															<input type="hidden" name="action" value="getOne_For_ActOrderNo">
+													</form>
 												</td>
 											</tr>
 										</c:forEach>
@@ -478,40 +414,16 @@ h1, h2, h3, h4 {
 						</div>
 					</div>
 				</div>
-			</div>
 		</div>
 	</div>
-
-
-	<!-- 	<div class="container"> -->
-	<!-- 		<nav aria-label="Page navigation"> -->
-	<!-- 			<ul class="pagination justify-content-end"> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="First"> <span aria-hidden="true">首頁</span></a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Previous"> <span aria-hidden="true">上一頁</span></a></li> -->
-	<!-- 				<li class="page-item active"><a class="page-link" href="#">1</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#">2</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Next"> <span aria-hidden="true">下一頁</span></a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Last"> <span aria-hidden="true">最後一頁</span></a></li> -->
-	<!-- 			</ul> -->
-	<!-- 		</nav> -->
-	<!-- 	</div> -->
-
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script
 		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 	<script
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 	<script
 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 	<!-- Menu Toggle Script -->
 	<script>

@@ -1,10 +1,13 @@
 package com.paradisiac.actorder.service;
 
+import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import com.paradisiac.act.model.ActVO;
 import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.actorder.model.ActOrder;
 import com.paradisiac.actorder.model.ActOrderDAO;
@@ -37,7 +40,7 @@ public class ActOrderService implements ActOrderService_interface {
 
 		return dao.insert(ActOderVO);
 	}
-
+//更新
 	@Override
 	public int updateActOrder(Integer actOrderNo, Integer memNo, SchdVO schdVO, EmpVO empVO, LocalDateTime orderTime,
 			Integer aAtnNum, Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
@@ -57,36 +60,53 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 
 	@Override
+	public int modifyStatus(SchdVO schdNo, Integer orderStatus) {
+		return dao.modifyStatus(schdNo, orderStatus);
+	}
+	
+	@Override
 	public int cancelAct(SchdVO schdVO) {
 		// 官方取消活動利用 檔期PK 、改變訂單狀態
 		return 1;
 	}
 
+//查詢
 	@Override
 	public ActOrder getOneByActOrderNo(Integer actOrderNo) {
 
 		return dao.getOneByActOrderNo(actOrderNo);
 	}
-
+	
 	@Override
-	public List<ActOrder> getAll() {
-
+	public List<ActOrder> getAll() {//所有資料無分頁
 		return dao.getAll();
 	}
+		
+	@Override
+	public List<ActOrder> getAll(int currentPage) {//所有資料分頁
+		return dao.getAllStatus(currentPage);
+	}
 
 	@Override
-	public int modifyStatus(SchdVO schdNo, Integer orderStatus) {
-		return dao.modifyStatus(schdNo, orderStatus);
+	public int getTotal() {//總頁數
+		long total = dao.getTotal();
+		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		return pageQty;
+	}
+	
+	@Override
+	public int getPageActOrderTotal() {//資料總比數
+		long total = dao.getTotal();
+		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
+		return pageQty;
 	}
 	
 	
-//	@Override
-//	public List<ActOrder> insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list) {
-//		ActOrder actOrder ,
-//		List<ActAttendees> list) {
-//		 dao.ActOrder insert_Whith_ActAttendees(actOrder,list);
-//	}
-	
+	@Override
+	public List<ActOrder> getAllByStatusPage(int currentPage){//分頁
+		return dao.getOrderStatusCount(currentPage);//設置訂單狀況
+	}
+
 	}
 	
 	

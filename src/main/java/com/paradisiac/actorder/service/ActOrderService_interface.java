@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-
+import com.paradisiac.act.model.ActVO;
 import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.actorder.model.ActOrder;
 import com.paradisiac.employee.model.EmpVO;
@@ -16,17 +16,27 @@ public interface ActOrderService_interface {
 	int addActOrder(Integer memNo, SchdVO schdVO, EmpVO empVO, LocalDateTime orderTime, Integer aAtnNum,
 			Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees);
 
-	int updateActOrder(Integer actOrderNo,Integer memNo,SchdVO schdVO,EmpVO empVO,LocalDateTime orderTime,Integer aAtnNum,
-			Integer orderStatus,Integer orderAmount,Set<ActAttendees> actAttendees);
-	
-	ActOrder getOneByActOrderNo(Integer actOrderNo);
-	List<ActOrder> getAll();
-
+	//更新
 	int cancelAct(SchdVO schdVO);//該檔期下所有訂單狀態改變
 
-	int modifyStatus(SchdVO schdNo, Integer orderStatus);
+	int modifyStatus(SchdVO schdNo, Integer orderStatus);//確認訂單狀態
+	
+	
+	int updateActOrder(Integer actOrderNo,Integer memNo,SchdVO schdVO,EmpVO empVO,LocalDateTime orderTime,Integer aAtnNum,
+			Integer orderStatus,Integer orderAmount,Set<ActAttendees> actAttendees);
 
-//	List<ActOrder> insertWithActAttendees(ActOrder actOrder , List<ActAttendees> list);
+	
+	//查詢
+	public ActOrder getOneByActOrderNo(Integer actOrderNo);
+	public List<ActOrder> getAll();
+	public List<ActOrder> getAll(int currentPage);
+	int getTotal();//總筆數
+	
+	int getPageActOrderTotal();//
+
+	List<ActOrder> getAllByStatusPage(int currentPage);//符合條件查詢頁數
+
+
 
 	
 	
