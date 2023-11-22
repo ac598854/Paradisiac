@@ -4,14 +4,12 @@
   var calendarBody = document.getElementById("calendarBody");
   var selectedDateInput = document.getElementById("selectedDate");
   var holidays = [];       //存放 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據
-  let holidayMapping={};   //存放日期：平日為1、假日為2、連續假日為3，的映射資料，讓房價可以依這3種狀態分別計價
+  let holidayMapping={};   //存放日期=>key：狀態=>value(平日為1、假日為2、連續假日為3)，的映射資料，讓房價可以依這3種狀態分別計價
   //日期不等於"X跟--，才可以選取 
   var regex = /X|(--)/;
   //點選行事曆日期後顯示在 textbox中
   calendarBody.addEventListener("click", function(event) {
-    var clickedCell = event.target;
-   
-   
+    var clickedCell = event.target;   
     // 移除之前已選取的日期的樣式   
     if (clickedCell.tagName === "TD" && clickedCell.textContent !== "") {
       var selectedCells = document.querySelectorAll(".selected");
@@ -33,9 +31,7 @@
       var day = String(clickedDate.getDate()).padStart(2, '0');
       if (clickedCell.tagName === "TD" && clickedCell.textContent !== "" && !regex.test(clickedCell.textContent)) {
     	  /*===============當選取日期後到後端取出 房型資訊================  */
-    	  var selectDay = year + "-" + month + "-" + day;
-    	//  console.log(selectDay);
-      	 /*  selectedDateInput.value =  year + "/" + month + "/" + day; */
+    	  var selectDay = year + "-" + month + "-" + day;    	
       	 //依擇的日期找出當日所有房型資訊
        	  getSingleForDay(selectDay); 
           /*===============================  */
@@ -47,10 +43,11 @@
   var currentDay = currentDate.getDate() - 1;
   var currentMonth = currentDate.getMonth();
   var currentYear = currentDate.getFullYear(); 	
- //透過 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據
-   holidayData(currentMonth, currentYear);
+  //透過 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據 -一開始就要先取得假日資料之後才能填充至行事曆
+   holidayData(currentMonth, currentYear); 
   //產生行事曆
-  function renderCalendar(month, year) {	 
+  function renderCalendar(month, year) {
+	//執行前先刷新頁面  	 
     calendarBody.innerHTML = "";
     currentMonthYear.innerHTML = getMonthName(month) + " " + year;
     var firstDayOfMonth = new Date(year, month, 1).getDay();
@@ -84,6 +81,7 @@
 				if (labelElement && holidayData) {	
 					//若是假日則將日期標示紅字				
 					if (holidayData.isHoliday) {
+						
 						labelElement.innerHTML = `&nbsp;&nbsp;<span id =${spanId} class="holiday">${day}</span>`;
 						labelElement.querySelector('.holiday').style.color = 'red';
 					} else {
@@ -107,6 +105,8 @@
       }
       calendarBody.appendChild(row);
     }
+    //執行房間狀態的填充將○、△、X填充在行事曆上面
+    updateCalendarDate()
   }
 
   function getMonthName(month) {
@@ -125,16 +125,12 @@
       currentMonth--;
       if (currentMonth < 0) {
         currentMonth = 11;
-        currentYear--;      
-     //★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字
-      holidayData(currentMonth, currentYear);
-      }
-     
+        currentYear--;    
+        //★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字
+        holidayData(currentMonth, currentYear);       
+      }     
       //行事曆重新填充日期
-      renderCalendar(currentMonth, currentYear);
-      //執行房間狀態的填充將○、△、X填充在行事曆上面
-      updateCalendarDate();
-    
+      renderCalendar(currentMonth, currentYear);     
     }
   });
   //下個月按鈕
@@ -142,33 +138,16 @@
     currentMonth++;
     if(currentMonth > 11){
       currentMonth = 0;
-      currentYear++;     
-     //★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字
-      holidayData(currentMonth, currentYear);
+      currentYear++;          
     } 
     //若是12月時要去多取得下年度的假日資料，否則跨年的連續假日會法判斷
     if(currentMonth==11){ 
+	//★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字	
     holidayData(currentMonth, currentYear);
-    } 
+    }     
      //行事曆重新填充日期
-    renderCalendar(currentMonth, currentYear);
-    //執行房間狀態的填充將○、△、X填充在行事曆上面
-    updateCalendarDate();
-    
+    renderCalendar(currentMonth, currentYear);      
   });
-
-  renderCalendar(currentMonth, currentYear);
-
-  $(document).ready(function() {
-
-   updateCalendarDate();
-  });
-  //一進到網頁在行事曆畫面渲染完成後執行房間狀態的填充將○、△、X填充在行事曆上面
- // updateCalendarDate();
-  
-  //=============================取得假日資料並將行事曆標記假日為紅字
-// 用於存儲假日數據的數組
-
 
 // 使用 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據，取得假日資料，再將假日的資料綁定在行事曆上
 function holidayData(currentMonth, currentYear){
@@ -186,20 +165,18 @@ fetch(`https://cdn.jsdelivr.net/gh/ruyut/TaiwanCalendar/data/${currentYear}.json
                     .then(response => response.json())
                     .then(nextYearData => {
                         // 合併下一年度的假日資料到今年的假日資料，為了解決跨年度無法計算連續假日問題
-                        holidays = holidays.concat(nextYearData);
-                     //   console.log("取得下一年度假日資料：", nextYearData);
-					 //   console.log("12月合併隔年資料：====",holidays);
-                        // 渲染日历
-                        renderCalendar(currentMonth, currentYear);
+                        holidays = holidays.concat(nextYearData);                      
                     })
                     .catch(error => console.error('獲取下一年度假日數據時發生錯誤:', error));
             } else {
-                // 不是12月，直接渲染日曆
+                // 不是12月，直接渲染日曆              
                 renderCalendar(currentMonth, currentYear);
-            }
+            }          
         })
 	.catch(error => console.error('獲取假日數據時發生錯誤:', error));
+	
 }
+ 
 //============================== 
   
   //從redis讀取每日所有房型資料，將行事曆標記○、△、X等記號
@@ -227,7 +204,9 @@ fetch(`https://cdn.jsdelivr.net/gh/ruyut/TaiwanCalendar/data/${currentYear}.json
           var labelElement = document.getElementById(labelId);
          // console.log("測試:==labelElement:",labelElement,"aStatus:",aStatus,"vdate:",vdate);
          //尋找行事曆上原的日期若有找到則填入狀態○、△、X
+         
           if (labelElement) {
+			 
             labelElement.innerHTML +=`&nbsp;&nbsp;` + aStatus;
           }
         });
@@ -288,21 +267,27 @@ function getSingleForDay(selectDay) {
 				//可下訂數量（將房型的總數量減掉已下訂的數量＝可下訂數量）
 				let booking = item.roomTotal - item.rbooking;
 				
+				
 				//可下訂數量不等於0的房型才顯示
 				if (booking != 0) {
 				 // 動態生成下拉選單的 HTML
     		    let optionsHtml = generateOptions(1, booking, 1, item.roomTypeNo, item.vDate);
 				//計算平日、假日、連續假日房價
 				const priceType = holidayMapping[item.vDate];
-				console.log(priceType);
+				
+				//切換平日價格、假日價格、連假價格
+				let priceStr ;
 				// 根據價格類型設定價格
 				let selectedPrice;
 				if (priceType === 1) {
 					selectedPrice = item.price; // 平日價格
+					priceStr ="平日價格";
 				} else if (priceType === 2) {
 					selectedPrice = item.holiDayPrice; // 假日價格
+					priceStr ="假日價格";
 				} else if (priceType === 3) {
 					selectedPrice = item.bridgeHolidayPrice; // 連假價格（原賈）
+					priceStr ="連假價格"
 				} else {
 				// 如果沒有對應的價格類型，可以設定一個預設值或者處理邏輯
 					selectedPrice = item.price;
@@ -343,7 +328,7 @@ function getSingleForDay(selectDay) {
                         <div class="col-md-6">
                            	  <li>日期：${item.vDate}</li>                           	 
                            	  <li>設施：${item.facility}</li>
-                           	  <li>售價：${selectedPrice}元</li>                           	   
+                           	  <li>${priceStr}：${selectedPrice}元</li>  <!--售價 -->                            	   
                            	  <li>剩餘間數：${booking}間</li>                         	                           	  
                           	  <li>
                           	   <a href="#" class="btn btn-primary fs-5" onclick="showDetail(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', document.getElementById('bookingSelect_${item.roomTypeNo}_${item.vDate}').value)">立即訂購</a>
@@ -368,11 +353,9 @@ function getSingleForDay(selectDay) {
 					const selectedBooking = bookingSelect.value;
 					// 調用 showDetail 函數，將選中的值傳遞給它
 					showDetail(item.roomTypeNo, item.vDate, item.roomName, item.rType, item.holiDayPrice, item.bridgeHolidayPrice, item.price, item.notice, item.facility, selectedBooking);
-
-
-				//★★★★★============================================================
+				
 				});
-				} //if的括號
+				} //對映if的括號
 			});
 
 		})
@@ -383,12 +366,13 @@ function getSingleForDay(selectDay) {
     //取出日期來判斷，該日期的前後是否有放假
     var dayMarkHolidayStatus=parseDateFromString(currentHoliday.date);
     //console.log("測試",dayMarkHolidayStatus);
-   // console.log("continuousDays======",continuousDays);
+     console.log("測試====continuousDays======",continuousDays.date);
     if (continuousDays === 2) {       
       holidayMapping[dayMarkHolidayStatus]=2;     //假日(放假2天以內)
     } else if (continuousDays >= 3) {      
       holidayMapping[dayMarkHolidayStatus]=3;     //連續假日(放假3天以上)
-    } else {       
+    } else {      
+	 
       holidayMapping[dayMarkHolidayStatus]=1;     //平日
     }
   }
@@ -492,7 +476,7 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
                 <p>房型：${rType}</p>
                 <p>假日價格：${holiDayPrice}</p>
                 <p>連假價格：${bridgeHolidayPrice}</p>
-                <p>原價：${price}</p>
+                <p>平日價格：${price}</p>
                 <p>注意事項：${notice}</p>
                 <p>設施：${facility}</p>
                 <p>預訂數量：${rbooking}</p>
@@ -503,8 +487,31 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
 
 	// 顯示燈箱
 	$('#lightbox').modal('show');
+	//士傑跳轉
+	let originalDate = new Date(vDate);
+    let nextDay = new Date(originalDate.getTime() + 24 * 60 * 60 * 1000);
+    let formattedNextDay = `${nextDay.getFullYear()}-${(nextDay.getMonth() + 1).toString().padStart(2, '0')}-${nextDay.getDate().toString().padStart(2, '0')}`;
+	// 創建一個包含所有資訊的物件
+    let roomInfo = {
+        roomTypeNo: roomTypeNo,
+        vDate: vDate,
+        formattedNextDay: formattedNextDay,
+        roomName: roomName,
+        rType: rType,
+        holiDayPrice: holiDayPrice,
+        bridgeHolidayPrice: bridgeHolidayPrice,
+        price: price,
+        notice: notice,
+        facility: facility,
+        rbooking: rbooking
+    };
+
+    // 將資料轉為 JSON 字串，並存儲到 localStorage 中
+    localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
+    window.location.href = '/Paradisiac/back-end/roomorder/orderbuy.jsp';
+	
 }
 
-//=============================燈箱顯示訂房資訊-日期格式化
+
 
 

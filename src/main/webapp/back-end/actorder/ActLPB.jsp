@@ -44,7 +44,7 @@ pageContext.setAttribute("list", list);
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
-<title>客服訊息管理</title>
+<title>ParadisiacBay-活動訂單管理</title>
 
 <!-- Bootstrap -->
 <link
@@ -104,10 +104,10 @@ ul.navigation {
 .container-fluid {
 	/* 	max-width: 1100px; */
 	/* 	margin-top: 10px; */
-	max-width: 100%; 
+	max-width: 100%;
 	margin-top: 10px;
 	padding: 0;
-	overflow: hidden; 
+	overflow: hidden;
 }
 
 .sidebar-nav>.sidebar-title {
@@ -283,7 +283,7 @@ h1, h2, h3, h4 {
 }
 
 .table-data .col-md-2 {
-	width: 100%; 
+	width: 100%;
 	padding: 10px;
 	border: 1px solid #ccc;
 	background-color: #f8f9fa;
@@ -357,9 +357,11 @@ h1, h2, h3, h4 {
 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
 				<li class="sidebar-title">員工權限管理</li>
 				<li class="sidebar-title">會員管理</li>
-				<li><a href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li>
+				<li><a
+					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li>
 				<li><a href="#">會員相簿管理</a></li>
-				<li><a href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li>
+				<li><a
+					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li>
 				<li class="sidebar-title">最新消息管理</li>
 				<li class="sidebar-title">訂房管理</li>
 				<li class="sidebar-title">商城管理</li>
@@ -384,7 +386,7 @@ h1, h2, h3, h4 {
 
 				<form action="MessageLPB.jsp" method="get">
 					<div class="col-lg-12">
-						<h1>活動訂單管理列表</h1>
+						<h1>活動訂單管理</h1>
 
 						<!-- 查詢 -->
 
@@ -417,17 +419,6 @@ h1, h2, h3, h4 {
 									<div class="input-group-append"></div>
 								</div>
 							</div>
-							<div class="col-md-3">
-								<label for="resStatus">付款狀態</label>
-								<div class="input-group">
-									<select class="form-control" id="resStatus" name="resStatus">
-										<option <%=resStatus.equals("0") ? "selected" : ""%> value="0">全部</option>
-										<option <%=resStatus.equals("1") ? "selected" : ""%> value="1">(有員工編號)有處理</option>
-										<option <%=resStatus.equals("2") ? "selected" : ""%> value="2">(無員工編號)未處理</option>
-									</select>
-									<div class="input-group-append"></div>
-								</div>
-							</div>
 						</div>
 						<button class="btn btn-primary" id="btn submit" type="submit">送出</button>
 						<br> <br>
@@ -445,9 +436,7 @@ h1, h2, h3, h4 {
 											<th>活動類型</th>
 											<th>活動檔期</th>
 											<th>訂單狀態</th>
-											<th>付款狀態</th>
 											<th>訂單金額</th>
-											<th>付款時間</th>
 											<th>動作</th>
 										</tr>
 									</thead>
@@ -460,18 +449,16 @@ h1, h2, h3, h4 {
 												<td>${CsMessagesVO.csmsgno}</td>
 												<td>${CsMessagesVO.memno}</td>
 												<td>${CsMessagesVO.cscontent}</td>
-												<td>${CsMessagesVO.empno}</td>
-												<td>${CsMessagesVO.empno}</td>
 												<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
-													pattern="yyyy-MM-dd HH:mm" /></td>
+														pattern="yyyy-MM-dd HH:mm" /></td>
 												<td><c:choose>
-													<c:when test="${not empty CsMessagesVO.csredate}">
+														<c:when test="${not empty CsMessagesVO.csredate}">
             										已回覆
         											</c:when>
-													<c:otherwise>
-														<span style="color: red;">未回覆</span>
-													</c:otherwise>
-												</c:choose></td>
+														<c:otherwise>
+															<span style="color: red;">未回覆</span>
+														</c:otherwise>
+													</c:choose></td>
 												<td>
 													<FORM METHOD="post" ACTION="csmessages.do">
 														<input type="submit" value="回覆" class="btn btn-primary">

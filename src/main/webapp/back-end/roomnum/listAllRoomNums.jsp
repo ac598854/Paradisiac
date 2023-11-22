@@ -7,15 +7,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
-<title>退房管理系統</title>
+<title>房間管理系統</title>
  <style>
  		.container{	 			
  			position:relative;
- 			top: -70px;
+ 			top: -50px;
  		}
  		.text-center{ 		
- 		position:relative;
- 			top: -80px; 		
+ 			position:relative;
+ 			top: -50px; 		
+ 		}
+ 		#checkoutbtn{
+ 			width:60px;
  		}
         .table th,
         .table td {
@@ -78,11 +81,12 @@
         }
     </style>
 </head>
+
 <body>
 <%@ include file="/back-end/index/back-left_room.jsp" %>
-	
+	<!-- <DIV id="tatil" style="text-align:center;"><h1 >退房管理系統</h1></DIV> -->
 	<div class="container mt-5">
-	<DIV style="text-align:center;"><h1 >退房管理系統</h1></DIV>
+	
 	<!-- ==================message==================== -->
 	<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMessage}">
@@ -119,9 +123,10 @@
 			<thead>
 				<tr>
 					<th scope="col">房間號碼</th>
-					<th scope="col">房型</th>
+					<th scope="col">房型名稱</th>
 					<th scope="col">訂單編號</th>
-					<th scope="col">住房姓名</th>
+					<th scope="col">房客姓名</th>
+					<th scope="col">退房日期</th>
 					<th scope="col">房間狀態</th>
 					<th scope="col">功能</th>
 
@@ -130,29 +135,48 @@
 			<tbody>
 				<c:forEach var="roomnum" items="${roomnumList}">
 					<tr>
-						<td>${roomnum.rnum}</td>
-						<td>${roomnum.roomTypeNo}</td>
-						<td>${roomnum.roomOrderNo}</td>
-						<td>${roomnum.checkInName}</td>
-						<td><c:choose>
+						<td>
+						${roomnum.rnum} <!-- 1房間號碼  -->
+						</td>  
+						 <td>
+						<c:forEach var="roomTypename" items="${roomtypeList}">
+						<c:if test="${roomnum.roomTypeNo == roomTypename.roomTypeno}"> 						
+						${roomTypename.roomName} <!-- 2房間名稱  -->						
+						</c:if>					
+						</c:forEach>	
+						</td>  						
+						 <%-- <td>${roomnum.roomTypeNo}</td>	 --%>		
+						<td>${roomnum.roomOrderNo}</td>	<!-- 3訂單編號  -->									
+						<td>${roomnum.checkInName}</td> <!-- 4房客姓名  -->					
+						<td>
+						<c:forEach var="roomOrder" items="${roomOrderList}">
+						<c:if test="${roomnum.roomOrderNo == roomOrder.roomOrderNo}"> 						
+						${roomOrder.checkoutDate} <!-- 5退房日期  -->						
+						</c:if>					
+						</c:forEach>
+						</td> 						
+						<!-- 6房間狀態  -->
+						<td>
+							<c:choose> 
 								<c:when test="${roomnum.roomStatus == 1}">可入住</c:when>
 								<c:when test="${roomnum.roomStatus == 2}">入住中</c:when>
 								<c:when test="${roomnum.roomStatus == 3}">清潔中</c:when>
 								<c:otherwise>未知狀態</c:otherwise>
 							</c:choose>
 						</td>
-						<td>
+						
+						<td><!-- 7功能  -->
 							<form method="post"
 								action="<%=request.getContextPath()%>/roomnum.do">
 								<input type="hidden" name="rnum" value="${roomnum.rnum}">
-								<button type="submit" name="action" value="checkout"
-									class="btn btn-primary">退房</button>
-								<button type="submit" name="action" value="cleanup"
-									class="btn btn-success" style="width: 100px;" onclick="clearMessages()">清掃完成</button>
-									
-									 <input type="hidden" name="page" value="${currentPage}"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
+								<input type="hidden" name="roomOrderNo" value="${roomnum.roomOrderNo}">								
+								<button type="submit" id="checkoutbtn" name="action" value="checkout" class="btn btn-primary">退房</button>
+								<button type="submit" id="cleanupbtn" name="action" value="cleanup"	class="btn btn-success" style="width: 100px;" onclick="clearMessages()">清掃完成</button>
+								<input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
 							</form>
 						</td>
+						
+						
 					</tr>
 				</c:forEach>
 			</tbody>

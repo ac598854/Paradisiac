@@ -1,68 +1,121 @@
 package com.paradisiac.actorder.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
-import com.paradisiac.actattendees.model.ActAttendeesVO;
-import com.paradisiac.actorder.model.ActOrderDAO_interface;
-import com.paradisiac.actorder.model.ActOrderJDBCDAO;
-import com.paradisiac.actorder.model.ActOrderVO;
+import com.paradisiac.actattendees.model.ActAttendees;
+import com.paradisiac.actorder.model.ActOrder;
+import com.paradisiac.actorder.model.ActOrderDAO;
+import com.paradisiac.employee.model.EmpVO;
+import com.paradisiac.schd.model.SchdVO;
+import com.paradisiac.util.HibernateUtil;
+import java.time.LocalDateTime;
 
-public class ActOrderService {
-
-	private ActOrderDAO_interface dao;
-
+public class ActOrderService  implements ActOrderService_interface{
+	private ActOrderDAO dao;
+	
 	public ActOrderService() {
-		dao = new ActOrderJDBCDAO();
+		dao = new ActOrderDAO (HibernateUtil.getSessionFactory());
 	}
 
-	public ActOrderVO insert(Integer memno,Integer schdno,Integer empno,
-			Timestamp ordertime,Integer aatnnum,boolean orderstatus,Integer paymethod,
-			boolean paystatus,Timestamp paytime,Integer orderamount) {
+//	@Override
+//	public int addActOrder(Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime, Integer aAtnNum,
+//			Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public int updateActOrder(Integer actOrderNo, Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime,
+//			Integer aAtnNum, Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+//
+//	@Override
+//	public ActOrder getOneByActOrderNo(Integer actOrderNo) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public List<ActOrder> getAll() {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+//
+//	@Override
+//	public int cancelAct(SchdVO schdVO) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
+
+	@Override
+	public int addActOrder(Integer memNo,SchdVO schdVO,EmpVO empVO,LocalDateTime orderTime,Integer aAtnNum,
+			Integer orderStatus,Integer orderAmount,Set<ActAttendees> actAttendees) {
 		
-		ActOrderVO ActOrderVO=new ActOrderVO();
-		ActOrderVO.setMemno(memno);
-		ActOrderVO.setSchdno(schdno);		
-		ActOrderVO.setOrdertime(ordertime);
-		ActOrderVO.setPaystatus(orderstatus);
-		ActOrderVO.setAatnnum(aatnnum);
-		ActOrderVO.setPaymethod(paymethod);
-		ActOrderVO.setPaystatus(paystatus);
-		ActOrderVO.setPaytime(paytime);
-		ActOrderVO.setOrderamount(orderamount);		
-		dao.insert(ActOrderVO);
-		return ActOrderVO;
+		ActOrder ActOderVO =new ActOrder();
+		
+		ActOderVO.setMemNo(memNo);
+		ActOderVO.setSchdVO(schdVO);
+		ActOderVO.setEmpVO(empVO);
+		ActOderVO.setOrderTime(LocalDateTime.now());
+		ActOderVO.setaAtnNum(aAtnNum);
+		ActOderVO.setOrderStatus(orderStatus);;
+		ActOderVO.setOrderAmount(orderAmount);
+		ActOderVO.setActAttendees(actAttendees);
+			
+		return  dao.inert(ActOderVO);
 	}
 
-	public ActOrderVO update_Back_Status(Integer empno,boolean orderstatus,boolean paystatus,
-			Timestamp paytime) {
-		ActOrderVO ActOrderVO=new ActOrderVO();
-		ActOrderVO.setEmpno(empno);
-		ActOrderVO.setOrderstatus(orderstatus);
-		ActOrderVO.setPaystatus(paystatus);
-		ActOrderVO.setPaytime(paytime);	
-		dao.update_Back_Status(ActOrderVO);
-		return ActOrderVO;
+	@Override
+	public int updateActOrder(Integer actOrderNo,Integer memNo,SchdVO schdVO,EmpVO empVO,LocalDateTime orderTime,Integer aAtnNum,
+			Integer orderStatus,Integer orderAmount,Set<ActAttendees> actAttendees) {
+	
+		ActOrder ActOderVO =new ActOrder();
+		ActOderVO.setActOrderNo(actOrderNo);
+		ActOderVO.setMemNo(memNo);
+		ActOderVO.setSchdVO(schdVO);
+		ActOderVO.setEmpVO(empVO);
+		ActOderVO.setOrderTime(LocalDateTime.now());
+		ActOderVO.setaAtnNum(aAtnNum);
+		ActOderVO.setOrderStatus(orderStatus);
+		ActOderVO.setOrderAmount(orderAmount);
+		ActOderVO.setActAttendees(actAttendees);
+			
+		return dao.update(ActOderVO);
 	}
 
-	public ActOrderVO get_one_byactoderno(Integer ActOderNo) {
-		return dao.get_one_byactoderno(ActOderNo);
+	@Override
+	public int cancelAct(SchdVO schdVO) {
+		//官方取消活動利用 檔期PK 、改變訂單狀態		
+		return dao.modifyStatus(schdVO,0);
 	}
+	
+	
 
-	public List<ActOrderVO> get_all_bymemno(Integer MemNo) {
-		return dao.get_all_bymemno(MemNo);
+	@Override
+	public ActOrder getOneByActOrderNo(Integer actOrderNo) {
+
+		return dao.getOneByActOrderNo(actOrderNo);
 	}
+	
+	@Override
+	public List<ActOrder> getAll() {
 
-	public List<ActOrderVO> getAll() {
 		return dao.getAll();
 	}
 
-	public void insertWithOrder_actAttendees(ActOrderVO ActOderVO, List<ActAttendeesVO> list) {
-		dao.insertWithOrder_actAttendees(ActOderVO, list);
-	}
 
-	public List<ActOrderVO> getactnoByMemNo(Integer MemNo) {
-		return dao.getactnoByMemNo(MemNo);
-	}
+	
+	
+	
+	
 
+
+	
+	
+	
 }

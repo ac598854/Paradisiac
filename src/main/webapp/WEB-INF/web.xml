@@ -66,6 +66,14 @@
         <servlet-name>ResetPass</servlet-name>
         <url-pattern>/front-end/members/ResetPass.do</url-pattern>
     </servlet-mapping>
+     <servlet>
+        <servlet-name>ActOrder</servlet-name>
+        <servlet-class>com.paradisiac.actorder.controller.ActOrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ActOrder</servlet-name>
+        <url-pattern>/front-end/actorder/ActOrder.do</url-pattern>
+    </servlet-mapping>
 
 	<listener>
 		<listener-class>com.paradisiac.listener.InitializerListener</listener-class>

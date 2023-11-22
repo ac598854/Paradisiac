@@ -61,6 +61,11 @@ pageContext.setAttribute("membersVO", membersVO);
 	cursor: pointer;
 	align-items: center;
 }
+
+.myClass{
+display: inline-block;
+padding-left: 50%;
+}
 </style>
 <%@ include file="/front-end/index/MembersMeta.jsp"%>
 </head>
@@ -71,8 +76,8 @@ pageContext.setAttribute("membersVO", membersVO);
 		<form METHOD="post" ACTION="members.do" name="form1" id="form1"
 			enctype="multipart/form-data">
 			<!-- 讀出的會員圖片 -->
-			<div class="row mb-3">
-				<div class="col-md-12 text-center" id="round-image-container">
+			<div class="myClass">
+				<div id="round-image-container">
 					<c:choose>
 						<c:when test="${not empty membersVO.mempicture}">
 							<img
@@ -124,8 +129,9 @@ pageContext.setAttribute("membersVO", membersVO);
 					<div class="form-group">
 						<label for="memmail">Email<span class="text-danger">*</span></label>
 						<input type="email" class="form-control" id="email" name="memmail"
-							value="${membersVO.memmail}" placeholder="請輸入Email" oninput="checkEmail()">
-							<div id="result_Mail" style="color: red;"></div>
+							value="${membersVO.memmail}" placeholder="請輸入Email"
+							oninput="checkEmail()">
+						<div id="result_Mail" style="color: red;"></div>
 					</div>
 				</div>
 				<div class="col-md-6">
@@ -137,19 +143,22 @@ pageContext.setAttribute("membersVO", membersVO);
 				</div>
 				<div class="col-md-6">
 					<div class="form-group" id="password-container">
-						<label for="mempass">修改密碼</label> <input type="password" class="form-control" id="mempass" name="mempass"
+						<label for="mempass">修改密碼</label> <input type="password"
+							class="form-control" id="mempass" name="mempass"
 							placeholder="修改密碼"> <span class="toggle-mempass"
 							onclick="togglePasswordVisibility()">👁️</span>
 					</div>
 
 				</div>
 				<div class="col-md-6">
-					<label for="memgender">性別</label> <select id="memgender"
-						class="form-control browser-default custom-select"
-						name="memgender">
-						<option value="1">男</option>
-						<option value="2">女</option>
-						<option value="3">其他</option>
+					<label for="memgender">性別</label>
+					<select name="memgender" class="form-control browser-default custom-select">
+						<option value="1"
+							<c:if test="${membersVO.memgender == 1}">selected</c:if>>男</option>
+						<option value="2"
+							<c:if test="${membersVO.memgender == 2}">selected</c:if>>女</option>
+						<option value="3"
+							<c:if test="${membersVO.memgender == 3}">selected</c:if>>其他</option>
 					</select>
 				</div>
 				<div class="col-md-6">
@@ -178,12 +187,12 @@ pageContext.setAttribute("membersVO", membersVO);
 				</div>
 				<div class="col-sm-12">
 					<label for="memaddress">地址</label> <input type="text"
-						name="memaddress" class="form-control" id="memaddress" value="${membersVO.memaddress}"
-						placeholder="請輸入地址"> <br>
+						name="memaddress" class="form-control" id="memaddress"
+						value="${membersVO.memaddress}" placeholder="請輸入地址"> <br>
 				</div>
 				<div class="col-sm-12">
-				<button type="submit" class="btn btn-primary" id="submitButton">提交更新</button>
-				<input type="hidden" name="action" value="update-Front">
+					<button type="submit" class="btn btn-primary" id="submitButton">提交更新</button>
+					<input type="hidden" name="action" value="update-Front">
 				</div>
 			</div>
 		</form>
@@ -234,9 +243,9 @@ pageContext.setAttribute("membersVO", membersVO);
 		function checkEmail() {
 			var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 			var emailValue = $("#email").val().trim();
-			if (emailValue === "" || !emailRegex.test(emailValue)) { 
+			if (emailValue === "" || !emailRegex.test(emailValue)) {
 				document.getElementById("result_Mail").innerText = "請輸入有效的Email地址";
-				isValidEmail = false; 
+				isValidEmail = false;
 				return;
 			} else {
 				document.getElementById("result_Mail").innerText = "";
@@ -299,24 +308,26 @@ pageContext.setAttribute("membersVO", membersVO);
 			return isValid;
 		}
 
-		$('#submitButton').click(function(e) {
-			e.preventDefault();
-			var fieldsValid = checkRequiredFields();//過濾空白檢查
-			console.log("fieldsValid:"+fieldsValid);
-			console.log("isMemphoneValid:"+isMemphoneValid);
-			console.log("isMemIdValid:"+isMemIdValid);
-			console.log("isValidEmail:"+isValidEmail);
-			
-			if (fieldsValid && isMemphoneValid && isMemIdValid && isValidEmail) {
-				// 驗證通過
-				$("#form1 input[name='action']").val("update-Front");
-				// 送出
-				$("#form1").submit();
-				alert("送出成功");
-			} else {
-				alert("必填未填");
-			}
-		});
+		$('#submitButton').click(
+				function(e) {
+					e.preventDefault();
+					var fieldsValid = checkRequiredFields();//過濾空白檢查
+					console.log("fieldsValid:" + fieldsValid);
+					console.log("isMemphoneValid:" + isMemphoneValid);
+					console.log("isMemIdValid:" + isMemIdValid);
+					console.log("isValidEmail:" + isValidEmail);
+
+					if (fieldsValid && isMemphoneValid && isMemIdValid
+							&& isValidEmail) {
+						// 驗證通過
+						$("#form1 input[name='action']").val("update-Front");
+						// 送出
+						$("#form1").submit();
+						alert("送出成功");
+					} else {
+						alert("必填未填");
+					}
+				});
 	</script>
 </body>
 

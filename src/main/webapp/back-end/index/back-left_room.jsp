@@ -258,13 +258,13 @@
         <ul class="sub-menu" id="submenu-2">
             
             <li>
-            <a href="#">訂房房型管理</a>
+           <a href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">訂房房型管理</a>
             </li>
             <li>
-            <a href="#">訂房訂單管理</a>
+             <a href="${pageContext.request.contextPath}/back-end/roomorder/orderfirst.jsp">訂房訂單管理</a>
             </li>
             <li>
-            <a href="#">訂房房型圖片管理</a>
+            <a href="${pageContext.request.contextPath}/back-end/roompicture/addpic.jsp">訂房房型圖片管理</a>
             </li>
              <li>
             <a href="${pageContext.request.contextPath}/back-end/roomnum/selectCheckInData.jsp">客房登記管理系統</a>

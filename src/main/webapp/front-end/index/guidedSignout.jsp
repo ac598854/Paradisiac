@@ -39,7 +39,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">聯絡我們</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a>

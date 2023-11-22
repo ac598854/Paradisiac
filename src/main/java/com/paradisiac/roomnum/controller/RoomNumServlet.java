@@ -10,7 +10,7 @@ import static com.paradisiac.util.Constants.PAGE_MAX_RESULT;
 import com.paradisiac.roomnum.model.RoomNumDAOImpl;
 import com.paradisiac.roomnum.model.RoomNumVO;
 import com.paradisiac.roomnum.service.*;
-
+//import com.paradisiac.roomnum.RoomNumJDBCDAO;
 import com.paradisiac.roomorder.model.*;
 import com.paradisiac.roomorder.service.*;
 import com.paradisiac.roomtype.service.*;
@@ -27,6 +27,7 @@ public class RoomNumServlet extends HttpServlet {
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		RoomNumServiceImpl roomnumService = new RoomNumServiceImpl();
+		
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		System.out.println(action);
@@ -114,12 +115,12 @@ public class RoomNumServlet extends HttpServlet {
 			Byte roomStatus = null;
 			roomStatus = (byte) status;
 			RoomNumServiceImpl roomnumSvc = new RoomNumServiceImpl();
-			System.out.println("更新狀態：" + roomnumSvc.updateRoomNumStatus(rnum, roomOrderNo, checkInName, roomStatus));
+			System.out.println("更新房間狀態(顯示1表示成功，-1表示失敗)：" + roomnumSvc.updateRoomNumStatus(rnum, roomOrderNo, checkInName, roomStatus));
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 //			getAllRoomNum(roomnumService, req, res);
 			//String url = "/order.do?action=handleCheckIn";
 			String url = "/order.do?action=handleCheckIn&source=update";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交listAllRoomNums.jsp
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 修改成功後,轉交roomorder/RoomOrderServlet.java
 			successView.forward(req, res);
 		}
 
@@ -225,7 +226,7 @@ public class RoomNumServlet extends HttpServlet {
 			
 			String page = req.getParameter("page");
 			int currentPage = (page == null) ? 1 : Integer.parseInt(page);
-			System.out.println("insert =========");
+			
 			List<String> errorMessage = new LinkedList<String>();
 			req.setAttribute("errorMessage", errorMessage);
 			List<String> successMessage = new LinkedList<String>();
@@ -288,16 +289,16 @@ public class RoomNumServlet extends HttpServlet {
 			// 將前端收集的資料存到roomNumVO物件內
 			
 
-			// 檢查新增的資料是否有重覆新增
-			if (totalInt == null) {
-				errorMessage.add("目前沒有設定，房型編號：" + roomTypeNo + "，無法新增請重新輸入別的房型編號。");
-				CRUDupdatePage(roomnumService, currentPage, req, res);
-			}
+//			// 檢查新增的資料是否有重覆新增
+//			if (totalInt == null) {
+//				errorMessage.add("目前沒有設定，房型編號：" + roomTypeNo + "，無法新增請重新輸入別的房型編號。");
+//				CRUDupdatePage(roomnumService, currentPage, req, res);
+//			}
 			int total = totalInt.intValue();			
 			
 			//房間數量已超過房型資料表中定義的房間總數則無法再新增房間
 			if (count >= total) {
-				errorMessage.add("此房型編號:" + roomTypeNo + "號，設定房間數為" + total + "間，無法再為此房型新增房間。");
+				errorMessage.add("房型名稱:" + findRoomTypeName(roomTypeList,roomTypeNo) + "，設定房間數為" + total + "間已超過設定數量，無法新增房間編號："+rnum+"。");
 				CRUDupdatePage(roomnumService, currentPage, req, res);
 			}
 
@@ -312,7 +313,7 @@ public class RoomNumServlet extends HttpServlet {
 					// 新增1筆房間資料
 					roomnumService.addRoomNum(rnum, roomTypeNo, roomStatus);
 					successMessage.add(
-							"成功新增-房間編號：" + rnum + "，房型編號:" + roomTypeNo + "，總共有" + total + "間，已增加" + (count + 1) + "間");
+							"成功新增-房間編號：" + rnum + "，房型名稱:" + findRoomTypeName(roomTypeList,roomTypeNo) + "，總共有" + total + "間，已增加" + (count + 1) + "間");
 					// 取得比自已房間編號小的總筆數，使新增時能計算跳到那個分頁
 					Long addPage = roomnumService.getAddPage(rnum);
 					//跳到新增資料的那一頁
@@ -397,15 +398,15 @@ public class RoomNumServlet extends HttpServlet {
 					CRUDupdatePage(roomnumService, currentPage, req, res);
 				}
 			}		
+			// 說明：\\s表示可以輸入空白 ，\\d表示可以輸入數字
+			String checkInNameReg = "^[(\\s\\d\u4e00-\u9fa5)(a-zA-Z)]{2,30}$";		
 			//取得住房人姓名
-			String checkInNameReg = "^[(\u4e00-\u9fa5)(a-zA-Z)]{2,10}$";		
-			
 			String checkInNameStr = req.getParameter("checkInName");
 			String checkInName = null;			
 			if (checkInNameStr != null && !checkInNameStr.isEmpty()) {
 				checkInName = checkInNameStr.trim();
 				if (!checkInName.matches(checkInNameReg)) { // 以下練習正則(規)表示式(regular-expression)
-					errorMessage.add("住房姓名: 只能是中、英文字母 , 且長度必需在2到10之間");
+					errorMessage.add("住房姓名: 只能是中、英文字母 , 且長度必需在2到10之間======");
 					CRUDupdatePage(roomnumService, currentPage, req, res);
 				}		
 			}
@@ -439,10 +440,11 @@ public class RoomNumServlet extends HttpServlet {
 					roomNumVO.setCheckInName(checkInName);
 					roomNumVO.setRoomStatus(roomStatus);
 					roomnumService.updateRoomNum(roomNumVO);					
-					successMessage.add("成功更新-房間號碼："+rnum+" , 房型編號："+roomTypeNo+" , 訂單編號："+roomOrderNo+" , 住房姓名："+checkInName);
+					successMessage.add("成功更新-房間號碼："+rnum+" , 房型名稱："+findRoomTypeName(roomTypeList,roomTypeNo)+" , 訂單編號："+roomOrderNo+" , 住房姓名："+checkInName);
 				}
 				else {
-					errorMessage.add("此房型編號:"+roomTypeNo+"號，設定房間數為"+total+"間，無法再為此房型新增房間。");
+					
+					errorMessage.add("房型名稱:"+findRoomTypeName(roomTypeList,roomTypeNo)+"，設定房間數量為"+total+"間，已超過設定的房間數量無法將【房間編號："+rnum+"】修改為【"+findRoomTypeName(roomTypeList,roomTypeNo)+"】。");
 					CRUDupdatePage(roomnumService, currentPage, req, res);
 				}
 			}
@@ -451,16 +453,22 @@ public class RoomNumServlet extends HttpServlet {
 			CRUDupdatePage(roomnumService, currentPage, req, res);
 		}
 	}
-
+	//房間管理系統
 	public void getAllRoomNum(RoomNumServiceImpl roomnumService, HttpServletRequest req, HttpServletResponse res)
 			throws ServletException, IOException {
+		RoomTypeServiceImpl roomtypeService = new RoomTypeServiceImpl();
+		RoomOrderServiceImpl roomOrderService = new RoomOrderServiceImpl();
 		String page = req.getParameter("page");
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
+		List<RoomTypeVO> roomtypeList = roomtypeService.getAll();
+		List<RoomOrderVO> roomOrderList = roomOrderService.getAllOrd();
 		if (req.getSession().getAttribute("roomnumPageQty") == null) {
 			int roomnumPageQty = roomnumService.getPageTotal();
 			req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
 		}
+		req.setAttribute("roomOrderList", roomOrderList);
+		req.setAttribute("roomtypeList", roomtypeList);
 		req.setAttribute("roomnumList", roomnumList);
 		req.setAttribute("currentPage", currentPage);
 		String url = "/back-end/roomnum/listAllRoomNums.jsp";
@@ -471,6 +479,7 @@ public class RoomNumServlet extends HttpServlet {
 //在進行新增修改刪除時都能停留在原頁面或新增跳轉到新增筆數的頁面
 	public void getAllRoomNumPage(RoomNumServiceImpl roomnumService, int currentPage, HttpServletRequest req,
 			HttpServletResponse res) throws ServletException, IOException {
+		
 		// String page = req.getParameter("page");
 		// int currentPage = (page == null) ? 1 : Integer.parseInt(page);
 		// 計算總頁數
@@ -478,6 +487,7 @@ public class RoomNumServlet extends HttpServlet {
 		req.getSession().setAttribute("roomnumPageQty", roomnumPageQty);
 		// 新增時跳到新增的頁面將第幾頁的頁數填入getAllRoomNums(),會取出該面的集合資料
 		List<RoomNumVO> roomnumList = roomnumService.getAllRoomNums(currentPage);
+		
 		req.setAttribute("roomnumList", roomnumList);
 		req.setAttribute("currentPage", currentPage);
 		String url = "/back-end/roomnum/listRoomNums.jsp";
@@ -511,5 +521,14 @@ public class RoomNumServlet extends HttpServlet {
 		int newPage = (int) Math.ceil((double) totalRows / pageSize);
 		return (newPage > 0) ? newPage : 1;
 	}
-
+	public String findRoomTypeName(List<RoomTypeVO> roomTypeList,int roomTypeNo ) {
+		String TypeName="";
+		for (RoomTypeVO roomType : roomTypeList) {
+			// 在這裡可以使用 roomType 物件的屬性或方法		    
+		    if(roomTypeNo== roomType.getRoomTypeno()) {
+		    	TypeName= roomType.getRoomName();
+		    }		    
+		}
+		return TypeName;
+	}
 }
