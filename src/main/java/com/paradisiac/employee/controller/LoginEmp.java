@@ -10,9 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.paradisiac.employee.service.*;
+import javax.servlet.http.HttpSession;
+
 import com.paradisiac.department.model.DeptVO;
-import com.paradisiac.employee.model.*;
+import com.paradisiac.employee.service.EmpService;
 
 
 @WebServlet("/loginempN.do")
@@ -87,16 +88,23 @@ public class LoginEmp extends HttpServlet{
 				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
 			case 102: // 商城
-				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				forwardPath = req.getContextPath() + "/back-end/index/select_page.jsp";
 				break;
 			case 103: // 房務
-				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				forwardPath = req.getContextPath() + "/back-end/index/back-index_room.jsp";
 				break;
 			case 104: // 人資
-				forwardPath = req.getContextPath() + "/back-end/emp/select_page.jsp";
+				forwardPath = req.getContextPath() + "/back-end/index/back-left_hr.jsp";
+				break;
+			case 105: // 主管最高權限
+				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
 			}
+			HttpSession session = req.getSession();
+			session.setAttribute("empno", empSvc.getOneEmp(empno).getEmpno());		
+			System.out.println("員工編號:"+empSvc.getOneEmp(empno).getEmpno());
 			res.sendRedirect(forwardPath);
+
 
 		} // login
 
@@ -112,7 +120,7 @@ public class LoginEmp extends HttpServlet{
 				System.out.println("該員工已凍結");
 				return -2;
 			}else if(empSvc.getOneEmp(empno).getEmpPass().equals(empPass)){//檢查密碼
-				System.out.println("成功登入");		
+				System.out.println("成功登入");
 				return 1;
 			}else {
 				System.out.println("密碼有誤");

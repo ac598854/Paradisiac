@@ -1,25 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
-  <meta name="description" content="">
-  <meta name="author" content="">
-
-  <title>後端管理頁面</title>
-
-  <!-- Bootstrap Core CSS -->
-  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" rel="stylesheet"> 
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 
-
-
-    <style>
+<style>
         @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
         body {
         overflow-x: hidden;
@@ -49,7 +31,7 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background: #8E44AD;
+        background: #4aafd2;
         /*COLOR*/
         width: 100%;
         height: 61px;
@@ -69,13 +51,16 @@
         }
 
         .navigation li a:hover {
-        background-color: #783993;
+        background-color: #4aafd2;
         /*COLOR*/
         }
 
         .container-fluid {
-        max-width: 1100px; <%--1100--%>
-        margin-top: 10px;
+         max-width: 100%; 
+		margin-top: 10px;
+		padding: 0;
+		overflow: hidden;
+        margin-top: 10px; 
         }
 
         .sidebar-nav > .sidebar-title {
@@ -89,7 +74,7 @@
         .sidebar-nav > .sidebar-brand a:active,
         .sidebar-nav > .sidebar-brand a:hover,
         .sidebar-nav > .sidebar-brand a:visited {
-        background: #783993;
+        background: #4aafd2;
         /*COLOR*/
         color: #ffffff!important;
         font-size: 24px;
@@ -104,12 +89,12 @@
         }
 
         .sidebar-nav li a:hover {
-        border-left: 4px solid #783993;
+        border-left: 4px solid #BEE3DB;
         /*COLOR*/
         }
 
         #wrapper {
-        padding-left: 0;
+         padding-left: 100px;
         -webkit-transition: all 0.5s ease;
         -moz-transition: all 0.5s ease;
         -o-transition: all 0.5s ease;
@@ -117,7 +102,7 @@
         }
 
         #wrapper.toggled {
-        padding-left: 250px;
+         padding-left: 250px; 
         }
 
         #sidebar-wrapper {
@@ -140,7 +125,7 @@
         }
 
         #page-content-wrapper {
-        width: 100%;
+        width: 100%; 
         position: absolute;
         padding: 15px;
         }
@@ -194,30 +179,30 @@
         border: 1px solid #000 !important;
         }
 
-
-        @media(min-width:768px) {
-        #wrapper {
-            padding-left: 250px;
-        }
-        #wrapper.toggled {
-            padding-left: 0;
-        }
-        #sidebar-wrapper {
-            width: 250px;
-        }
-        #wrapper.toggled #sidebar-wrapper {
-            width: 0;
-        }
-        #page-content-wrapper {
-            padding: 20px;
-            position: relative;
-        }
-        #wrapper.toggled #page-content-wrapper {
-            position: relative;
-            margin-right: 0;
-        }
-
+       @media ( min-width :768px) {
+	#wrapper {
+		padding-left: 250px;
+	}
+	#wrapper.toggled {
+		padding-left: 0;
+	}
+	#sidebar-wrapper {
+		width: 250px;
+	}
+	#wrapper.toggled #sidebar-wrapper {
+		width: 0;
+	}
+	#page-content-wrapper {
+		padding: 20px;
+		position: relative;
+	}
+	#wrapper.toggled #page-content-wrapper {
+		position: relative;
+		margin-right: 0;
+	}
+}
        
+/* sidbar */
          .sidebar-title {
             cursor: pointer;
             }
@@ -228,16 +213,109 @@
         .sub-menu {
           max-height: 0;
           overflow: hidden;
-          transition: max-height 0.3s ease-in-out;  
-          
+          transition: max-height 0.3s ease-in-out; 
         }
+
+/*表格、查詢*/
+.table {
+	width: 100%;
+}
+
+.container {
+	max-width: 100%;
+	margin: 0;
+	padding: 20px;
+	overflow: hidden;
+}
+
+.container-fluid {
+	overflow: visible;
+}
+
+.table-data {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.table-data .col-md-2 {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	background-color: #f8f9fa;
+	margin-bottom: 10px;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.table-data .col-md-2:nth-child(odd) {
+	background-color: #e9ecef;
+}
+
+.table-data .col-md-2:nth-child(1) {
+	background-color: #007bff;
+	color: #fff;
+	width: 10%;
+}
+
+.table-data .col-md-2:nth-child(2) {
+	background-color: #28a745;
+	color: #fff;
+	width: 20%;
+}
+
+.table-data .col-md-2:nth-child(3) {
+	background-color: #ffc107;
+	width: 30%;
+}
+
+.table-data .col-md-2:nth-child(4) {
+	background-color: #dc3545;
+	color: #fff;
+	width: 20%;
+}
+
+.table-data .col-md-2:nth-child(5) {
+	background-color: #17a2b8;
+	color: #fff;
+	width: 20%;
+}
+
+.table-data .col-md-2 th {
+	text-align: left;
+	vertical-align: middle;
+}
+
+.input-group {
+	margin-bottom: 10px;
+}
+
+.table thead {
+	background-color: #343a40;
+	color: #fff;
+}
+
+.table tbody tr:nth-child(odd) {
+	background-color: #f8f9fa;
+}
+
+.table tbody tr:nth-child(even) {
+	background-color: #e9ecef;
+}
+
+.input-group {
+	width: 500px;
+}
+
+
+.row {
+    margin-left: 0px; 
+    margin-right: 0px; 
+}
 
 
 
     </style>
-</head>
-
-<body>
 
   <div id="wrapper" class="">
 
@@ -245,23 +323,63 @@
     <div id="sidebar-wrapper">
       <ul class="sidebar-nav">
         <li class="sidebar-brand">
-          <a href="/Paradisiac/front-end/index/index2.jsp">前台首頁</a>
+          <a href="/Paradisiac/front-end/index/index2.jsp">後台管理系統</a>
         </li>
 
-        <li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
-        <!-- 其他菜單項目 -->
+        <li class="sidebar-title" data-toggle="submenu-1">
+         前端頁面管理</li>
+        <!-- 企劃 -->
         <ul class="sub-menu" id="submenu-1">
-          <li><a href="#">最新消息</a></li>
+           <li><a href="#">最新消息</a></li>
           <li><a href="#">客服機器人</a></li>
         </ul>
         
-
-            <!--活動-->  
+        <!--訂房-->  
+        <li class="sidebar-title" data-toggle="submenu-2">
+          訂房系統管理
+        </li>
+        <ul class="sub-menu" id="submenu-2">
+        <li>
+            <a href="#">訂房房型管理</a>
+            </li>
+            <li>
+            <a href="#">訂房訂單管理</a>
+            </li>
+            <li>
+            <a href="#">訂房房型圖片管理</a>
+            </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/back-end/roomnum/selectCheckInData.jsp">客房登記管理系統</a>
+            </li>           
+            <li>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll">退房管理系統</a>
+            </li>
+             <li>
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify">房間管理系統</a>
+            </li>
+     	</ul>
+        <!--會員服務-->  
         <li class="sidebar-title" data-toggle="submenu-3">
-            活動系統管理
+            會員管理
           </li>
             <ul class="sub-menu" id="submenu-3">
-            <li>
+            	<li>
+            	<a href="${pageContext.request.contextPath}/back-end/members/MembersCPB.jsp">會員管理</a>
+          		</li>
+		          <li>
+		            <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">會員紀念相簿管理</a>
+		          </li>
+		
+		          <li>
+		            <a href="#">客服信息管理</a>
+		          </li>
+        </ul>
+        <!--活動-->  
+        <li class="sidebar-title" data-toggle="submenu-4">
+            活動管理
+          </li>
+            <ul class="sub-menu" id="submenu-4">
+			<li>
                 <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
             </li>
             <li>
@@ -278,45 +396,27 @@
             </li>
 
         </ul>
-            <!--會員-->  
-          <li class="sidebar-title" data-toggle="submenu-5">
-            會員系統管理
+        <!--人資-->  
+        <li class="sidebar-title" data-toggle="submenu-5">
+            人資管理
           </li>
-          <ul class="sub-menu" id="submenu-5">
-          <li>
-            <a href="${pageContext.request.contextPath}/back-end/members/MembersCPB.jsp">會員管理</a>
-          </li>
-          <li>
-            <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">會員紀念相簿管理</a>
-          </li>
-
-          <li>
-            <a href="#">客服信息管理</a>
-          </li>
+            <ul class="sub-menu" id="submenu-5">
+          <li><a href="${pageContext.request.contextPath}/back-end/emp/select_page.jsp">員工管理</a></li>
+          <li><a href="${pageContext.request.contextPath}/back-end/dept/select_dept_page.jsp">部門管理</a></li>
         </ul>
-      </ul>
     </div>
     <!-- /#sidebar-wrapper -->
 
     <!-- Top Navigation -->
     <ul class="navigation">
-      <li><a href="#home">員工登入</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-    </ul>
+            <li class="nav-item"><a class="nav-link" href="#" id="logoutLi">登出</a></li>           
+			<li class="nav-item"><a class="nav-link" href='#'>首頁</a></li>
+		</ul>
     
     <div id="page-content-wrapper">
       <a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">側邊欄關閉</a>
-      
     </div>
 
-  </div><!--結尾-->
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
   <!-- Menu Toggle Script -->
   <script>
@@ -354,9 +454,25 @@
               });
             });
 
-
+            // 登出
+            $(document).ready(function () {
+                $("#logoutLi").on("click", function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        type: "GET",
+                        url: "<%=request.getContextPath()%>/front-end/members/login.do?action=stateLogout",
+                        success: function (response) {
+                            console.log("Logout successful");
+                            if (response === "ok") {
+                                console.log("ok");
+                                window.location.href = "<%=request.getContextPath()%>/front-end/index/index2.jsp";
+                            }
+                        },
+                        error: function (error) {
+                            console.log("Logout failed");
+                        }
+                    });
+                });
+            });
   </script>
 
-</body>
-
-</html>

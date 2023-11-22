@@ -3,13 +3,12 @@
 <%@ page import="com.paradisiac.employee.model.*"%>
 
 <%
-//見com.emp.controller.EmpServlet.java第238行存入req的empVO物件 (此為輸入格式有錯誤時的empVO物件)
 EmpVO empVO = (EmpVO) request.getAttribute("empVO");
 %>
---<%=empVO == null%>--
-<!-- line 100 -->
+
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <title>員工資料新增 - addEmp.jsp</title>
 
@@ -51,7 +50,7 @@ th, td {
 
 </head>
 <body bgcolor='white'>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<table id="table-1">
 		<tr>
 			<td>

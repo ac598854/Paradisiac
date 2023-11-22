@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>活動管理系統首頁</title>
@@ -56,6 +57,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
 		<div id="searchBlock">
 			<h2>查詢活動與檔期</h2>

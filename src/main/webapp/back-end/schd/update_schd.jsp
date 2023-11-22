@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>修改檔期</title>
@@ -75,6 +76,7 @@ h2 {
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
 		<table class="form-section1">
 			<tr>

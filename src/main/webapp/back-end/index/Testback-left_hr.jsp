@@ -74,7 +74,7 @@
         }
 
         .container-fluid {
-        max-width: 1100px; <%--1100--%>
+        max-width: 1100px;
         margin-top: 10px;
         }
 
@@ -229,7 +229,6 @@
           max-height: 0;
           overflow: hidden;
           transition: max-height 0.3s ease-in-out;  
-          
         }
 
 
@@ -248,52 +247,15 @@
           <a href="/Paradisiac/front-end/index/index2.jsp">前台首頁</a>
         </li>
 
-        <li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
+        <li class="sidebar-title" data-toggle="submenu-1">人資管理</li>
         <!-- 其他菜單項目 -->
         <ul class="sub-menu" id="submenu-1">
-          <li><a href="#">最新消息</a></li>
-          <li><a href="#">客服機器人</a></li>
+          <li><a href="#">員工管理</a></li>
+          <li><a href="#">部門管理</a></li>
         </ul>
         
+        
 
-            <!--活動-->  
-        <li class="sidebar-title" data-toggle="submenu-3">
-            活動系統管理
-          </li>
-            <ul class="sub-menu" id="submenu-3">
-            <li>
-                <a href='${pageContext.request.contextPath}/act.do?action=getAll'>活動類別管理</a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/back-end/act/add_act.jsp">建立新活動</a>
-            </li>
-            <li>
-                <a href="${pageContext.request.contextPath}/back-end/schd/add_schd.jsp">建立新檔期</a>
-            </li>
-            <li>
-                <a href="#">活動訂單管理</a>
-            </li>
-            <li>
-                <a href="#">活動參加人名單管理</a>
-            </li>
-
-        </ul>
-            <!--會員-->  
-          <li class="sidebar-title" data-toggle="submenu-5">
-            會員系統管理
-          </li>
-          <ul class="sub-menu" id="submenu-5">
-          <li>
-            <a href="${pageContext.request.contextPath}/back-end/members/MembersCPB.jsp">會員管理</a>
-          </li>
-          <li>
-            <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">會員紀念相簿管理</a>
-          </li>
-
-          <li>
-            <a href="#">客服信息管理</a>
-          </li>
-        </ul>
       </ul>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -310,11 +272,10 @@
     
     <div id="page-content-wrapper">
       <a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">側邊欄關閉</a>
-      
     </div>
 
   </div><!--結尾-->
-
+  </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
