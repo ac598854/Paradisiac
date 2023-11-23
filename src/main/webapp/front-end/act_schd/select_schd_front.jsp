@@ -61,11 +61,6 @@
 <%@ include file="/front-end/index/guided.jsp" %>
 	<div class="container">
         <h1 class="text-center">顯示所有檔期</h1>
-        <div>
-            <h2 class="d-flex justify-content-between">           
-                <a href="index.html" class="btn btn-secondary">回首頁</a>
-            </h2>
-        </div>
 
         <div class="album card mb-3">
             <div class="row g-0">
@@ -73,13 +68,13 @@
                     <img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="活動封面" class="img-fluid">
                 </div>                
             </div>
-            
-        </div>
 
         <div class="album card mb-1">
-        <h2>${actVO.actNo}-${actVO.actName}</h2>
+        
+
             <div class="row g-0">
                 <div class="col-md-12">
+                </div><h1>${actVO.actNo}-${actVO.actName}</h1></div>
                     <div class="card-body" >
                         <div class="col-md-6">
                             <p>${actVO.actContent}</p>

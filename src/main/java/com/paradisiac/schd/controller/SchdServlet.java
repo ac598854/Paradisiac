@@ -56,7 +56,7 @@ public class SchdServlet extends HttpServlet {
 			break;
 		case "getOne_For_Display": //前端-報名檔期
 			getOneForDisplay(req, res);
-			forwardPath = "/front-end/act_schd/Test_order_schd.jsp";
+			forwardPath = "/front-end/actorder/ActCheckOut.jsp";
 			break;
 //		case "getOneSchdAllOrders":
 //			getOneForDisplay(req, res);
