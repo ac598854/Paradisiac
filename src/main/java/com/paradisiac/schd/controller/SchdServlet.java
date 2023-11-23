@@ -15,6 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.paradisiac.act.model.ActVO;
 import com.paradisiac.act.service.ActServiceImpl;
@@ -56,7 +57,7 @@ public class SchdServlet extends HttpServlet {
 			break;
 		case "getOne_For_Display": //前端-報名檔期
 			getOneForDisplay(req, res);
-			forwardPath = "/front-end/actorder/ActCheckOut.jsp";
+			res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");
 			break;
 //		case "getOneSchdAllOrders":
 //			getOneForDisplay(req, res);
@@ -92,7 +93,6 @@ public class SchdServlet extends HttpServlet {
 		}	
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
-//		Integer paidNum = Integer.valueOf(req.getParameter("paidNum"));
 		
 		Timestamp ancDate = convertTmp(req.getParameter("ancDate"));  
 		Timestamp drpoSchdDate = convertTmp(req.getParameter("drpoSchdDate"));
@@ -148,6 +148,10 @@ public class SchdServlet extends HttpServlet {
 		Integer schdNo = Integer.valueOf(req.getParameter("schdNo"));
 		SchdVO schdVO = schdSvc.getSchdBySchdno(schdNo);
 		req.setAttribute("schdVO", schdVO);
+		//--供前端活動訂單取用session
+		HttpSession session = req.getSession();
+		session.setAttribute("schdVO", schdVO);
+System.out.println("存入sesion檔期"+schdVO.getSchdNo());	
 		return schdVO;
 	}
 	

@@ -85,11 +85,15 @@
                             </div>
                             <div class="col-md-10">
                             <c:forEach var="schd" items="${actSchdSet}">
-                            <a href='${pageContext.request.contextPath}/schd.do?action=getOne_For_Display&schdNo=${schd.schdNo}'>立刻報名!</a>
                                 <ul><li>檔期編號: ${schd.schdNo}</li>
                                     <li>報名期間: ${schd.aplyTime} ~ ${schd.cutTime}</li>
                                     <li>活動舉辦日期: ${schd.holdDate}</li>
                                 </ul>
+                                <form  method="post" action="${pageContext.request.contextPath}/schd.do">
+							      	<button type="submit" class="btn btn-primary" id="submitButton">報名</button>
+							     	<input type="hidden" name="schdNo" value="${schd.schdNo}">
+	     							<input type="hidden" name="action" value="getOne_For_Display">
+	     						</form>
                                
                             </c:forEach>
                             </div>

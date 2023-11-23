@@ -22,11 +22,21 @@ public class PromotionListServlet extends HttpServlet{
 	public class PromotionDiscount {
 	    private String promotionName;
 	    private double discount;
+	    private Integer productNo;
 
-	    public PromotionDiscount(String promotionName, double discount) {
+	    public PromotionDiscount(String promotionName, double discount,Integer productNo) {
 	        this.promotionName = promotionName;
 	        this.discount = discount;
+	        this.productNo = productNo;
 	    }
+
+		public Integer getProductNo() {
+			return productNo;
+		}
+
+		public void setProductNo(Integer productNo) {
+			this.productNo = productNo;
+		}
 
 		public String getPromotionName() {
 			return promotionName;
@@ -70,7 +80,7 @@ public class PromotionListServlet extends HttpServlet{
 
 	                // 檢查商品是否已經在 Map 中，如果不存在或新折扣較大，更新最大折扣
 	                if (!maxDiscountsMap.containsKey(productNo) || discount > maxDiscountsMap.get(productNo).getDiscount()) {
-	                    maxDiscountsMap.put(productNo, new PromotionDiscount(promotionName, discount));
+	                    maxDiscountsMap.put(productNo, new PromotionDiscount(promotionName, discount,productNo));
 	                }
 	            }
 	            System.out.println("促銷活動已經開始: " + promotionName); // 顯示促銷專案名稱
@@ -83,7 +93,7 @@ public class PromotionListServlet extends HttpServlet{
 	        Integer productNo = entry.getKey();
 	        PromotionDiscount maxDiscount = entry.getValue();
 
-	        System.out.println("商品編號: " + productNo);
+	        System.out.println("商品編號: " + maxDiscount.getProductNo());
 	        System.out.println("最優惠折扣為: " + maxDiscount.getDiscount());
 	        System.out.println("最優專案名稱為: " + maxDiscount.getPromotionName());
 	    }

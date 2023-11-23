@@ -63,7 +63,7 @@ public class ActServlet extends HttpServlet{
 				forwardPath = insertOrUpdate(req, res);
 				break;
 			case "getAll_Front"://回傳前端活動頁面
-				getAllActiveActs(req, res); 
+				getAllActiveActs(req, res);
 				forwardPath = "/front-end/act_schd/select_act_front.jsp";
 				break;
 			case "getAllSchd_Schd": //回傳前端檔期頁面
@@ -134,7 +134,7 @@ System.out.println("活動狀態:"+actStatus);
 		
 		if (actStatus == true) {
 System.out.println("有判斷status");
-			if (actSvc.getActiveSchdByActno(actNo) == null && actSvc.getActiveSchdByActno(actNo).isEmpty()) {
+			if (actSvc.getActiveSchdByActno(actNo) == null || actSvc.getActiveSchdByActno(actNo).isEmpty()) {
 				errorMsgs.add("活動不存在有效檔期無法上架");
 			}
 		}
