@@ -268,7 +268,7 @@ public class PhaServlet extends HttpServlet {
 		if(memnoInt != null) {
 			albNo = phaSvc.getPhaByMem(memno);
 			req.setAttribute("albNo", albNo);		
-			return "/back-end/pha/listOnePha_mem.jsp";
+			return "/front-end/members/listOnePha_mem.jsp";
 		}else {
 			return "/back-end/pha/listOnePha.jsp";
 		}

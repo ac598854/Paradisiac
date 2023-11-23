@@ -7,6 +7,7 @@
 
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>相簿管理</title>
@@ -45,8 +46,9 @@
 
 </style>
 </head>
-<%@ include file="/back-end/index/back-left_planning.jsp" %>
+
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
 		<h1 class="text-center">相簿管理</h1>
 		<div>

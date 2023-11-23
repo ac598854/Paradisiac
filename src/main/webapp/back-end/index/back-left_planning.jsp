@@ -74,7 +74,7 @@
         }
 
         .container-fluid {
-        max-width: 1100px;
+        max-width: 1100px; <%--1100--%>
         margin-top: 10px;
         }
 
@@ -229,6 +229,7 @@
           max-height: 0;
           overflow: hidden;
           transition: max-height 0.3s ease-in-out;  
+          
         }
 
 

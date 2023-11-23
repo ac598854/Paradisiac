@@ -7,11 +7,13 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 
 <title>Hibernate Demo</title>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<h1>新建部門</h1>
 	<a href="${pageContext.request.contextPath}/dept.do?action=getAll">查詢所有部門</a>
 	<br><br>

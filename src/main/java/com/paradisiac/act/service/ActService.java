@@ -21,7 +21,7 @@ public interface ActService {
 	
 	int getPageActiveTotal();
 	
-//	Set<SchdVO> getActiveSchdByActno(Integer actno);
+	Set<SchdVO> getActiveSchdByActno(Integer actno);
 	//---------
 	
 	List<ActVO> getAllActs();//下拉選單

@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>顯示活動詳情</title>
@@ -76,6 +77,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
 		<div>
 			<h2>顯示一筆活動資訊</h2>				
@@ -91,14 +93,6 @@
 							<tr>
 								<th>活動名稱</th>
 								<td>${actVO.actName}</td>
-							</tr>
-							<tr>
-								<th>最低成團人數</th>
-								<td>${actVO.lowNum}</td>
-							</tr>
-							<tr>
-								<th>最高上限人數</th>
-								<td>${actVO.highNum}</td>
 							</tr>
 							<tr>
 								<th>活動狀態</th>
