@@ -58,7 +58,7 @@ $('#addParticipantBtn').on('click', function() {
 		var aAtnNum = parseFloat(document.getElementById('aAtnNum').value);
 		if (!isNaN(unitPrice) && !isNaN(aAtnNum)) {
 			var totalPrice = unitPrice * aAtnNum;
-			document.getElementById('orderAmount').value = totalPrice.toFixed(2); // 四捨五入到小數點後兩位
+			document.getElementById('orderAmount').value = totalPrice; // 四捨五入到小數點後兩位
 		}
 
 	} else {

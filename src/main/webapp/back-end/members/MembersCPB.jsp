@@ -337,40 +337,41 @@ h1, h2, h3, h4 {
 	margin-left: 15px;
 }
 </style>
+<%@ include file="/back-end/index/back-left_planning.jsp"%>
 </head>
 <body>
 	<div id="wrapper" class="">
 
 		<!-- Sidebar -->
-		<div id="sidebar-wrapper">
-			<ul class="sidebar-nav">
-				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
-				<li class="sidebar-title">員工權限管理</li>
-				<li class="sidebar-title">會員管理</li>
-				<li><a
-					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li>
-				<li><a href="#">會員相簿管理</a></li>
-				<li><a
-					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li>
-				<li class="sidebar-title">最新消息管理</li>
-				<li class="sidebar-title">訂房管理</li>
-				<li class="sidebar-title">商城管理</li>
-				<li class="sidebar-title">活動管理</li>
-				<li><a href="#">活動類別管理</a></li>
-				<li><a href="#">檔期管理</a></li>
-				<li><a href="#">活動訂單管理</a></li>
-			</ul>
-		</div>
+<!-- 		<div id="sidebar-wrapper"> -->
+<!-- 			<ul class="sidebar-nav"> -->
+<!-- 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li> -->
+<!-- 				<li class="sidebar-title">員工權限管理</li> -->
+<!-- 				<li class="sidebar-title">會員管理</li> -->
+<!-- 				<li><a -->
+<%-- 					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li> --%>
+<!-- 				<li><a href="#">會員相簿管理</a></li> -->
+<!-- 				<li><a -->
+<%-- 					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li> --%>
+<!-- 				<li class="sidebar-title">最新消息管理</li> -->
+<!-- 				<li class="sidebar-title">訂房管理</li> -->
+<!-- 				<li class="sidebar-title">商城管理</li> -->
+<!-- 				<li class="sidebar-title">活動管理</li> -->
+<!-- 				<li><a href="#">活動類別管理</a></li> -->
+<!-- 				<li><a href="#">檔期管理</a></li> -->
+<!-- 				<li><a href="#">活動訂單管理</a></li> -->
+<!-- 			</ul> -->
+<!-- 		</div> -->
 		<!-- /#sidebar-wrapper -->
 
 		<!-- Top Navigation -->
-		<ul class="navigation">
-			<li><a href="#home">登出</a></li>
-		</ul>
+<!-- 		<ul class="navigation"> -->
+<!-- 			<li><a href="#home">登出</a></li> -->
+<!-- 		</ul> -->
 		<!--Page Content -->
-		<div id="page-content-wrapper">
-			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">展開畫面</a>
+<!-- 		<div id="page-content-wrapper"> -->
+<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
+<!-- 				id="menu-toggle">展開畫面</a> -->
 			<div class="container-fluid">
 				<!-- 表格-->
 				<div class="container">
