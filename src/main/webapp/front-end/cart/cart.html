@@ -30,13 +30,15 @@ body {
 table {
 	background-color: #ffffff;
 	margin-top: 100px;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    
 }
-/* 为表格的列添加样式以确保按钮不会遮挡内容 */
 .table th, .table td {
 	position: relative;
 }
 
-/* 样式用于购物车为空消息 */
 #emptyCartMessage {
 	display: none;
 	text-align: center;
@@ -46,10 +48,8 @@ table {
 	transform: translate(-50%, -50%);
 }
 
-/* 使用伪元素添加空购物车图标 */
 #emptyCartMessage::before {
 	content: "\1F6D2";
-	/* Unicode字符编码，这里使用购物车图标 */
 	font-size: 100px;
 	display: block;
 }
@@ -67,7 +67,7 @@ table {
 
 .payInfoBox {
 	display: flex;
-	flex-direction: row; /* 將元素排列成水平方向 */
+	flex-direction: row; 
 	align-items: center;
 }
 
@@ -94,12 +94,17 @@ table {
    } 
 
 .container {
+	width: 150%;
+	margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: center;
     justify-content: center;
     text-align: center;
     margin-top: 50px; /* 調整置中的位置 */
+    padding-left: 10px;
+    padding-right: 10px;
 }
    .quantity-select {
   text-align-last: center; /* 支援大部分瀏覽器的屬性 */
@@ -118,7 +123,46 @@ tfoot tr {
 tfoot td {
     display: table-cell;
     padding: 20px; /* 可根據需要設置內邊距 */
+     width: 30%;
 }
+.quantity-select {
+    font-size: 30px; /* 調整數量選擇框的大小，你也可以改變這個值 */
+    width: 80px;
+}
+
+.shopLinkButton {
+    display: inline-block;
+    margin-bottom: 10px; /* 調整下方邊距 */
+}
+
+.shopLinkButton a {
+    display: inline-block;
+    padding: 15px 30px; /* 調整按鈕內邊距 */
+    text-decoration: none;
+    color: #fff; /* 文字顏色 */
+    background-color: #007bff; /* 按鈕背景顏色 */
+    border-radius: 8px; /* 圓角 */
+    transition: background-color 0.3s ease; /* 平滑的背景顏色變換 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 陰影效果 */
+    font-size: 1.2em; /* 文字大小 */
+}
+
+.shopLinkButton a:hover {
+    background-color: #0056b3; /* 滑鼠懸停時的背景顏色 */
+}
+
+.shopLinkButton a i {
+    margin-right: 8px; /* 調整圖標與文字之間的距離 */
+}
+/* 背景圖片 */
+
+body {
+    background-image: url('');
+    background-size: cover; /* 讓圖片填滿整個背景 */
+    background-repeat: no-repeat; /* 防止圖片重複 */
+    background-attachment: fixed; /* 固定圖片，使其在滾動時保持不變 */
+}
+
 
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
@@ -129,13 +173,10 @@ tfoot td {
 <body>
 
 	<div class="container" id="shopUrl">
-		<div>
-			<div>
-				<button id="backtoshop">
-					<a href="#" id="shoppingMallLink">
-					<i class="fas fa-shopping-cart"></i>商城首頁</a>
-				</button>
-			</div>
+		<div class="shopLinkButton">
+		    <a href="#" id="shoppingMallLink">
+		        <i class="fas fa-shopping-cart"></i>商城首頁
+		    </a>
 		</div>
 		<table class="table table-bordered">
 			<thead>
@@ -279,6 +320,7 @@ tfoot td {
             <td>${product.description}</td>
             <td>
                 <select class="quantity-select form-control"  onchange="changeQuantity('${product.name}', this.value)">
+                ${product.quantity}
                 </select>
             </td>
             <td class="hidden-td">${product.quantity}</td>
@@ -525,8 +567,10 @@ tfoot td {
 	}
 	
 //================================檢查庫存量跟購物車內的數量==============================//
+	const limit = 0;
+	let offset = 0;
 	function loadProducts() {
-    fetch(projectName + '/products')
+    fetch(projectName + `/products?limit=${limit}&offset=${offset}`)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -552,7 +596,8 @@ tfoot td {
                 if (index !== -1) {
                     // 如果在購物車中且找到對應的元素，設置庫存
                     var product = data.results[index];
-                    
+                    console.log(product);
+                    console.log("庫存"+product.stock);
                     
         			for (var j = 1; j <= product.stock; j++) {
         				var option = document.createElement("option");
@@ -569,6 +614,7 @@ tfoot td {
             	   selectElement.value = product.stock;
                }else{
                     selectElement.value = quantityValue;
+                    console.log(quantityValue);
                     // 其他操作
                }
                 selectElement.setAttribute('max', product.stock);
