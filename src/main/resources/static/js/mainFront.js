@@ -68,7 +68,7 @@ function displayProducts(products) {
     productsArea.innerHTML = '';
 
     if (products.length == 0) {
-        productsArea.innerHTML = '<p>查無此商品</p>';
+        productsArea.innerHTML = '<p class="no-products-message">No Products For You...</p>';
         return;
     }
 

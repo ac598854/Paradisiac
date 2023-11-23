@@ -140,7 +140,7 @@
       font-family: Georgia, serif;
       font-size: 14px;
       color: #fff;
-      background-color: #007bff;
+      background-color: grey;
       border: none;
       border-radius: 3px;
       padding: 5px 10px;
@@ -148,7 +148,7 @@
     }
 
     .productCard button:hover {
-      background-color: #0056b3;
+      background-color: grey;
     }
 
 
@@ -209,6 +209,29 @@
       font-size: 18px; /* 字體大小 */
       font-weight: bold; /* 加粗 */
       color: #d9534f; /* 字體顏色，可調整 */
+    }
+
+    /* 當.list-group-item和.productCard處於選中狀態時 */
+    .list-group-item.active, .productCard:active {
+      background-color: rgba(128, 128, 128, 0.4); /* 半透明灰色背景 */
+      color: white; /* 可選，如果您希望文字顏色也變化 */
+    }
+
+    /* 針對 Bootstrap 的.list-group-item，當它被選中時 */
+    .list-group-item.active {
+      border-color: rgba(128, 128, 128, 0.4); /* 可選，如果您希望邊框顏色也變化 */
+    }
+    .no-products-message {
+      font-size: 24px; /* 增加字體大小 */
+      color: #ff0000; /* 字體顏色，這裡用紅色作為例子 */
+      text-align: center; /* 文字置中 */
+      animation: pulse 1.5s infinite; /* 添加一個簡單的動畫 */
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
     }
 
   </style>

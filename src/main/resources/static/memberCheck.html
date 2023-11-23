@@ -137,8 +137,15 @@
         <!-- 購物車商品將在這裡動態生成 -->
         </tbody>
     </table>
+
     <div class="address-container">
         <h3>Shipping address</h3>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="autofillDetailsCheckbox">
+            <label class="form-check-label" for="autofillDetailsCheckbox">
+                使用我的會員資訊：
+            </label>
+        </div>
         <form id="shipping-form">
             <label for="recipient-name">收件人姓名:</label>
             <input type="text" id="recipient-name" name="recipient-name" required>
@@ -292,6 +299,48 @@
         });
     }
 
+    //==================================填充會員資訊==============================================
+    function autofillMemberDetails() {
+        fetch(projectName + '/members/details')
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401) {
+                        // 用戶未登錄
+                        alert("請先登錄！");
+                        // 可以重定向到登錄頁面
+                        window.location.href = 'http://localhost:8081/Paradisiac/front-end/members/Login.jsp'; // 更新為實際的登錄頁面URL
+                    } else {
+                        throw new Error('無法獲取會員資料');
+                    }
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('recipient-name').value = data.memName;
+                document.getElementById('recipient-phone').value = data.memPhone;
+                document.getElementById('recipient-address').value = data.memAddress;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    //為選項添加事件監聽器
+    document.getElementById('autofillDetailsCheckbox').addEventListener('change', function() {
+        if (this.checked) {
+            autofillMemberDetails();
+        } else {
+            // 如果取消勾選，清空表單欄位
+            clearFormFields();
+        }
+    });
+    function clearFormFields() {
+        document.getElementById('recipient-name').value = '';
+        document.getElementById('recipient-phone').value = '';
+        document.getElementById('recipient-address').value = '';
+    }
+
+
     //==================================處理表單提交==============================================
     function handleFormSubmit(event) {
         // 防止表單的默認提交行為
@@ -386,7 +435,7 @@
         };
 
         // 向伺服器發送POST請求，提交訂單數據
-        fetch(`/Paradisiac/members/orders`, {
+        fetch(projectName +  `/members/orders`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
