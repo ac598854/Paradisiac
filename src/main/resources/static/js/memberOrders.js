@@ -145,13 +145,23 @@ function toggleOrderDetails(order, detailsRow) {
 //==================================創建訂單詳情表格==============================================
 function createOrderDetailsTable(orderItems) {
     let table = '<table class="small-table" style="width: 100%">';
-    table += '<tr><th>商品名稱</th><th>數量</th><th>金額</th></tr>';
+    table += '<tr><th>商品圖片</th><th>商品名稱</th><th>數量</th><th>金額</th></tr>';
     orderItems.forEach(item => {
-        table += `<tr><td>${item.productName}</td><td>${item.quantity}</td><td>${item.amount}</td></tr>`;
+        let formattedQuantity = item.quantity.toLocaleString('zh-TW');
+        let formattedAmount = `NT$${item.amount.toLocaleString('zh-TW')}`;
+        // 在每行中添加商品圖片
+        table += `<tr>
+                    <td><img src="${item.imageUrl}" alt="${item.productName}" style="width:50px; height:auto;"></td>
+                    <td>${item.productName}</td>
+                    <td>${formattedQuantity}</td>
+                    <td>${formattedAmount}</td>
+                  </tr>`;
     });
     table += '</table>';
     return table;
 }
+
+
 
 //==================================訂單分頁實現==============================================
 function createPagination(page, memno) {

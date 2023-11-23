@@ -54,9 +54,14 @@ function loadProducts() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', projectName + '/products', true); // 修改為動態路徑
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            var productsData = JSON.parse(xhr.responseText);
-            displayProducts(productsData.results);
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                var productsData = JSON.parse(xhr.responseText);
+                displayProducts(productsData.results);
+            } else {
+                // 如果請求失敗，也調用 displayProducts 以確保顯示提示訊息
+                displayProducts([]);
+            }
         }
     }
     xhr.send();
@@ -67,8 +72,9 @@ function displayProducts(products) {
     var productsArea = document.getElementById('productsArea');
     productsArea.innerHTML = '';
 
-    if (products.length == 0) {
-        productsArea.innerHTML = '<p>查無此商品</p>';
+    // 如果沒有找到產品，則在頁面中顯示提示訊息
+    if (products.length === 0) {
+        productsArea.innerHTML = '<div class="alert alert-info">未找到產品。</div>';
         return;
     }
 

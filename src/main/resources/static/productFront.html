@@ -11,159 +11,107 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-  <title>購物商城</title>
+  <title>Shopping Mall</title>
 
   <style>
-    /* 基本頁面樣式 */
-    body {
-      background-image: url('https://cha103-29.s3.ap-northeast-1.amazonaws.com/pexels-jeff-ibera-1320755.jpg');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      font-family: 'Arial', sans-serif;
-      background-color: lightblue;
-      margin: 0;
-      padding: 0;
-      color: #333;
+    .navbar, .navbar-light, .bg-light, .container-fluid {
+      background-color: transparent !important; /* 使導航欄透明 */
     }
 
-    /* 將整個導航欄背景設為透明 */
-    .flex-header, .navbar, .bg-light, .navbar-light, .container-fluid, .navbar-collapse {
-      background: transparent !important; /* 使用 !important 確保覆蓋所有相關樣式 */
-      border: none !important; /* 移除邊框，如果有的話 */
-    }
-
-    /* 如果 nav 標籤有背景顏色，也設為透明 */
-    nav {
+    /* 可能需要針對navbar下的所有子元素也設置透明背景 */
+    .navbar * {
       background-color: transparent !important;
     }
 
-    /* 確保導航連結和品牌名稱在透明背景下仍然可見 */
-    .navbar-brand, .nav-link, .navbar-toggler-icon {
-      color: #333; /* 或者您希望的任何顏色 */
+    /* "Shopping Mall" 文字的容器風格 */
+    .navbar-brand .brand-span {
+      background-color: rgba(255, 255, 255, 0.5); /* 設定半透明背景 */
+      padding: 0.2em 0.6em; /* 增加一些內邊距 */
+      border-radius: 5px; /* 輕微的圓角效果 */
+    }
+    /* "Shopping Mall" 文字的風格 */
+    .navbar-brand {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 可以選擇您喜歡的字體 */
+      font-size: 2em; /* 調整大小以符合您的設計 */
+      color: #ffffff; /* 根據您的背景圖像選擇合適的顏色 */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 可選：添加文字陰影增加可讀性 */
     }
 
-    /* 如果有透明的背景，您可能也想要移除陰影或者其他裝飾效果 */
-    .navbar, .navbar-light .navbar-nav .nav-link {
-      box-shadow: none !important;
+    /* 搜尋框樣式 */
+    #searchInput {
+      background-color: white; /* 設定背景為白色 */
+      border: 1px solid #ddd; /* 設定邊框顏色和粗細 */
+      border-radius: 4px; /* 如果需要，可以設定圓角 */
+      padding: 5px 10px; /* 設定內邊距 */
+      font-size: 16px; /* 設定文字大小 */
+      color: #333; /* 設定文字顏色 */
     }
 
+    /* 搜尋按鈕樣式 */
+    #searchButton {
+      background-color: white; /* 設定背景為白色 */
+      border: 1px solid #ddd; /* 設定邊框顏色和粗細 */
+      border-radius: 4px; /* 如果需要，可以設定圓角 */
+      padding: 5px 10px; /* 設定內邊距 */
+      font-size: 16px; /* 設定文字大小 */
+      color: #333; /* 設定文字顏色 */
+      cursor: pointer; /* 設定鼠標樣式為點擊狀態 */
+    }
 
+    /* 當輸入框獲得焦點時 */
+    #searchInput:focus {
+      outline: none; /* 移除輸入框的聚焦邊框 */
+      border-color: #66afe9; /* 設定聚焦時的邊框顏色 */
+    }
+
+    /* 調整搜尋按鈕的位置以與輸入框對齊 */
+    #searchButton {
+      position: relative; /* 相對定位 */
+      top: -2px; /* 根據需要調整，以使按鈕與輸入框對齊 */
+    }
+
+    /* 類別列表和動態卡片的背景風格 */
+    .list-group-item, .productCard {
+      background-color: rgba(255, 255, 255, 0.4); /* 半透明白色背景 */
+      margin: 5px 0; /* 添加一些間隙 */
+      border-radius: 5px; /* 圓角邊框 */
+    }
+
+    /* 如果您想要一個固定的寬度 */
     aside {
-      flex: 1;
-      max-width: 20%;
-      padding: 20px;
-      border-right: 1px solid #ccc;
+      width: 25%; /* 或者任何您想要的百分比 */
     }
 
-    aside ul {
-      list-style-type: none;
-      padding: 0;
+    /* 或者使用Bootstrap的栅格系統 */
+    @media (min-width: 768px) { /* 這是針對中等裝置的媒體查詢 */
+      .col-md-3 {
+        flex: 0 0 auto;
+        width: 1000px; /* 這會使其寬度變成三分之一的容器寬度 */
+      }
     }
 
-    aside ul li {
-      margin-bottom: 10px;
-    }
-
-    aside ul li button {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-      background-color: #f7f7f7;
-      transition: background-color 0.3s ease;
-    }
-
-    aside ul li button:hover {
-      background-color: #e0e0e0;
-    }
-
-    main {
-      flex: 4;
-      padding: 20px;
-    }
-
-    /* 將分頁按鈕固定在視窗的右下角，位於頁腳上方 */
+    /* 調整分頁按鈕的樣式 */
     #paginationContainer {
+      background-color: rgba(255, 255, 255, 0.4); /* 半透明背景 */
+      padding: 10px;
+      border-radius: 5px;
       position: fixed;
       right: 10px; /* 右邊距離 */
       bottom: 10px; /* 距離頁腳的高度，可以根據需要調整 */
       z-index: 100; /* 確保分頁按鈕顯示在最上層 */
     }
 
-
-    /* 添加動畫效果 */
-    @keyframes clickAnimation {
-      0% { background-color: #f8f9fa; }
-      50% { background-color: #e2e6ea; }
-      100% { background-color: #f8f9fa; }
-    }
-    .list-group-item {
-      cursor: pointer; /* 設置游標為指針，表示該項目可點擊 */
-      border: none !important; /* 移除邊框 */
-      margin-bottom: -1px !important; /* 負的間隙來重疊邊框 */
-    }
-
-    .list-group-item:active {
-      animation: clickAnimation 0.5s ease;
-    }
-
-    /* 商品卡片樣式 */
-    .productCard {
-      width: calc((100% / 4) - 2%);
-      height: 250px;
-      margin: 1%;
-      float: left;
-      overflow: hidden;
-      position: relative;
-      background-color: #fff;
-      border: 1px solid #ddd;
-      padding: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
+    /* 商品卡片懸停效果 */
     .productCard:hover {
-      transform: scale(1.05);
+      background-color: rgba(255, 255, 255, 0.7); /* 滑鼠懸停時不透明 */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 添加陰影 */
     }
 
-    .productCard img {
-      max-width: 100%;
-      display: block;
-      margin:  auto;
-      max-height: 130px;
-    }
-
-    .productCard h3 {
-      font-size: 18px;
-      margin: 10px 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .productCard p {
-      font-size: 16px;
-      margin-bottom: 10px;
-      position: absolute;
-      left: 10px;
-    }
-
-    .productCard button {
-      position: absolute;
-      bottom: 10px;
-      left: 10px;
-      right: 10px;
-      padding: 5px 10px;
-    }
-
-
-    /* 其他通用樣式 */
-    .clearfix::after {
-      content: "";
-      clear: both;
-      display: table;
+    /* 適應小屏幕 */
+    @media (max-width: 768px) {
+      .productCard {
+        width: calc((100% / 2) - 4%);
+      }
     }
 
     button {
@@ -174,7 +122,13 @@
       cursor:pointer;
     }
 
+    /* 在您的CSS檔案中加入這段代碼 */
+    #productsArea {
+      min-height: 500px; /* 設定最小高度為500px */
+    }
+
   </style>
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -183,7 +137,13 @@
 <header class="flex-header">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/Paradisiac/productFront.html">購物商城</a>
+      <a class="navbar-brand" href="/Paradisiac/front-end/index/index2.jsp">
+        <span class="brand-span">Homepage</span>
+      </a>
+      <a class="navbar-brand" href="/Paradisiac/productFront.html">
+        <span class="brand-span">Shopping Mall</span>
+      </a>
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

@@ -9,92 +9,19 @@ body {
     padding: 0;
     color: #333;
 }
-/* 頁首樣式 */
-header {
-    background-color: lightblue;
-    color: #fff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 5%;
+
+h2 {
+    text-align: center;
+    color:white;
+    padding-top: 50px;
 }
 
-header button {
-    background-color: rebeccapurple;
-    color: #fff;
-    border: none;
-    padding: 5px 15px;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
 }
 
-header button:hover {
-    background-color: rebeccapurple;
-}
-/* 導航欄樣式 */
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #eee;
-}
-
-nav li {
-    margin: 0 10px;
-}
-/* 商品詳情部分 */
-#productDetail {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    border-bottom: 2px solid #eee;
-}
-
-#productDetail img {
-    max-width: 300px; /* 調整圖片大小 */
-    margin-right: 20px; /* 圖片和表格之間的間距 */
-}
-#productDetail table {
-    border-collapse: collapse;
-    width: 60%; /* 調整表格寬度 */
-}
-#productDetail table, #productDetail th, #productDetail td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: left;
-}
-.products-detail img {
-    width: 300px;  /* 或其他您希望的寬度 */
-    height: auto;  /* 保持圖片的寬高比 */
-    display: block;  /* 讓圖片在中央 */
-    margin: 0 auto;  /* 讓圖片在中央 */
-}
-
-.product-info h3 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.product-info p {
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-/* 相似商品部分 */
-#similarProducts {
-    padding: 20px;
-}
-
-.products-grid {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-}
-
-/* 動態卡片的CSS可以參考之前提供的productFront.html的CSS */
 /* 商品卡片樣式 */
 .productCard {
     width: calc((100% / 4) - 2%);
@@ -103,12 +30,12 @@ nav li {
     float: left;
     overflow: hidden;
     position: relative;
-    background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid;
     padding: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     cursor: pointer;
     transition: transform 0.3s;
+    color:white;
 }
 
 .productCard:hover {
@@ -137,12 +64,32 @@ nav li {
     bottom: 10px;
     left: 10px;
 }
-button {
-    border:0;
-    background-color:#003C9D;
-    color:#fff;
-    border-radius:10px;
-    cursor:pointer;
+
+/* 商品詳情部分 */
+#productDetail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 100px;
+    padding-top: 10px;
+    border-bottom: 2px solid;
+    color:black;
 }
 
+#productDetail img {
+    max-width: 300px; /* 調整圖片大小 */
+    margin-right: 20px; /* 圖片和表格之間的間距 */
+}
 
+#productDetail table {
+    border-collapse: collapse;
+    width: 60%; /* 調整表格寬度 */
+
+}
+
+#productDetail table, #productDetail th, #productDetail td {
+    border: 1px solid white;
+    padding: 8px;
+    text-align: left;
+    background-color: rgba(255, 255, 255, 0.1); /* 半透明背景 */
+}

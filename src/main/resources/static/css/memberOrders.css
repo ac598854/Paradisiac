@@ -14,18 +14,6 @@ body {
     text-align: center;
 }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #eee;
-}
-
-nav li {
-    margin: 0 10px;
-}
-
 .container {
     display: flex;
 }
@@ -63,7 +51,7 @@ aside ul li button:hover {
     border: 1px solid #e1e1e1;
     margin-bottom: 8px;
     padding: 10px;
-    background: #fafafa;
+    background-color: rgba(255, 255, 255, 0.1); /* 半透明白色背景 */
     cursor: pointer;
     transition: background 0.3s ease;
 }
@@ -109,19 +97,22 @@ button {
 
 .table {
     width: 100%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.4);
     border-collapse: collapse;
+    color:white;
 }
 
 .table th,
 .table td {
     padding: 0.75rem;
     border: 1px solid #dee2e6;
+    color:black;
 }
 
 .narrow-table {
     max-width: 80%;
     margin: 0 auto;
+    color:white;
 }
 
 main {
