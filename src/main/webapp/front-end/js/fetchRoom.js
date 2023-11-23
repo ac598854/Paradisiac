@@ -20,7 +20,7 @@
       if (!regex.test(clickedCell.textContent)) {
         clickedCell.classList.add("selected");
       }else{
-    	  selectedDateInput="";    	 
+    	  selectedDateInput="";
       }
       var clickedDate = new Date(currentYear, currentMonth, parseInt(clickedCell.textContent));
       
@@ -119,7 +119,7 @@
     return months[month];
   }
 //上個月按鈕
-  prevMonthButton.addEventListener("click", function() {
+ prevMonthButton.addEventListener("click", function() {
 	//上個月的按鈕不能超過目前月份
     if (currentMonth > currentDate.getMonth() || currentYear > currentDate.getFullYear()) {
       currentMonth--;
@@ -129,10 +129,10 @@
         //★★★★★當年份有變更時才重新使用fetch去取得假日資訊，若是假日會將日期標記成紅字
         holidayData(currentMonth, currentYear);       
       }     
-      //行事曆重新填充日期
       if(currentMonth!=11){
-      renderCalendar(currentMonth, currentYear); 
-      }    
+      //行事曆重新填充日期
+      	renderCalendar(currentMonth, currentYear);   
+      }  
     }
   });
   //下個月按鈕
@@ -170,7 +170,7 @@ fetch(`https://cdn.jsdelivr.net/gh/ruyut/TaiwanCalendar/data/${currentYear}.json
                     .then(nextYearData => {
                         // 合併下一年度的假日資料到今年的假日資料，為了解決跨年度無法計算連續假日問題
                         holidays = holidays.concat(nextYearData); 
-                        renderCalendar(currentMonth, currentYear);                     
+                        renderCalendar(currentMonth, currentYear);                       
                     })
                     .catch(error => console.error('獲取下一年度假日數據時發生錯誤:', error));
             } else {
@@ -370,8 +370,8 @@ function getSingleForDay(selectDay) {
     var continuousDays = getContinuousHolidaysCount(holidays, currentHoliday);
     //取出日期來判斷，該日期的前後是否有放假
     var dayMarkHolidayStatus=parseDateFromString(currentHoliday.date);
-   // console.log("測試",dayMarkHolidayStatus);
-     console.log("[dayMarkHolidayStatus]==>",dayMarkHolidayStatus,"[continuousDays]",continuousDays);
+    //console.log("測試",dayMarkHolidayStatus);
+     console.log("測試====continuousDays======",continuousDays.date);
     if (continuousDays === 2) {       
       holidayMapping[dayMarkHolidayStatus]=2;     //假日(放假2天以內)
     } else if (continuousDays >= 3) {      
@@ -437,7 +437,7 @@ function getSingleForDay(selectDay) {
   // 回傳日期物件
   return dateObject;
 }
-	
+
   function parseDateFromString(dateString) {
    // 使用正規表達式提取年、月和日
     const year = dateString.slice(0, 4);
@@ -499,9 +499,9 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
     let formattedNextDay = `${nextDay.getFullYear()}-${(nextDay.getMonth() + 1).toString().padStart(2, '0')}-${nextDay.getDate().toString().padStart(2, '0')}`;
 	
 
-	console.log(roomtotal);
+	console.log(selectedPrice);
 	// 創建一個包含所有資訊的物件
-	
+
     let roomInfo = {
         roomTypeNo: roomTypeNo,
         vDate: vDate,
@@ -510,7 +510,7 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
         rType: rType,
         holiDayPrice: holiDayPrice,
         bridgeHolidayPrice: bridgeHolidayPrice,
-        price: pricetotal,
+        price: selectedPrice,
         notice: notice,
         facility: facility,
         rbooking: rbooking,
