@@ -206,7 +206,7 @@
     </div>
 <script>
     let roomInfoString = localStorage.getItem('roomInfo');
-
+     console.log("roomInfoString",roomInfoString);
     // 檢查 roomInfoString 是否為 null
     if (roomInfoString !== null) {
         let roomInfo = JSON.parse(roomInfoString);
