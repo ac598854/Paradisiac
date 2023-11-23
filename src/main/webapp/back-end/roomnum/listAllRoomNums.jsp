@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
-<title>房間管理系統</title>
+<title>退房管理系統</title>
  <style>
  		.container{	 			
  			position:relative;
@@ -81,6 +81,7 @@
         }
     </style>
 </head>
+
 <body>
 <%@ include file="/back-end/index/back-left_room.jsp" %>
 	<!-- <DIV id="tatil" style="text-align:center;"><h1 >退房管理系統</h1></DIV> -->
@@ -168,10 +169,10 @@
 							<form method="post"
 								action="<%=request.getContextPath()%>/roomnum.do">
 								<input type="hidden" name="rnum" value="${roomnum.rnum}">
+								<input type="hidden" name="roomOrderNo" value="${roomnum.roomOrderNo}">								
 								<button type="submit" id="checkoutbtn" name="action" value="checkout" class="btn btn-primary">退房</button>
 								<button type="submit" id="cleanupbtn" name="action" value="cleanup"	class="btn btn-success" style="width: 100px;" onclick="clearMessages()">清掃完成</button>
-									
-									 <input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
+								<input type="hidden" name="page" value="${currentPage}" onclick="clearMessages()"><!--★★★★加了這一行可以讓按下按鈕時不會刷新回第一頁 -->
 							</form>
 						</td>
 						

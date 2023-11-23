@@ -10,6 +10,7 @@
 
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>員工資料 - listOneEmp</title>
 
 <style>
@@ -47,7 +48,7 @@
 
 </head>
 <body bgcolor='white'>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料 - listOneEmp.jsp</h3>

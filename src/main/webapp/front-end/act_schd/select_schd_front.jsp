@@ -13,77 +13,32 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
-.album card mb-3 {
-	position: relative;
-	width: 800px;
-}
+ .album card mb-3 {
+            position: relative;
+        }
 
-.row.g-0 {
-	position: relative;
-}
+        .row.g-0 {
+        position: relative;
+        }
 
-.d-flex justify-content-end {
-	position: absolute;
-	bottom: 0;
-	right: 0;
-}
+        .card-body {
+        display: flex;
+        flex-direction: row;
+        }
 
-/*-------活動tatal-------------------*/
-.card-body {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
+        .col-md-6 {
+            flex: 1; 
+            flex-direction: column;
+        }
 
-.photo-content d-flex {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-/*-------活動each-------------------*/
-.actWholeContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.actWholeContent .actImg,
-.actWholeContent .tableContent {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
+        .col-md-4,
+        .col-md-8 {
+            width: 100%; 
+        }
 
 
-.photo-content img {
-	width: 350px;
-	height: 350px;
-	background-color: #eee;
-	border: 1px solid #ccc;
-	margin: 5px;
-	object-fit: cover;
-}
+<%----%>/*--------封面-------------------*/
 
-.tableContent table {
-    width: 100%;
-    text-align: center; 
-    font-size: 20px; 
-
-}
-.tableContent table th,.tableContent table td{
-	padding: 4px;
-    vertical-align: middle;
-    
-}
-.actWholeContent label{
- 	display: block;
-    text-align: center;
-    margin-top: 4px;
-    font-size: 25px;
-}
-
-/*--------封面-------------------*/
 .album.card.mb-3 .row.g-0 .col-md-12 img {
 	width: 100%;
 	height: 100%;
@@ -91,7 +46,7 @@
 }
 
 .album.card.mb-3 .row.g-0 .col-md-12 {
-	height: 100%;
+	height: 50%;
 }
 
 .d-flex.justify-content-end {
@@ -105,31 +60,58 @@
 <body>
 <%@ include file="/front-end/index/guided.jsp" %>
 	<div class="container">
-		<div style="padding: 10px;">
-		<h1 class="text-center">${actVO.actName}</h1>
-		</div>
+        <h1 class="text-center">顯示所有檔期</h1>
+        <div>
+            <h2 class="d-flex justify-content-between">           
+                <a href="index.html" class="btn btn-secondary">回首頁</a>
+            </h2>
+        </div>
 
-		<div class="album card mb-3">
-			<div class="row g-0">
-				<div class="col-md-12">
-					<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}"
-						alt="活動封面" class="img-fluid">
-				</div>
-			</div>
-		</div>
+        <div class="album card mb-3">
+            <div class="row g-0">
+                <div class="col-md-12" style="height: 400px;">
+                    <img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="活動封面" class="img-fluid">
+                </div>                
+            </div>
+            
+        </div>
 
-		<h2>熱門活動</h2>
+        <div class="album card mb-1">
+        <h2>${actVO.actNo}-${actVO.actName}</h2>
+            <div class="row g-0">
+                <div class="col-md-12">
+                    <div class="card-body" >
+                        <div class="col-md-6">
+                            <p>${actVO.actContent}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-2">                            
+                                <label>報名費用NTD/人: ${actVO.unitPrice}</label>                                                                                                 
+                            </div>
+                            <div class="col-md-10">
+                            <c:forEach var="schd" items="${actSchdSet}">
+                            <a href='${pageContext.request.contextPath}/schd.do?action=getOne_For_Display&schdNo=${schd.schdNo}'>立刻報名!</a>
+                                <ul><li>檔期編號: ${schd.schdNo}</li>
+                                    <li>報名期間: ${schd.aplyTime} ~ ${schd.cutTime}</li>
+                                    <li>活動舉辦日期: ${schd.holdDate}</li>
+                                </ul>
+                               
+                            </c:forEach>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-	</div>
-
-	<!-- 引入 Bootstrap JavaScript 文件（如果需要） -->
+    </div>
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">
      
     </script>
 
 
-
-</body>
 <%@ include file="/front-end/index/footer.jsp" %>
+</body>
+
 </html>

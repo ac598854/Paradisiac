@@ -4,10 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<h1>新增相片</h1>
 	<c:if test="${not empty errorMsgs}">
 		<font style="color: red">請修正以下錯誤:</font>

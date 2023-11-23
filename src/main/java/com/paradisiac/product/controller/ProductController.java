@@ -1,6 +1,8 @@
 package com.paradisiac.product.controller;
 
+import com.paradisiac.product.AmazonS3ClientService;
 import com.paradisiac.product.constant.ProductCategory;
+import com.paradisiac.product.constant.ProductStatus;
 import com.paradisiac.product.dto.ProductQueryParams;
 import com.paradisiac.product.dto.ProductRequest;
 import com.paradisiac.product.model.Product;
@@ -11,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -23,6 +26,8 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
+    private AmazonS3ClientService amazonS3ClientService;
+    @Autowired
     private ProductService productService;
 
     @GetMapping("/products")
@@ -31,7 +36,7 @@ public class ProductController {
             @RequestParam (required = false) ProductCategory category,
             @RequestParam (required = false) String search,
             //排序 Sorting
-            @RequestParam (defaultValue = "created_date") String orderBy,
+            @RequestParam (defaultValue = "product_id") String orderBy,
             @RequestParam (defaultValue = "asc") String sort,
             //分頁 Pagination
             @RequestParam (defaultValue = "8") @Max(1000) @Min(0) Integer limit,
@@ -62,6 +67,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
+    @GetMapping("/allForCart")
+    public ResponseEntity<List<Product>> getAllProductsForCart() {
+        List<Product> products = productService.getAllProductsForCart();
+        return ResponseEntity.ok(products);
+    }
+
     //查詢
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
@@ -76,34 +87,81 @@ public class ProductController {
 
     //新增
     @PostMapping("/products")
-    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest) {
-        Integer productId = productService.createProduct(productRequest);
+    public ResponseEntity<Product> createProduct(
+            @RequestParam("productName") String productName,
+            @RequestParam("price") Integer price,
+            @RequestParam("stock") Integer stock,
+            @RequestParam("description") String description,
+            @RequestParam("category") ProductCategory category,
+            @RequestParam("status") ProductStatus status,
+            @RequestParam("image") MultipartFile image) {
 
+        // 上傳圖片到 S3 並獲取 URL
+        String imageUrl = amazonS3ClientService.uploadFileToS3Bucket(image, true);
+
+        // 創建 ProductRequest 對象，這假設 ProductRequest 有一個設置 imageUrl 的方法
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setProductName(productName);
+        productRequest.setPrice(price);
+        productRequest.setStock(stock);
+        productRequest.setDescription(description);
+        productRequest.setCategory(category);
+        productRequest.setStatus(status); // 假設 status 是一個 Enum
+        productRequest.setImageUrl(imageUrl); // 設置圖片的 URL
+
+        // 調用 ProductService 來創建產品
+        Integer productId = productService.createProduct(productRequest);
         Product product = productService.getProductById(productId);
 
-        return  ResponseEntity.status(HttpStatus.CREATED).body(product);
+        // 創建 ResponseEntity 並返回
+        return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
     // GEt File方法 Post API傳到資料庫
 
     //修改
     @PutMapping("/products/{productId}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
-                                                 @RequestBody @Valid ProductRequest productRequest) {
-        //  檢查 product 是否存在
-        Product product = productService.getProductById(productId);
+    public ResponseEntity<Product> updateProduct(
+            @PathVariable Integer productId,
+            @RequestParam("productName") String productName,
+            @RequestParam("price") Integer price,
+            @RequestParam("stock") Integer stock,
+            @RequestParam("description") String description,
+            @RequestParam("category") ProductCategory category,
+            @RequestParam("status") ProductStatus status,
+            @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        if (product == null) {
+        // 首先，检查产品是否存在
+        Product existingProduct = productService.getProductById(productId);
+        if (existingProduct == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // 修改商品的數據
+        // 如果有新的图片上传，处理图片上传到 S3
+        String imageUrl = existingProduct.getImageUrl(); // 使用现有的图片URL
+        if (image != null && !image.isEmpty()) {
+            imageUrl = amazonS3ClientService.uploadFileToS3Bucket(image, true);
+        }
+
+        // 创建 ProductRequest 对象，并设置新的信息
+        ProductRequest productRequest = new ProductRequest();
+        productRequest.setProductName(productName);
+        productRequest.setPrice(price);
+        productRequest.setStock(stock);
+        productRequest.setDescription(description);
+        productRequest.setCategory(category);
+        productRequest.setStatus(status);
+        productRequest.setImageUrl(imageUrl); // 设置新的图片URL
+
+        // 更新产品信息
         productService.updateProduct(productId, productRequest);
 
+        // 获取更新后的产品信息
         Product updatedProduct = productService.getProductById(productId);
 
-        return  ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
+
 
     //刪除
     @DeleteMapping("/products/{productId}")

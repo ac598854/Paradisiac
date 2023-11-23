@@ -28,7 +28,7 @@ public interface ActDAO_interface {
 	
 	public List<ActVO> getActiveAll(int currentPage);
 	
-//	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo);
+	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo);
 	//----------
 	
 	

@@ -22,7 +22,7 @@
             margin: 10px; /* 添加10px的外邊距，可根據需要調整 */
             margin-top:10px;
         }
-		
+
 		td{
 			height:50px;
 		}
@@ -102,31 +102,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   	<script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script> 
-<script>	
-	//===========首頁會員狀態判斷===========
-    // 首頁會員狀態判斷
-      $(document).ready(function(){
-        $.ajax({
-            type: "POST",
-            url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
-            success: function(data) {
-                const responseMessage = parseInt(data);
-                var  contextPath='<%=request.getContextPath()%>';
-                var guided = contextPath + '/front-end/index/guided.jsp';
-                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
-                if (responseMessage === 1) {
-                    $("#dynamicContent").load(guided);
-                } else if (responseMessage === 0) {
 
-                    $("#dynamicContent").load(guidedSignout);
-                }
-            },
-            error: function(error) {
-                console.log("AJAX error:", error);
-            }
-        });
-    });
-  //==================
-	</script>
+	<%@ include file="/front-end/index/footer.jsp" %>
 </body>
 </html>

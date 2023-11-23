@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="">
 <%--${pageContext.request.contextPath}/main/main.css --%>
@@ -53,6 +54,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 <table id="table-1">
 	<tr><td>
 		 <h3>部門資料 - listOneDept</h3>

@@ -3,14 +3,15 @@
 <%@ page import="com.paradisiac.employee.model.*"%>
 <%@ page import="com.paradisiac.department.model.*"%>
 
-<% //見com.emp.controller.EmpServlet.java第163行存入req的empVO物件 (此為從資料庫取出的empVO, 也可以是輸入格式有錯誤時的empVO物件)
+<% 
    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
    DeptVO deptVO = (DeptVO) request.getAttribute("deptVO");
 %>
---<%= empVO==null%><%--${empVO.deptno} --%><!--line 100  -->
+--<%= empVO==null%>
 --<%= deptVO==null%>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 <title>員工資料修改 - update_emp_input.jsp</title>
 
@@ -48,7 +49,7 @@
 
 </head>
 <body bgcolor='white'>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 <table id="table-1">
 	<tr><td>
 		 <h3>員工資料修改 - update_emp_input.jsp</h3>

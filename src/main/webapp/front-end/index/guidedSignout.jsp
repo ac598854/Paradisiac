@@ -42,7 +42,7 @@
                         <a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">最新活動</a>
+                        <a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<%= request.getContextPath() %>/productFront.html">購物商城</a>

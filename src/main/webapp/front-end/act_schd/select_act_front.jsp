@@ -129,7 +129,7 @@
 						<c:forEach var="act" items="${actList}">
 							<div class="actWholeContent">
 								<div class="actImg">
-								<a href='${pageContext.request.contextPath}/act.do?action=getOne_For_Display&actNo=${act.actNo}'>
+								<a href='${pageContext.request.contextPath}/act.do?action=getAllSchd_Schd&actNo=${act.actNo}'>
 									<img src="<%=request.getContextPath()%>/dbg.do?act_no=${act.actNo}"
 										alt="相片1" class="img-fluid">
 								</a>									
@@ -138,14 +138,14 @@
 									<table>
 										<tr>
 											<th>活動名稱:</th>
-											<td>${act.actName}</td>
+											<td>${act.actNo}-${act.actName}</td>
 										</tr>
 										<tr>
 											<th>NTD</th>
 											<td>${act.unitPrice}</td>
 										</tr>
 									</table>
-									<label>即將開放報名</label>
+									<label>${(schdQty==0)?'即將開放報名':'熱烈報名中'}</label>
 								</div>
 							</div>
 						</c:forEach>

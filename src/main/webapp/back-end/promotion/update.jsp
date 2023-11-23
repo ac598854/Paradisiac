@@ -1,16 +1,18 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="Big5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="com.paradisiac.promotion.model.*"%>
+<%@ page import="com.paradisiac.promotionlist.model.*"%>
 
-<% //見com.emp.controller.EmpServlet.java第238行存入req的empVO物件 (此為輸入格式有錯誤時的empVO物件)
+<% 
   	PromotionVO proVO = (PromotionVO) request.getAttribute("proVO");
 %>
 
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<title>促銷專案修改 - update.jsp</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+		 <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.datetimepicker.css" />
+		<title>促銷專案修改</title>
 
 <style>
   h4 {
@@ -18,20 +20,33 @@
     display: inline;
   }
   table {
-            width: 800px;
-            background-color: white;
-            margin-top: 5px;
-            margin-bottom: 5px;
-        }
- table, th, td {
-            border: 1px solid #CCCCFF;
-            text-align: center; /* 將文字置中對齊 */
-        }
-        th, td {
-            padding: 5px;
-            text-align: center;
-            width: 12%;
-        }
+                            width: 450px;
+                            background-color: white;
+                            margin-top: 1px;
+                            margin-bottom: 1px;
+                        }
+ table,
+                        th,
+                        td {
+                            border: 0px solid #CCCCFF;
+                        }
+
+                        th,
+                        td {
+                            padding: 1px;
+                        }
+                         .xdsoft_datetimepicker .xdsoft_datepicker {
+                                    width: 300px;
+                                    /* width:  300px; */
+                                }
+
+                                .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+                                    height: 151px;
+                                    /* height:  151px; */
+                                }
+                           .card-body {
+							    line-height: 1;
+							}
 </style>
 
 </head>
@@ -44,19 +59,6 @@
             </td>
         </tr>
     </table>
-
-
-<%-- 錯誤表列 --%>
-<div style="margin-left: 85px ">
-<c:if test="${not empty errorMsgs}">
-	<font style="color:red">請修正以下錯誤:</font>
-	<ul>
-		<c:forEach var="message" items="${errorMsgs}">
-			<li style="color:red">${message}</li>
-		</c:forEach>
-	</ul>
-</c:if>
-</div>
 <FORM METHOD="post" ACTION="promotion" name="form1">
 
 

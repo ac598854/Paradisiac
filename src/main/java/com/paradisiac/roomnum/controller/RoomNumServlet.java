@@ -103,11 +103,11 @@ public class RoomNumServlet extends HttpServlet {
 			//★★★更新訂單狀態將訂房狀態改變為2，(說明：1表示未入住，2表示已入住-已給過房間號碼)
 			RoomOrderServiceImpl roomorderSvc = new RoomOrderServiceImpl();
 			byte orderStatus = 2;
-			roomOrderNoCount +=1;
+			roomOrderNoCount +=1; //listAllCheckInDate.jsp每按一下checkin按鈕時就讀取roomOrderNoCount並加一比對會員下訂的房間數量是否相等
 			System.out.println("roomOrderNoCount"+roomOrderNoCount+"==,==roomAmount"+roomAmount);
 			
 			if(roomOrderNoCount==roomAmount) {
-			roomorderSvc.updateOrderStatus(roomOrderNo, orderStatus);
+				roomorderSvc.updateOrderStatus(roomOrderNo, orderStatus);
 			}
 			//★★★更新房間狀態
 			// 2表示已入住，這間房間便不可以再分配給下一個人，除非狀態改變為1
@@ -135,6 +135,25 @@ public class RoomNumServlet extends HttpServlet {
 					List<String> successMessage = new LinkedList<String>();
 					req.setAttribute("successMessage", successMessage);
 					
+					//取得訂單編號
+					String roomOrderNoStr = req.getParameter("roomOrderNo");
+					System.out.println("訂單編號："+roomOrderNoStr);
+					Integer roomOrderNo = null;
+					if (roomOrderNoStr != null && !roomOrderNoStr.isEmpty()) {
+						try {
+							roomOrderNo = Integer.valueOf(roomOrderNoStr.trim());
+						} catch (NumberFormatException e) {					
+							
+							getAllRoomNum(roomnumService, req, res);
+						}
+					}
+					//點擊退房按鈕時將訂單狀態改為3表示已結案(入住完畢)
+					byte orderStatus = 3;
+					System.out.println("訂單編號："+roomOrderNo+"，訂單狀態更新為："+orderStatus);
+					RoomOrderServiceImpl roomorderSvc = new RoomOrderServiceImpl();
+					roomorderSvc.updateOrderStatus(roomOrderNo, orderStatus);
+					
+					
 					//★★★★★★
 					//========================更新房間狀態=================================
 					// 3表示退房，將訂單及住房姓名清空，但此時還是不能加入分配房間的清單中，此時狀態為清掃中
@@ -143,8 +162,8 @@ public class RoomNumServlet extends HttpServlet {
 					System.out.println(action+"房間號碼："+rnumParam);
 					if (rnumParam != null && !rnumParam.isEmpty()) {
 					    rnum = Integer.valueOf(rnumParam.trim());
-					    System.out.println("退房-房間號碼========："+rnum);
-					Integer roomOrderNo = null;
+					    System.out.println("退房-房間號碼："+rnum);
+					roomOrderNo = null;
 					String checkInName ="";
 					int status = 3; // 將status狀態值改變為3表示清潔中
 					Byte roomStatus = null;
@@ -174,8 +193,7 @@ public class RoomNumServlet extends HttpServlet {
 					System.out.println(action+"清掃-房間號碼："+rnumParam);
 					Integer rnum;
 					if (rnumParam != null && !rnumParam.isEmpty()) {
-					    rnum = Integer.valueOf(rnumParam.trim());
-					    System.out.println("房間號碼========："+rnum);
+					    rnum = Integer.valueOf(rnumParam.trim());					  
 					//Integer rnum = Integer.valueOf(req.getParameter("rnum").trim());
 					Integer roomOrderNo = null;
 					String checkInName = "";
@@ -183,7 +201,8 @@ public class RoomNumServlet extends HttpServlet {
 					Byte roomStatus = null;
 					roomStatus = (byte) status;
 					RoomNumServiceImpl roomnumSvc = new RoomNumServiceImpl();
-					System.out.println("更新狀態：" + roomnumSvc.updateRoomNumStatus(rnum, roomOrderNo, checkInName, roomStatus));
+					//更新房間狀態-將訂單編號、房客姓名、房間狀態清空
+					roomnumSvc.updateRoomNumStatus(rnum, roomOrderNo, checkInName, roomStatus);					
 					successMessage.add("清掃完成-房間編號："+rnum +" ，已清潔完畢可安排入住。");
 					}
 					//==========================更新房間狀態===================================

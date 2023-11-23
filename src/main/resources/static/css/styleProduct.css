@@ -1,3 +1,14 @@
+body {
+    background-image: url('https://cha103-29.s3.ap-northeast-1.amazonaws.com/pexels-jeff-ibera-1320755.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: 'Arial', sans-serif;
+    background-color: lightblue;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
 /* 頁首樣式 */
 header {
     background-color: lightblue;

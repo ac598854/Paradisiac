@@ -54,10 +54,10 @@ public class SchdServlet extends HttpServlet {
 				e.printStackTrace();
 			}			
 			break;
-//		case "getOne_For_Display":
-//			getOneForDisplay(req, res);
-//			forwardPath = "/back-end/act/list_one_act.jsp";
-//			break;
+		case "getOne_For_Display": //前端-報名檔期
+			getOneForDisplay(req, res);
+			forwardPath = "/front-end/act_schd/Test_order_schd.jsp";
+			break;
 //		case "getOneSchdAllOrders":
 //			getOneForDisplay(req, res);
 //			forwardPath = "/back-end/act/list_act_schd.jsp";
@@ -92,9 +92,6 @@ public class SchdServlet extends HttpServlet {
 		}	
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
-		Integer lowNum = Integer.valueOf(req.getParameter("lowNum"));
-		Integer highNum= Integer.valueOf(req.getParameter("highNum"));
-//		Integer unpaidNum = Integer.valueOf(req.getParameter("unpaidNum"));
 //		Integer paidNum = Integer.valueOf(req.getParameter("paidNum"));
 		
 		Timestamp ancDate = convertTmp(req.getParameter("ancDate"));  
@@ -105,12 +102,12 @@ public class SchdServlet extends HttpServlet {
 		Integer applStatus = Integer.valueOf(req.getParameter("applStatus"));
 		
 		ActVO act = actSvc.getActByActno(actNo);
-		SchdVO schdVO = new SchdVO(act, unitPrice, lowNum, highNum, holdDate, aplyTime, cutTime, applStatus);
+		SchdVO schdVO = new SchdVO(act, unitPrice, holdDate, aplyTime, cutTime, applStatus);
 		
 		//錯誤處理
-		if(lowNum > highNum) {
-			errorMsgs.add("成團人數須小於上限人數");
-		}
+//		if(lowNum > highNum) {
+//			errorMsgs.add("成團人數須小於上限人數");
+//		}
 		
 		//開始打包 (建構子沒有上下架日期跟付款人/未付款人,如果有要裝進去)
 		if(req.getParameter("ancDate") != null) {
