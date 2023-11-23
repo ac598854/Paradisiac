@@ -132,34 +132,34 @@ function addToCart(productName, price, description, stock,productId) {
     if (cart[productName]) {
         if (cart[productName].quantity >= stock) {
             Swal.fire({
-			  title: '加入購物車失敗',
-			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName} 的庫存不足，無法再添加更多到購物車中。</span>`,
-			  icon: 'error',
-			    timer: 2000, // 設置自動消失時間（毫秒）
-  				showConfirmButton: false // 不顯示確認按鈕
-			});
+                title: '加入購物車失敗',
+                html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName} 的庫存不足，無法再添加更多到購物車中。</span>`,
+                icon: 'error',
+                timer: 2000, // 設置自動消失時間（毫秒）
+                showConfirmButton: false // 不顯示確認按鈕
+            });
             return; // 超出庫存，不允許再添加
         } else {
             cart[productName].quantity++;
             Swal.fire({
-			  title: '已加入購物車',
-			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
-			  icon: 'success',
-			  timer: 2000, // 設置自動消失時間（毫秒）
-  				showConfirmButton: false // 不顯示確認按鈕
-			});
+                title: '已加入購物車',
+                html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
+                icon: 'success',
+                timer: 2000, // 設置自動消失時間（毫秒）
+                showConfirmButton: false // 不顯示確認按鈕
+            });
         }
     } else {
-		
+
         if (stock === 0) {
             Swal.fire({
-			  title: '加入購物車失敗',
-			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}暫時無法加入購物車，庫存不足。</span>`,
-			  icon: 'error',
-			    timer: 2000, // 設置自動消失時間（毫秒）
-  				showConfirmButton: false // 不顯示確認按鈕
-			});
-            return; 
+                title: '加入購物車失敗',
+                html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}暫時無法加入購物車，庫存不足。</span>`,
+                icon: 'error',
+                timer: 2000, // 設置自動消失時間（毫秒）
+                showConfirmButton: false // 不顯示確認按鈕
+            });
+            return;
         }
 
         cart[productName] = {
@@ -169,12 +169,12 @@ function addToCart(productName, price, description, stock,productId) {
             quantity: 1,
         };
         Swal.fire({
-			  title: '已加入購物車',
-			  html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
-			  icon: 'success',
-			  timer: 2000, // 設置自動消失時間（毫秒）
-  				showConfirmButton: false // 不顯示確認按鈕
-			});
+            title: '已加入購物車',
+            html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">${productName}已成功加入購物車</span>`,
+            icon: 'success',
+            timer: 2000, // 設置自動消失時間（毫秒）
+            showConfirmButton: false // 不顯示確認按鈕
+        });
     }
 
     post();
