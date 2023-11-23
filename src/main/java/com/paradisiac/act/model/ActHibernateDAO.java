@@ -96,8 +96,8 @@ public class ActHibernateDAO implements ActDAO_interface{
 		return new HashSet<SchdVO>(getSession().createQuery(	//schds 是檔期集合Set<SchdVO> schds, s是代號                    
 	                            "select s from ActVO a join a.schds s " +
 	                                    "where a.actNo = :actNo " +
-	                                    "and s.ancDate < current_timestamp() " +
-	                                    "and s.drpoSchdDate > current_timestamp()",
+	                                    "and s.ancDate < current_timestamp() " + //上架時間早於現在
+	                                    "and s.drpoSchdDate > current_timestamp()", //下架時間晚於現在
 	                            SchdVO.class)
 	                    .setParameter("actNo", actNo)
 	                    .getResultList()
