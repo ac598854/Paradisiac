@@ -54,14 +54,9 @@ function loadProducts() {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', projectName + '/products', true); // 修改為動態路徑
     xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                var productsData = JSON.parse(xhr.responseText);
-                displayProducts(productsData.results);
-            } else {
-                // 如果請求失敗，也調用 displayProducts 以確保顯示提示訊息
-                displayProducts([]);
-            }
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            var productsData = JSON.parse(xhr.responseText);
+            displayProducts(productsData.results);
         }
     }
     xhr.send();
@@ -72,18 +67,13 @@ function displayProducts(products) {
     var productsArea = document.getElementById('productsArea');
     productsArea.innerHTML = '';
 
-    // 如果沒有找到產品，則在頁面中顯示提示訊息
-    if (products.length === 0) {
-        productsArea.innerHTML = '<div class="alert alert-info">未找到產品。</div>';
+    if (products.length == 0) {
+        productsArea.innerHTML = '<p>查無此商品</p>';
         return;
     }
 
-    products.forEach(product => {
-        // 檢查商品狀態，如果是下架狀態，則跳過
-        if (product.status === 'STATUSOff') {
-            return; // 跳過此次迴圈，不渲染該商品
-        }
-
+    // 定義一個幫助函數來渲染商品項目
+    function renderProduct(product, promotionDiscount) {
         var productDiv = document.createElement('div');
         productDiv.className = 'productCard';
 
@@ -99,27 +89,61 @@ function displayProducts(products) {
         productPrice.innerText = "NT$ " + product.price;
         productDiv.appendChild(productPrice);
 
-        // 新增Add To Cart按鈕
+        // 新增 Add To Cart 按鈕
         var addToCartButton = document.createElement('button');
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
         addToCartButton.addEventListener('click', function() {
-            addToCart(product.productName, product.price, product.description,product.stock,product.productId);
+            addToCart(product.productName, product.price, product.description, product.stock, product.productId);
         });
 
-        // 設置點擊事件，不再綁定原本的addToCart函數
         addToCartButton.addEventListener('click', function(event) {
             event.stopPropagation();
-        })// 阻止事件冒泡到父元素
+        });
 
         productDiv.appendChild(addToCartButton);
 
         productDiv.onclick = function() {
             window.location.href = projectName + `/product.html?productId=${product.productId}`;
         };
+		console.log("if之前"+promotionDiscount);
+        // 如果有相符的促銷折扣，則顯示在商品價格下面
+        if (promotionDiscount) {
+            var discountText = document.createElement('p');
+            discountText.innerText = `Discount: ${promotionDiscount}`;
+            productDiv.appendChild(discountText);
+        }
+
         productsArea.appendChild(productDiv);
-    });
-}
+    }
+
+    // 對每個商品進行渲染
+    products.forEach(product => {
+        // 檢查商品狀態，如果是下架狀態，則跳過
+        if (product.status === 'STATUSOff') {
+            return; // 跳過此次迴圈，不渲染該商品
+        }
+
+        // 在渲染商品前，先取得促銷資訊
+        getPromotion().then(promotions => {
+    let foundPromotion = null;
+
+    for (const promotionInfo of Object.values(promotions)) {
+        if (promotionInfo.productNo === product.productId) {
+            foundPromotion = promotionInfo;
+            break; // 找到符合的促銷資訊後即停止搜尋
+        }
+    }
+
+	    const promotionDiscount = foundPromotion ? foundPromotion.discount : null;
+	    renderProduct(product, promotionDiscount);
+	}).catch(error => {
+	    console.error('Error fetching promotions:', error);
+	    renderProduct(product, null); // 如果取得失敗，渲染商品但沒有促銷資訊
+	});
+	    });
+	}
+
 
 
 //==============================加入購物車============================//
@@ -260,12 +284,13 @@ function reload() {
 };
 //========================getPromotion=================================//
 function getPromotion() {
-    fetch(projectName + '/PromotionListServlet', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
+    return new Promise((resolve, reject) => {
+        fetch(projectName + '/PromotionListServlet', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -274,12 +299,15 @@ function getPromotion() {
             }
         })
         .then(data => {
-        	console.log(data);
+            resolve(data);
         })
         .catch(error => {
             console.log(error);
+            reject(error); // 在發生錯誤時 reject Promise
         });
-};
+    });
+}
+
 //========================商品搜尋功能====================================//
 function searchProducts() {
     const query = document.getElementById('searchInput').value;
