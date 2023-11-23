@@ -55,7 +55,7 @@ public class ActOrderServlet extends HttpServlet {
 		switch (action) {
 		case "insert":
 			insert(req, res);
-			break;
+			return;
 		case "getOne_For_ActOrderNo":
 			getOne_For_ActOrderNo(req, res);
 			return;
@@ -70,25 +70,6 @@ public class ActOrderServlet extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 
-//	private void test(HttpServletRequest req, HttpServletResponse res) throws IOException {
-//
-//		String aAtnNum = req.getParameter("aAtnNum");
-//		List<ActAttendees> list = new LinkedList<>();
-//		for (int i = 0; i < Integer.parseInt(aAtnNum); i++) {
-//			ActAttendees actAttendees = new ActAttendees();
-//			actAttendees.setAtnName(req.getParameter("atnName[" + i + "]"));
-//			actAttendees.setAtnIdNumber(req.getParameter("atnIdNumber[" + i + "]"));
-//			actAttendees.setAtnTel(req.getParameter("atnTel[" + i + "]"));
-//
-//			list.add(actAttendees);
-//		}
-//
-//		for (ActAttendees actAttendees : list) {
-//			System.out.println(actAttendees);
-//		}
-//		res.getWriter().write("ok");
-//	}
-
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
@@ -101,6 +82,8 @@ public class ActOrderServlet extends HttpServlet {
 			Integer aAtnNum = Integer.valueOf(req.getParameter("aAtnNum"));// 人數
 			Integer orderStatus = Integer.valueOf(1);
 			Integer orderAmount = Integer.valueOf(req.getParameter("orderAmount"));
+			Timestamp orderTime = new Timestamp(System.currentTimeMillis());
+		    System.out.println("orderTime"+orderTime);
 
 			// 新增參加者(明細)
 			List<ActAttendees> list = new LinkedList<>();
@@ -116,7 +99,7 @@ public class ActOrderServlet extends HttpServlet {
 			}
 			/*************************** 2.開始新增訂單 ***************************************/
 			ActOrderService actOrderServ = new ActOrderService();
-			Integer actOrderNo = actOrderServ.addActOrder(memNo, schdVO, null, null, aAtnNum, orderStatus, orderAmount,
+			Integer actOrderNo = actOrderServ.addActOrder(memNo, schdVO, null, orderTime, aAtnNum, orderStatus, orderAmount,
 					null);// 抓訂單編號
 			System.out.println(actOrderNo);
 			ActOrder actOrder = actOrderServ.getOneByActOrderNo(actOrderNo);// 把訂單編號塞進物件(明細的Service編號是物件)
@@ -137,14 +120,32 @@ public class ActOrderServlet extends HttpServlet {
 			res.sendRedirect(req.getContextPath() + "/front-end/index/index2.jsp");
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println("活動訂單例外錯誤");
 		}
+	}
+
+	private void updateFront(HttpServletRequest req, HttpServletResponse res) {
+		res.setContentType("text/html;charset=UTF-8");
+//取消訂單=>訂單狀態:取消=>已繳費人數-(報名人數)
+		Integer orderStatus = Integer.valueOf(req.getParameter("orderStatus"));
+		Integer schdNO = Integer.valueOf(req.getParameter("schdNO"));
+		Integer aAtnNum=Integer.valueOf(req.getParameter("aAtnNum"));
+
+		if (orderStatus == 0) {//訂單取消
+			ActOrderService actOrderServ = new ActOrderService();
+			actOrderServ.modifyStatus(schdNO,orderStatus);
+		//改變檔期人數
+			
+		
+		} 
+		
+
 	}
 
 	private void getOne_For_ActOrderNo(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		res.setContentType("text/html;charset=UTF-8");
-		
-		
+
 		try {
 			String actOrderNoStr = req.getParameter("actOrderNo");
 
@@ -204,18 +205,11 @@ public class ActOrderServlet extends HttpServlet {
 
 		return "/back-end/actorder/ActLPB.jsp";
 	}
-
-	private String getAllLP(HttpServletRequest req, HttpServletResponse res) {
-		List<ActOrder> orderList = actOrderServ.getAll();
-		req.setAttribute("orderList", orderList);
-		return "/back-end/actorder/ActLPB.jsp";
-	}
+//
+//	private String getAllLP(HttpServletRequest req, HttpServletResponse res) {
+//		List<ActOrder> orderList = actOrderServ.getAll();
+//		req.setAttribute("orderList", orderList);
+//		return "/back-end/actorder/ActLPB.jsp";
+//	}
 
 }
-//	private String getAll(HttpServletRequest req, HttpServletResponse res) {
-//		
-//		ActAttendeesService actAttendeesSer=new ActAttendeesService();
-//		
-//	
-//	
-//	}

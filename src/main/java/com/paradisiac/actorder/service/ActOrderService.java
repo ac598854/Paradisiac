@@ -24,7 +24,7 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 
 	@Override
-	public int addActOrder(Integer memNo, SchdVO schdVO, EmpVO empVO, LocalDateTime orderTime, Integer aAtnNum,
+	public int addActOrder(Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime, Integer aAtnNum,
 			Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
 
 		ActOrder ActOderVO = new ActOrder();
@@ -32,7 +32,7 @@ public class ActOrderService implements ActOrderService_interface {
 		ActOderVO.setMemNo(memNo);
 		ActOderVO.setSchdVO(schdVO);
 		ActOderVO.setEmpVO(empVO);
-		ActOderVO.setOrderTime(LocalDateTime.now());
+		ActOderVO.setOrderTime(orderTime);
 		ActOderVO.setaAtnNum(aAtnNum);
 		ActOderVO.setOrderStatus(orderStatus);
 		ActOderVO.setOrderAmount(orderAmount);
@@ -42,7 +42,7 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 //更新
 	@Override
-	public int updateActOrder(Integer actOrderNo, Integer memNo, SchdVO schdVO, EmpVO empVO, LocalDateTime orderTime,
+	public int updateActOrder(Integer actOrderNo, Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime,
 			Integer aAtnNum, Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
 
 		ActOrder ActOderVO = new ActOrder();
@@ -50,7 +50,7 @@ public class ActOrderService implements ActOrderService_interface {
 		ActOderVO.setMemNo(memNo);
 		ActOderVO.setSchdVO(schdVO);
 		ActOderVO.setEmpVO(empVO);
-		ActOderVO.setOrderTime(LocalDateTime.now());
+		ActOderVO.setOrderTime(orderTime);
 		ActOderVO.setaAtnNum(aAtnNum);
 		ActOderVO.setOrderStatus(orderStatus);
 		ActOderVO.setOrderAmount(orderAmount);
@@ -60,12 +60,12 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 
 	@Override
-	public int modifyStatus(SchdVO schdNo, Integer orderStatus) {
-		return dao.modifyStatus(schdNo, orderStatus);
+	public int modifyStatus(Integer schdNO, Integer orderStatus) {
+		return dao.modifyStatus(schdNO, orderStatus);
 	}
 	
 	@Override
-	public int cancelAct(SchdVO schdVO) {
+	public int cancelAct(Integer schdNo) {
 		// 官方取消活動利用 檔期PK 、改變訂單狀態
 		return 1;
 	}

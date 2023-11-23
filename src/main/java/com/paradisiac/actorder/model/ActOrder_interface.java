@@ -12,7 +12,7 @@ public interface ActOrder_interface {
 	int update(ActOrder actOrder);//訂單編號修改
 	ActOrder getOneByActOrderNo(Integer actOrderNo);
 	
-	int modifyStatus(SchdVO schdVO, Integer orderStatus);
+	int modifyStatus(Integer schdNo, Integer orderStatus);
 //	ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list);
 
 	//取全部分頁、不分頁

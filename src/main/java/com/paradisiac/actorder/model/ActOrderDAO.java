@@ -52,12 +52,12 @@ public class ActOrderDAO implements ActOrder_interface{
 	
 
 	@Override
-	public int modifyStatus(SchdVO schdVO, Integer orderStatus) {
-		String hql="update ActOrder set orderStatus=:orderStatus Where schdVO=:schdVO";
+	public int modifyStatus(Integer schdNo, Integer orderStatus) {
+		String hql="update ActOrder set orderStatus=:orderStatus Where schdVO.schdNo=:schdNo";
 		Query query = getSession().createQuery(hql);//hql語法
 		
 		query.setParameter("orderStatus", orderStatus);
-		query.setParameter("schdVO", schdVO);
+		query.setParameter("schdNo", schdNo);
 		int result = query.executeUpdate();
 		
 		return result;

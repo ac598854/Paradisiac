@@ -395,8 +395,6 @@ ul.navigation {
 														</c:when>
 													</c:choose></td>
 												<td>${ActOrder.orderTime}</td>
-<%-- <c:set var="formattedDateTime" value="${ActOrder.orderTime.format(java.time.format.DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))}" /> --%>
-<%-- <td>${formattedDateTime}</td> --%>
 												<td>
 													<form method="post" action="ActOrder.do">
 														<button type="submit" class="btn btn-primary">修改</button>

@@ -399,8 +399,8 @@ h1, h2, h3, h4 {
 								</tr>
 								<tr>
 									<td>訂單日期:<font color="red"><b>*</b></font></td>
-									<td><input type="date" name="orderTime" id="orderTime"
-										class="form-control" value="${actOrder.orderTime}" size="45"
+									<td><input type="datetime-local" name="orderTime" id="orderTime"
+										class="form-control" value="${actOrder.orderTime}"
 										readonly /></td>
 								</tr>
 								<tr>
@@ -411,7 +411,7 @@ h1, h2, h3, h4 {
 								<tr>
 									<td>訂單狀態:</td>
 									<td><select name="order_status"
-										class="form-control browser-default custom-select" disabled>
+										class="form-control browser-default custom-select" >
 											<option value="1"
 												<c:if test="${actOrder.orderStatus == 1}">selected</c:if>>成立</option>
 											<option value="0"
