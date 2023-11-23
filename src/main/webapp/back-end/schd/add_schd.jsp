@@ -130,19 +130,7 @@ h2 {
 					<th>參加費用</th>
 					<td><input type="text" name="unitPrice" value="${schdVO.unitPrice==null? '':schdVO.unitPrice}" required></td>
 				</tr>
-				<tr>
-					<th>最低成團人數</th>
-					<td><input type="text" name="lowNum" value="${schdVO.lowNum==null? '':schdVO.lowNum}" required></td>
-					<th>最高上限人數</th>
-					<td><input type="text" name="highNum" value="${schdVO.highNum==null? '':schdVO.highNum}" required></td>
-				</tr>
-				<%-- 
-            <tr>
-                <th>未繳費人數</th>
-                <td><input type="text" name="" required></td>
-                <th>已繳費人數</th>
-                <td><input type="text" name="" required></td>
-            </tr>--%>
+		
 
 			</table>
 			<input type="hidden" name="action" value="insert"> <input

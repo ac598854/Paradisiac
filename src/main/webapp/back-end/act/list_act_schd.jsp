@@ -105,17 +105,11 @@
             <th>報名開始時間</th>
             <th>報名截止時間</th>
             <th>參加費用</th>
-            <th>最低成團人數</th>
-            <th>最高上限人數</th>
-            <th>未繳費人數</th>
             <th>已繳費人數</th>
             <th>報名狀態</th>
             <th>操作</th>
         </tr>
-<%-- 
-<c:set var="actSchdSet" value="${actSchdSet}" />
- <c:out value="${actSchdSet}" />
- <%@ include file="page1.file" %>--%>
+
         <c:forEach var="schd" items="${actSchdSet}">
         <tr> 
             <td>${schd.schdNo}</td>
@@ -125,9 +119,6 @@
             <td>${schd.aplyTime}</td>
             <td>${schd.cutTime}</td>
             <td>${schd.unitPrice}</td>
-            <td>${schd.lowNum}</td>
-            <td>${schd.highNum}</td>
-            <td>${schd.unpaidNum}</td>
             <td>${schd.paidNum}</td>
             <td>
 			    ${schd.applStatus == 1 ? '1-報名中' : 

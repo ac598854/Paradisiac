@@ -31,6 +31,10 @@
         <div class="album card mb-3">
             <h2>活動:${schdVO.act.actNo}-${schdVO.act.actName}</h2>
             <h2>檔期編號:${schdVO.schdNo}</h2>
+            
+        </div>
+        <div>
+        	<img src="<%=request.getContextPath()%>/dbg.do?act_no=${schdVO.act.actNo}" alt="活動封面" class="img-fluid">
         </div>
 
 

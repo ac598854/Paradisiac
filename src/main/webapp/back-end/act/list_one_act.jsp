@@ -95,14 +95,6 @@
 								<td>${actVO.actName}</td>
 							</tr>
 							<tr>
-								<th>最低成團人數</th>
-								<td>${actVO.lowNum}</td>
-							</tr>
-							<tr>
-								<th>最高上限人數</th>
-								<td>${actVO.highNum}</td>
-							</tr>
-							<tr>
 								<th>活動狀態</th>
 								<td>${actVO.actStatus? '上架':'下架'}</td>
 							</tr>

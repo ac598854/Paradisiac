@@ -107,6 +107,17 @@ public class LoginEmp extends HttpServlet{
 
 
 		} // login
+		
+		//登出
+		if("logoutEmp".equals(action)) {
+			HttpSession session = req.getSession(false);
+			Object empno = session.getAttribute("empno");
+			Object location = session.getAttribute("location");
+			session.removeAttribute("empno");
+			System.out.println("登出員工:"+empno);			
+			forwardPath = req.getContextPath() + "/back-end/index/loginEmp.jsp";
+			res.sendRedirect(forwardPath);
+		}
 
 	}//post
 	

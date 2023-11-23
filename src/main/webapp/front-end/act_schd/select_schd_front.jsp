@@ -111,7 +111,7 @@
     </script>
 
 
-
-</body>
 <%@ include file="/front-end/index/footer.jsp" %>
+</body>
+
 </html>

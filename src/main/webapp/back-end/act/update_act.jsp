@@ -97,15 +97,7 @@
 							<tr>
 								<th>活動名稱</th>
 								<td><input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName}></td>
-							</tr>
-							<tr>
-								<th>最低成團人數</th>
-								<td><input type="text" name="lowNum" required value=${actVO.lowNum==null? '': actVO.lowNum}></td>
-							</tr>
-							<tr>
-								<th>最高上限人數</th>
-								<td><input type="text" name="highNum" required value=${actVO.highNum==null? '': actVO.highNum}></td>
-							</tr>
+							</tr>							
 							<tr>
 								<th>活動狀態</th>
 								<td><input type="radio" name="actStatus" value="true" ${actVO.actStatus? 'checked':'' }>上架

@@ -122,7 +122,7 @@ public class ActServlet extends HttpServlet{
 		}
 
 		// 開始打包
-		ActVO actVO = new ActVO(actName, unitPrice, lowNum, highNum, actStatus, actContent);
+		ActVO actVO = new ActVO(actName, unitPrice, actStatus, actContent);
 		if (req.getParameter("actNo") != null) { // 修改要set PK
 			actVO.setActNo(actNo);			
 		}

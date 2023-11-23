@@ -93,7 +93,6 @@ public class ActHibernateDAO implements ActDAO_interface{
 	}
 	
 	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo){
-//		Set<SchdVO> activeSchd = new HashSet<SchdVO>();
 		return new HashSet<SchdVO>(getSession().createQuery(	//schds 是檔期集合Set<SchdVO> schds, s是代號                    
 	                            "select s from ActVO a join a.schds s " +
 	                                    "where a.actNo = :actNo " +
