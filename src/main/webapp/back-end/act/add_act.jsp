@@ -96,7 +96,7 @@
 							</tr>
 							<tr>
 								<th>活動狀態</th>
-								<td><input type="radio" name=actStatus value="true" ${actVO.actStatus? 'checked':'' }>上架
+								<td>
 									<input type="radio" name=actStatus value="false" ${actVO.actStatus? '':'checked' }>下架</td>
 							</tr>
 							<tr>

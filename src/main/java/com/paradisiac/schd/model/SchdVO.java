@@ -30,7 +30,7 @@ public class SchdVO implements java.io.Serializable{
 	
 //----多方----	
 	@OneToMany(mappedBy = "schdVO", cascade = CascadeType.ALL)
-	@OrderBy("act_order_no desc")
+	@OrderBy("act_order_no asc")
 	private Set<ActOrder> actorders;	
 
 	public Set<ActOrder> getActorders() {
