@@ -2,6 +2,7 @@ package com.paradisiac.product.controller;
 
 import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.dto.OrderQueryParams;
+import com.paradisiac.product.model.Members;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.service.OrderService;
 import com.paradisiac.product.util.Page;
@@ -64,6 +65,16 @@ public class OderController {
         page.setResults(orderList);
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("/members/details")
+    public ResponseEntity<Members> getMemberDetails(HttpSession session) {
+        Integer memno = (Integer) session.getAttribute("memno");
+        if (memno == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Members member = orderService.getMemberDetailsById(memno);
+        return ResponseEntity.ok(member);
     }
 
     //新增訂單

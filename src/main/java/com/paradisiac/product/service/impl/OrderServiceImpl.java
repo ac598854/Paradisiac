@@ -6,6 +6,7 @@ import com.paradisiac.product.model.Product;
 import com.paradisiac.product.dao.OrderDao;
 import com.paradisiac.product.dto.BuyItem;
 import com.paradisiac.product.dto.CreateOrderRequest;
+import com.paradisiac.product.model.Members;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.model.OrderItem;
 import com.paradisiac.product.service.OrderService;
@@ -114,5 +115,10 @@ public class OrderServiceImpl implements OrderService {
         orderDao.createOrderItems(orderId, orderItemList);
 
         return orderId;
+    }
+
+    @Override
+    public Members getMemberDetailsById(Integer memno) {
+        return orderDao.getMemberById(memno);
     }
 }
