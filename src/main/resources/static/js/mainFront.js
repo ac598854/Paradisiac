@@ -103,10 +103,12 @@ function displayProducts(products) {
 
         productDiv.appendChild(addToCartButton);
 
-        productDiv.onclick = function() {
-            window.location.href = projectName + `/product.html?productId=${product.productId}`;
-        };
-		console.log("if之前"+promotionDiscount);
+        // 添加點擊事件來觸發模態框
+        productDiv.addEventListener('click', function() {
+            showProductDetailsModal(product);
+        });
+
+        console.log("if之前"+promotionDiscount);
         // 如果有相符的促銷折扣，則顯示在商品價格下面
         if (promotionDiscount) {
             var discountText = document.createElement('p');
@@ -126,25 +128,38 @@ function displayProducts(products) {
 
         // 在渲染商品前，先取得促銷資訊
         getPromotion().then(promotions => {
-    let foundPromotion = null;
+            let foundPromotion = null;
 
-    for (const promotionInfo of Object.values(promotions)) {
-        if (promotionInfo.productNo === product.productId) {
-            foundPromotion = promotionInfo;
-            break; // 找到符合的促銷資訊後即停止搜尋
-        }
-    }
+            for (const promotionInfo of Object.values(promotions)) {
+                if (promotionInfo.productNo === product.productId) {
+                    foundPromotion = promotionInfo;
+                    break; // 找到符合的促銷資訊後即停止搜尋
+                }
+            }
 
-	    const promotionDiscount = foundPromotion ? foundPromotion.discount : null;
-	    renderProduct(product, promotionDiscount);
-	}).catch(error => {
-	    console.error('Error fetching promotions:', error);
-	    renderProduct(product, null); // 如果取得失敗，渲染商品但沒有促銷資訊
-	});
-	    });
-	}
+            const promotionDiscount = foundPromotion ? foundPromotion.discount : null;
+            renderProduct(product, promotionDiscount);
+        }).catch(error => {
+            console.error('Error fetching promotions:', error);
+            renderProduct(product, null); // 如果取得失敗，渲染商品但沒有促銷資訊
+        });
+    });
+}
 
+//==================================顯示商品詳情的模態框函數==============================================
+function showProductDetailsModal(product) {
+    // 更新模態框內容的代碼保持不變
+    document.getElementById('modalProductName').innerText = product.productName;
+    document.getElementById('modalProductImage').src = product.imageUrl;
+    document.getElementById('modalProductPrice').innerText = "NT$ " + product.price;
+    document.getElementById('modalProductDescription').innerText = product.description;
+    document.getElementById('modelProductStock').innerText = "庫存剩餘： "+ product.stock + " 個";
 
+    // 顯示模態框的代碼保持不變
+    var productModal = new bootstrap.Modal(document.getElementById('productDetailModal'));
+    productModal.show();
+
+}
 
 //==============================加入購物車============================//
 const cart = {};
@@ -216,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItemCountElement = document.getElementById('cartItemCount');
     reload();
     getPromotion();
-	
+
 //            const cartButton = document.getElementById("shoppingCart");
 //            cartButton.addEventListener("click", function () {
 //                const cartPageURL = "cart.html";
@@ -274,7 +289,7 @@ function reload() {
                 for (const productName in data) {
                     cart[productName] = data[productName];
                 }
-				console.log(cart);
+                console.log(cart);
                 updateCartItemCount();
             }
         })
@@ -291,20 +306,20 @@ function getPromotion() {
                 'Content-Type': 'application/json'
             }
         })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('沒有取得回應');
-            }
-        })
-        .then(data => {
-            resolve(data);
-        })
-        .catch(error => {
-            console.log(error);
-            reject(error); // 在發生錯誤時 reject Promise
-        });
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('沒有取得回應');
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error); // 在發生錯誤時 reject Promise
+            });
     });
 }
 

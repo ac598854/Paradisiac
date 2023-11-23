@@ -101,11 +101,56 @@
       z-index: 100; /* 確保分頁按鈕顯示在最上層 */
     }
 
-    /* 商品卡片懸停效果 */
-    .productCard:hover {
-      background-color: rgba(255, 255, 255, 0.7); /* 滑鼠懸停時不透明 */
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 添加陰影 */
+    /* 商品卡片樣式 */
+    .productCard {
+      padding: 15px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+
+    /* 商品卡片內的圖片樣式 */
+    .productCard img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    /* 商品名稱樣式 */
+    .productCard h3 {
+      font-family: Arial, sans-serif;
+      font-size: 20px;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    /* 商品價格樣式 */
+    .productCard p {
+      font-family: Georgia, serif;
+      font-size: 14px; /* 字體大小 */
+      font-weight: bold; /* 加粗 */
+      color: #d9534f; /* 字體顏色，可調整 */
+    }
+
+    /* 新增至購物車按鈕樣式 */
+    .productCard button {
+      font-family: Georgia, serif;
+      font-size: 14px;
+      color: #fff;
+      background-color: #007bff;
+      border: none;
+      border-radius: 3px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .productCard button:hover {
+      background-color: #0056b3;
+    }
+
 
     /* 適應小屏幕 */
     @media (max-width: 768px) {
@@ -125,6 +170,45 @@
     /* 在您的CSS檔案中加入這段代碼 */
     #productsArea {
       min-height: 500px; /* 設定最小高度為500px */
+    }
+
+    /* 模態框內容樣式 */
+    .modal-content {
+      padding: 20px;
+    }
+
+    /* 商品圖片樣式 */
+    #modalProductImage {
+      max-width: 100%;
+      height: auto;
+      max-height: 300px; /* 調整最大高度 */
+      display: block;
+      margin: 0 auto 20px; /* 水平居中，並在下方添加空間 */
+    }
+
+    /* 商品名稱樣式 */
+    #modalProductName {
+      font-family: Arial, sans-serif;
+      font-size: 24px; /* 字體大小 */
+      font-weight: bold; /* 加粗 */
+      color: #333; /* 字體顏色 */
+      margin-bottom: 15px; /* 底部間距 */
+    }
+
+    /* 商品描述樣式 */
+    #modalProductDescription {
+      font-family: 'Times New Roman', serif;
+      font-size: 16px; /* 字體大小 */
+      color: #555; /* 字體顏色 */
+      margin-bottom: 10px; /* 底部間距 */
+    }
+
+    /* 商品價格樣式 */
+    #modalProductPrice {
+      font-family: Georgia, serif;
+      font-size: 18px; /* 字體大小 */
+      font-weight: bold; /* 加粗 */
+      color: #d9534f; /* 字體顏色，可調整 */
     }
 
   </style>
@@ -192,6 +276,24 @@
       </div>
       <!-- 商品資訊將在這裡動態加載，使用JavaScript從後端API取得資料後展示 -->
     </main>
+  </div>
+</div>
+
+<!-- 商品詳情模態框 -->
+<div class="modal" tabindex="-1" id="productDetailModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductName">商品名稱</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <img id="modalProductImage" src="" alt="商品圖片" class="img-fluid">
+        <p id="modalProductDescription"></p>
+        <p id="modalProductPrice"></p>
+        <p id="modelProductStock"></p>
+      </div>
+    </div>
   </div>
 </div>
 

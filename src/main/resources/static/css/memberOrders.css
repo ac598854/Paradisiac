@@ -52,7 +52,7 @@ aside ul li button:hover {
     border: 1px solid #e1e1e1;
     margin-bottom: 8px;
     padding: 10px;
-    background-color: rgba(255, 255, 255, 0.1); /* 半透明白色背景 */
+    background-color: rgba(255, 255, 255, 0.1); /* ������� */
     cursor: pointer;
     transition: background 0.3s ease;
     color: white;
@@ -92,7 +92,7 @@ button {
     cursor:pointer;
 }
 
-/* �憓�”�璅�撘� */
+/* 嚙踐��策嚙踝��蕭赯萇�蕭��蕭 */
 .table-responsive {
     margin-top: 20px;
 }
@@ -121,12 +121,12 @@ main {
     margin-bottom: 100px;
 }
 
-/* 分頁 */
+/* ���� */
 .pagination-center {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* 根據需要調整間距 */
+    margin-top: 20px; /* ����閬矽����� */
     color: black;
 }
 
