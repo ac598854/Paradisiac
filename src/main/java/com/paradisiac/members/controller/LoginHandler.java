@@ -141,9 +141,9 @@ public class LoginHandler extends HttpServlet {
 								
 				if (location != "") {// 上一個登入位置不為空狀況下
 					// 如果是活動訂購頁()，要結帳需要會員
-					String actorderpage = req.getContextPath() + "/front-end/actorder/ActOder.jsp";
+					String actorderpage = req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp";
 					if (location.equals(actorderpage)) {// 來源網站如果是等於活動預定頁
-						res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");// 則可以進入結帳頁面
+						res.sendRedirect(actorderpage);// 則可以進入結帳頁面
 						return;
 					}
 
