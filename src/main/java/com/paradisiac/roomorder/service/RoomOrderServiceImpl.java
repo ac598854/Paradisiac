@@ -129,5 +129,6 @@ public class RoomOrderServiceImpl implements RoomOrderService{
 	public List<RoomOrderVO> getmemOrd(Integer memno) {
 		return dao.getmemOrd(memno);
 	}
+
 	
 }

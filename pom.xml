@@ -278,6 +278,11 @@
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
+        <dependency>
+	      <groupId>com.amazonaws</groupId>
+	      <artifactId>aws-java-sdk-s3</artifactId>
+	      <version>1.12.125</version> <!-- 使用最新的版本號 -->
+	  </dependency>
 
 
 	</dependencies>

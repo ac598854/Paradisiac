@@ -8,6 +8,16 @@
 </head>
 <body>
 	<h1>後台查詢系統</h1>
+	<a href="${pageContext.request.contextPath}/back-end/roomorder/memvieword.jsp">查詢會員訂單資料</a>
+	<br>
+		<a href="${pageContext.request.contextPath}/back-end/roomorder/orderfirst.jsp">後台訂單管理</a>
+	<br>
+			<a href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">後台房型管理</a>
+	<br>
+				<a href="${pageContext.request.contextPath}/back-end/roompicture/addpic.jsp">後台房型圖片管理</a>
+
+	<br>
+	
 	
 	<a href="${pageContext.request.contextPath}/front-end/roomnum/getRoomNum.jsp">查詢房間資料</a>
 	<br>
