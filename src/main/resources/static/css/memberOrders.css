@@ -12,6 +12,7 @@ body {
 
 .center-text {
     text-align: center;
+    padding-top: 50px;
 }
 
 .container {
@@ -54,6 +55,7 @@ aside ul li button:hover {
     background-color: rgba(255, 255, 255, 0.1); /* 半透明白色背景 */
     cursor: pointer;
     transition: background 0.3s ease;
+    color: white;
 }
 
 .order-item:hover {
@@ -97,7 +99,7 @@ button {
 
 .table {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.6);
     border-collapse: collapse;
     color:white;
 }
@@ -106,7 +108,7 @@ button {
 .table td {
     padding: 0.75rem;
     border: 1px solid #dee2e6;
-    color:black;
+    color: black;
 }
 
 .narrow-table {
