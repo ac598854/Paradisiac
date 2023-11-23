@@ -22,7 +22,7 @@
             margin: 10px; /* 添加10px的外邊距，可根據需要調整 */
             margin-top:10px;
         }
-		
+
 		td{
 			height:50px;
 		}

@@ -195,9 +195,10 @@
 <div class="container mt-5">
     <div class="table-responsive">
         <!-- 黯淡的背景（overlay） -->
-        <div id="overlay" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+        <!-- 黯淡的背景（overlay） -->
+        <div id="overlay" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 100;"></div>
         <!-- 模態框 -->
-        <div id="addProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
+        <div id="addProductModal" style="display:none; position: fixed; top:5%; left:50%; transform:translateX(-50%); background:white; padding:20px; width: 80%; max-width: 90vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); z-index: 101;">
             <h2>新增商品</h2>
             <form id="addProductForm">
                 <input type="text" id="productName" name="productName" placeholder="商品名稱"><br>
@@ -212,7 +213,7 @@
                 <br>
                 <input type="number" id="stock" name="stock" placeholder="庫存"><br>
                 <input type="number" id="price" name="price" placeholder="價格"><br>
-                <input type="text" id="description" name="description" placeholder="商品描述"><br>
+                <textarea id="description" name="description" placeholder="商品描述" rows="4" style="width: 100%; margin-bottom: 10px;"></textarea><br>
                 <select id="addStatusSelect" name="status">
                     <option value="STATUSOn">上架</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
                     <option value="STATUSOff">下架</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
@@ -246,14 +247,22 @@
         </table>
     </div>
 
-    <div id="overlayEdit" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5);"></div>
+    <div id="overlayEdit" onclick="hideAllModals()" style="display:none; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); z-index: 100;"></div>
     <!-- 編輯商品的模態框 -->
-    <div id="editProductModal" style="display:none; position: fixed; top:50%; left:50%; transform:translate(-50%, -50%); background:white; padding:20px;">
+    <div id="editProductModal" style="display:none; position: fixed; top:5%; left:50%; transform:translateX(-50%); background:white; padding:20px; width: 80%; max-width: 90vw; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); z-index: 101;">
         <h2>編輯商品</h2>
         <form id="editProductForm">
-            <input type="text" id="editProductName" name="productName" placeholder="商品名稱"><br>
-            <input type="file" id="editImageUrl" name="image" placeholder="商品圖片"><br> <!-- 添加圖片上傳輸入 -->
-            <select id="editCategorySelect" name="category"> <!-- 新增的下拉選單 -->
+            <label for="editProductName">商品名稱：</label>
+            <input type="text" id="editProductName" name="productName" placeholder="商品名稱" style="width: 100%; margin-bottom: 10px;"><br>
+
+            <label for="editImageUrl">商品圖片：</label>
+            <!-- 當前圖片顯示 -->
+            <img id="currentImage" src="" alt="當前圖片" width="200" style="display: block; margin-bottom: 10px;"><br>
+            <!-- 文件上傳輸入 -->
+            <input type="file" id="editImageUrl" name="image" placeholder="商品圖片" style="margin-bottom: 10px;"><br>
+
+            <label for="editCategorySelect">商品類別：</label>
+            <select id="editCategorySelect" name="category" style="width: 100%; margin-bottom: 10px;"> <!-- 新增的下拉選單 -->
                 <option value="ParadisiacTheme">主題衣服</option>
                 <option value="ParadisiacExquisite">精品配件</option>
                 <option value="ParadisiacThemeActionFigures">主題公仔</option>
@@ -261,17 +270,27 @@
                 <option value="ParadisiacThemehousehold">主題日常用品</option>
             </select>
             <br>
-            <input type="number" id="editStock" name="stock" placeholder="庫存"><br>
-            <input type="number" id="editPrice" name="price" placeholder="價格"><br>
-            <input type="text" id="editDescription" name="description" placeholder="商品描述"><br>
-            <select id="editStatusSelect" name="status">
-                <option value="STATUSOn">上架</option> <!-- "上架" 是顯示的文本，"StatusOn" 是提交的值 -->
-                <option value="STATUSOff">下架</option> <!-- "下架" 是顯示的文本，"StatusOff" 是提交的值 -->
+
+            <label for="editStock">庫存：</label>
+            <input type="number" id="editStock" name="stock" placeholder="庫存" style="width: 100%; margin-bottom: 10px;"><br>
+
+            <label for="editPrice">價格：</label>
+            <input type="number" id="editPrice" name="price" placeholder="價格" style="width: 100%; margin-bottom: 10px;"><br>
+
+            <label for="editDescription">商品描述：</label>
+            <textarea id="editDescription" name="description" placeholder="商品描述" rows="4" style="width: 100%; margin-bottom: 10px;"></textarea><br>
+
+            <label for="editStatusSelect">商品狀態：</label>
+            <select id="editStatusSelect" name="status" style="width: 100%; margin-bottom: 10px;">
+                <option value="STATUSOn">上架</option>
+                <option value="STATUSOff">下架</option>
             </select>
-            <button type="submit">完成</button>
+            <button type="submit" style="margin-right: 10px;">完成</button>
             <button type="button" onclick="hideAllModals()">取消</button>
         </form>
     </div>
+
+
     <footer class="bg-light text-center text-lg-start">
         <div class="container p-4">
             <div class="row">
@@ -531,6 +550,11 @@
     function displayProducts(products) {
         const tbody = document.getElementById('productTbody');
         tbody.innerHTML = ''; // 清空表格
+
+        // 將商品按照 productId 升序排列
+        products.sort((a, b) => a.productId - b.productId);
+
+
         products.forEach(product => {
             // 創建一行新的表格內容
             const row = `<tr>
@@ -604,15 +628,21 @@
 
         const productData = await fetch(projectName + `/products/${productId}`);
         const product = await productData.json();
+        console.log(product);
 
-        // 把產品資料填入模態框的輸入欄位
+        // 更新其他輸入欄位的值
         document.getElementById("editProductName").value = product.productName;
         document.getElementById("editPrice").value = product.price;
         document.getElementById("editCategorySelect").value = product.category;
-        document.getElementById("editImageUrl").value = product.imageUrl;
         document.getElementById("editStock").value = product.stock;
         document.getElementById("editDescription").value = product.description;
         document.getElementById("editStatusSelect").value = product.status;
+
+        // 更新當前圖片顯示
+        document.getElementById("currentImage").src = product.imageUrl;
+
+        // 清空文件輸入元素的值
+        document.getElementById("editImageUrl").value = '';
 
     }
 
