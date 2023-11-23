@@ -78,6 +78,14 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public Product getProductByIdForUpdate(Integer productId) {
+        String sql = "SELECT * FROM product WHERE product_id = :productId FOR UPDATE";
+        Map<String, Object> params = new HashMap<>();
+        params.put("productId", productId);
+        return namedParameterJdbcTemplate.queryForObject(sql, params, new ProductRowMapper());
+    }
+
+    @Override
     public List<Product> getAllProductsForCart(ProductQueryParams productQueryParams) {
         // 基本的 SQL 查詢語句保持不變
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
@@ -182,4 +190,6 @@ public class ProductDaoImpl implements ProductDao {
 
         return map;
     }
+
+
 }

@@ -80,10 +80,11 @@
             border-color: #0056b3;
         }
     </style>
+    <%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
 
 <body>
-<%@ include file="/back-end/index/back-left_room.jsp" %>
+<%@ include file="/back-end/index/ManagerBody.jsp" %>
 	<!-- <DIV id="tatil" style="text-align:center;"><h1 >退房管理系統</h1></DIV> -->
 	<div class="container mt-5">
 	

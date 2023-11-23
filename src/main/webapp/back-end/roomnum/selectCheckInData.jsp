@@ -27,9 +27,10 @@
 	margin-bottom: 20px;
 }
 </style>
+<%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
 <body>
-<%@ include file="/back-end/index/back-left_room.jsp" %>
+<%@ include file="/back-end/index/ManagerBody.jsp" %>
     <div class="container-custom">
         <h2>客房登記管理系統</h2>
         

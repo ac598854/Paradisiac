@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItemList = new ArrayList<>();
 
         for(BuyItem buyItem: createOrderRequest.getBuyItemList()){
-            Product product = productDao.getProductById(buyItem.getProductId());
+            Product product = productDao.getProductByIdForUpdate(buyItem.getProductId());
 
             //檢查 product 是否存在 stock是否足夠
             if(product == null){
@@ -89,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
                 log.warn("The quantity of product {} is insufficient and cannot be purchased. " +
                                 "Remaining inventory {}, want to buy {}",
                         buyItem.getProductId(), product.getStock(), buyItem.getQuantity());
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "庫存不足！");
             }
 
             //扣除商品庫存

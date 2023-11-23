@@ -1,9 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page import="com.paradisiac.csmessages.model.*"%>
-<%@ page import="com.paradisiac.csmessages.service.*"%>
-<%@ page import="com.paradisiac.csmessages.controller.*"%>
+<%@ page import="com.paradisiac.actorder.model.*"%>
+<%@ page import="com.paradisiac.actorder.controller.*"%>
+<%@ page import="com.paradisiac.actorder.service.*"%>
+<%@ page import="com.paradisiac.actattendees.model.*"%>
+<%@ page import="com.paradisiac.actattendees.controller.*"%>
+<%@ page import="com.paradisiac.actattendees.service.*"%>
+<%@ page import="java.util.*"%>
 <!DOCTYPE html>
 
 <html>
@@ -49,83 +53,82 @@
 		<div class="row">
 			<div class="col-12 text-right">
 				<a
-					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp"
+					href="<%=request.getContextPath()%>/front-end/actorder/ActLPF.jsp"
 					class="btn btn-secondary">回上一頁</a>
 			</div>
 		</div>
 		<div class="container">
 			<div class="table-responsive">
-				<form method="post" action="members.do" name="form1"
+				<form method="post" action="ActOrder.do" name="form1"
 					enctype="multipart/form-data">
 					<table class="table">
 
 						<tr>
 							<td>活動訂單編號:<font color="red"><b>*</b></font></td>
-							<td><input type="text" class="form-control" id="memno"
-								name="memno" value="${membersVO.memno}" readonly></td>
+							<td><input type="text" class="form-control" id="actOrderNo"
+								name="actOrderNo" value="${ActOrder.actOrderNo}" readonly></td>
 						</tr>
 						<tr>
 							<td>會員編號:</td>
-							<td><select name="memstatus"
-								class="form-control browser-default custom-select">
-									<option value="true"
-										${membersVO.memstatus == true ? 'selected' : ''}>正常</option>
-									<option value="false"
-										${membersVO.memstatus == false ? 'selected' : ''}>凍結</option>
-							</select></td>
+							<td><input type="text" name="memNo"  id="memNo" class="form-control"
+								class="custom-file-input" value="${ActOrder.memNo}" size="45"
+								readonly /></td>
 						</tr>
-
+<!-- 						<tr> -->
+<!-- 							<td>活動名稱:<font color="red"><b>*</b></font></td> -->
+<!-- 							<td><input type="text" name="actName"  id="actName" class="form-control" -->
+<%-- 								class="custom-file-input" value="${ActOrder.schdVO.act.actName}" size="45" --%>
+<!-- 								readonly /></td> -->
+<!-- 						</tr> -->
 						<tr>
 							<td>檔期編號:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="memname" class="form-control"
-								class="custom-file-input" value="${membersVO.memname}" size="45"
+							<td><input type="text" name="schdNo"  id="schdNo" class="form-control"
+								class="custom-file-input" value="${ActOrder.schdVO.schdNo}" size="45"
 								readonly /></td>
 						</tr>
 						<tr>
 							<td>訂單日期:<font color="red"><b>*</b></font></td>
-							<td><input type="date" name="memaccount"
-								class="form-control" value="${membersVO.memaccount}" size="45"
+							<td><input type="date" name="orderTime" id="orderTime"
+								class="form-control" value="${ActOrder.orderTime}" size="45"
 								readonly /></td>
 						</tr>
 						<tr>
 							<td>報名人數:<font color="red"><b>*</b></font></td>
-							<td><input type="date" name="memaccount"
-								class="form-control" value="${membersVO.memaccount}" size="45"
+							<td><input type="date" name="aAtnNum"
+								class="form-control" value="${ActOrder.aAtnNum}" size="45"
 								readonly /></td>
 						</tr>
 						<tr>
 							<td>訂單狀態:</td>
-							<td><select name="memgender"
+							<td><select name="order_status"
 								class="form-control browser-default custom-select" disabled>
 									<option value="1"
-										<c:if test="${membersVO.memgender == 1}">selected</c:if>>男</option>
-									<option value="2"
-										<c:if test="${membersVO.memgender == 2}">selected</c:if>>女</option>
-									<option value="3"
-										<c:if test="${membersVO.memgender == 3}">selected</c:if>>其他</option>
+										<c:if test="${ActOrder.orderStatus == 1}">selected</c:if>>成立</option>
+									<option value="0"
+										<c:if test="${ActOrder.orderStatus== 0}">selected</c:if>>取消</option>
 							</select></td>
 						</tr>
 						<tr>
 							<td>訂單總金額:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="memid" class="form-control"
-								value="${membersVO.memid}" size="45" readonly /></td>
+							<td><input type="text" name="orderAmount" class="form-control"
+								value="${ActOrder.orderAmount}" size="45" readonly /></td>
 						</tr>
 
-						<tr>
-							<td>參加人姓名A:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="memphone" class="form-control"
-								value="${membersVO.memphone}" size="45" readonly /></td>
-						</tr>
-						<tr>
-							<td>參加人身分證字號A:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="memphone" class="form-control"
-								value="${membersVO.memphone}" size="45" readonly /></td>
-						</tr>
-						<tr>
-							<td>參加人電話A:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="memphone" class="form-control"
-								value="${membersVO.memphone}" size="45" readonly /></td>
-						</tr>
+<!-- 						<tr> -->
+<!-- 							<td>參加人姓名A:<font color="red"><b>*</b></font></td> -->
+<!-- 							<td><input type="text" name="memphone" class="form-control" -->
+<%-- 								value="${membersVO.memphone}" size="45" readonly /></td> --%>
+<!-- 						</tr> -->
+<!-- 						<tr> -->
+<!-- 							<td>參加人身分證字號A:<font color="red"><b>*</b></font></td> -->
+<!-- 							<td><input type="text" name="memphone" class="form-control" -->
+<%-- 								value="${membersVO.memphone}" size="45" readonly /></td> --%>
+<!-- 						</tr> -->
+<!-- 						<tr> -->
+<!-- 							<td>參加人電話A:<font color="red"><b>*</b></font></td> -->
+<!-- 							<td><input type="text" name="memphone" class="form-control" -->
+<%-- 								value="${membersVO.memphone}" size="45" readonly /></td> --%>
+<!-- 						</tr> -->
 
 					</table>
 					<br> <input type="hidden" name="action"

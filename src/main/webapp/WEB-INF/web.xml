@@ -96,11 +96,12 @@
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/front-end/cart/cart.html</url-pattern>
 		<url-pattern>/front-end/members/MembersUpdate.jsp</url-pattern>
-		<url-pattern>/front-end/actorder/ActCheckOut.jsp</url-pattern>
+<!-- 		<url-pattern>/front-end/actorder/ActCheckOut.jsp</url-pattern> -->
 		<url-pattern>/front-end/csmessages/MessageCPF.jsp</url-pattern>
 		<url-pattern>/front-end/csmessages/MessageLPF.jsp</url-pattern>
 		<url-pattern>/back-end/roomorder/orderbuy.jsp</url-pattern>
-        <url-pattern>/back-end/roomorder/memvieword.jsp</url-pattern>
+        <url-pattern>/front-end/members/listOnePha_mem.jsp</url-pattern>
+
 	</filter-mapping>
 
 </web-app>

@@ -1,6 +1,7 @@
 package com.paradisiac.schd.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -164,6 +165,27 @@ public class SchdVO implements java.io.Serializable{
 	}
 	public void setApplStatus(Integer applStatus) {
 		this.applStatus = applStatus;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(schdNo);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SchdVO other = (SchdVO) obj;
+		return Objects.equals(schdNo, other.schdNo);
+	}
+	@Override
+	public String toString() {
+		return "SchdVO [schdNo=" + schdNo + ", unitPrice=" + unitPrice + ", paidNum=" + paidNum + ", ancDate=" + ancDate
+				+ ", drpoSchdDate=" + drpoSchdDate + ", holdDate=" + holdDate + ", aplyTime=" + aplyTime + ", cutTime="
+				+ cutTime + ", applStatus=" + applStatus + "]";
 	}
 
 	

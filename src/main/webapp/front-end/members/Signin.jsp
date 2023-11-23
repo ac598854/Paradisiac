@@ -191,11 +191,6 @@ label.form-check-label {
 							style="max-width: 100%; max-height: 200px;" />
 					</div>
 				</div>
-				<div class="col-sm-12 form-group">
-					<input type="checkbox" class="form-check d-inline" id="chb"
-						style="transform: scale(1.8);" required><label for="chb"
-						class="form-check-label" style="transform: scale(1);"><span class="text-danger">*</span>我接受所有條款和條件</label>
-				</div>
 				<div class="col-sm-12 form-group mb-0">
 					<input type="submit" value="送出" name="submitButton"
 						id="submitButton" class="btn btn-primary float-right"> <input

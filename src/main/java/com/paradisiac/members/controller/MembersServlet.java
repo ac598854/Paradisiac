@@ -89,7 +89,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			}
 
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/backe-end/members/MembersLPB.jsp");
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/members/MembersLPB.jsp");
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -259,11 +259,11 @@ public class MembersServlet<Session> extends HttpServlet {
 			/*************************** 1.接收請求參數 ****************************************/
 			Integer memno = Integer.valueOf(req.getParameter("memno"));
 			Boolean memstatus = Boolean.valueOf(req.getParameter("memstatus"));
-//			if (req.getParameter("memstatus") == null) {
-//				errorMsgs.add("帳號狀態請勿不點選");
-//			} else {
-//				memstatus = Boolean.parseBoolean(req.getParameter("memstatus"));
-//			}
+			if (req.getParameter("memstatus") == null) {
+				errorMsgs.add("帳號狀態請勿不點選");
+			} else {
+				memstatus = Boolean.parseBoolean(req.getParameter("memstatus"));
+			}
 			MembersVO membersVO = new MembersVO();
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("membersVO", membersVO);
@@ -294,7 +294,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			String memmail = req.getParameter("memmail");
 			String mempass = req.getParameter("mempass");
 			if (mempass != null && mempass.trim().length() > 0) {
-				String salt = BCrypt.gensalt();
+				String salt = BCrypt.gensalt(20);
 				mempass = BCrypt.hashpw(mempass, salt);
 				System.out.println("會員專區加密後:" + mempass);
 			} else {		
@@ -355,7 +355,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			String UnSlatmempass = req.getParameter("mempass").trim();
 
 			// 加密
-			String salt = BCrypt.gensalt();
+			String salt = BCrypt.gensalt(20);
 			String mempass = BCrypt.hashpw(UnSlatmempass, salt);
 			System.out.println("加密後:" + mempass);
 
@@ -396,11 +396,7 @@ public class MembersServlet<Session> extends HttpServlet {
 					e.printStackTrace();
 					errorMsgs.add("圖片上傳失敗");
 				}
-			} else {
-				// 處理圖片為空補充
 			}
-			;
-
 			if (!errorMsgs.isEmpty()) {
 				// 錯誤停留在註冊頁
 				System.out.println("錯誤停留在註冊頁");
