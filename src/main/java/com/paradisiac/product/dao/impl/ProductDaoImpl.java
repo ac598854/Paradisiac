@@ -78,6 +78,31 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public List<Product> getAllProductsForCart(ProductQueryParams productQueryParams) {
+        // 基本的 SQL 查詢語句保持不變
+        String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
+                "description, created_date, last_modified_date, status " +
+                "from product where 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 添加查詢條件
+        sql = addFilteringSql(sql, map, productQueryParams);
+
+        // 添加排序
+        sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSort();
+
+        // 不添加分頁限制，以獲取所有商品
+        // 注意：根據您數據量的大小，您可能需要考慮性能和記憶體使用量
+
+        // 使用 NamedParameterJdbcTemplate 進行查詢，返回商品列表
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+
+        return productList;
+    }
+
+
+    @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "INSERT INTO product (product_name, category, image_url, price, stock, " +
                 "description, created_date, last_modified_date, status) " +

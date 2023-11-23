@@ -67,6 +67,12 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
+    @GetMapping("/allForCart")
+    public ResponseEntity<List<Product>> getAllProductsForCart() {
+        List<Product> products = productService.getAllProductsForCart();
+        return ResponseEntity.ok(products);
+    }
+
     //查詢
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
