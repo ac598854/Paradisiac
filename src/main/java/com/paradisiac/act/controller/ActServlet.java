@@ -2,6 +2,7 @@ package com.paradisiac.act.controller;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -61,11 +62,13 @@ public class ActServlet extends HttpServlet{
 			case "update":
 				forwardPath = insertOrUpdate(req, res);
 				break;
-			case "getAll_Front":
-				forwardPath = getAllActiveActs(req, res);
+			case "getAll_Front"://回傳前端活動頁面
+				getAllActiveActs(req, res); 
+				forwardPath = "/front-end/act_schd/select_act_front.jsp";
 				break;
-			case "getAllSchd_Frint":
-				forwardPath = getAllActiveSchds(req, res);
+			case "getAllSchd_Schd": //回傳前端檔期頁面
+				getAllActiveSchds(req, res);
+				forwardPath = "/front-end/act_schd/select_schd_front.jsp";
 				break;
 			default:
 				forwardPath = "/back-end/act/add_act.jsp";
@@ -103,25 +106,20 @@ public class ActServlet extends HttpServlet{
 		Integer actNo = null;
 
 		if (req.getParameter("actNo") != null && req.getParameter("actNo").length() != 0) { // 修改
-			actNo = Integer.valueOf(req.getParameter("actNo"));
+			actNo = Integer.valueOf(req.getParameter("actNo"));			
 		}
 		String actName = req.getParameter("actName");
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
-		Integer lowNum = Integer.valueOf(req.getParameter("lowNum"));
-		Integer highNum = Integer.valueOf(req.getParameter("highNum"));
 		boolean actStatus = Boolean.valueOf(req.getParameter("actStatus"));
+System.out.println("活動狀態:"+actStatus);
 		String actContent = req.getParameter("actContent");
 
 		byte[] actPho1 = null;
-		
-		if(lowNum > highNum) {
-			errorMsgs.add("成團人數須小於上限人數");
-		}
 
 		// 開始打包
-		ActVO actVO = new ActVO(actName, unitPrice, lowNum, highNum, actStatus, actContent);
+		ActVO actVO = new ActVO(actName, unitPrice, actStatus, actContent);
 		if (req.getParameter("actNo") != null) { // 修改要set PK
-			actVO.setActNo(actNo);
+			actVO.setActNo(actNo);			
 		}
 		if (req.getPart("actPho1") != null) { // 有選照片1		
 				Part part = req.getPart("actPho1");
@@ -131,7 +129,16 @@ public class ActServlet extends HttpServlet{
 				is.close();
 				actVO.setActPho1(actPho1);		
 		}
-
+		
+		//上架需檢查是否有有效檔期
+		
+		if (actStatus == true) {
+System.out.println("有判斷status");
+			if (actSvc.getActiveSchdByActno(actNo) == null && actSvc.getActiveSchdByActno(actNo).isEmpty()) {
+				errorMsgs.add("活動不存在有效檔期無法上架");
+			}
+		}
+		
 		//如果有錯誤處理輸出
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("errorMsgs", errorMsgs); // 含有輸入格式錯誤的物件,也存入req
@@ -159,11 +166,9 @@ public class ActServlet extends HttpServlet{
 		ActVO actVO = actSvc.getActByActno(actNo);
 		req.setAttribute("actVO", actVO);
 		
-		//return "/back-end/act/list_act_schd.jsp";
-		
 	}
 	//前端-查全部上架活動
-	private String getAllActiveActs(HttpServletRequest req, HttpServletResponse res) {
+	private void getAllActiveActs(HttpServletRequest req, HttpServletResponse res) {
 		String page = req.getParameter("page"); 
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); 
 		
@@ -175,28 +180,22 @@ public class ActServlet extends HttpServlet{
 		}		
 		req.setAttribute("actList", actList);
 		req.setAttribute("currentPage", currentPage);
-		
-		//查單筆有效活動有多少檔期>今天,如果有, 則return 1 or -1 ,寫在service 讓jsp直接call
-		//case路徑直接寫死 不要從方法return (方法void只要set值)
+
 		
 
-		return "/front-end/act_schd/select_act_front.jsp";
 	}
-	//前端-查單筆活動與檔期
-	public String getAllActiveSchds(HttpServletRequest req, HttpServletResponse res) {
+	//前端-查上架活動的開放檔期
+	public void getAllActiveSchds(HttpServletRequest req, HttpServletResponse res) {
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
 		
-//		Set<SchdVO> actSchdSet = actSvc.getActiveSchdByActno(actNo);
-//		req.setAttribute("actSchdSet", actSchdSet);
+		ActVO actVO = actSvc.getActByActno(actNo); //顯示在檔期頁面
+		req.setAttribute("actVO", actVO);
 		
-		ActVO actVO = actSvc.getActByActno(actNo);
-		req.setAttribute("actVO", actVO);		
-		return "/front-end/act_schd/select_schd_front.jsp";
+		Set<SchdVO> actSchdSet = actSvc.getActiveSchdByActno(actNo); 
+		req.setAttribute("actSchdSet", actSchdSet);//顯示在檔期頁面 
 		
 	}
 
-	
-	
 	
 
 }//class

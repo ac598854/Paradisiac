@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
     <title>相簿管理系統</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -21,10 +22,10 @@
     </style>
 </head>
  
-<%@ include file="/back-end/index/back-left_planning.jsp" %>
+
 
 <body>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="custom-container">
 
 	<h1>相簿管理系統</h1>

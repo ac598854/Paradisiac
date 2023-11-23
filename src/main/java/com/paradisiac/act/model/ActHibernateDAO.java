@@ -1,5 +1,9 @@
 package com.paradisiac.act.model;
 
+import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -7,8 +11,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.paradisiac.schd.model.SchdVO;
-
-import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
 
 public class ActHibernateDAO implements ActDAO_interface{
 	
@@ -46,7 +48,6 @@ public class ActHibernateDAO implements ActDAO_interface{
 	@Override //查單筆活動(所有檔期)
 	public Set<SchdVO> findByPrimaryKeyS(Integer actNo){
 		Set<SchdVO> actSchdSet = getSession().get(ActVO.class, actNo).getSchds(); 
-		System.out.println("hibenatePass");
 		return actSchdSet;
 	}
 
@@ -59,7 +60,7 @@ public class ActHibernateDAO implements ActDAO_interface{
 	@Override//查全部(分頁)
 	public List<ActVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from ActVO", ActVO.class)
+		return getSession().createQuery("from ActVO order by actNo desc", ActVO.class)//order by actNo desc
 				.setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT)
 				.list();
@@ -91,11 +92,17 @@ public class ActHibernateDAO implements ActDAO_interface{
 				.uniqueResult();
 	}
 	
-//	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo){
-//		Set<SchdVO> actSchdSet = getSession().get(ActVO.class, actNo)
-//				.createQuery("select count(*) from ActVO where actStatus=:status", Long.class).list();
-//		return actSchdSet;
-//	}
+	public Set<SchdVO> findByPrimaryKeyActiveS(Integer actNo){
+		return new HashSet<SchdVO>(getSession().createQuery(	//schds 是檔期集合Set<SchdVO> schds, s是代號                    
+	                            "select s from ActVO a join a.schds s " +
+	                                    "where a.actNo = :actNo " +
+	                                    "and s.ancDate < current_timestamp() " +
+	                                    "and s.drpoSchdDate > current_timestamp()",
+	                            SchdVO.class)
+	                    .setParameter("actNo", actNo)
+	                    .getResultList()
+	    );
+	}
 	//-------------
 
 }

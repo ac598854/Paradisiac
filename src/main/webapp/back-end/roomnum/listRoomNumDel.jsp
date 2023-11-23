@@ -20,9 +20,7 @@
  		position:relative;
  		top: -60px; 		
 } 	 */
-.container.mt-5 {
-    padding-left: 200px;
-}
+
 .addTable {
     height: 20px; /* Adjust the height as needed */
     width: 930px;
@@ -121,9 +119,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script	src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 <!-- 切換按鈕的文字（新增/修改） -->
+<%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
+
 <body>
-<%@ include file="/back-end/index/back-left_room.jsp" %>
+<%@ include file="/back-end/index/ManagerBody.jsp" %>
 	<!-- <DIV style="text-align:center;"><h1 >房間管理系統--新增/修改/刪除</h1></DIV> -->
 	<div class="container mt-5">
 	

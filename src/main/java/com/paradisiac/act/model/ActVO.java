@@ -18,15 +18,6 @@ import java.util.Set;
 @Table(name = "act")
 public class ActVO  implements java.io.Serializable{
 	
-//	private Integer actNo;
-//	private String actName;
-//	private Integer unitPrice;
-//	private Integer lowNum;
-//	private Integer highNum;
-//	private boolean actStatus;
-//	private String actContent;
-//	private byte[] actPho1;
-//	private byte[] actPho2;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
 	@Column(name = "act_no", updatable = false)
@@ -35,10 +26,6 @@ public class ActVO  implements java.io.Serializable{
 	private String actName;
 	@Column(name = "unit_price")
 	private Integer unitPrice;
-	@Column(name = "low_num")
-	private Integer lowNum;
-	@Column(name = "high_num")
-	private Integer highNum;
 	@Column(name = "act_status")
 	private boolean actStatus;
 	@Column(name = "act_content")
@@ -64,6 +51,16 @@ public class ActVO  implements java.io.Serializable{
 	public ActVO() {
 		super();
 	}
+	
+	public ActVO(String actName, Integer unitPrice, boolean actStatus,
+			String actContent) {
+		super();
+		this.actName = actName;
+		this.unitPrice = unitPrice;
+		this.actStatus = actStatus;
+		this.actContent = actContent;
+
+	}
 
 	public Integer getActNo() {
 		return actNo;
@@ -87,22 +84,6 @@ public class ActVO  implements java.io.Serializable{
 
 	public void setUnitPrice(Integer unitPrice) {
 		this.unitPrice = unitPrice;
-	}
-
-	public Integer getLowNum() {
-		return lowNum;
-	}
-
-	public void setLowNum(Integer lowNum) {
-		this.lowNum = lowNum;
-	}
-
-	public Integer getHighNum() {
-		return highNum;
-	}
-
-	public void setHighNum(Integer highNum) {
-		this.highNum = highNum;
 	}
 
 	public boolean isActStatus() {
@@ -136,18 +117,8 @@ public class ActVO  implements java.io.Serializable{
 	public void setActPho2(byte[] actPho2) {
 		this.actPho2 = actPho2;
 	}
-	//沒有部門編號跟照片的建構子
-	public ActVO(String actName, Integer unitPrice, Integer lowNum, Integer highNum, boolean actStatus,
-			String actContent) {
-		super();
-		this.actName = actName;
-		this.unitPrice = unitPrice;
-		this.lowNum = lowNum;
-		this.highNum = highNum;
-		this.actStatus = actStatus;
-		this.actContent = actContent;
 
-	}
+
 
 
 	

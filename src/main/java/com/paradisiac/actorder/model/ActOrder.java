@@ -16,7 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import java.time.LocalDateTime;
+
 
 import com.paradisiac.actattendees.model.ActAttendees;
 import com.paradisiac.employee.model.EmpVO;
@@ -36,14 +36,14 @@ public class ActOrder implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "schd_no",nullable = false,updatable= false,referencedColumnName ="schd_no")//一個訂單一個檔期
-	private SchdVO schdVO;//
+	private SchdVO schdVO;
 	
 	@ManyToOne
 	@JoinColumn(name = "emp_no",insertable=false,referencedColumnName ="emp_no" )//一個員工處理多筆訂單，(多個資料表都有可能都是一個員工處理)
 	private EmpVO empVO;
 	
 	@Column(name = "order_time",nullable = false,updatable= false)
-	private LocalDateTime orderTime;
+	private Timestamp orderTime;
 	
 	@Column(name = "a_atn_num",nullable = false,updatable= false)
 	private Integer aAtnNum;
@@ -93,11 +93,11 @@ public class ActOrder implements Serializable {
 		this.empVO = empVO;
 	}
 
-	public LocalDateTime getOrderTime() {
+	public Timestamp getOrderTime() {
 		return orderTime;
 	}
 
-	public void setOrderTime(LocalDateTime orderTime) {
+	public void setOrderTime(Timestamp orderTime) {
 		this.orderTime = orderTime;
 	}
 
@@ -130,8 +130,8 @@ public class ActOrder implements Serializable {
 		return actAttendees;
 	}
 
-	public void setActAttendees(Set<ActAttendees> actAttendees) {
-		this.actAttendees = actAttendees;
+	public void setActAttendees(Set<ActAttendees> actAttendees2) {
+		this.actAttendees = (Set<ActAttendees>) actAttendees2;
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class RoomOrderServlet extends HttpServlet {
 		default:
 			forwardPath = "/index2.jsp";
 		}
-		System.out.println("========重導網頁："+forwardPath);
+	//	System.out.println("重導網頁："+forwardPath);
 		resp.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 		dispatcher.forward(req, resp);

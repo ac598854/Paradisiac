@@ -191,7 +191,8 @@ function addToCart(productName, price, description, stock,productId) {
 document.addEventListener("DOMContentLoaded", function () {
     cartItemCountElement = document.getElementById('cartItemCount');
     reload();
-
+    getPromotion();
+	
 //            const cartButton = document.getElementById("shoppingCart");
 //            cartButton.addEventListener("click", function () {
 //                const cartPageURL = "cart.html";
@@ -226,7 +227,7 @@ function post() {
 //            }
 //        });
 }
-//========================頁面加載時GET====================================//
+//========================頁面加載時GET購物車====================================//
 function reload() {
     fetch(projectName + '/Cart', {
         method: 'GET',
@@ -249,7 +250,7 @@ function reload() {
                 for (const productName in data) {
                     cart[productName] = data[productName];
                 }
-
+				console.log(cart);
                 updateCartItemCount();
             }
         })
@@ -257,7 +258,28 @@ function reload() {
             console.log(error);
         });
 };
-
+//========================getPromotion=================================//
+function getPromotion() {
+    fetch(projectName + '/PromotionListServlet', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('沒有取得回應');
+            }
+        })
+        .then(data => {
+        	console.log(data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
 //========================商品搜尋功能====================================//
 function searchProducts() {
     const query = document.getElementById('searchInput').value;

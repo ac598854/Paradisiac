@@ -1,9 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="java.util.*"%>
-<%@ page import="com.paradisiac.members.model.*"%>
-<%@ page import="com.paradisiac.members.controller.*"%>
-<%@ page import="com.paradisiac.members.service.*"%>
+<%@ page import="com.paradisiac.actorder.model.*"%>
+<%@ page import="com.paradisiac.actorder.controller.*"%>
+<%@ page import="com.paradisiac.actorder.service.*"%>
+<%@ page import="com.paradisiac.actattendees.model.*"%>
+<%@ page import="com.paradisiac.actattendees.controller.*"%>
+<%@ page import="com.paradisiac.actattendees.service.*"%>
 <%@ page import="java.util.Base64"%>
 
 <!DOCTYPE html>
@@ -213,10 +216,13 @@ ul.navigation {
 		padding: 20px;
 		position: relative;
 	}
-	#wrapper.toggled #page-content-wrapper {
-		position: relative;
-		margin-right: 0;
-	}
+}
+
+#wrapper.toggled #page-content-wrapper {
+	position: relative;
+	margin-right: 0;
+}
+
 }
 
 /* 原始*/
@@ -336,14 +342,13 @@ h1, h2, h3, h4 {
 .btn-primary {
 	margin-left: 15px;
 }
-
-
 </style>
+<%-- <%@ include file="/back-end/index/back-left_planning.jsp"%> --%>
 </head>
 <body>
 	<div id="wrapper" class="">
 
-		<!-- Sidebar -->
+<!-- 		Sidebar -->
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
@@ -363,13 +368,11 @@ h1, h2, h3, h4 {
 				<li><a href="#">活動訂單管理</a></li>
 			</ul>
 		</div>
-		<!-- /#sidebar-wrapper -->
-
-		<!-- Top Navigation -->
+<!-- 		/#sidebar-wrapper Top Navigation -->
 		<ul class="navigation">
 			<li><a href="#home">登出</a></li>
 		</ul>
-		<!--Page Content -->
+<!-- 		Page Content -->
 		<div id="page-content-wrapper">
 			<a href="#menu-toggle" class="btn btn-success btn-sm"
 				id="menu-toggle">展開畫面</a>
@@ -380,117 +383,72 @@ h1, h2, h3, h4 {
 					<div class="row">
 						<div class="col-12 text-right">
 							<a
-								href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp"
+								href="<%=request.getContextPath()%>/back-end/actorder/ActLPB.jsp"
 								class="btn btn-secondary">回上一頁</a>
 						</div>
-						</div>
-						<div class="table-responsive">
-							<form method="post" action="members.do" name="form1"
-								enctype="multipart/form-data">
-								<table class="table">
-									
-									<tr>
-										<td>活動訂單編號:<font color="red"><b>*</b></font></td>
-										<td><input type="text" class="form-control" id="memno"
-											name="memno" value="${membersVO.memno}" readonly></td>
-									</tr>
-									<tr>
-										<td>會員編號:</td>
-										<td><select name="memstatus"
-											class="form-control browser-default custom-select">
-												<option value="true"
-													${membersVO.memstatus == true ? 'selected' : ''}>正常</option>
-												<option value="false"
-													${membersVO.memstatus == false ? 'selected' : ''}>凍結</option>
-										</select></td>
-									</tr>
-
-									<tr>
-										<td>檔期編號:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memname"
-											class="form-control" class="custom-file-input"
-											value="${membersVO.memname}" size="45" readonly /></td>
-									</tr>
-									<tr>
-										<td>處理員工(編號):<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memmail"
-											class="form-control" value="${membersVO.memmail}" size="45"
-											readonly /></td>
-									</tr>
-									<tr>
-										<td>訂單日期:<font color="red"><b>*</b></font></td>
-										<td><input type="date" name="memaccount"
-											class="form-control" value="${membersVO.memaccount}"
-											size="45" readonly /></td>
-									</tr>
-									<tr>
-										<td>報名人數:<font color="red"><b>*</b></font></td>
-										<td><input type="date" name="memaccount"
-											class="form-control" value="${membersVO.memaccount}"
-											size="45" readonly /></td>
-									</tr>
-									<tr>
-										<td>訂單狀態:</td>
-										<td><select name="memgender"
-											class="form-control browser-default custom-select" disabled>
-												<option value="1"
-													<c:if test="${membersVO.memgender == 1}">selected</c:if>>男</option>
-												<option value="2"
-													<c:if test="${membersVO.memgender == 2}">selected</c:if>>女</option>
-												<option value="3"
-													<c:if test="${membersVO.memgender == 3}">selected</c:if>>其他</option>
-										</select></td>
-									</tr>
-									<tr>
-										<td>訂單總金額:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memid" class="form-control"
-											value="${membersVO.memid}" size="45" readonly /></td>
-									</tr>
-									<tr>
-										<td>參加人姓名A:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memphone"
-											class="form-control" value="${membersVO.memphone}" size="45"
-											readonly /></td>
-									</tr>
-									<tr>
-										<td>參加人身分證字號A:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memphone"
-											class="form-control" value="${membersVO.memphone}" size="45"
-											readonly /></td>
-									</tr>
-									<tr>
-										<td>參加人電話A:<font color="red"><b>*</b></font></td>
-										<td><input type="text" name="memphone"
-											class="form-control" value="${membersVO.memphone}" size="45"
-											readonly /></td>
-									</tr>
-
-								</table>
-								<br> <input type="hidden" name="action"
-									value="update_Back_Status"> <input type="submit"
-									class="btn btn-primary" value="送出修改">
-							</form>
-						</div>
+					</div>
+					<div class="table-responsive">
+						<form method="post" action="ActOrder.do" name="form1"
+							enctype="multipart/form-data">
+							<table class="table">
+								<tr>
+									<td>檔期編號:<font color="red"><b>*</b></font></td>
+									<td><input type="text" name="schdNo" id="schdNo"
+										class="form-control" class="custom-file-input"
+										value="${actOrder.schdVO.schdNo}" size="45" readonly /></td>
+								</tr>
+								<tr>
+									<td>訂單日期:<font color="red"><b>*</b></font></td>
+									<td><input type="datetime-local" name="orderTime" id="orderTime"
+										class="form-control" value="${actOrder.orderTime}"
+										readonly /></td>
+								</tr>
+								<tr>
+									<td>報名人數:<font color="red"><b>*</b></font></td>
+									<td><input type="text" name="aAtnNum" class="form-control"
+										value="${actOrder.aAtnNum}" size="45" readonly /></td>
+								</tr>
+								<tr>
+									<td>訂單狀態:</td>
+									<td><select name="order_status"
+										class="form-control browser-default custom-select" >
+											<option value="1"
+												<c:if test="${actOrder.orderStatus == 1}">selected</c:if>>成立</option>
+											<option value="0"
+												<c:if test="${actOrder.orderStatus== 0}">selected</c:if>>取消</option>
+									</select></td>
+								</tr>
+								<tr>
+									<td>訂單總金額:<font color="red"><b>*</b></font></td>
+									<td><input type="text" name="orderAmount"
+										class="form-control" value="${actOrder.orderAmount}" size="45"
+										readonly /></td>
+								</tr>
+							</table>
+							<br> <input type="hidden" name="action" value=""> <input
+								type="submit" class="btn btn-primary" value="送出修改">
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
+
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-		<script
-			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-		<script
-			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
-		<!-- Menu Toggle Script -->
-		<script>
-			$("#menu-toggle").click(function(e) {
-				e.preventDefault();
-				$("#wrapper").toggleClass("toggled");
-			});
-		</script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+	<!-- Menu Toggle Script -->
+	<script>
+		$("#menu-toggle").click(function(e) {
+			e.preventDefault();
+			$("#wrapper").toggleClass("toggled");
+		});
+	</script>
 </body>
 </html>
 

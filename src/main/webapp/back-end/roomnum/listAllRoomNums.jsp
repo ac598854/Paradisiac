@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/main/main.css">
-<title>房間管理系統</title>
+<title>退房管理系統</title>
  <style>
  		.container{	 			
  			position:relative;
@@ -80,10 +80,11 @@
             border-color: #0056b3;
         }
     </style>
+    <%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
 
 <body>
-<%@ include file="/back-end/index/back-left_room.jsp" %>
+<%@ include file="/back-end/index/ManagerBody.jsp" %>
 	<!-- <DIV id="tatil" style="text-align:center;"><h1 >退房管理系統</h1></DIV> -->
 	<div class="container mt-5">
 	

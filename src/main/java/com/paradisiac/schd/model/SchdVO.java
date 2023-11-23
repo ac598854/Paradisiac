@@ -1,6 +1,8 @@
 package com.paradisiac.schd.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,48 +12,46 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.paradisiac.act.model.ActVO;
+import com.paradisiac.actorder.model.ActOrder;
 
 @Entity
 @Table(name = "schd")
 public class SchdVO implements java.io.Serializable{
 
-//	private Integer schdNo;
-//	private Integer actNo;
-//	private Integer unitPrice;
-//	private Integer lowNum;
-//	private Integer highNum;
-//	private Integer unpaidNum;
-//	private Integer paidNum;
-//	private Timestamp ancDate;  
-//	private Timestamp drpoSchdDate;
-//	private Timestamp holdDate;
-//	private Timestamp aplyTime;
-//	private Timestamp cutTime;
-//	private Integer applStatus;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "schd_no", updatable = false)
 	private Integer schdNo;
 	
-	//private Integer actNo;
+//----多方----	
+	@OneToMany(mappedBy = "schdVO", cascade = CascadeType.ALL)
+	@OrderBy("act_order_no asc")
+	private Set<ActOrder> actorders;	
+
+	public Set<ActOrder> getActorders() {
+		return actorders;
+	}
+	public void setActorders(Set<ActOrder> actorders) {
+		this.actorders = actorders;
+	}
+//----多方----
+	public void setAplyTime(Timestamp aplyTime) {
+		this.aplyTime = aplyTime;
+	}
+	public void setCutTime(Timestamp cutTime) {
+		this.cutTime = cutTime;
+	}
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "act_no", referencedColumnName = "act_no", updatable = false)
 	private ActVO act;
 	
 	@Column(name = "unit_price")
 	private Integer unitPrice;
-	
-	@Column(name = "low_num")
-	private Integer lowNum;
-	
-	@Column(name = "high_num")
-	private Integer highNum;
-	
-	@Column(name = "unpaid_num") //dafault 0
-	private Integer unpaidNum = 0;
 	
 	@Column(name = "paid_num") //dafault 0
 	private Integer paidNum = 0;
@@ -78,16 +78,13 @@ public class SchdVO implements java.io.Serializable{
 	public SchdVO() {
 		
 	}
-	public SchdVO(Integer schdNo, ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Integer unpaidNum,
+	public SchdVO(Integer schdNo, ActVO act, Integer unitPrice,
 			Integer paidNum, Timestamp ancDate, Timestamp drpoSchdDate, Timestamp holdDate, Timestamp aplyTime,
 			Timestamp cutTime, Integer applStatus) {
 		super();
 		this.schdNo = schdNo;
 		this.act = act;
 		this.unitPrice = unitPrice;
-		this.lowNum = lowNum;
-		this.highNum = highNum;
-		this.unpaidNum = unpaidNum;
 		this.paidNum = paidNum;
 		this.ancDate = ancDate;
 		this.drpoSchdDate = drpoSchdDate;
@@ -96,18 +93,15 @@ public class SchdVO implements java.io.Serializable{
 		this.cutTime = cutTime;
 		this.applStatus = applStatus;
 	}
-	//沒有上下架日期跟付款人/未付款人
-	public SchdVO(ActVO act, Integer unitPrice, Integer lowNum, Integer highNum, Timestamp holddate, Timestamp aplytime,
-			Timestamp cuttime, Integer applStatus) {
+	//沒有上下架日期跟付款人
+	public SchdVO(ActVO act, Integer unitPrice, Timestamp holdDate, Timestamp aplyTime,
+			Timestamp cutTime, Integer applStatus) {
 		super();
-		this.schdNo = schdNo;
 		this.act = act;
 		this.unitPrice = unitPrice;
-		this.lowNum = lowNum;
-		this.highNum = highNum;
-		this.holdDate = holddate;
-		this.aplyTime = aplytime;
-		this.cutTime = cuttime;
+		this.holdDate = holdDate;
+		this.aplyTime = aplyTime;
+		this.cutTime = cutTime;
 		this.applStatus = applStatus;
 	}
 	
@@ -129,24 +123,7 @@ public class SchdVO implements java.io.Serializable{
 	public void setUnitPrice(Integer unitPrice) {
 		this.unitPrice = unitPrice;
 	}
-	public Integer getLowNum() {
-		return lowNum;
-	}
-	public void setLowNum(Integer lowNum) {
-		this.lowNum = lowNum;
-	}
-	public Integer getHighNum() {
-		return highNum;
-	}
-	public void setHighNum(Integer highNum) {
-		this.highNum = highNum;
-	}
-	public Integer getUnpaidNum() {
-		return unpaidNum;
-	}
-	public void setUnpaidNum(Integer unpaidNum) {
-		this.unpaidNum = unpaidNum;
-	}
+
 	public Integer getPaidNum() {
 		return paidNum;
 	}
@@ -174,7 +151,7 @@ public class SchdVO implements java.io.Serializable{
 	public Timestamp getAplyTime() {
 		return aplyTime;
 	}
-	public void setAplytime(Timestamp aplytime) {
+	public void setAplytime(Timestamp aplyTime) {
 		this.aplyTime = aplyTime;
 	}
 	public Timestamp getCutTime() {
@@ -188,6 +165,27 @@ public class SchdVO implements java.io.Serializable{
 	}
 	public void setApplStatus(Integer applStatus) {
 		this.applStatus = applStatus;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(schdNo);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		SchdVO other = (SchdVO) obj;
+		return Objects.equals(schdNo, other.schdNo);
+	}
+	@Override
+	public String toString() {
+		return "SchdVO [schdNo=" + schdNo + ", unitPrice=" + unitPrice + ", paidNum=" + paidNum + ", ancDate=" + ancDate
+				+ ", drpoSchdDate=" + drpoSchdDate + ", holdDate=" + holdDate + ", aplyTime=" + aplyTime + ", cutTime="
+				+ cutTime + ", applStatus=" + applStatus + "]";
 	}
 
 	

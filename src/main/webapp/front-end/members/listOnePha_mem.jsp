@@ -5,10 +5,9 @@
 
 <!DOCTYPE html>
 
-
 <html>
 <head>
-
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>相簿管理</title>
@@ -92,14 +91,13 @@
         margin-right: 5px; 
         }*/
 </style>
-	<%@ include file="/front-end/index/MembersMeta.jsp"%>
 </head>
 <body>
 	<%@ include file="/front-end/index/MembersBody.jsp"%>
 	<div id="dynamicContent"></div>
 	<%----%>
 	<div class="container">
-		<h1 class="text-center">相簿管理</h1>
+		<h1 class="text-center">會員相簿</h1>
 		<div>
 			<h2 class="d-flex justify-content-between">
 				瀏覽紀念相簿
@@ -210,7 +208,33 @@
 
 </body>
 <footer>
-	
+	<%@ include file="/front-end/index/footer.jsp"%>
 </footer>
+<script>
+$(document).ready(function(){
+    $.ajax({
+        type: "POST",
+        url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+        success: function(data) {
+            const responseMessage = parseInt(data);
+            var  contextPath='<%=request.getContextPath()%>
+	';
+										var guided = contextPath
+												+ '/front-end/index/guided.jsp';
+										var guidedSignout = contextPath
+												+ '/front-end/index/guidedSignout.jsp';
+										if (responseMessage === 1) {
+											$("#dynamicContent").load(guided);
+										} else if (responseMessage === 0) {
 
+											$("#dynamicContent").load(
+													guidedSignout);
+										}
+									},
+									error : function(error) {
+										console.log("AJAX error:", error);
+									}
+								});
+					})
+</script>
 </html>

@@ -61,8 +61,8 @@ response.setDateHeader("Expires", 0); // Proxies.
                                     /* height:  151px; */
                                 }
                            .card-body {
-    line-height: 1; /* 設定文字行高，可以根據需要進行調整 */
-}
+							    line-height: 1;
+							}
 
                                 
                     </style>
@@ -80,17 +80,6 @@ response.setDateHeader("Expires", 0); // Proxies.
 									    </div>
 									</div>
 									<br>
-									<div style="margin-left: 85px ">
-                                        <%-- 錯誤表列 --%>
-                                            <c:if test="${not empty errorMsgs}">
-                                                <font style="color:red">請修正以下錯誤:</font>
-                                                <ul>
-                                                    <c:forEach var="message" items="${errorMsgs}">
-                                                        <li style="color:red">${message}</li>
-                                                    </c:forEach>
-                                                </ul>
-                                            </c:if>
-                                            </div>
                                             <FORM METHOD="post"  ACTION="<%=request.getContextPath() %>/PromotionListServlet" name="form1" id="mainForm">
                                                 <table>
                                                     <tr>
@@ -337,47 +326,47 @@ response.setDateHeader("Expires", 0); // Proxies.
 								}
                 //=============================卡片分頁=======================================//
                 // 在文檔載入完成後執行
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.col'); // 取得所有卡片元素
-    const cardsPerPage = 6; // 每頁顯示的卡片數量
-    const totalCards = cards.length; // 總卡片數量
-    let currentPage = 1; // 目前頁數
-
-    // 根據目前頁數和每頁顯示數量計算要顯示的卡片範圍
-    function showCards() {
-        const startIndex = (currentPage - 1) * cardsPerPage;
-        const endIndex = startIndex + cardsPerPage;
-
-        // 隱藏所有卡片
-        cards.forEach(card => {
-            card.style.display = 'none';
-        });
-
-        // 顯示符合範圍的卡片
-        for (let i = startIndex; i < endIndex && i < totalCards; i++) {
-            cards[i].style.display = 'block';
-        }
-    }
-
-    // 初始化時顯示第一頁卡片
-    showCards();
-
-    // 切換至下一頁
-    document.getElementById('nextPage').addEventListener('click', function() {
-        if (currentPage < Math.ceil(totalCards / cardsPerPage)) {
-            currentPage++;
-            showCards();
-        }
-    });
-
-    // 切換至上一頁
-    document.getElementById('prevPage').addEventListener('click', function() {
-        if (currentPage > 1) {
-            currentPage--;
-            showCards();
-        }
-    });
-});
+				document.addEventListener('DOMContentLoaded', function() {
+				    const cards = document.querySelectorAll('.col'); // 取得所有卡片元素
+				    const cardsPerPage = 6; // 每頁顯示的卡片數量
+				    const totalCards = cards.length; // 總卡片數量
+				    let currentPage = 1; // 目前頁數
+				
+				    // 根據目前頁數和每頁顯示數量計算要顯示的卡片範圍
+				    function showCards() {
+				        const startIndex = (currentPage - 1) * cardsPerPage;
+				        const endIndex = startIndex + cardsPerPage;
+				
+				        // 隱藏所有卡片
+				        cards.forEach(card => {
+				            card.style.display = 'none';
+				        });
+				
+				        // 顯示符合範圍的卡片
+				        for (let i = startIndex; i < endIndex && i < totalCards; i++) {
+				            cards[i].style.display = 'block';
+				        }
+				    }
+				
+				    // 初始化時顯示第一頁卡片
+				    showCards();
+				
+				    // 切換至下一頁
+				    document.getElementById('nextPage').addEventListener('click', function() {
+				        if (currentPage < Math.ceil(totalCards / cardsPerPage)) {
+				            currentPage++;
+				            showCards();
+				        }
+				    });
+				
+				    // 切換至上一頁
+				    document.getElementById('prevPage').addEventListener('click', function() {
+				        if (currentPage > 1) {
+				            currentPage--;
+				            showCards();
+				        }
+				    });
+				});
 
 								
 
