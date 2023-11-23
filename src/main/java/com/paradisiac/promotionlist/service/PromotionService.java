@@ -34,10 +34,28 @@ public class PromotionService {
 
 		return proVO;
 	}
-	
+	public PromotionVO updatePro(Integer prono,String proname,String prodes,Date startdate,
+			Date enddate,Double discount,Boolean status,String selectedProducts) {
+
+		PromotionVO proVO = new PromotionVO();
+
+		proVO.setProno(prono);
+		proVO.setProname(proname);
+		proVO.setProdes(prodes);
+		proVO.setStartdate(startdate);
+		proVO.setEnddate(enddate);
+		proVO.setDiscount(discount);
+		proVO.setStatus(status);
+		pro.updatePro(proVO,selectedProducts);
+		
+
+		return proVO;
+	}
 	public List<PromotionVO> getAll() {
 		return pro.getAll();
 	}
-	
+	public List<Integer> getProductnoFromView(Integer promotionNO){
+		return pro.getProductnoFromView(promotionNO);
+	}
 
 }

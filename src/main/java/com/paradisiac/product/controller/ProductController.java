@@ -36,7 +36,7 @@ public class ProductController {
             @RequestParam (required = false) ProductCategory category,
             @RequestParam (required = false) String search,
             //排序 Sorting
-            @RequestParam (defaultValue = "created_date") String orderBy,
+            @RequestParam (defaultValue = "product_id") String orderBy,
             @RequestParam (defaultValue = "asc") String sort,
             //分頁 Pagination
             @RequestParam (defaultValue = "8") @Max(1000) @Min(0) Integer limit,
@@ -65,6 +65,12 @@ public class ProductController {
         page.setResults(productList);
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
+    }
+
+    @GetMapping("/allForCart")
+    public ResponseEntity<List<Product>> getAllProductsForCart() {
+        List<Product> products = productService.getAllProductsForCart();
+        return ResponseEntity.ok(products);
     }
 
     //查詢

@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.metamodel.SetAttribute;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -77,7 +78,8 @@ public class ActOrderServlet extends HttpServlet {
 			HttpSession session = req.getSession();
 			Integer memNo = (Integer) session.getAttribute("memno");
 //			String schdNoStr=req.getParameter("schdNo");
-			SchdVO schdVO = new SchdVO(11, null, null, null, null, null, null, null, null, null, null, null, null);// 假資料待刪
+			SchdVO schdVO = new SchdVO();
+			schdVO.setSchdNo(1);
 
 			Integer aAtnNum = Integer.valueOf(req.getParameter("aAtnNum"));// 人數
 			Integer orderStatus = Integer.valueOf(1);

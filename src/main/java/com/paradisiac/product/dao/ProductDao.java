@@ -21,4 +21,6 @@ public interface ProductDao {
 
     Integer countProduct (ProductQueryParams productQueryParams);
 
+    List<Product> getAllProductsForCart(ProductQueryParams productQueryParams);
+
 }

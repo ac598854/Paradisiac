@@ -36,7 +36,7 @@ public class ActOrder implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "schd_no",nullable = false,updatable= false,referencedColumnName ="schd_no")//一個訂單一個檔期
-	private SchdVO schdVO;//
+	private SchdVO schdVO;
 	
 	@ManyToOne
 	@JoinColumn(name = "emp_no",insertable=false,referencedColumnName ="emp_no" )//一個員工處理多筆訂單，(多個資料表都有可能都是一個員工處理)

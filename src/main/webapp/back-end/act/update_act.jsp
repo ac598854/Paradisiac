@@ -9,6 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>更新活動內容</title>
@@ -72,6 +73,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
 		<div>
 			<h2>修改活動</h2>
@@ -95,15 +97,7 @@
 							<tr>
 								<th>活動名稱</th>
 								<td><input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName}></td>
-							</tr>
-							<tr>
-								<th>最低成團人數</th>
-								<td><input type="text" name="lowNum" required value=${actVO.lowNum==null? '': actVO.lowNum}></td>
-							</tr>
-							<tr>
-								<th>最高上限人數</th>
-								<td><input type="text" name="highNum" required value=${actVO.highNum==null? '': actVO.highNum}></td>
-							</tr>
+							</tr>							
 							<tr>
 								<th>活動狀態</th>
 								<td><input type="radio" name="actStatus" value="true" ${actVO.actStatus? 'checked':'' }>上架

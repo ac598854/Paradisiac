@@ -480,12 +480,13 @@ input[type="text"] {
 					<div class="item__image">
 <%-- 					<img src="<%=request.getContextPath()%>/dbg.do?act_no=${schdVO.act.actNo}" alt="活動封面" class="img-fluid"> --%>
 						<img class="image"
-							src="https://images.unsplash.com/photo-1539498508910-091b5e859b1d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-							alt="">
+							src="<%=request.getContextPath()%>/dbg.do?act_no=${schdVO.act.actNo}"
+							alt="活動封面" class="img-fluid">
 					</div>
 					<div class="item__details">
-<%-- 						<div class="item__title">${ActVO.schdNo}檔期編號</div> --%>
-<%-- 						<div class="item__price">${ActVO.unitPrice}活動單價</div> --%>
+						<div class="item__title">${schdVO.schdNo}檔期編號</div>
+						<div class="item__title">${schdVO.act.actNo}-${schdVO.act.actName}活動名稱</div>
+						<div class="item__price">${schdVO.unitPrice}活動單價</div>
 					</div>
 				</div>
 			</div>

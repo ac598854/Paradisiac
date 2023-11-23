@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <title>員工系統首頁</title>
 <style>
@@ -28,6 +29,7 @@
 </style>
 </head>
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 <body bgcolor='white'>
 
 <table id="table-1">

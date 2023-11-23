@@ -8,6 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>部門管理</title>
     <style>
@@ -60,8 +61,9 @@
 	  	
     </style>
 </head> 
-<%@ include file="/back-end/index/back-left_hr.jsp" %><%----%>
+
 <body>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<!-- 查詢單一部門區塊 -->
 	<div class="content-main">
 		<h1>部門管理系統</h1>

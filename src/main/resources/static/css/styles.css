@@ -1,10 +1,13 @@
-/* 確保html和body元素佔滿整個頁面寬度 */
 html, body {
+    background-image: url('https://cha103-29.s3.ap-northeast-1.amazonaws.com/pexels-jeff-ibera-1320755.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     width: 100%;
     max-width: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* 防止水平滾動條 */
+    overflow-x: hidden;
 }
 
 header {
@@ -14,36 +17,16 @@ header {
     text-align: center;
 }
 
-/* 主體容器 */
 .flex-container {
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* 佔滿整個視窗的高度 */
-    width: 100%; /* 佔滿視窗的寬度 */
-    margin: 0; /* 移除margin */
-    padding: 0; /* 移除padding */
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-/* footer樣式 */
-/*#footer {*/
-/*    background-color: lightblue;*/
-/*    padding: 20px 0;*/
-/*    text-align: center;*/
-/*    width: 100%; !* 佔滿整個容器的寬度 *!*/
-/*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
-/*    margin: 0; !* 移除外邊距 *!*/
-/*}*/
 
-/*!* 這個樣式將應用於footer內部的container，如果存在的話 *!*/
-/*#footer .container {*/
-/*    width: 100%; !* 佔滿footer的寬度 *!*/
-/*    max-width: none; !* 移除最大寬度限制 *!*/
-/*    margin: 0 auto; !* 如果需要在頁面中間對齊 *!*/
-/*    padding: 0; !* 移除內填充 *!*/
-/*    box-sizing: border-box; !* 包含邊距和邊框在內的寬度 *!*/
-/*}*/
-
-/* 導航樣式 */
 nav ul {
     padding: 0;
     margin: 0;
@@ -57,49 +40,43 @@ nav ul li {
     padding: 0 20px 0 20px;
 }
 
-/* 針對整個表格的樣式 */
 table {
-    border-collapse: separate; /* 這確保表格的邊框不會重疊，這樣就可以分別給每個邊設置圓角 */
-    border-spacing: 0; /* 移除表格之間的間距 */
-    border-radius: 10px; /* 這將使整個表格呈現圓角 */
-    overflow: hidden; /* 這將確保子元素（例如td和th）不會超出表格的圓角 */
-    width: 100%; /* 根據需要調整 */
-    margin: 20px 0; /* 上下間距20像素，您可以根據需要調整 */
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    margin: 20px 0;
 }
 
-/* 針對表頭（th）的樣式 */
 th {
-    background-color: #f2f2f2; /* 灰色背景 */
-    padding: 10px 15px ; /* 上下間距10像素，左右間距15像素 */
-    text-align: left; /* 文字靠左對齊 */
+    background-color: #f2f2f2;
+    padding: 10px 15px ;
+    text-align: left;
 }
 
-/* 針對表格的每一行（td）的樣式 */
 td {
-    padding: 8px 15px; /* 上下間距8像素，左右間距15像素 */
-    border-bottom: 1px solid #f2f2f2; /* 每行底部有一條細的灰色分隔線 */
+    padding: 8px 15px;
+    border-bottom: 1px solid #f2f2f2;
 }
 
-/* 針對表格第一行的圓角樣式 */
 table tr:first-child th:first-child {
-    border-top-left-radius: 10px; /* 左上角圓角 */
+    border-top-left-radius: 10px;
 }
 
 table tr:first-child th:last-child {
-    border-top-right-radius: 10px; /* 右上角圓角 */
+    border-top-right-radius: 10px;
 }
 
-/* 針對表格最後一行的圓角樣式 */
 table tr:last-child td:first-child {
-    border-bottom-left-radius: 10px; /* 左下角圓角 */
+    border-bottom-left-radius: 10px;
 }
 
 table tr:last-child td:last-child {
-    border-bottom-right-radius: 10px; /* 右下角圓角 */
+    border-bottom-right-radius: 10px;
 }
 
 
-/* 按鈕樣式 */
 button {
     border:0;
     background-color:#003C9D;
@@ -108,13 +85,11 @@ button {
     cursor:pointer;
 }
 
-/* 黯淡的背景 */
 #overlay, #overlayEdit {
     z-index: 1000;
     cursor: pointer;
 }
 
-/* 模態框基本樣式 */
 #addProductModal, #editProductModal {
     z-index: 1001;
     width: 400px;
@@ -129,7 +104,6 @@ button {
     margin-bottom: 20px;
 }
 
-/* 表單元素樣式 */
 #addProductModal input, #editProductModal input,
 #addProductModal select, #editProductModal select {
     width: 100%;

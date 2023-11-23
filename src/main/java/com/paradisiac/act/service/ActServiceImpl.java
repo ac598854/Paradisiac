@@ -77,10 +77,10 @@ public class ActServiceImpl implements ActService{
 		return pageQty;
 	}
 	
-//	public Set<SchdVO> getActiveSchdByActno(Integer actno){
-//		Set<SchdVO> actschdSet = dao.findByPrimaryKeyActiveS(actno);
-//		return actschdSet;
-//	}
+	public Set<SchdVO> getActiveSchdByActno(Integer actno){
+		Set<SchdVO> actschdSet = dao.findByPrimaryKeyActiveS(actno);
+		return actschdSet;
+	}
 	//-------------
 
 
