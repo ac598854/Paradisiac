@@ -20,7 +20,7 @@
       if (!regex.test(clickedCell.textContent)) {
         clickedCell.classList.add("selected");
       }else{
-    	  selectedDateInput="";
+    	  selectedDateInput="";    	 
       }
       var clickedDate = new Date(currentYear, currentMonth, parseInt(clickedCell.textContent));
       
@@ -130,7 +130,9 @@
         holidayData(currentMonth, currentYear);       
       }     
       //行事曆重新填充日期
-      renderCalendar(currentMonth, currentYear);     
+      if(currentMonth!=11){
+      renderCalendar(currentMonth, currentYear); 
+      }    
     }
   });
   //下個月按鈕
@@ -146,7 +148,9 @@
     holidayData(currentMonth, currentYear);
     }     
      //行事曆重新填充日期
-    renderCalendar(currentMonth, currentYear);      
+    if(currentMonth!=11){
+    renderCalendar(currentMonth, currentYear);   
+    }   
   });
 
 // 使用 Fetch API 獲取 (政府資料開放平台上的中華民國政府行政機關辦公日曆表)JSON 數據，取得假日資料，再將假日的資料綁定在行事曆上
@@ -165,7 +169,8 @@ fetch(`https://cdn.jsdelivr.net/gh/ruyut/TaiwanCalendar/data/${currentYear}.json
                     .then(response => response.json())
                     .then(nextYearData => {
                         // 合併下一年度的假日資料到今年的假日資料，為了解決跨年度無法計算連續假日問題
-                        holidays = holidays.concat(nextYearData);                      
+                        holidays = holidays.concat(nextYearData); 
+                        renderCalendar(currentMonth, currentYear);                     
                     })
                     .catch(error => console.error('獲取下一年度假日數據時發生錯誤:', error));
             } else {
@@ -365,8 +370,8 @@ function getSingleForDay(selectDay) {
     var continuousDays = getContinuousHolidaysCount(holidays, currentHoliday);
     //取出日期來判斷，該日期的前後是否有放假
     var dayMarkHolidayStatus=parseDateFromString(currentHoliday.date);
-    //console.log("測試",dayMarkHolidayStatus);
-     console.log("測試====continuousDays======",continuousDays.date);
+   // console.log("測試",dayMarkHolidayStatus);
+     console.log("[dayMarkHolidayStatus]==>",dayMarkHolidayStatus,"[continuousDays]",continuousDays);
     if (continuousDays === 2) {       
       holidayMapping[dayMarkHolidayStatus]=2;     //假日(放假2天以內)
     } else if (continuousDays >= 3) {      
@@ -432,7 +437,7 @@ function getSingleForDay(selectDay) {
   // 回傳日期物件
   return dateObject;
 }
-
+	
   function parseDateFromString(dateString) {
    // 使用正規表達式提取年、月和日
     const year = dateString.slice(0, 4);
@@ -447,8 +452,8 @@ function getSingleForDay(selectDay) {
 }
 //==============================================
 
-	//將按下立即訂房 取出資料顯示在燈箱上面
-function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility, rbooking) {
+//將按下立即訂房 取出資料顯示在燈箱上面
+function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility,roomtotal,rbooking) {
 	// 填充燈箱內容
 	let lightboxContent = document.getElementById('lightboxContent');
 	//以平日、假日、連續假日不同日期計算價錢===================================
@@ -468,6 +473,7 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
 		selectedPrice = price;
 	}
 	//===================================
+	let pricetotal = selectedPrice * rbooking;
 	let html = "";
 	html = `
                 <h3>房型編號：${roomTypeNo}</h3>
@@ -480,9 +486,9 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
                 <p>注意事項：${notice}</p>
                 <p>設施：${facility}</p>
                 <p>預訂數量：${rbooking}</p>
-                <p>總共：${selectedPrice * rbooking}元</p>
+                <p>總共：${pricetotal}元</p>
             `;
-
+	
 	lightboxContent.innerHTML = html;
 
 	// 顯示燈箱
@@ -491,7 +497,11 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
 	let originalDate = new Date(vDate);
     let nextDay = new Date(originalDate.getTime() + 24 * 60 * 60 * 1000);
     let formattedNextDay = `${nextDay.getFullYear()}-${(nextDay.getMonth() + 1).toString().padStart(2, '0')}-${nextDay.getDate().toString().padStart(2, '0')}`;
+	
+
+	console.log(roomtotal);
 	// 創建一個包含所有資訊的物件
+	
     let roomInfo = {
         roomTypeNo: roomTypeNo,
         vDate: vDate,
@@ -500,18 +510,17 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
         rType: rType,
         holiDayPrice: holiDayPrice,
         bridgeHolidayPrice: bridgeHolidayPrice,
-        price: price,
+        price: pricetotal,
         notice: notice,
         facility: facility,
-        rbooking: rbooking
+        rbooking: rbooking,
+        roomtotal: roomtotal,
     };
-
+	
     // 將資料轉為 JSON 字串，並存儲到 localStorage 中
     localStorage.setItem('roomInfo', JSON.stringify(roomInfo));
     window.location.href = '/Paradisiac/back-end/roomorder/orderbuy.jsp';
 	
 }
-
-
 
 

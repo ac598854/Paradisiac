@@ -169,7 +169,7 @@ public class RoomCalendarServlet  extends HttpServlet {
 						    }
 					        req.setAttribute("sa2", sa2);
 					        resp.setContentType("application/json;charset=UTF-8");
-					return "/back-end/roomorder/calcheck.jsp";
+					return "/back-end/roomorder/buysuccess.jsp";
 				}
 		private String getAllCalenders(HttpServletRequest req, HttpServletResponse res) throws IOException {
 			req.setCharacterEncoding("UTF-8");
