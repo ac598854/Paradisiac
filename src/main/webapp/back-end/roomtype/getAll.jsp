@@ -13,7 +13,7 @@
         
 
         .content {
-            margin-left: 0px; 
+            margin-left: 100px; 
             padding-top: 20px; 
         }
         
@@ -71,17 +71,18 @@
 
     </style>
     
-    
+    <%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
 <body>
-
 	   <div class="sidebar">
-        <%@ include file="/back-end/index/back-left_room.jsp" %>
+			<%@ include file="/back-end/index/ManagerBody.jsp" %>
        </div>
-<div class="content">
-        <div class="container custom-width">
-		<div class="container">
-		    <h3>搜尋全部房型資料</h3>
+       
+         <div class="content">
+        <div class="container">
+            <h3>搜尋全部房型資料</h3>
+            <div class="table-responsive"> 
+
 		    <table class="table table-bordered small-table" id="data-table">
 		        <thead>
 		            <!-- 表頭 -->
@@ -113,7 +114,11 @@
 			                    <td>${all.bridgeHolidayPrice}</td>
 			                    <td>${all.notice}</td>
 			                    <td>${all.facility}</td>
-			                    <td>${all.rTypeStatus}</td>
+			                    <td>  
+								    <c:choose>
+					                    <c:when test="${all.rTypeStatus == 'true'}">上架</c:when>
+					                    <c:otherwise>下架</c:otherwise>
+					                </c:choose></td>
 								<td>
 							<form method="post" action="${pageContext.request.contextPath}/back-end/roomtype/updatetype.jsp">
 							    <input type="hidden" name="roomTypeNo" value="${all.roomTypeNo}">
@@ -136,13 +141,16 @@
 		                </c:forEach>
 		            </tbody>
 		    </table>
-		    <div id="pagination-container"></div>
-		</div>
-	</div>
- </div>
-             <a class="btn btn-secondary btn-icon" href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">
+		     <div class="pagination-container" id="pagination-container">
+                <!-- 分页按钮将被插入这里 -->
+            </div>
+			<a class="btn btn-secondary btn-icon" href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">
                 <i class="fas fa-arrow-left"></i> 返回
             </a>
+		</div>
+	</div>
+ </div>	
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

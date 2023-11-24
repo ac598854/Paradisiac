@@ -271,7 +271,7 @@ function getSingleForDay(selectDay) {
 				//	console.log("檔案路徑："pathName, "=專案路徑", projectName);
 				//可下訂數量（將房型的總數量減掉已下訂的數量＝可下訂數量）
 				let booking = item.roomTotal - item.rbooking;
-				
+				let rTotal = item.roomTotal;
 				
 				//可下訂數量不等於0的房型才顯示
 				if (booking != 0) {
@@ -336,7 +336,7 @@ function getSingleForDay(selectDay) {
                            	  <li>${priceStr}：${selectedPrice}元</li>  <!--售價 -->                            	   
                            	  <li>剩餘間數：${booking}間</li>                         	                           	  
                           	  <li>
-                          	   <a href="#" class="btn btn-primary fs-5" onclick="showDetail(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', document.getElementById('bookingSelect_${item.roomTypeNo}_${item.vDate}').value)">立即訂購</a>
+                          	   <a href="#" class="btn btn-primary fs-5" onclick="showDetail(${item.roomTypeNo}, '${item.vDate}', '${item.roomName}', '${item.rType}', ${item.holiDayPrice}, ${item.bridgeHolidayPrice}, ${item.price}, '${item.notice}', '${item.facility}', ${rTotal},document.getElementById('bookingSelect_${item.roomTypeNo}_${item.vDate}').value)">立即訂購</a>
                           	  </li>
                      		  </div>
                  		  	 </div>
@@ -452,7 +452,7 @@ function getSingleForDay(selectDay) {
 }
 //==============================================
 
-//將按下立即訂房 取出資料顯示在燈箱上面
+	//將按下立即訂房 取出資料顯示在燈箱上面
 function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHolidayPrice, price, notice, facility,roomtotal,rbooking) {
 	// 填充燈箱內容
 	let lightboxContent = document.getElementById('lightboxContent');
@@ -499,9 +499,9 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
     let formattedNextDay = `${nextDay.getFullYear()}-${(nextDay.getMonth() + 1).toString().padStart(2, '0')}-${nextDay.getDate().toString().padStart(2, '0')}`;
 	
 
-	console.log(roomtotal);
+	console.log(selectedPrice);
 	// 創建一個包含所有資訊的物件
-	
+
     let roomInfo = {
         roomTypeNo: roomTypeNo,
         vDate: vDate,
@@ -510,7 +510,7 @@ function showDetail(roomTypeNo, vDate, roomName, rType, holiDayPrice, bridgeHoli
         rType: rType,
         holiDayPrice: holiDayPrice,
         bridgeHolidayPrice: bridgeHolidayPrice,
-        price: pricetotal,
+        price: selectedPrice,
         notice: notice,
         facility: facility,
         rbooking: rbooking,
