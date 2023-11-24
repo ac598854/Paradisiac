@@ -87,8 +87,8 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 	
 	@Override
-	public List<ActOrder> getAllByBackSearchSer(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatu) {
-		return dao.getAllByBackSearch(memNO,actOrderNo,schdNo,orderStatu);
+	public List<ActOrder> getAllByBackSearchSer(String hql , String first) {
+		return dao.getAllByBackSearch(hql , first);
 	}
 		
 	@Override

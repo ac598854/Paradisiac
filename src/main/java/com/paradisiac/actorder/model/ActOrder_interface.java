@@ -24,7 +24,7 @@ public interface ActOrder_interface {
 	//取全部分頁、不分頁
 	public List<ActOrder> getAll();//取全部不分頁	
 	public List<ActOrder> getAllBymemNO(Integer memNo);//取特定會員編號訂單
-	public List<ActOrder> getAllByBackSearch(Integer memNO,Integer actOrderNo,Integer schdNo,Integer orderStatus);//取特定會員編號訂單(會員編號、訂單編號,檔期編號,訂單狀態)
+	public List<ActOrder> getAllByBackSearch(String hql , String first);//取特定會員編號訂單(會員編號、訂單編號,檔期編號,訂單狀態)
 	
 	List<ActOrder> getAllStatus(int currentPage);//取全部分頁	
 	

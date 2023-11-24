@@ -1,12 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	
 <%@ page import="com.paradisiac.act.model.*"%>
 <%@ page import="com.paradisiac.act.controller.*"%>
 <%@ page import="com.paradisiac.act.service.*"%>
 <%@ page import="com.paradisiac.actorder.service.*"%>
 <%@ page import="com.paradisiac.actorder.service.*"%>
 <%@ page import="com.paradisiac.actorder.service.*"%>
+<%@ page import="com.paradisiac.schd.model.*"%>
+<%@ page import="javax.servlet.http.HttpSession"%>
+<%
+HttpSession sessionObj = request.getSession();
+SchdVO SchdVO = (SchdVO) sessionObj.getAttribute("schdVO");
+Integer schdNo = ((SchdVO) SchdVO).getSchdNo();
+Integer unitPrice = ((SchdVO) SchdVO).getUnitPrice();
+
+System.out.println(schdNo);
+System.out.println(unitPrice);
+%>
 <!DOCTYPE html>
 <html>
 
@@ -456,6 +466,7 @@ input[type="text"] {
 </head>
 
 <body>
+	<%@ include file="/front-end/index/guided.jsp"%>
 	<div id="dynamicContent"></div>
 	<header>
 		<div class="container">
@@ -470,22 +481,24 @@ input[type="text"] {
 		</div>
 	</header>
 	<section class="content">
-		<form class="needs-validation" id="form1"
-			action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do"
-			method="POST">
+		<form class="needs-validation" id="form1" method="POST">
 			<div class="container"></div>
 			<div class="details shadow">
 				<div class="details__item">
 
 					<div class="item__image">
-<%-- 					<img src="<%=request.getContextPath()%>/dbg.do?act_no=${schdVO.act.actNo}" alt="活動封面" class="img-fluid"> --%>
+						<%-- 					<img src="<%=request.getContextPath()%>/dbg.do?act_no=${schdVO.act.actNo}" alt="活動封面" class="img-fluid"> --%>
 						<img class="image"
 							src="https://images.unsplash.com/photo-1539498508910-091b5e859b1d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
 							alt="">
 					</div>
 					<div class="item__details">
-<%-- 						<div class="item__title">${ActVO.schdNo}檔期編號</div> --%>
-<%-- 						<div class="item__price">${ActVO.unitPrice}活動單價</div> --%>
+						<lable>檔期編號</lable>
+						<div class="item__title"><%=schdNo%></div>
+						<lable>單價</lable>
+						<div class="item__price"><%=unitPrice%></div>
+						<lable>內容</lable>
+						<div class="item__content"><span style="font-size: 12px; color: lightgray;">在我們的渡假飯店，我們引入了刺激有趣的香蕉船活動，為您的度假體驗增添了一份冒險的色彩。香蕉船是一項結合速度、刺激和團隊協作的水上活動，適合家庭、朋友或團隊共同參與。 坐在色彩繽紛的香蕉船上，您將由專業教練引領，準備迎接一場令人難以忘懷的海上歷險。 香蕉船活動適合各種水上愛好者，無論您是尋求驚險刺激還是純粹享受水上樂趣，都能在這裡找到滿足。我們的安全專業團隊將提供完善的指導，確保您在享受刺激的同時，也能保持絕對的安全。 此外，香蕉船活動也是一個絕佳的團隊建設活動。在團隊合作的過程中，成員們需要共同努力保持平衡，克服海浪的阻力，這將促進彼此之間的信任和協作。無論是挑戰自我還是與摯愛共度歡笑時光，香蕉船活動絕對是您渡假體驗中不可錯過的一環。</span></div>
 					</div>
 				</div>
 			</div>
@@ -501,29 +514,30 @@ input[type="text"] {
 							<span class="text-muted">訂單總金額</span>
 						</h4>
 						<ul class="list-group mb-3">
-							<li
-								class="list-group-item d-flex justify-content-between lh-condensed">
-								<div>
-									<h6 class="my-0">${SchdVO.schdNo}檔期編號</h6>
-									<input type="hidden" class="form-control" id="schdNo"
-										name="schdNo" value="${SchdVO.schdNo}">
-								</div>
+
+							<li class="list-group-item d-flex justify-content-between">編號
+								<input type="text" class="form-control" id="schdNo"
+								name="schdNo" value="${schdVO.schdNo}" readonly>
 							</li>
 							<li class="list-group-item d-flex justify-content-between">單價
 								<input type="text" class="form-control" id="unitPrice"
-								name="unitPrice" value="1000" readonly>
+								name="unitPrice" value="${schdVO.unitPrice}" readonly>
+							</li>
 							<li class="list-group-item d-flex justify-content-between">數量
 								<input type="text" class="form-control" id="countNumDisplay"
 								name="countNumDisplay" readonly>
+							</li>
 							<li class="list-group-item d-flex justify-content-between">總計
 								<input type="text" class="form-control" id="orderAmount"
 								name="orderAmount" value="${ActOrder.orderAmount}" readonly>
+							</li>
 						</ul>
 						<hr class="mb-4">
 					</div>
 					<div class="col-md-8 order-md-1">
 						<!-- 					<form class="needs-validation" -->
 						<!-- <%-- action="${pageContext.request.contextPath}/front-end/actorder/ActOrder.do" --%> -->
+
 						<!-- 						method="POST"> -->
 						<div class=row>
 							<div class="col-md-12 mb-6">
@@ -608,6 +622,8 @@ input[type="text"] {
 							type="submit">結帳</button>
 						<input type="hidden" name="action" value="insert" />
 		</form>
+		
+		<div id="errorMessages" style="color: red;"></div>
 	</section>
 	<br>
 	<br>
@@ -619,7 +635,7 @@ input[type="text"] {
 	<script>
 		var isMemphoneValid = false;
 		var isMemIdValid = false;
-		var fieldsValid =false;
+		var fieldsValid = false;
 		//號碼檢查
 		function checkPhoneNumber() {
 			var phoneInput = document.getElementById("atnTel");
@@ -669,32 +685,48 @@ input[type="text"] {
 					}
 					// 回寫清除空白的值
 					inputElement.val(fieldValue);
-				} 
+				}
 			}
 			return isValid;
 		}
-		$('#btn-submit').click(function(e) {
-			e.preventDefault();
-			var fieldsValid = checkRequiredFields();//過濾空白檢查
-			if (isMemphoneValid && isMemIdValid) {
-				// 驗證通過
-				$("#form1 input[name='action']").val("insert");
-				// 送出
-				$("#form1").submit();
-				Swal.fire({
-					title : "訂單送出成功!",
-					icon : "success"
-				})
-			} else {
-				Swal.fire({
-					title : "必填請勿空白!",
-					icon : "error"
-				})
-			}
-		});
-
-	
 		
+			$(document).ready(function () {
+			$("#form1").submit(function (event) {
+				event.preventDefault(); 
+				$("#errorMessages").empty();
+				var fieldsValid = checkRequiredFields(); //
+				if (isMemphoneValid && isMemIdValid) {
+					var formData = $(this).serialize();
+					$.ajax({
+						type: "POST",
+						url: "ActOrder.do",
+						data: formData,
+						success: async function (response) {							
+							if (response.message) {
+							  	await Swal.fire({
+				            		  title: response.message,
+				            		  text: "請到信箱收取驗證碼!",
+				            		  icon: "success"
+				            		});								
+// 								alert(response.message);
+								window.location.href = "<%=request.getContextPath()%>/front-end/index/index2.jsp";
+							} else if (response.error) {
+								alert(response.message);
+								$("#errorMessages").html("<p style='color: red;'>" + response.error + "</p>");
+							}
+						},
+						error: function () {
+							alert("例外错误。");
+						}
+					});
+				} else {
+					Swal.fire({
+						title: "必填请勿空白!",
+						icon: "error"
+					});
+				}
+			});
+		});
 	</script>
 
 </body>

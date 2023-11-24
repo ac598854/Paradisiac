@@ -1,7 +1,7 @@
 package com.paradisiac.actorder.model;
 
 
-import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
+//import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import com.paradisiac.schd.model.SchdVO;
 
 
 public class ActOrderDAO implements ActOrder_interface{
+	public final int PAGE_MAX_RESULT = 30;
 	
 	private SessionFactory factory;
 	
@@ -94,7 +95,8 @@ public class ActOrderDAO implements ActOrder_interface{
 	}
 	
 	@Override
-	public List<ActOrder> getAllByBackSearch(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatus) {
+	public List<ActOrder> getAllByBackSearch(String hql , String first) {
+		  System.out.print(hql);
 //		return getSession().createQuery("from ActOrder where memNo=:memNo ORDER BY act_order_no DESC",ActOrder.class)
 //		.setParameter("memNo",memNO)
 //		.setParameter("actOrderNo", actOrderNo)
@@ -102,46 +104,56 @@ public class ActOrderDAO implements ActOrder_interface{
 //		.setParameter("orderStatus", orderStatus)
 //		.list();
 		
-		  StringBuilder hql = new StringBuilder("FROM ActOrder WHERE 1 = 1");
-
-		    // 條件：會員編號
-		    if (memNO != null) {
-		        hql.append(" AND memNO = :memNO");
-		    }
+		  StringBuilder conditional = new StringBuilder("FROM ActOrder ");
+		  if(hql.length() > 0) {
+			  conditional.append(" WHERE ");
+			  conditional.append(hql);
+		  }
+				  
+		
+		  Query query = getSession().createQuery(conditional.toString() , ActOrder.class);
+		  return query
+				  .setFirstResult(Integer.valueOf(first))
+				  .setMaxResults(PAGE_MAX_RESULT)
+				  .list();
+//		    // 條件：會員編號
+//		    if (memNO != null) {
+//		        hql.append(" AND memNO = :memNO");
+//		    }
+//		    
+//		    // 條件：訂單編號
+//		    if (actOrderNo != null) {
+//		        hql.append(" AND actOrderNo = :actOrderNo");
+//		    }
+//
+//		    // 條件：檔期編號
+//		    if (schdNo != null) {
+//		        hql.append(" AND schdNo = :schdNo");
+//		    }
+//
+//		    // 條件：訂單狀態
+//		    if (orderStatus != null) {
+//		        hql.append(" AND orderStatus = :orderStatus");
+//		    }
+//
+//		    // 構建查詢
+//		    Query<ActOrder> query = getSession().createQuery(hql.toString(), ActOrder.class);
+//
+//		    // 設置條件的參數值
+//		    if (memNO != null) {
+//		        query.setParameter("memNO", memNO);
+//		    }
+//		    if (actOrderNo != null) {
+//		    	query.setParameter("actOrderNo", actOrderNo);
+//		    }
+//		    if (schdNo  != null) {
+//		        query.setParameter("schdNo", schdNo);
+//		    }
+//		    if (orderStatus != null) {
+//		        query.setParameter("orderStatus", orderStatus);
+//		    }
+//		    // 返回查詢結果
 		    
-		    // 條件：訂單編號
-		    if (actOrderNo != null) {
-		        hql.append(" AND actOrderNo = :actOrderNo");
-		    }
-
-		    // 條件：檔期編號
-		    if (schdNo != null) {
-		        hql.append(" AND schdNo = :schdNo");
-		    }
-
-		    // 條件：訂單狀態
-		    if (orderStatus != null) {
-		        hql.append(" AND orderStatus = :orderStatus");
-		    }
-
-		    // 構建查詢
-		    Query<ActOrder> query = getSession().createQuery(hql.toString(), ActOrder.class);
-
-		    // 設置條件的參數值
-		    if (memNO != null) {
-		        query.setParameter("memNO", memNO);
-		    }
-		    if (actOrderNo != null) {
-		    	query.setParameter("actOrderNo", actOrderNo);
-		    }
-		    if (schdNo  != null) {
-		        query.setParameter("schdNo", schdNo);
-		    }
-		    if (orderStatus != null) {
-		        query.setParameter("orderStatus", orderStatus);
-		    }
-		    // 返回查詢結果
-		    return query.list();
 	}
 
 	
