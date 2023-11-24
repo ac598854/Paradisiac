@@ -10,18 +10,18 @@ public interface SchdService {
 //	
 //	SchdVO updateSchd(SchdVO schd);
 	
-	SchdVO getSchdBySchdno(Integer schdno);
+	public SchdVO getSchdBySchdno(Integer schdno);
 
-	List<SchdVO> getAllSchds(int currentPage);
+	public List<SchdVO> getAllSchds(int currentPage);
 	
-	List<SchdVO> getAllSchds();//下拉選單
+	public List<SchdVO> getAllSchds();//下拉選單
 
-	int getPageTotal();
+	public int getPageTotal();
 	
-	SchdVO addOrUpdateSchd(SchdVO schd);
+	public SchdVO addOrUpdateSchd(SchdVO schd);
 	
-	void generateNewOrder(Integer schdNo, Integer aAtnNum);
+	public void generateNewOrder(Integer schdNo, Integer aAtnNum);
 	
-	void cancelOrder(Integer schdNo, Integer aAtnNum);
+	public void cancelOrder(Integer schdNo, Integer aAtnNum);
 
 }
