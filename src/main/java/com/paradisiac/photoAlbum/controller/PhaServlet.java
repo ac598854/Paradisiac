@@ -59,7 +59,7 @@ public class PhaServlet extends HttpServlet {
 		if("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
+			//接收參數與錯誤處裡
 			Integer albNo = null;
 			try {
 				albNo = Integer.valueOf(req.getParameter("albNo").trim());
@@ -110,10 +110,9 @@ public class PhaServlet extends HttpServlet {
 				failureView.forward(req, res);
 				return;
 			}
-			/***************************2.開始新增資料***************************************/
+			//開始新增
 			phaSvc.addPha(phaVO);
-
-			/***************************3.新增完成,準備轉交(Send the Success view)***********/
+			
 			forwardPath = getAllPha(req, res);
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
 			successView.forward(req, res);
@@ -122,11 +121,11 @@ public class PhaServlet extends HttpServlet {
 		if("insertPhoto".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			/***************************1.接收請求參數****************************************/
+			//接收參數
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
-			/***************************2.開始查詢資料****************************************/
+			
 			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
-			/***************************3.查詢完成,準備轉交(Send the Success view)************/
+			
 			req.setAttribute("phaVO", phaVO);
 			forwardPath = "/back-end/photo/addPhoto.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
@@ -134,10 +133,7 @@ public class PhaServlet extends HttpServlet {
 		}
 		//刪除相片
 		if("delete".equals(action)) {
-			/***************************1.接收請求參數****************************************/
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
-
-			/***************************2.開始查詢資料****************************************/
 			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
 		}
 		//查單筆相簿(含所有照片)
@@ -152,11 +148,11 @@ public class PhaServlet extends HttpServlet {
 		if("getOne_For_Update".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			/***************************1.接收請求參數****************************************/
+			
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
-			/***************************2.開始查詢資料****************************************/
+			
 			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
-			/***************************3.查詢完成,準備轉交(Send the Success view)************/
+			
 			req.setAttribute("phaVO", phaVO);
 			forwardPath = "/back-end/pha/updateOnePha.jsp";//updateOnePha.jsp
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
@@ -210,7 +206,7 @@ public class PhaServlet extends HttpServlet {
 		
 	}//doPost
 	
-	//查全部可瀏覽的頁數===========================================================
+	//查全部可瀏覽的頁數
 	private String getAllPha(HttpServletRequest req, HttpServletResponse res) { //從ListAll請求
 		String page = req.getParameter("page"); //網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
@@ -227,7 +223,7 @@ public class PhaServlet extends HttpServlet {
 
 		return "/back-end/pha/listAllPha.jsp";
 	}
-	//查相簿的所有照片=============================================================
+	//查相簿的所有照片
 	private String getAllPho(HttpServletRequest req, HttpServletResponse res) {
 
 		Integer albNo = null;
@@ -243,12 +239,16 @@ public class PhaServlet extends HttpServlet {
 		
 		System.out.println("有取得會員編號"+memnoInt);
 				
-		//會員查詢相簿 & 後台員工查詢相簿
+		//會員查詢相簿
 		if(memnoInt != null) {
-			albNo = phaSvc.getPhaByMem((Integer) memnoInt);	
-			System.out.println(memnoInt + "取得相簿編號: "+albNo);
-			req.setAttribute("albNo", albNo);
-		}else {
+			albNo = phaSvc.getPhaByMem((Integer) memnoInt);				
+			if(albNo != null) {	//有建立相簿
+				System.out.println(memnoInt + "取得相簿編號: "+albNo);				
+			}else { //尚未有相簿
+				return "/front-end/members/listOnePha_not_found.jsp";
+			}
+			
+		}else { //後台員工查詢相簿(一位會員一本相簿)
 			albNo = Integer.valueOf(req.getParameter("albNo"));
 			System.out.println("後台取得相簿編號: "+albNo);
 		}
@@ -265,11 +265,10 @@ public class PhaServlet extends HttpServlet {
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
 		
-		if(memnoInt != null) {
-			albNo = phaSvc.getPhaByMem(memno);
+		if(memnoInt != null) { //會員查詢
 			req.setAttribute("albNo", albNo);		
 			return "/front-end/members/listOnePha_mem.jsp";
-		}else {
+		}else { //員工查詢
 			return "/back-end/pha/listOnePha.jsp";
 		}
 			

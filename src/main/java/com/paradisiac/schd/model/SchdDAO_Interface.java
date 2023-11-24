@@ -6,9 +6,6 @@ import java.util.Set;
 import com.paradisiac.schd.model.SchdVO;
 
 public interface SchdDAO_Interface {
-//    public int insert(SchdVO schdVO);
-//    
-//    public SchdVO update(SchdVO schdVO);
     
     public SchdVO findByPrimaryKey(Integer schdNO);
     
@@ -19,4 +16,8 @@ public interface SchdDAO_Interface {
 	long getTotal();
 	
 	public SchdVO insertOrUpdate(SchdVO schdVO);
+	
+	public void addPaidNum(Integer schdNo, Integer aAtnNum);
+	
+	public void reducePaidNum(Integer schdNo, Integer aAtnNum);
 }

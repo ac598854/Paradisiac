@@ -319,11 +319,6 @@ ul.navigation {
 
 			<li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
 			<!-- 企劃 -->
-			<ul class="sub-menu" id="submenu-1">
-				<li><a href="#">最新消息</a></li>
-				<li><a href="#">客服機器人</a></li>
-			</ul>
-
 			<!--訂房-->
 			<li class="sidebar-title" data-toggle="submenu-2">訂房系統管理</li>
 			<ul class="sub-menu" id="submenu-2">
@@ -350,9 +345,6 @@ ul.navigation {
 			<li class="sidebar-title" data-toggle="submenu-3">會員管理</li>
 			<ul class="sub-menu" id="submenu-3">
 				<li><a
-					href="${pageContext.request.contextPath}/back-end/members/MembersCPB.jsp">會員管理</a>
-				</li>
-				<li><a
 					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a>
 				</li>
 				<li><a
@@ -376,9 +368,8 @@ ul.navigation {
 					href="${pageContext.request.contextPath}/back-end/schd/add_schd.jsp">建立新檔期</a>
 				</li>
 				<li><a
-					href="${pageContext.request.contextPath}/back-end/actorder/ActCPB.jsp">活動訂單管理</a>
+					href="${pageContext.request.contextPath}/back-end/actorder/ActLPB.jsp">活動訂單管理</a>
 				</li>
-				<li><a href="#">活動參加人名單管理</a></li>
 
 			</ul>
 			<!--人資-->

@@ -45,4 +45,14 @@ public class SchdServiceImpl implements SchdService{
 		return dao.insertOrUpdate(schd);
 	}
 
+	@Override
+	public void generateNewOrder(Integer schdNo, Integer aAtnNum) {		
+		dao.addPaidNum(schdNo, aAtnNum);
+	}
+	
+	@Override
+	public void cancelOrder(Integer schdNo, Integer aAtnNum) {		
+		dao.reducePaidNum(schdNo, aAtnNum);
+	}
+
 }

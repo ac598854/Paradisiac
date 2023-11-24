@@ -108,7 +108,7 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 		return pageQty;
 			
 	}
-	//用會員編號查相簿=======================================
+	//用會員編號查相簿編號=======================================
 	public Integer findByMem(Integer memno) {
 		String hql = "SELECT albNo FROM PhotoAlbumVO WHERE memNo = :memno";
 		Integer pha = (Integer) getSession().createQuery(hql, Integer.class).setParameter("memno", memno).uniqueResult();
