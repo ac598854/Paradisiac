@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/main/main.css">
@@ -21,42 +20,41 @@
  		top: -60px; 		
 } 	 */
 
-
 .addTable {
     height: 20px; 
-    width: 930px;   
+    width: 930px;    
 }
 
 
 .addTable td,
 .addTable input {
     height: 40px; 
-    width:150px;    
+    width:150px;
 }
 
 
-.addTable td, .addTable td {
+.addTable td {
 	text-align:center;
-    padding:0;
-       
+   padding:0;
 }
 .addTable select {
-    height: 40px; /* Adjust the height as needed */
+    height: 40px; 
    	position:relative;
    	top:8px;
-   
 }
 #addbutton {
-    height: 40px; /* Adjust the height as needed */
+    height: 40px; 
    	position:relative;
-    width:100%;
-   
+    width:100%;  
+    background-color: #007bff;
 }
 
+    
 /*=========================  */
 .table th, .table td {
 	text-align: center;
-	
+	vertical-align: middle;
+	border: 1px solid #dee2e6;
 }
 
 .table th {
@@ -68,6 +66,9 @@
 
 .table th:not(:last-child) {
 	border-right: 1px solid #dee2e6;
+}
+td {
+	border: 1px solid darkgray !important;   /* 更改表格框線顏色  */
 }
 
 .table .btn {
@@ -152,30 +153,30 @@
 					<li style="color: green">${message}</li>
 				</c:forEach>
 			</ul>
-		</div>
+			</div>
 		</c:if>
 		<%-- 成功表列 --%>
 		<!--===============新增房間=====================  -->
-		<div class="formTable">
-	<table class="addTable table-bordered">
+		  <table class="addTable table-bordered" >
         <tbody>            
             <tr>
             <form method="post"	action="<%=request.getContextPath()%>/roomnum.do">
                 <td colspan="2" class="text-center font-weight-bold bg-primary text-white">新增房間</td>
                 <td>房間編號：</td>
                 <td><input type="text" class="form-control" name="roomNum" value="" size="10"></td>            	
-                <td>房型編號：</td>              
+                <td>房型編號：</td>
+                <!-- <td><input type="text" class="form-control" name="TypeNo" value="" size="10"></td> -->
 				<td>
-					<!--================下拉選單===================  -->
-					<div class="form-group">
-						<select	class="form-control" id="roomTypeSelect" name="TypeNo">
-							<c:forEach var="roomType" items="${roomTypeList}">
-								<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
-							</c:forEach>
-						</select>
-					</div>							
-					<!--================下拉選單===================== -->
-				</td>               
+							<!--================下拉選單===================  -->
+								<div class="form-group">
+									<select	class="form-control" id="roomTypeSelect" name="TypeNo">
+										<c:forEach var="roomType" items="${roomTypeList}">
+											<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
+										</c:forEach>
+									</select>
+								</div>							
+							<!--================下拉選單===================== -->
+						</td>               
                 <td colspan="2" class="text-center">
                     <button type="submit" id="addbutton" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
                 </td>
@@ -184,7 +185,6 @@
             </tr>
         </tbody>
     </table>
-    </div>
 		<!--================回首頁=====================  -->
 		<!-- <a href="${pageContext.request.contextPath}/index.jsp">回首頁</a> -->
 		<!--================顯示頁數=====================  -->
@@ -283,7 +283,7 @@
 
     <c:choose>
         <c:when test="${currentPage != roomnumPageQty}">
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify&page=${roomnumPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify&page=${roomnumPageQty}" class="pagination-link">最後一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;
