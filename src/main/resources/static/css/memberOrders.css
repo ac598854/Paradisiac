@@ -12,18 +12,7 @@ body {
 
 .center-text {
     text-align: center;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    background-color: #eee;
-}
-
-nav li {
-    margin: 0 10px;
+    padding-top: 50px;
 }
 
 .container {
@@ -63,9 +52,10 @@ aside ul li button:hover {
     border: 1px solid #e1e1e1;
     margin-bottom: 8px;
     padding: 10px;
-    background: #fafafa;
+    background-color: rgba(255, 255, 255, 0.1); /* ������� */
     cursor: pointer;
     transition: background 0.3s ease;
+    color: white;
 }
 
 .order-item:hover {
@@ -102,38 +92,41 @@ button {
     cursor:pointer;
 }
 
-/* �憓�”�璅�撘� */
+/* 嚙踐��策嚙踝��蕭赯萇�蕭��蕭 */
 .table-responsive {
     margin-top: 20px;
 }
 
 .table {
     width: 100%;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.6);
     border-collapse: collapse;
+    color:white;
 }
 
 .table th,
 .table td {
     padding: 0.75rem;
     border: 1px solid #dee2e6;
+    color: black;
 }
 
 .narrow-table {
     max-width: 80%;
     margin: 0 auto;
+    color:white;
 }
 
 main {
     margin-bottom: 100px;
 }
 
-/* 分頁 */
+/* ���� */
 .pagination-center {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* 根據需要調整間距 */
+    margin-top: 20px; /* ����閬矽����� */
     color: black;
 }
 

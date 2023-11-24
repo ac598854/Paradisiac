@@ -75,12 +75,19 @@ public class ActOrderServlet extends HttpServlet {
 
 		/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
 		try {
+			
 			HttpSession session = req.getSession();
 			Integer memNo = (Integer) session.getAttribute("memno");
 //			String schdNoStr=req.getParameter("schdNo");
-			SchdVO schdVO = new SchdVO();
-			schdVO.setSchdNo(1);
+//			SchdVO schdVO = new SchdVO();
+//			schdVO.setSchdNo(1);
 
+			SchdVO SchdVO = (SchdVO) session.getAttribute("schdVO");
+
+			 Integer num = ((SchdVO) SchdVO).getSchdNo();
+			 System.out.println("印出"+num);
+			
+			
 			Integer aAtnNum = Integer.valueOf(req.getParameter("aAtnNum"));// 人數
 			Integer orderStatus = Integer.valueOf(1);
 			Integer orderAmount = Integer.valueOf(req.getParameter("orderAmount"));
@@ -101,7 +108,7 @@ public class ActOrderServlet extends HttpServlet {
 			}
 			/*************************** 2.開始新增訂單 ***************************************/
 			ActOrderService actOrderServ = new ActOrderService();
-			Integer actOrderNo = actOrderServ.addActOrder(memNo, schdVO, null, orderTime, aAtnNum, orderStatus, orderAmount,
+			Integer actOrderNo = actOrderServ.addActOrder(memNo, SchdVO, null, orderTime, aAtnNum, orderStatus, orderAmount,
 					null);// 抓訂單編號
 			System.out.println(actOrderNo);
 			ActOrder actOrder = actOrderServ.getOneByActOrderNo(actOrderNo);// 把訂單編號塞進物件(明細的Service編號是物件)

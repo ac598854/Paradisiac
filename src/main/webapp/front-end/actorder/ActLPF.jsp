@@ -5,14 +5,20 @@
 <%@ page import="com.paradisiac.csmessages.model.*"%>
 <%@ page import="com.paradisiac.csmessages.controller.*"%>
 <%@ page import="com.paradisiac.csmessages.service.*"%>
+<%@ page import="com.paradisiac.actorder.service.*"%>
+<%@ page import="com.paradisiac.actattendees.model.*"%>
+<%@ page import="com.paradisiac.actattendees.controller.*"%>
+<%@ page import="com.paradisiac.actattendees.service.*"%>
+<%@ page import="com.paradisiac.actorder.model.*"%>
+<%@ page import="com.paradisiac.actorder.controller.*"%>
 <%
 request.setCharacterEncoding("utf-8");
 
-// String keyword = request.getParameter("keyword") != null ? request.getParameter("keyword") : "";
-// Integer whereMemno = (Integer) session.getAttribute("memno");
-// CsMessagesService csMessagesService = new CsMessagesService();
-// List<CsMessagesVO> list = csMessagesService.getAllBycscontent(keyword, whereMemno);
-// pageContext.setAttribute("list", list);
+List<ActOrder> list = null;
+Integer Memno = (Integer) session.getAttribute("memno");
+ActOrderService actOrderServ = new ActOrderService();
+list = actOrderServ.getAll();
+pageContext.setAttribute("list", list);
 %>
 
 <!DOCTYPE html>

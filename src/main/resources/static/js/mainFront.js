@@ -72,12 +72,8 @@ function displayProducts(products) {
         return;
     }
 
-    products.forEach(product => {
-        // 檢查商品狀態，如果是下架狀態，則跳過
-        if (product.status === 'STATUSOff') {
-            return; // 跳過此次迴圈，不渲染該商品
-        }
-
+    // 定義一個幫助函數來渲染商品項目
+    function renderProduct(product, promotionDiscount) {
         var productDiv = document.createElement('div');
         productDiv.className = 'productCard';
 
@@ -93,28 +89,77 @@ function displayProducts(products) {
         productPrice.innerText = "NT$ " + product.price;
         productDiv.appendChild(productPrice);
 
-        // 新增Add To Cart按鈕
+        // 新增 Add To Cart 按鈕
         var addToCartButton = document.createElement('button');
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
         addToCartButton.addEventListener('click', function() {
-            addToCart(product.productName, product.price, product.description,product.stock,product.productId);
+            addToCart(product.productName, product.price, product.description, product.stock, product.productId);
         });
 
-        // 設置點擊事件，不再綁定原本的addToCart函數
         addToCartButton.addEventListener('click', function(event) {
             event.stopPropagation();
-        })// 阻止事件冒泡到父元素
+        });
 
         productDiv.appendChild(addToCartButton);
 
-        productDiv.onclick = function() {
-            window.location.href = projectName + `/product.html?productId=${product.productId}`;
-        };
+        // 添加點擊事件來觸發模態框
+        productDiv.addEventListener('click', function() {
+            showProductDetailsModal(product);
+        });
+
+        console.log("if之前"+promotionDiscount);
+        // 如果有相符的促銷折扣，則顯示在商品價格下面
+        if (promotionDiscount) {
+            var discountText = document.createElement('p');
+            discountText.innerText = `Discount: ${promotionDiscount}`;
+            productDiv.appendChild(discountText);
+        }
+
         productsArea.appendChild(productDiv);
+    }
+
+    // 對每個商品進行渲染
+    products.forEach(product => {
+        // 檢查商品狀態，如果是下架狀態，則跳過
+        if (product.status === 'STATUSOff') {
+            return; // 跳過此次迴圈，不渲染該商品
+        }
+
+        // 在渲染商品前，先取得促銷資訊
+        getPromotion().then(promotions => {
+            let foundPromotion = null;
+
+            for (const promotionInfo of Object.values(promotions)) {
+                if (promotionInfo.productNo === product.productId) {
+                    foundPromotion = promotionInfo;
+                    break; // 找到符合的促銷資訊後即停止搜尋
+                }
+            }
+
+            const promotionDiscount = foundPromotion ? foundPromotion.discount : null;
+            renderProduct(product, promotionDiscount);
+        }).catch(error => {
+            console.error('Error fetching promotions:', error);
+            renderProduct(product, null); // 如果取得失敗，渲染商品但沒有促銷資訊
+        });
     });
 }
 
+//==================================顯示商品詳情的模態框函數==============================================
+function showProductDetailsModal(product) {
+    // 更新模態框內容的代碼保持不變
+    document.getElementById('modalProductName').innerText = product.productName;
+    document.getElementById('modalProductImage').src = product.imageUrl;
+    document.getElementById('modalProductPrice').innerText = "NT$ " + product.price;
+    document.getElementById('modalProductDescription').innerText = product.description;
+    document.getElementById('modelProductStock').innerText = "庫存剩餘： "+ product.stock + " 個";
+
+    // 顯示模態框的代碼保持不變
+    var productModal = new bootstrap.Modal(document.getElementById('productDetailModal'));
+    productModal.show();
+
+}
 
 //==============================加入購物車============================//
 const cart = {};
@@ -186,7 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItemCountElement = document.getElementById('cartItemCount');
     reload();
     getPromotion();
-	
+
 //            const cartButton = document.getElementById("shoppingCart");
 //            cartButton.addEventListener("click", function () {
 //                const cartPageURL = "cart.html";
@@ -244,7 +289,7 @@ function reload() {
                 for (const productName in data) {
                     cart[productName] = data[productName];
                 }
-				console.log(cart);
+                console.log(cart);
                 updateCartItemCount();
             }
         })
@@ -254,26 +299,30 @@ function reload() {
 };
 //========================getPromotion=================================//
 function getPromotion() {
-    fetch(projectName + '/PromotionListServlet', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('沒有取得回應');
+    return new Promise((resolve, reject) => {
+        fetch(projectName + '/PromotionListServlet', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
             }
         })
-        .then(data => {
-        	console.log(data);
-        })
-        .catch(error => {
-            console.log(error);
-        });
-};
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('沒有取得回應');
+                }
+            })
+            .then(data => {
+                resolve(data);
+            })
+            .catch(error => {
+                console.log(error);
+                reject(error); // 在發生錯誤時 reject Promise
+            });
+    });
+}
+
 //========================商品搜尋功能====================================//
 function searchProducts() {
     const query = document.getElementById('searchInput').value;
