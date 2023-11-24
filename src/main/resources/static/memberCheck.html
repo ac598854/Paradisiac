@@ -68,16 +68,23 @@
         }
 
         label {
-            margin: 10px 0;
+            display: block; /* 讓每個標籤都獨自占一行 */
+            margin: 10px 0; /* 在標籤上下添加外邊距 */
         }
 
+
         input[type="text"], input[type="tel"], select {
-            width: 100%;
+            width: 60%; /* 或者您想要的任何百分比，讓輸入框看起來更窄 */
+            margin: 10px auto; /* 增加上下外邊距並水平居中 */
+            display: block; /* 確保每個輸入框都會顯示在新的一行 */
             padding: 10px;
             margin-bottom: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
             background-color: rgba(255, 255, 255, 0.8);
+            margin-left: 0; /* 左外邊距設為 0，靠左對齊 */
+            margin-right: auto; /* 右外邊距自動，將元素對齊到左邊 */
+
         }
 
         /* 按鈕樣式 */
@@ -155,9 +162,37 @@
             <input type="tel" id="recipient-phone" name="recipient-phone" pattern="[0-9]{10}" required>
             <span class="error-message" style="color: red; display: none;">請輸入收件人電話！</span>
 
-            <label for="recipient-address">收件人地址:</label>
-            <input type="text" id="recipient-address" name="recipient-address" required>
-            <span class="error-message" style="color: red; display: none;">請輸入收件人地址！</span>
+            <label for="city">縣市:</label>
+            <select id="city" name="city" required>
+                <option value="">選擇縣市</option>
+                <!-- 在這裡添加所有台灣的縣市 -->
+                <option value="台北市">台北市</option>
+                <option value="新北市">新北市</option>
+                <option value="桃園市">桃園市</option>
+                <option value="台中市">台中市</option>
+                <option value="台南市">台南市</option>
+                <option value="高雄市">高雄市</option>
+                <option value="基隆市">基隆市</option>
+                <option value="新竹市">新竹市</option>
+                <option value="新竹縣">新竹縣</option>
+                <option value="苗栗縣">苗栗縣</option>
+                <option value="彰化縣">彰化縣</option>
+                <option value="南投縣">南投縣</option>
+                <option value="雲林縣">雲林縣</option>
+                <option value="嘉義市">嘉義市</option>
+                <option value="嘉義縣">嘉義縣</option>
+                <option value="屏東縣">屏東縣</option>
+                <option value="宜蘭縣">宜蘭縣</option>
+                <option value="花蓮縣">花蓮縣</option>
+                <option value="台東縣">台東縣</option>
+                <option value="澎湖縣">澎湖縣</option>
+                <option value="金門縣">金門縣</option>
+                <option value="連江縣">連江縣</option>
+
+            </select>
+            <label for="recipient-address">街道和門牌號碼:</label>
+            <input type="text" id="recipient-address" name="recipient-address" placeholder="例：信義路100號" required>
+            <span class="error-message" style="color: red; display: none;">請輸入街道和門牌號碼！</span>
 
             <!-- 支付方式的下拉選單 -->
             <select id="payment-method" name="payment-method" required onchange="updateStatus(this.value)">
@@ -399,10 +434,14 @@
 
     //==================================提交訂單=============================================
     function submitOrder(memNo) {
-        // 獲取收件人名稱和地址
+        // 獲取收件人名稱、電話、選擇的城市和街道門牌
         const recipientName = document.getElementById('recipient-name').value;
         const recipientPhone = document.getElementById('recipient-phone').value;
-        const recipientAddress = document.getElementById('recipient-address').value;
+        const selectedCity = document.getElementById('city').value;
+        const streetAddress = document.getElementById('recipient-address').value;
+
+        // 組合完整地址
+        const fullAddress = selectedCity + streetAddress;
 
         // 從sessionStorage中獲取購物車項目
         const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
@@ -428,7 +467,7 @@
         const orderData = {
             orderName: recipientName,
             orderPhone: recipientPhone,
-            address: recipientAddress,
+            address: fullAddress,
             status: orderStatus,
             totalAmount: calculateTotalAmount(cartItems),
             buyItemList: buyItemList
