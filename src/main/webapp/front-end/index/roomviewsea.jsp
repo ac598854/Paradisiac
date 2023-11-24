@@ -220,7 +220,6 @@
 	      <p>床型：雙人床 150cm*200cm</p>
 	      <p>特色：無邊際海景、獨立陽台、中央空調、免費無線上網服務...</p>
 
-        <button type="button">立即訂房</button>
 
         <div class="additional-info">
           <h3>訂房須知</h3>
