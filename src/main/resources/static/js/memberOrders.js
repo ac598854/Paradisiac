@@ -4,31 +4,31 @@ let pathName = window.document.location.pathname;
 let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
- $(document).ready(function(){
-        // 加載頁尾
-        $("#footer").load(projectName + "/front-end/index/footer.jsp");
+$(document).ready(function(){
+    // 加載頁尾
+    $("#footer").load(projectName + "/front-end/index/footer.jsp");
 
-        // 處理會員登入
-        $.ajax({
-            type: "POST",
-            url: projectName + "/front-end/members/members.do?action=indexLogin",
-            success: function(data) {
-                // ... 登入邏輯
-                const responseMessage = parseInt(data);
-                var guided = projectName + '/front-end/index/guided.jsp';
-                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
-                if (responseMessage === 1) {
-                    $("#dynamicContent").load(guided);
-                } else if (responseMessage === 0) {
+    // 處理會員登入
+    $.ajax({
+        type: "POST",
+        url: projectName + "/front-end/members/members.do?action=indexLogin",
+        success: function(data) {
+            // ... 登入邏輯
+            const responseMessage = parseInt(data);
+            var guided = projectName + '/front-end/index/guided.jsp';
+            var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+            if (responseMessage === 1) {
+                $("#dynamicContent").load(guided);
+            } else if (responseMessage === 0) {
 
-                    $("#dynamicContent").load(guidedSignout);
-                }
-            },
-            error: function(error) {
-                console.log("AJAX error:", error);
+                $("#dynamicContent").load(guidedSignout);
             }
-        });
+        },
+        error: function(error) {
+            console.log("AJAX error:", error);
+        }
     });
+});
 
 
 //==================================當文檔加載完成後，執行以下函數==============================================
@@ -145,13 +145,23 @@ function toggleOrderDetails(order, detailsRow) {
 //==================================創建訂單詳情表格==============================================
 function createOrderDetailsTable(orderItems) {
     let table = '<table class="small-table" style="width: 100%">';
-    table += '<tr><th>商品名稱</th><th>數量</th><th>金額</th></tr>';
+    table += '<tr><th>商品圖片</th><th>商品名稱</th><th>數量</th><th>金額</th></tr>';
     orderItems.forEach(item => {
-        table += `<tr><td>${item.productName}</td><td>${item.quantity}</td><td>${item.amount}</td></tr>`;
+        let formattedQuantity = item.quantity.toLocaleString('zh-TW');
+        let formattedAmount = `NT$${item.amount.toLocaleString('zh-TW')}`;
+        // 在每行中添加商品圖片
+        table += `<tr>
+                    <td><img src="${item.imageUrl}" alt="${item.productName}" style="width:50px; height:auto;"></td>
+                    <td>${item.productName}</td>
+                    <td>${formattedQuantity}</td>
+                    <td>${formattedAmount}</td>
+                  </tr>`;
     });
     table += '</table>';
     return table;
 }
+
+
 
 //==================================訂單分頁實現==============================================
 function createPagination(page, memno) {

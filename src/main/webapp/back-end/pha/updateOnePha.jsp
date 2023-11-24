@@ -65,8 +65,9 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="albumCover" id = "albumCover">相簿封面</label>
-                        <img id="albPhoto" src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo}" alt="相簿封面" class="img-fluid">
-                        <input type="file" class="form-control-file" id="albPhoto" name="albPhoto" accept="image/*">
+                        <img src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo}" alt="相簿封面" class="img-fluid">
+                        <input type="file" class="form-control-file" id="albPhoto"
+							name="albPhoto" accept="image/*">							
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -80,7 +81,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>相片封面預覽區</label>
-                        <img id="photoPreview" src="#" alt="封面預覽" style="max-width: 100%; max-height: 200px;">
+                        <img name="photoPreview" src="#" alt="封面預覽" style="width: 200px; height: 200px; object-fit: cover;">
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -94,18 +95,18 @@
     </div>
 
     <script>
-        // 預覽相片
-        document.getElementById('albumCover').addEventListener('change', function(e) {
-            const preview = document.getElementById('photoPreview');
-            const file = e.target.files[0];
-            const reader = new FileReader();
+    // 預覽相片
+    document.getElementById('albPhoto').addEventListener('change', function(e) {
+        const preview = document.getElementById('photoPreview');
+        const file = e.target.files[0];
+        const reader = new FileReader();
 
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            };
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
 
-            reader.readAsDataURL(file);
-        });
+        reader.readAsDataURL(file);
+    });
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

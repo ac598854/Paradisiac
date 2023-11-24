@@ -30,7 +30,7 @@ public class SchdVO implements java.io.Serializable{
 	
 //----多方----	
 	@OneToMany(mappedBy = "schdVO", cascade = CascadeType.ALL)
-	@OrderBy("act_order_no desc")
+	@OrderBy("act_order_no asc")
 	private Set<ActOrder> actorders;	
 
 	public Set<ActOrder> getActorders() {
@@ -72,7 +72,7 @@ public class SchdVO implements java.io.Serializable{
 	private Timestamp cutTime;
 	
 	@Column(name = "appl_status", columnDefinition = "TINYINT")//1:報名中 2:成團 3:未成團 4:因故取消
-	private Integer applStatus;
+	private Integer applStatus; //1:報名中 2:成團 3:未成團 4:因故取消
 	
 	//建構子
 	public SchdVO() {

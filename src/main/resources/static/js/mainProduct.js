@@ -5,30 +5,30 @@ let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 
 //==================================取得會員servlet URL==============================================
 $(document).ready(function(){
-        // 加載頁尾
-        $("#footer").load(projectName + "/front-end/index/footer.jsp");
+    // 加載頁尾
+    $("#footer").load(projectName + "/front-end/index/footer.jsp");
 
-        // 處理會員登入
-        $.ajax({
-            type: "POST",
-            url: projectName + "/front-end/members/members.do?action=indexLogin",
-            success: function(data) {
-                // ... 登入邏輯
-                const responseMessage = parseInt(data);
-                var guided = projectName + '/front-end/index/guided.jsp';
-                var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
-                if (responseMessage === 1) {
-                    $("#dynamicContent").load(guided);
-                } else if (responseMessage === 0) {
+    // 處理會員登入
+    $.ajax({
+        type: "POST",
+        url: projectName + "/front-end/members/members.do?action=indexLogin",
+        success: function(data) {
+            // ... 登入邏輯
+            const responseMessage = parseInt(data);
+            var guided = projectName + '/front-end/index/guided.jsp';
+            var guidedSignout= projectName + '/front-end/index/guidedSignout.jsp';
+            if (responseMessage === 1) {
+                $("#dynamicContent").load(guided);
+            } else if (responseMessage === 0) {
 
-                    $("#dynamicContent").load(guidedSignout);
-                }
-            },
-            error: function(error) {
-                console.log("AJAX error:", error);
+                $("#dynamicContent").load(guidedSignout);
             }
-        });
+        },
+        error: function(error) {
+            console.log("AJAX error:", error);
+        }
     });
+});
 
 
 //==================================當頁面加載時取得productId並調用API==============================================

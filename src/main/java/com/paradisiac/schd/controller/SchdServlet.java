@@ -15,9 +15,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.paradisiac.act.model.ActVO;
 import com.paradisiac.act.service.ActServiceImpl;
+import com.paradisiac.actorder.model.ActOrder;
+import com.paradisiac.actorder.service.ActOrderService;
 import com.paradisiac.schd.model.SchdVO;
 import com.paradisiac.schd.service.SchdServiceImpl;
 
@@ -25,12 +28,14 @@ import com.paradisiac.schd.service.SchdServiceImpl;
 @WebServlet("/schd.do")
 public class SchdServlet extends HttpServlet {
 	
-	private SchdServiceImpl schdSvc;
+	private SchdServiceImpl schdSvc; 
 	private ActServiceImpl actSvc;
+	private ActOrderService actorderSvc;
 	
 	public void init() throws ServletException{
 		schdSvc = new SchdServiceImpl();
 		actSvc = new ActServiceImpl();
+		actorderSvc = new ActOrderService();
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -56,7 +61,7 @@ public class SchdServlet extends HttpServlet {
 			break;
 		case "getOne_For_Display": //前端-報名檔期
 			getOneForDisplay(req, res);
-			forwardPath = "/front-end/act_schd/Test_order_schd.jsp";
+			res.sendRedirect(req.getContextPath() + "/front-end/actorder/ActCheckOut.jsp");
 			break;
 //		case "getOneSchdAllOrders":
 //			getOneForDisplay(req, res);
@@ -73,8 +78,17 @@ public class SchdServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+		//測試新增與取消訂單, 修改檔期報名人數
+		case "add_atn":
+			addatn(req, res);
+			forwardPath = "/back-end/schd/update_schd.jsp";
+			break;
+		case "reduce_atn":
+			reduceatn(req, res);
+			forwardPath = "/back-end/schd/update_schd.jsp";
+			break;
 		default:
-			forwardPath = "/back-end/schd/add_schd.jsp";
+			forwardPath = "/front-end/act_schd/Test_order_schd.jsp";
 	}
 		res.setContentType("text/html; charset=UTF-8");
 		RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
@@ -85,24 +99,33 @@ public class SchdServlet extends HttpServlet {
 	//新增或修改
 	public String insertOrUpdate(HttpServletRequest req, HttpServletResponse res) throws ParseException {
 		List<String> errorMsgs = new LinkedList<String>();
-		Integer schdNo = null;
-		//修改
-		if(req.getParameter("schdNo") != null && req.getParameter("schdNo").length() != 0) {
-			schdNo = Integer.valueOf(req.getParameter("schdNo"));	
-		}	
+		Integer schdNo = null;		
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
-		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
-//		Integer paidNum = Integer.valueOf(req.getParameter("paidNum"));
-		
+		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));		
 		Timestamp ancDate = convertTmp(req.getParameter("ancDate"));  
 		Timestamp drpoSchdDate = convertTmp(req.getParameter("drpoSchdDate"));
 		Timestamp holdDate = convertTmp(req.getParameter("holdDate"));
 		Timestamp aplyTime = convertTmp(req.getParameter("aplyTime"));
 		Timestamp cutTime = convertTmp(req.getParameter("cutTime"));
-		Integer applStatus = Integer.valueOf(req.getParameter("applStatus"));
+		Integer applStatus = Integer.valueOf(req.getParameter("applStatus"));//1:報名中 2:成團 3:未成團 4:因故取消
+		SchdVO schdVO = null;
 		
-		ActVO act = actSvc.getActByActno(actNo);
-		SchdVO schdVO = new SchdVO(act, unitPrice, holdDate, aplyTime, cutTime, applStatus);
+		//修改呼叫物件(活動編號 檔期編號不可更新), 新增new物件
+		if(req.getParameter("schdNo") != null && req.getParameter("schdNo").length() != 0) {
+			schdNo = Integer.valueOf(req.getParameter("schdNo"));
+			schdVO = schdSvc.getSchdBySchdno(schdNo);
+			schdVO.setUnitPrice(unitPrice);
+			schdVO.setAncDate(ancDate);
+			schdVO.setDrpoSchdDate(drpoSchdDate);
+			schdVO.setHoldDate(holdDate);		
+			schdVO.setCuttime(cutTime);
+			schdVO.setAplytime(aplyTime);
+			schdVO.setApplStatus(applStatus);;
+			
+		}else {
+			ActVO act = actSvc.getActByActno(actNo);
+			schdVO = new SchdVO(act, unitPrice, holdDate, aplyTime, cutTime, applStatus);			
+		}	
 		
 		//錯誤處理
 //		if(lowNum > highNum) {
@@ -117,10 +140,7 @@ public class SchdServlet extends HttpServlet {
 		if(req.getParameter("drpoSchdDate") != null) {
 			schdVO.setDrpoSchdDate(drpoSchdDate);
 		}
-		
-		if(req.getParameter("schdNo") != null && req.getParameter("schdNo").length() != 0) {
-			schdVO.setSchdNo(schdNo);
-		}
+
 		
 		//如果有錯誤處理輸出
 		if (!errorMsgs.isEmpty()) {
@@ -133,21 +153,35 @@ public class SchdServlet extends HttpServlet {
 			}
 			
 		}
-		//開始新增或修改
+		//如果檔期狀態改成3-取消 (新增訂單狀態固定為1-報名中)
+		//set訂單狀態取消 1 -> 0
+		if(applStatus == 3) {
+			actorderSvc.modifyStatus(schdNo, 0);
+			
+		}
+		
+		//開始新增或修改檔期物件
 		schdSvc.addOrUpdateSchd(schdVO);
 		req.setAttribute("schdVO", schdVO);
 		
 		Set<SchdVO> actSchdSet = actSvc.getSchdByActno(actNo);
 		req.setAttribute("actSchdSet", actSchdSet);		
 		ActVO actVO = actSvc.getActByActno(actNo);
+		
 		req.setAttribute("actVO", actVO);
 		return "/back-end/act/list_act_schd.jsp";
+	
+
 	}
 	//查單筆
 	public SchdVO getOneForDisplay(HttpServletRequest req, HttpServletResponse res) {
 		Integer schdNo = Integer.valueOf(req.getParameter("schdNo"));
 		SchdVO schdVO = schdSvc.getSchdBySchdno(schdNo);
 		req.setAttribute("schdVO", schdVO);
+		//--供前端活動訂單取用session
+		HttpSession session = req.getSession();
+		session.setAttribute("schdVO", schdVO);
+System.out.println("存入sesion檔期"+schdVO.getSchdNo());	
 		return schdVO;
 	}
 	
@@ -159,6 +193,34 @@ public class SchdServlet extends HttpServlet {
 		Date dateUtil = (Date) sdf.parse(inputDate); //input 是 util.Date (bootstrap)	
 		java.sql.Date dateSQL = new java.sql.Date(dateUtil.getTime());//轉成SQL 
 		return new Timestamp(dateSQL.getTime());
+	}
+	//測試新增訂單增加檔期付款人數
+	public void addatn(HttpServletRequest req, HttpServletResponse res) {
+		Integer schdno = Integer.valueOf(req.getParameter("schdNo"));
+		Integer num = Integer.valueOf(req.getParameter("num"));
+		try {
+			System.out.println("本來"+schdSvc.getSchdBySchdno(schdno).getPaidNum());
+			//把訂單參加人加到檔期報名人數
+			schdSvc.generateNewOrder(schdno, num);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	//測試取消訂單減少檔期付款人數
+	public void reduceatn(HttpServletRequest req, HttpServletResponse res) {
+		Integer schdno = Integer.valueOf(req.getParameter("schdNo"));
+		Integer num = Integer.valueOf(req.getParameter("num"));
+		try {
+			System.out.println("本來"+schdSvc.getSchdBySchdno(schdno).getPaidNum());
+			//把訂單參加人扣掉檔期報名人數
+			schdSvc.cancelOrder(schdno, num);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

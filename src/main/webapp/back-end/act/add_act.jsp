@@ -96,7 +96,7 @@
 							</tr>
 							<tr>
 								<th>活動狀態</th>
-								<td><input type="radio" name=actStatus value="true" ${actVO.actStatus? 'checked':'' }>上架
+								<td>
 									<input type="radio" name=actStatus value="false" ${actVO.actStatus? '':'checked' }>下架</td>
 							</tr>
 							<tr>
@@ -106,9 +106,10 @@
 						</table>
 					</div>
 					<div id="actImageBlock">
-						<label id="actPhoto1">相簿封面</label>
-						<input type="file" class="form-control-file" name="actPho1" accept="image/*">
+						<input type="file" class="form-control-file" name="actPho1" id="actPho1" accept="image/*">
+						<img id="photoPreview" src="#" alt="封面預覽" style="width: 200px; height: 200px; object-fit: cover;">
 					</div>
+					
 				</div>
 				<div id="actContent">
 					<p><b>活動內容:</b></p>
@@ -119,6 +120,20 @@
 			</form>
 		</div>
 	</div>
+	<script>
+        // 預覽相片
+        document.getElementById('actPho1').addEventListener('change', function(e) {
+            const preview = document.getElementById('photoPreview');
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
 
 </body>
 </html>

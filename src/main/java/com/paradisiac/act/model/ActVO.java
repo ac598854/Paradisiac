@@ -18,15 +18,6 @@ import java.util.Set;
 @Table(name = "act")
 public class ActVO  implements java.io.Serializable{
 	
-//	private Integer actNo;
-//	private String actName;
-//	private Integer unitPrice;
-//	private Integer lowNum;
-//	private Integer highNum;
-//	private boolean actStatus;
-//	private String actContent;
-//	private byte[] actPho1;
-//	private byte[] actPho2;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
 	@Column(name = "act_no", updatable = false)
@@ -46,7 +37,7 @@ public class ActVO  implements java.io.Serializable{
 	
 //==============================
 	@OneToMany(mappedBy = "act", cascade = CascadeType.ALL)
-//	@OrderBy("schd_no asc")
+	@OrderBy("schd_no asc")
 	private Set<SchdVO> schds;
 	
 	public Set<SchdVO> getSchds() {

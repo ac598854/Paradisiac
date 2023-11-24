@@ -63,7 +63,7 @@ public class ActServlet extends HttpServlet{
 				forwardPath = insertOrUpdate(req, res);
 				break;
 			case "getAll_Front"://回傳前端活動頁面
-				getAllActiveActs(req, res); 
+				getAllActiveActs(req, res);
 				forwardPath = "/front-end/act_schd/select_act_front.jsp";
 				break;
 			case "getAllSchd_Schd": //回傳前端檔期頁面
@@ -110,16 +110,11 @@ public class ActServlet extends HttpServlet{
 		}
 		String actName = req.getParameter("actName");
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
-		Integer lowNum = Integer.valueOf(req.getParameter("lowNum"));
-		Integer highNum = Integer.valueOf(req.getParameter("highNum"));
 		boolean actStatus = Boolean.valueOf(req.getParameter("actStatus"));
+System.out.println("活動狀態:"+actStatus);
 		String actContent = req.getParameter("actContent");
 
 		byte[] actPho1 = null;
-		
-		if(lowNum > highNum) {
-			errorMsgs.add("成團人數須小於上限人數");
-		}
 
 		// 開始打包
 		ActVO actVO = new ActVO(actName, unitPrice, actStatus, actContent);
@@ -139,7 +134,7 @@ public class ActServlet extends HttpServlet{
 		
 		if (actStatus == true) {
 System.out.println("有判斷status");
-			if (actSvc.getActiveSchdByActno(actNo) == null) {
+			if (actSvc.getActiveSchdByActno(actNo) == null || actSvc.getActiveSchdByActno(actNo).isEmpty()) {
 				errorMsgs.add("活動不存在有效檔期無法上架");
 			}
 		}

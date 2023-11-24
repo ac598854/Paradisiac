@@ -2,213 +2,336 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>購物車</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
-	rel="stylesheet">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>購物車</title>
+	<link rel="stylesheet"
+		  href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css"
+			rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 
 
-<style>
-body {
-	background-color: #fff5ee; /* 這裡的#808080代表灰色，你可以根據需要更改顏色 */
-	margin: 0; /* 可以清除body的預設margin，使背景色填滿整個頁面 */
-}
-/* 为包含"删除全部"按钮的<div>元素添加样式 */
-.delete-all-button {
-	position: absolute;
-	top: 30px;
-	right: 75px;
-	padding: 10px;
-}
+	<style>
+		.navbar, .navbar-light, .bg-light, .container-fluid {
+			background-color: transparent !important; /* 使導航欄透明 */
+		}
 
-table {
-	background-color: #ffffff;
-	margin-top: 100px;
-}
-/* 为表格的列添加样式以确保按钮不会遮挡内容 */
-.table th, .table td {
-	position: relative;
-}
+		/* 可能需要針對navbar下的所有子元素也設置透明背景 */
+		.navbar * {
+			background-color: transparent !important;
+		}
 
-/* 样式用于购物车为空消息 */
-#emptyCartMessage {
-	display: none;
-	text-align: center;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-}
+		/* "Shopping Mall" 文字的容器風格 */
+		.navbar-brand .brand-span {
+			background-color: rgba(255, 255, 255, 0.5); /* 設定半透明背景 */
+			padding: 0.2em 0.6em; /* 增加一些內邊距 */
+			border-radius: 5px; /* 輕微的圓角效果 */
+		}
+		/* "Shopping Mall" 文字的風格 */
+		.navbar-brand {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 可以選擇您喜歡的字體 */
+			font-size: 2em; /* 調整大小以符合您的設計 */
+			color: #ffffff; /* 根據您的背景圖像選擇合適的顏色 */
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 可選：添加文字陰影增加可讀性 */
+		}
 
-/* 使用伪元素添加空购物车图标 */
-#emptyCartMessage::before {
-	content: "\1F6D2";
-	/* Unicode字符编码，这里使用购物车图标 */
-	font-size: 100px;
-	display: block;
-}
+		/* 搜尋框樣式 */
+		#searchInput {
+			background-color: white; /* 設定背景為白色 */
+			border: 1px solid #ddd; /* 設定邊框顏色和粗細 */
+			border-radius: 4px; /* 如果需要，可以設定圓角 */
+			padding: 5px 10px; /* 設定內邊距 */
+			font-size: 16px; /* 設定文字大小 */
+			color: #333; /* 設定文字顏色 */
+		}
 
-#backtoshop {
-	position: absolute;
-	top: 10px; /* 調整 top 的值使按鈕出現在表格的上方 */
-	left: 10px; /* 調整 left 的值使按鈕出現在表格的左邊 */
-	right: 10px;
-	padding: 10px;
-	font-size: 2em; /* 調整字體大小為 2em 或其他你希望的大小 */
-	background-color: #00ffff;
-	color: #ff0000
-}
+		/* 搜尋按鈕樣式 */
+		#searchButton {
+			background-color: white; /* 設定背景為白色 */
+			border: 1px solid #ddd; /* 設定邊框顏色和粗細 */
+			border-radius: 4px; /* 如果需要，可以設定圓角 */
+			padding: 5px 10px; /* 設定內邊距 */
+			font-size: 16px; /* 設定文字大小 */
+			color: #333; /* 設定文字顏色 */
+			cursor: pointer; /* 設定鼠標樣式為點擊狀態 */
+		}
 
-.payInfoBox {
-	display: flex;
-	flex-direction: row; /* 將元素排列成水平方向 */
-	align-items: center;
-}
+		/* 當輸入框獲得焦點時 */
+		#searchInput:focus {
+			outline: none; /* 移除輸入框的聚焦邊框 */
+			border-color: #66afe9; /* 設定聚焦時的邊框顏色 */
+		}
 
-.totalPrice {
-	font-size: 1.5em; /* 修改字體大小為 1.5em 或其他你希望的大小 */
-}
+		/* 調整搜尋按鈕的位置以與輸入框對齊 */
+		#searchButton {
+			position: relative; /* 相對定位 */
+			top: -2px; /* 根據需要調整，以使按鈕與輸入框對齊 */
+		}
 
-.totalPrice span {
-	font-weight: bold;
-}
+		a {
+			color: white;
+			text-decoration: none;
+			background-color: transparent;
+		}
 
-.payInfoBox p {
-	margin: 10px 70px; /* 調整為你希望的間距值 */
-	white-space: nowrap;
-	display: inline-block;
-}
+		p {
+			margin-top: 100px;
+			margin-left: 600px;
+			margin-bottom: 1rem;
+			padding: 1px;
+		}
+		body {
+			background-color: rgba(255, 245, 238, 0.5); /* 半透明背景 */
+			background-image: url('https://cha103-29.s3.ap-northeast-1.amazonaws.com/pexels-jeff-ibera-1320755.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+			margin: 0;
+			padding: 0;
+			font-family: 'Arial', sans-serif;
+		}
 
-#back {
-	display: none;
-}
+		/* 確保所有內容都致中 */
+		.container {
+			text-align: center;
+		}
 
-  .hidden-td { 
-     display: none; 
-   } 
+		/* 確保 .checkoutBox 是 block 元素，允許 tfoot 自然流動 */
+		.checkoutBox {
+			display: block; /* 或者 'table' 如果它需要像表格一樣的布局 */
+			width: 100%; /* 或者 max-width 視您的設計而定 */
+			margin: auto; /* 致中對齊 */
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 如果需要陰影效果 */
+			border-radius: 10px; /* 如果需要圓角邊框 */
+			overflow: hidden; /* 如果有溢出內容需要隱藏 */
+			background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+			padding: 10px; /* 內邊距 */
+		}
 
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    justify-content: center;
-    text-align: center;
-    margin-top: 50px; /* 調整置中的位置 */
-}
-   .quantity-select {
-  text-align-last: center; /* 支援大部分瀏覽器的屬性 */
-}
-tfoot {
- 	margin-top: 3px;
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-}
+		/* 如果需要，為 tfoot 中的 td 添加額外的樣式以確保內容致中 */
+		tfoot td {
+			text-align: center; /* 致中內容 */
+			vertical-align: middle; /* 垂直居中 */
+			padding: 10px; /* 適當的內邊距 */
+		}
 
-tfoot tr {
-    display: table-row;
-}
+		/* 設置表格內容居中 */
+		.table th, .table td {
+			text-align: center; /* 使表格內容居中對齊 */
+			background-color: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */
+		}
 
-tfoot td {
-    display: table-cell;
-    padding: 20px; /* 可根據需要設置內邊距 */
-}
+		/* 設置結帳按鈕的樣式 */
+		button {
+			background-color: blue; /* 紅色背景 */
+			color: white; /* 白色文字 */
+			/* 其餘的按鈕樣式 */
+		}
 
-</style>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		/* 結帳欄位的樣式 */
+		.payInfoBox {
+			display: flex;
+			justify-content: center; /* 確保內容水平居中 */
+			align-items: center; /* 確保內容垂直居中 */
+			flex-direction: column; /* 內容垂直排列 */
+		}
+
+		/* 結帳欄位中的總計樣式 */
+		.totalPrice {
+			background-color: rgba(255, 255, 255, 0.5); /* 半透明白色背景 */
+			/* 其餘的總計樣式 */
+		}
+
+		/* 結帳按鈕的容器樣式 */
+		.checkoutButton {
+			display: flex;
+			justify-content: center; /* 使按鈕居中對齊 */
+			align-items: center; /* 確保按鈕垂直居中 */
+		}
+		/* 結帳按鈕自身 */
+		.checkoutButton button {
+			width: auto; /* 或者您想要的固定寬度 */
+			padding: 10px 20px; /* 按鈕的內邊距 */
+			background-color: #ff0000; /* 按鈕的背景顏色 */
+			color: #ffffff; /* 按鈕的文字顏色 */
+			border: none; /* 移除邊框 */
+			border-radius: 5px; /* 如果需要圓角邊框 */
+			margin-left: 150px;
+			cursor: pointer; /* 指針樣式的游標 */
+		}
+
+		/* 如果按鈕有 hover 效果 */
+		.checkoutButton button:hover {
+			background-color: #e60000; /* 鼠標懸停時的背景顏色 */
+		}
+
+		.checkoutFooter {
+			display: flex; /* 啟用 flex 布局 */
+			align-items: center; /* 垂直置中對齊 */
+			justify-content: space-between; /* 兩端對齊 */
+			padding: 10px; /* 添加一些內邊距 */
+			background-color: rgba(255, 255, 255, 0.5); /* 半透明背景 */
+		}
+
+		.checkoutFooter > div,
+		.checkoutFooter > button {
+			flex: 1; /* 讓每個子元素佔用相等的空間 */
+			text-align: center; /* 文字置中 */
+		}
+
+		/* 增加一些邊距於按鈕和標籤 */
+		.checkoutFooter button,
+		.checkoutFooter .form-check-label {
+			margin: 0 5px; /* 添加左右邊距 */
+		}
+
+		/* 確保tfoot內容在大容器中水平排列 */
+		tfoot {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 10px;
+			box-sizing: border-box; /* 防止padding影響整體寬度 */
+		}
+
+		/* 單獨的區塊如全選、總計等進行適當排列 */
+		tfoot > tr > td {
+			flex: 1; /* 每個單元格分配平等空間 */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0 10px; /* 每側的padding */
+		}
+
+		/* 針對結帳按鈕的特別樣式 */
+		tfoot .checkoutButton button {
+			background-color: #d9534f; /* 紅色背景 */
+			color: white; /* 白色文字 */
+			padding: 5px 15px; /* 內邊距 */
+			margin: 0 5px; /* 外邊距 */
+			border-radius: 4px; /* 圓角邊框 */
+		}
+
+		/* 對p元素的樣式進行調整，使其適合結帳區塊的大小 */
+		tfoot p {
+			margin: 0; /* 移除邊距 */
+			font-size: 14px; /* 字體大小 */
+		}
+
+		/* 調整結帳區塊的總體大小 */
+		#checkoutBar {
+			max-width: none; /* 移除最大寬度限制 */
+		}
+
+		/* 適應小尺寸屏幕 */
+		@media (max-width: 768px) {
+			tfoot {
+				flex-direction: column;
+			}
+			tfoot > tr > td {
+				padding: 5px 0; /* 縮小上下padding */
+			}
+		}
+
+
+	</style>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
 <body>
+<header class="flex-header">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/Paradisiac/front-end/index/index2.jsp">
+				<span class="brand-span">Homepage</span>
+			</a>
+			<a class="navbar-brand" href="/Paradisiac/productFront.html">
+				<span class="brand-span">Shopping Mall</span>
+			</a>
 
-	<div class="container" id="shopUrl">
-		<div>
-			<div>
-				<button id="backtoshop">
-					<a href="#" id="shoppingMallLink">
-					<i class="fas fa-shopping-cart"></i>商城首頁</a>
-				</button>
-			</div>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 		</div>
-		<table class="table table-bordered">
-			<thead>
-				<tr>
-					<th></th>
-					<th>商品名稱</th>
-					<th>價格</th>
-					<th>描述</th>
-					<th>數量</th>
-					<th>
-						<button class="btn btn-danger" onclick="removeAllProducts()"
-							id="deleteAll">删除全部</button>
-					</th>
-				</tr>
-			</thead>
-			<tbody id="productTableBody">
-			</tbody>
-		</table>
-		<table class="checkoutBox" id="checkoutBar">
-			<tfoot>
-				<tr>
-					<td class="carttitleBox">
-						<div class="form-check">
-							<input type="checkbox" class="form-check-input" id="selectAll">
-							<label class="form-check-label" for="selectAll">全選</label>
-						</div>
-					</td>
-					<td class="payInfoBox">
-						<p>
-							總價格: $<span id="totalAmount">0</span>
-						</p>
-						<p>
-							活動共折抵：<span><i>$</i>25,106</span>
-						</p>
-						<p>
-							結帳總金額：<span><i class="totalPriceMoney">$</i><i
-								class="totalPrice">35,766<i></i></i></span>
-						</p>
-					</td>
-					<td class="checkoutButton selected">
-						<div id="productInfo">
-							<form id="cartForm">
-								<input type="hidden" name="productJson" id="productJson">
-								<button class="btn btn-danger" type="button"
-									onclick="handleCheckout(event)">結帳</button>
-							</form>
-						</div>
-					</td>
-				</tr>
-			</tfoot>
-		</table>
+	</nav>
+</header>
+<div class="container" id="shopUrl">
+	<div>
+		<button id="backtoshop">
+			<a href="#" id="shoppingMallLink">
+				<i class="fas fa-shopping-cart"></i></a>
+		</button>
 	</div>
+	<table class="table table-bordered">
+		<thead>
+		<tr>
+			<th></th>
+			<th>商品名稱</th>
+			<th>價格</th>
+			<th>描述</th>
+			<th>數量</th>
+			<th>
+				<button class="btn btn-danger" onclick="removeAllProducts()"
+						id="deleteAll">删除全部</button>
+			</th>
+		</tr>
+		</thead>
+		<tbody id="productTableBody">
+		</tbody>
+	</table>
+	<table class="checkoutBox" id="checkoutBar">
+		<tfoot>
+		<tr>
+			<td class="carttitleBox">
+				<div class="form-check">
+					<input type="checkbox" class="form-check-input" id="selectAll">
+					<label class="form-check-label" for="selectAll">全選</label>
+				</div>
+			</td>
+			<td class="payInfoBox">
+				<p>
+					總價格: $<span id="totalAmount">0</span>
+				</p>
+				<p>
+					活動共折抵：<span><i>$</i>25,106</span>
+				</p>
+				<p>
+					結帳總金額：<span><i class="totalPriceMoney">$</i><i
+						class="totalPrice">35,766<i></i></i></span>
+				</p>
+			</td>
+			<td class="checkoutButton selected">
+				<div id="productInfo">
+					<form id="cartForm">
+						<input type="hidden" name="productJson" id="productJson">
+						<button class="btn btn-danger" type="button"
+								onclick="handleCheckout(event)">結帳</button>
+					</form>
+				</div>
+			</td>
+		</tr>
+		</tfoot>
 
-	<button id='back'>
-		<a href="#" id="shoppingMallLink2">購物商城</a>
-	</button>
+	</table>
+</div>
 
+<button id='back'>
+	<a href="#" id="shoppingMallLink2"></a>
+</button>
 
-	<div id="emptyCartMessage" style="display: none;">
-		<p>購物車為空</p>
-	</div>
+<div id="emptyCartMessage" style="display: none;">
+	<p>購物車為空</p>
+</div>
 
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
 
-
-
-
-
-
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
-	
-	<script>
+<script>
 	//================================動態URL=======================================================//
 	let pathName = window.document.location.pathname;
 	let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
@@ -380,10 +503,10 @@ tfoot td {
 		totalAmountElement.textContent = totalAmount;
 	}
 	//=====================================變更數量.總價格=====================================//
- function changeQuantity(productName,quantity){
-        	updateTotalPrice();
-        	changeQuantityPost(productName,quantity);
-        }
+	function changeQuantity(productName,quantity){
+		updateTotalPrice();
+		changeQuantityPost(productName,quantity);
+	}
 	//=============================刪除一個=====================================================//
 	function deleteOne(productName) {
 		const productNameJSON = JSON.stringify({ productName: productName });
@@ -452,7 +575,7 @@ tfoot td {
 		var selectedProducts = [];
 		var productCheckboxes = document.querySelectorAll(".productCheckbox");
 		var anyChecked = false; // 判斷是否有選中商品的 flag
-		
+
 		productCheckboxes.forEach(function(checkbox, index) {
 			if (checkbox.checked) {
 				anyChecked = true; // 如果有勾選的商品，將 flag 設為 true
@@ -471,11 +594,11 @@ tfoot td {
 				});
 			}
 		});
-		
+
 		if (!anyChecked) {
-	        alert("請勾選商品後再結帳！");
-	        return;
-	    }
+			alert("請勾選商品後再結帳！");
+			return;
+		}
 		// 將選中的商品資料存儲到 sessionStorage
 		sessionStorage.setItem('cartItems', JSON.stringify(selectedProducts));
 
@@ -485,7 +608,7 @@ tfoot td {
 	}
 	//=======================================get取得session內資訊================================//
 	function getSessionCart() {
-		 return fetch(projectName + '/Cart', {
+		return fetch(projectName + '/Cart', {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json'
@@ -523,63 +646,63 @@ tfoot td {
 					}
 				});
 	}
-	
-//================================檢查庫存量跟購物車內的數量==============================//
+
+	//================================檢查庫存量跟購物車內的數量==============================//
 	function loadProducts() {
-    fetch(projectName + '/products')
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Network response was not ok.');
-        })
-        .then(data => {
+		fetch(projectName + '/products')
+				.then(response => {
+					if (response.ok) {
+						return response.json();
+					}
+					throw new Error('Network response was not ok.');
+				})
+				.then(data => {
 
-            // 獲取所有的商品名稱
-          var allProductNames = data.results.map(product => product.productName.replace(/\([^)]*\)/g, ''));
-			
-            // 獲取所有的商品行
-           var productRows = document.querySelectorAll('.name');
-           var quantity = document.querySelectorAll('.hidden-td');
-           var selectElementAll = document.querySelectorAll('.quantity-select');
-           
-            for (let i = 0; i < productRows.length; i++) {
-                var productName = productRows[i].textContent.trim();
-                var	selectElement=selectElementAll[i]
+					// 獲取所有的商品名稱
+					var allProductNames = data.results.map(product => product.productName.replace(/\([^)]*\)/g, ''));
 
-                // 檢查產品名稱是否在購物車中
-                var index = allProductNames.indexOf(productName);
-                if (index !== -1) {
-                    // 如果在購物車中且找到對應的元素，設置庫存
-                    var product = data.results[index];
-                    
-                    
-        			for (var j = 1; j <= product.stock; j++) {
-        				var option = document.createElement("option");
-        				option.value = j;
-        				option.textContent = j;
-        				selectElement.appendChild(option);
-        			}
-        			 var quantityRow = quantity[i];
-                     var quantityValue = quantityRow.textContent.trim();
-              
-               if(product.stock < quantityValue){
-            	   changeQuantityPost(productName,product.stock) 
-            	   alert(productName+"購物車內數量超過庫存量改為庫存量")
-            	   selectElement.value = product.stock;
-               }else{
-                    selectElement.value = quantityValue;
-                    // 其他操作
-               }
-                selectElement.setAttribute('max', product.stock);
-            }
+					// 獲取所有的商品行
+					var productRows = document.querySelectorAll('.name');
+					var quantity = document.querySelectorAll('.hidden-td');
+					var selectElementAll = document.querySelectorAll('.quantity-select');
 
-            }  
-        })
-        .catch(error => {
-            console.error('發生錯誤:', error);
-        });
-}
+					for (let i = 0; i < productRows.length; i++) {
+						var productName = productRows[i].textContent.trim();
+						var	selectElement=selectElementAll[i]
+
+						// 檢查產品名稱是否在購物車中
+						var index = allProductNames.indexOf(productName);
+						if (index !== -1) {
+							// 如果在購物車中且找到對應的元素，設置庫存
+							var product = data.results[index];
+
+
+							for (var j = 1; j <= product.stock; j++) {
+								var option = document.createElement("option");
+								option.value = j;
+								option.textContent = j;
+								selectElement.appendChild(option);
+							}
+							var quantityRow = quantity[i];
+							var quantityValue = quantityRow.textContent.trim();
+
+							if(product.stock < quantityValue){
+								changeQuantityPost(productName,product.stock)
+								alert(productName+"購物車內數量超過庫存量改為庫存量")
+								selectElement.value = product.stock;
+							}else{
+								selectElement.value = quantityValue;
+								// 其他操作
+							}
+							selectElement.setAttribute('max', product.stock);
+						}
+
+					}
+				})
+				.catch(error => {
+					console.error('發生錯誤:', error);
+				});
+	}
 
 
 </script>
