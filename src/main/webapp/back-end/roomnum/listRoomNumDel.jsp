@@ -21,28 +21,30 @@
  		top: -60px; 		
 } 	 */
 
+
 .addTable {
-    height: 20px; /* Adjust the height as needed */
-    width: 930px;
-    
+    height: 20px; 
+    width: 930px;   
 }
 
-/* Optional: Adjust the height of the cells, input fields, or other elements if needed */
+
 .addTable td,
 .addTable input {
-    height: 40px; /* Adjust the height as needed */
-    width:150px;
+    height: 40px; 
+    width:150px;    
 }
 
-/* Optional: If you want to center the content vertically within each cell */
-.addTable td {
+
+.addTable td, .addTable td {
 	text-align:center;
-   padding:0;
+    padding:0;
+       
 }
 .addTable select {
     height: 40px; /* Adjust the height as needed */
    	position:relative;
    	top:8px;
+   
 }
 #addbutton {
     height: 40px; /* Adjust the height as needed */
@@ -50,10 +52,11 @@
     width:100%;
    
 }
+
 /*=========================  */
 .table th, .table td {
 	text-align: center;
-	border: 1px solid #dee2e6;
+	
 }
 
 .table th {
@@ -149,30 +152,30 @@
 					<li style="color: green">${message}</li>
 				</c:forEach>
 			</ul>
-			</div>
+		</div>
 		</c:if>
 		<%-- 成功表列 --%>
 		<!--===============新增房間=====================  -->
-		  <table class="addTable table-bordered" >
+		<div class="formTable">
+	<table class="addTable table-bordered">
         <tbody>            
             <tr>
             <form method="post"	action="<%=request.getContextPath()%>/roomnum.do">
                 <td colspan="2" class="text-center font-weight-bold bg-primary text-white">新增房間</td>
                 <td>房間編號：</td>
                 <td><input type="text" class="form-control" name="roomNum" value="" size="10"></td>            	
-                <td>房型編號：</td>
-                <!-- <td><input type="text" class="form-control" name="TypeNo" value="" size="10"></td> -->
+                <td>房型編號：</td>              
 				<td>
-							<!--================下拉選單===================  -->
-								<div class="form-group">
-									<select	class="form-control" id="roomTypeSelect" name="TypeNo">
-										<c:forEach var="roomType" items="${roomTypeList}">
-											<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
-										</c:forEach>
-									</select>
-								</div>							
-							<!--================下拉選單===================== -->
-						</td>               
+					<!--================下拉選單===================  -->
+					<div class="form-group">
+						<select	class="form-control" id="roomTypeSelect" name="TypeNo">
+							<c:forEach var="roomType" items="${roomTypeList}">
+								<option value="${roomType.roomTypeno}">${roomType.roomName}</option>
+							</c:forEach>
+						</select>
+					</div>							
+					<!--================下拉選單===================== -->
+				</td>               
                 <td colspan="2" class="text-center">
                     <button type="submit" id="addbutton" name="action" value="addRoomNum" class="btn btn-primary" onclick="clearMessages()">確認</button>
                 </td>
@@ -181,6 +184,7 @@
             </tr>
         </tbody>
     </table>
+    </div>
 		<!--================回首頁=====================  -->
 		<!-- <a href="${pageContext.request.contextPath}/index.jsp">回首頁</a> -->
 		<!--================顯示頁數=====================  -->

@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
  <style>
         body , header{
-            background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+             /* background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);  */
+          background-image: linear-gradient(to right, #add8e6 0%, #0074cc  19%, #0074cc  42%, #0074cc  79%, #add8e6 100%);            
             margin: 0; 
             padding: 0; 
         }
@@ -110,14 +111,21 @@
     <div id="image1Carousel" class="carousel slide" data-ride="carousel" data-interval="3000"> <!-- 3秒 -->
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://picsum.photos/2000/700?random=10" class="d-block w-100" alt="1">
+                <img src="/Paradisiac/front-end/img/海島01.jpeg" class="d-block w-100" alt="1" width="500" height="400">
             </div>
             <div class="carousel-item">
-                <img src="https://picsum.photos/2000/700?random=11" class="d-block w-100" alt="2">
+                 <img src="/Paradisiac/front-end/img/館店沙灘03.webp" class="d-block w-100" alt="2" width="500" height="400">
             </div>
             <div class="carousel-item">
-                <img src="https://picsum.photos/2000/700?random=12" class="d-block w-100" alt="3">
+                <img src="/Paradisiac/front-end/img/館店泳池03.webp" class="d-block w-100" alt="3" width="500" height="400">
             </div>
+            <div class="carousel-item">
+                <img src="/Paradisiac/front-end/img/飯店大廳.webp" class="d-block w-100" alt="3" width="500" height="400">
+            </div>
+            <div class="carousel-item">
+                <img src="/Paradisiac/front-end/img/館店沙灘02.webp" class="d-block w-100" alt="3" width="500" height="400">
+            </div>
+          
         </div>
         <a class="carousel-control-prev" href="#image1Carousel" role="button" data-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -223,15 +231,16 @@
 	        <div id="image2Carousel" class="carousel slide" data-ride="carousel" data-interval="4500">
 	            <div class="carousel-inner">
 	                <div class="carousel-item active">
-	                    <img src="https://picsum.photos/1600/400?random=14" class="d-block w-100" alt="特價優惠">
+	                    <img src="/Paradisiac/front-end/img/房間內部01.webp" class="d-block w-100" alt="特價優惠" width="800" height="500">
 	                </div>
 	
 	                <div class="carousel-item">
-	                    <img src="https://picsum.photos/1600/400?random=15" class="d-block w-100" alt="豪華客房套餐">
+	                    <img src="/Paradisiac/front-end/img/房間內部02.webp"  class="d-block w-100" alt="豪華客房套餐" width="800" height="500">
+	                   
 	                </div>
 	
 	                <div class="carousel-item">
-	                    <img src="https://picsum.photos/1600/400?random=16" class="d-block w-100" alt="慶祝特殊時刻">
+	                    <img src="/Paradisiac/front-end/img/房間內部03.webp" class="d-block w-100" alt="慶祝特殊時刻" width="800" height="500">
 	                </div>
 	            </div>
 	            <a class="carousel-control-prev" href="#image2Carousel" role="button" data-slide="prev">
