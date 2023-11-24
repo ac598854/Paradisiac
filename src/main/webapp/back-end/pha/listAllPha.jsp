@@ -31,19 +31,13 @@
         }
         
         .photo-content img {
-		    max-width: 40%;  /*限制最大宽度*/
-		    height: 200px; /* auto自动调整高度 */
+		    max-width: 40%;  
+		    height: 200px; 
             background-color: #eee;
             border: 1px solid #ccc;
             margin: 5px;
         }
 
-        /*
-        .album .d-flex.justify-content-end {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        }*/
 
         .d-flex.justify-content-end {
         position: absolute;
@@ -79,7 +73,8 @@
         <div class="album card mb-3">
             <div class="row g-0">
                 <div class="col-md-4">
-                    <img id="albPhoto" src="<%=request.getContextPath()%>/dbg.do?alb_no=${pha.albNo}" alt="相簿封面" class="img-fluid">
+                    <img id="albPhoto" src="<%=request.getContextPath()%>/dbg.do?alb_no=${pha.albNo}" 
+                    style="height: 200px; object-fit: cover;" alt="相簿封面" class="img-fluid">
                 </div>
                 <div class="col-md-8">
                     <div class="album-info">
@@ -106,12 +101,7 @@
                         	<input type="hidden" name="albNo" value="${pha.albNo}"> 
 							<input type="hidden" name="action" value="getOne_For_Update">
                             <button type="submit" class="btn btn-primary mr-2 btn-separator">修改相簿</button>
-                        </FORM>
-                        <FORM METHOD="post" ACTION="<%=request.getContextPath()%>/pha.do" style="margin-bottom: 0px;">
-                        	<input type="hidden" name="albNo" value="${pha.albNo}"> 
-							<input type="hidden" name="action" value="delete">
-                            <button class="btn btn-danger">刪除相簿</button>
-                        </FORM>                         
+                        </FORM>                        
                         </div>
                     </div>
                 </div>
@@ -133,7 +123,6 @@
 	</c:if>
     </div>
 
-    <!-- 引入 Bootstrap JavaScript 文件（如果需要） -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">
    
     </script>
