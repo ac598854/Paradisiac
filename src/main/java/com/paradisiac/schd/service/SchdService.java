@@ -19,5 +19,9 @@ public interface SchdService {
 	int getPageTotal();
 	
 	SchdVO addOrUpdateSchd(SchdVO schd);
+	
+	void generateNewOrder(Integer schdNo, Integer aAtnNum);
+	
+	void cancelOrder(Integer schdNo, Integer aAtnNum);
 
 }
