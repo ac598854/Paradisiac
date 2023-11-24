@@ -27,7 +27,10 @@ public interface ActOrderService_interface {
 	
 	//查詢
 	public ActOrder getOneByActOrderNo(Integer actOrderNo);
+	
 	public List<ActOrder> getAll();
+	public List<ActOrder> getAllByMemnoSer(Integer memNo);
+	public List<ActOrder> getAllByBackSearchSer(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatu);
 	public List<ActOrder> getAll(int currentPage);
 	int getTotal();//總筆數
 	

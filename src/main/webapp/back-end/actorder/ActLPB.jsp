@@ -13,8 +13,20 @@
 <%
 List<ActOrder> list = null;
 ActOrderService actOrderServ = new ActOrderService();
-list = actOrderServ.getAll();
-pageContext.setAttribute("list", list);
+// list = actOrderServ.getAll();
+
+
+Integer actOrderNo = request.getParameter("actOrderNo") != null? Integer.valueOf(request.getParameter("actOrderNo")): null;
+Integer memNO = request.getParameter("memNO") != null? Integer.valueOf(request.getParameter("memNO")): null;
+Integer schdNo = request.getParameter("schdNo") != null? Integer.valueOf(request.getParameter("schdNo")): null;
+String orderStatus = request.getParameter("orderStatus") != null ? request.getParameter("orderStatus") : null;
+
+StringBuffer whereCondition = new StringBuffer("");
+
+
+
+
+// pageContext.setAttribute("list", list);
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -326,6 +338,7 @@ ul.navigation {
 				<h1>活動訂單管理</h1>
 
 				<!-- 查詢 -->
+				<form id="form1"name="form1" METHOD="post" ACTION="ActOrder.do">
 				<div class="row mb-4">
 					<div class="col-md-3">
 						<label for="actOrderNo">訂單編號</label>
@@ -355,6 +368,7 @@ ul.navigation {
 					</div>
 				</div>
 				<button class="btn btn-primary" id="btSubmit" type="submit">送出</button>
+				</form>
 				<br> <br>
 			</div>
 			<!-- 				</form> -->
@@ -368,7 +382,7 @@ ul.navigation {
 									<thead>
 										<tr>
 											<th>活動訂單編號</th>
-											<th>會員編號(姓名)</th>
+											<th>會員編號</th>
 											<th>活動名稱</th>
 											<th>檔期編號</th>
 											<th>訂單狀態</th>
@@ -400,7 +414,7 @@ ul.navigation {
 														<button type="submit" class="btn btn-primary">修改</button>
 														<input type="hidden" name="actOrderNo"
 															value="${ActOrder.actOrderNo}"> 
-															<input type="hidden" name="action" value="getOne_For_ActOrderNo">
+															<input type="hidden" name="action" value="getOne_For_ActOrderNo_Back">
 													</form>
 												</td>
 											</tr>

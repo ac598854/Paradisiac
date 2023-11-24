@@ -337,10 +337,11 @@ h1, h2, h3, h4 {
 	margin-left: 15px;
 }
 </style>
-<%@ include file="/back-end/index/back-left_planning.jsp"%>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 </head>
 <body>
-	<div id="wrapper" class="">
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
+<!-- 	<div id="wrapper" class=""> -->
 
 		<!-- Sidebar -->
 <!-- 		<div id="sidebar-wrapper"> -->
