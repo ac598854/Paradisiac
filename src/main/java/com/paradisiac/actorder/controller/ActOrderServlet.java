@@ -59,6 +59,13 @@ public class ActOrderServlet extends HttpServlet {
 		String forwardPath = "";
 		System.out.println("現在action:"+action);
 
+	    if ("search".equals(action)) {
+	        BackSearch(req, res);
+	    } else {
+	        defaultSearch(req, res);
+	    }
+		
+		
 		switch (action) {
 		case "insert":
 			insert(req, res);
@@ -68,6 +75,12 @@ public class ActOrderServlet extends HttpServlet {
 			return;
 		case "getOne_For_ActOrderNo_Front":
 			getOne_For_ActOrderNo_Front(req, res);
+			return;
+		case "BackSearch":
+			BackSearch(req, res);
+			return;
+		case "defaultSearch":
+			defaultSearch(req, res);
 			return;
 		case "getAll":
 			forwardPath = getAllListPage(req, res);
@@ -80,6 +93,9 @@ public class ActOrderServlet extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 
+
+	
+	
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
@@ -275,45 +291,48 @@ public class ActOrderServlet extends HttpServlet {
 		return "/back-end/actorder/ActLPB.jsp";
 	}
 	
-	private List<ActOrder> BackSearch(HttpServletRequest req, HttpServletResponse res) {
 
-	        // 獲取表單參數
-	        Integer memNO = getIntegerParameter(req, "memNO");
-	        Integer actOrderNo = getIntegerParameter(req, "actOrderNo");
-	        Integer schdNo = getIntegerParameter(req, "schdNo");
-	        Integer orderStatus = getIntegerParameter(req, "orderStatus");
-	        
-	        
 
-	        // 呼叫Service進行複合查詢
-	        ActOrderService actOrderService = new ActOrderService (); // 假設你的Service實現類為ActOrderServiceImpl
-	        List<ActOrder> result = actOrderService.getAllByBackSearchSer(memNO, actOrderNo, schdNo, orderStatus);
+	private void defaultSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {	    
+	    req.setCharacterEncoding("utf-8");
+	    List<ActOrder> list = null;
+	    ActOrderService actOrderServ = new ActOrderService();
+	    list = actOrderServ.getAll();
+	    req.setAttribute("list", list);
 
-	        // 將查詢結果放入request中，以供JSP顯示
-	        req.setAttribute("searchResult", result);
+	    // 轉發到JSP頁面
+	    String url = "/back-end/actorder/ActLPB.jsp";
+	    RequestDispatcher successView = req.getRequestDispatcher(url);
+	    successView.forward(req, res);
 
-	        // 轉發到顯示結果的JSP頁面
-//	        RequestDispatcher dispatcher = req.getRequestDispatcher("/result.jsp"); // 假設你有一個顯示結果的JSP頁面
-//	        dispatcher.forward(req, res);
-	        
-//	        req.setAttribute("actOrder", actorder);
-			String url = "/back-end/actorder/ActLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
-//			successView.forward(req, res);
-	    }
+	}
 
-	    private Integer getIntegerParameter(HttpServletRequest request, String parameterName) {
-	        String parameterValue = request.getParameter(parameterName);
-	        return (parameterValue != null && !parameterValue.isEmpty()) ? Integer.valueOf(parameterValue) : null;
-	    }
-}
+	private void BackSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // 獲取表單參數
+	Integer actOrderNo = req.getParameter("actOrderNo") != null? Integer.valueOf(req.getParameter("actOrderNo")): null;
+	Integer memNO = req.getParameter("memNO") != null? Integer.valueOf(req.getParameter("memNO")): null;
+	Integer schdNo = req.getParameter("schdNo") != null? Integer.valueOf(req.getParameter("schdNo")): null;
+	Integer orderStatus = req.getParameter("orderStatus") != null ? Integer.valueOf(req.getParameter("orderStatus")) : null;
 
-	
-//
+        // 呼叫Service進行複合查詢
+        ActOrderService actOrderService = new ActOrderService (); // 假設你的Service實現類為ActOrderServiceImpl
+        List<ActOrder> result = actOrderService.getAllByBackSearchSer(memNO, actOrderNo, schdNo, orderStatus);
+
+        // 將查詢結果放入request中，以供JSP顯示
+        req.setAttribute("searchResult", result);
+        String url = "/back-end/actorder/ActLPB.jsp";
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
+		successView.forward(req, res);
+    }
+
+
 //	private String getAllLP(HttpServletRequest req, HttpServletResponse res) {
 //		List<ActOrder> orderList = actOrderServ.getAll();
 //		req.setAttribute("orderList", orderList);
 //		return "/back-end/actorder/ActLPB.jsp";
 //	}
+	
 
 
+
+}
