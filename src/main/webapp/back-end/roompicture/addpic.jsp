@@ -74,7 +74,7 @@
 
 		<div class="container">
 		    <div class="row">
-		        	<h3>新增房型圖片資料</h3>
+		        	<h3>--房型圖片資料管理--</h3>
 		        <div class="col-md-6">
 		              <div class="card">
 		            <form method="POST" action="${pageContext.request.contextPath}/roompic/roompic.do?action=insert" name="form1" enctype="multipart/form-data" onsubmit="return validateForm()">
@@ -110,14 +110,27 @@
 		        <div class="col-md-6">
 		            <div class="card image-preview-card">
 		                <div class="card-body">
-		                    <h5 class="card-title">您準備新增的房型圖片</h5>
+		                    <h5 class="card-title">房型圖片預覽</h5>
 		                    <img id="imagePreview" src="#" alt="Image Preview" style="display: none;">
 		                </div>
 		            </div>
-		        </div>
-		    </div>
+		        </div>  
+		    </div> 
+		    <div>
+		    			  <h2>您新增的房型圖片資訊</h2>
+							<p>房型圖片編號: ${roomTypeNo}</p>
+							<c:choose>
+							    <c:when test="${not empty roomTypeNo}">
+							        <img src="/Paradisiac/DBGifReader3?picno=${roomTypeNo}" alt="房型圖片" style="width: 100%; max-width: 250px;" />
+							    </c:when>
+							    <c:otherwise>
+							        <img src="/Paradisiac/back-end/roompicture/img/noimg.png" alt="沒有圖片可用" style="width: 100%; max-width: 250px;" />
+							    </c:otherwise>
+							</c:choose>
+							    
+		    </div>>	
 		</div>
-       
+
 	<script>
 			function validateForm() {
 			    var roomTypeNo = document.getElementById('roomTypeNo').value;

@@ -40,7 +40,10 @@ public class RoomPictureServlet extends HttpServlet{
 		        case "insert":
 					forwardPath = insertpic(req, res);
 					break;
-		        
+		        case "getAll":
+					forwardPath = getAll(req, res);
+					break;
+					
 		        
 				default:
 					forwardPath = "/index2.jsp";
@@ -91,18 +94,36 @@ public class RoomPictureServlet extends HttpServlet{
 	                /***************************3.新增完成,準備轉交(Send the Success view)***********/
 	                String url = "/back-end/roompicture/addpic.jsp";
 	                RequestDispatcher successView = req.getRequestDispatcher(url);
+	                req.setAttribute("roomTypeNo", roomtypeNoInt);
+	                req.setAttribute("pic", Pic);
 	                successView.forward(req, resp);
 	            }
 	        }
 	        return "index2.jsp";
 	    }
 		private String getAll(HttpServletRequest req, HttpServletResponse resp) {
-			RoomPictureService roompicSvc = new RoomPictureService();
+
 			
-			List<RoomPictureeVO> all = roompicSvc.getAllpic();;
-			req.setAttribute("all", all);
+			  // 假設你有一個名為 roomPictureService 的服務類別用於獲取所有圖片
+		    RoomPictureService roomPictureService = new RoomPictureService();
+		    List<RoomPictureeVO> pictures = roomPictureService.getAllpic();
+
+		    // 將圖片列表存儲在 request 屬性中
+		    req.setAttribute("pictures", pictures);
+
+		    // 轉發到 JSP 頁面
+		    RequestDispatcher dispatcher = req.getRequestDispatcher("/back-end/roompicture/picview.jsp"); // 替換成你的 JSP 檔案名稱
+		    try {
+				dispatcher.forward(req, resp);
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	
-			return "/back-end/roompicture/getAllpic.jsp";
+			return "/back-end/roompicture/picview.jsp";
 		}
 	   
 //
