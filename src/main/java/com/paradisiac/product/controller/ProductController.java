@@ -30,6 +30,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    // 查詢產品列表
     @GetMapping("/products")
     public ResponseEntity<Page<Product>> getProducts(
             //查詢條件 Filtering
@@ -67,13 +68,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
+    // 獲取所有產品用於購物車
     @GetMapping("/allForCart")
     public ResponseEntity<List<Product>> getAllProductsForCart() {
         List<Product> products = productService.getAllProductsForCart();
         return ResponseEntity.ok(products);
     }
 
-    //查詢
+    //查詢單個產品
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){
         Product product = productService.getProductById(productId);
@@ -85,7 +87,7 @@ public class ProductController {
         }
     }
 
-    //新增
+    //新增產品
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(
             @RequestParam("productName") String productName,
@@ -117,9 +119,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
 
-    // GEt File方法 Post API傳到資料庫
-
-    //修改
+    //修改商品
     @PutMapping("/products/{productId}")
     public ResponseEntity<Product> updateProduct(
             @PathVariable Integer productId,
@@ -131,19 +131,19 @@ public class ProductController {
             @RequestParam("status") ProductStatus status,
             @RequestParam(value = "image", required = false) MultipartFile image) {
 
-        // 首先，检查产品是否存在
+        // 首先，檢查產品是否存在
         Product existingProduct = productService.getProductById(productId);
         if (existingProduct == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // 如果有新的图片上传，处理图片上传到 S3
+        // 如果有新的圖片上傳，處理圖片上傳到 S3
         String imageUrl = existingProduct.getImageUrl(); // 使用现有的图片URL
         if (image != null && !image.isEmpty()) {
             imageUrl = amazonS3ClientService.uploadFileToS3Bucket(image, true);
         }
 
-        // 创建 ProductRequest 对象，并设置新的信息
+        // 創建 ProductRequest ，設置新的訊息
         ProductRequest productRequest = new ProductRequest();
         productRequest.setProductName(productName);
         productRequest.setPrice(price);
@@ -151,19 +151,19 @@ public class ProductController {
         productRequest.setDescription(description);
         productRequest.setCategory(category);
         productRequest.setStatus(status);
-        productRequest.setImageUrl(imageUrl); // 设置新的图片URL
+        productRequest.setImageUrl(imageUrl); // 新的圖片URL
 
-        // 更新产品信息
+        // 更新產品信息
         productService.updateProduct(productId, productRequest);
 
-        // 获取更新后的产品信息
+        // 獲取更新後的產品信息
         Product updatedProduct = productService.getProductById(productId);
 
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
 
 
-    //刪除
+    //刪除商品
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
 

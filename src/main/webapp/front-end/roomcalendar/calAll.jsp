@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
    <!--  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"> -->
+   <title>線上訂房</title>
 <style>
 
 		.roomName{
@@ -19,12 +20,17 @@
 			font-size:10px;
 		}
 		.col-md-4 img {
-            margin: 10px; /* 添加10px的外邊距，可根據需要調整 */
+            margin: 10px; 
             margin-top:10px;
         }
 
 		td{
-			height:50px;
+			height:60px;
+		}
+		
+		td.selected > label { /* 點選行事曆的字時可以觸發事件 */
+			position: static;
+			transform: translateX(0);
 		}
 		.holiday {
   			color: red;
@@ -47,6 +53,11 @@
         }
         .calstatus {
             padding-right: 20px;
+        }
+        .cal-date {      /* 點選行事曆的字時可以觸發事件 */
+            position: absolute;
+    		z-index: -1;
+    		transform: translateX(-50%);
         }
     </style>
 </head>
