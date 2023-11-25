@@ -9,9 +9,10 @@ let holidayMapping={};   //存放日期=>key：狀態=>value(平日為1、假日
 var regex = /X|(--)/;
 //點選行事曆日期後顯示在 textbox中
 calendarBody.addEventListener("click", function(event) {
-  var clickedCell = event.target;   
+  var clickedCell = event.target; 
+  console.log(clickedCell)  
   // 移除之前已選取的日期的樣式   
-  if (clickedCell.tagName === "TD" && clickedCell.textContent !== "") {
+  if (clickedCell.textContent !== "") {
     var selectedCells = document.querySelectorAll(".selected");
     selectedCells.forEach(function(cell) {
       cell.classList.remove("selected");
@@ -72,7 +73,8 @@ function renderCalendar(month, year) {
             var labelElement = document.createElement("label");
             //labelElement.className = "calstatus";
             labelElement.name = "calstatus";
-            labelElement.id = labelId;    
+            labelElement.id = labelId;  
+            labelElement.className = "cal-date";
           //	console.log("labelId:==========>",labelId);   
             // 判斷日期是否為假日，如果是，則添加相應的標記
             var holidayData = holidays.find(h => h.date === (year + String(month + 1).padStart(2, '0') + dday));  

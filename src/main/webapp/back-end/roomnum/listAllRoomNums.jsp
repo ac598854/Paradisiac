@@ -56,6 +56,7 @@
             transform: translateY(-3px);
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
         }
+        /* 第一頁、上一頁、下一頁、至最後一頁  */
         .pagination-link {
             display: inline-block;
             padding: 6px 12px;
@@ -213,7 +214,7 @@
 
     <c:choose>
         <c:when test="${currentPage != roomnumPageQty}">
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=${roomnumPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll&page=${roomnumPageQty}" class="pagination-link">最後一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;

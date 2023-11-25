@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,14 +21,14 @@ import com.mysql.cj.x.protobuf.MysqlxCrud.Delete;
 import redis.clients.jedis.Jedis;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 
 @WebServlet("/Cart")
 public class Cart extends HttpServlet {
-
 	private static final long serialVersionUID = 1L;
-
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		HttpSession session = request.getSession();
@@ -83,7 +84,7 @@ public class Cart extends HttpServlet {
 							int redisquantity = ((JSONObject) redisObject).getInt("quantity");
 							int total = sessionquantity + redisquantity;
 							((JSONObject) redisObject).put("quantity", total);
-							System.out.println("更新後redis內數量:" + redisObject);
+//							System.out.println("更新後redis內數量:" + redisObject);
 						} else {
 							((JSONObject) productObject).put("quantity", sessionquantity);
 							redisDataJSON.put(key, redisObject);
@@ -145,7 +146,10 @@ public class Cart extends HttpServlet {
 				jedis.close();
 			}
 			if ("delete".equals(action)) {
-				delete("guest" + memno, data);
+				System.out.println("刪除"+data);
+//				delete("guest" + memno, data);
+				 JSONArray dataArray = new JSONArray(data);
+				performDeletion("guest" + memno, dataArray);
 				JSONObject deleteResponse = new JSONObject();
 				deleteResponse.put("delete", "已刪除商品");
 				response.getWriter().write(deleteResponse.toString());
@@ -172,30 +176,44 @@ public class Cart extends HttpServlet {
 				response.getWriter().write(addResponse.toString());
 			}
 		}
+		return;
 	}
 
-	
-	
-	
-	public void delete(String guest, String data) {
-		Jedis jedis = new Jedis("localhost", 6379);
-		String jsonString = jedis.get(guest);
-		Gson gson = new Gson();
-		Map<String, Product> redisdata = gson.fromJson(jsonString, new TypeToken<Map<String, Product>>(){}.getType());
-		//TypeToken 來指定泛型型別，確保 JSON 資料正確轉換為 Map<String, Product>	
+	public void performDeletion(String guest, JSONArray dataArray) {
+	    Jedis jedis = new Jedis("localhost", 6379);
+	    String jsonString = jedis.get(guest);
+	    JSONObject redisDataJSON = new JSONObject(jsonString);
 
-		JSONObject jsonObject = new JSONObject(data);
-        String productName = jsonObject.getString("productName");
-		
-        redisdata.remove(productName);
-		
-		// 將修改後的 Map 轉換回 JSON 字串
-		String updatedJsonString = gson.toJson(redisdata);
-		System.out.println(updatedJsonString);
-		// 將更新後的 JSON 字串設置回 Redis
-		jedis.set(guest, updatedJsonString);
-		jedis.close();
+	    for (int i = 0; i < dataArray.length(); i++) {
+	        String productName = dataArray.getString(i);
+
+	        // 檢查商品是否存在，若存在則刪除
+	        if (redisDataJSON.has(productName)) {
+	            redisDataJSON.remove(productName);
+	        }
+	    }
+
+	    // 更新 Redis 中的資料
+	    jedis.set(guest, redisDataJSON.toString());
+	    jedis.close();
 	}
+	
+	
+//	public void delete(String guest, String data) {
+//		Jedis jedis = new Jedis("localhost", 6379);
+//		String jsonString = jedis.get(guest);
+//		JSONObject redisDataJSON = new JSONObject(jsonString);
+//		JSONObject jsonObject = new JSONObject(data);
+//        String productName = jsonObject.getString("productName");
+//		
+//        redisDataJSON.remove(productName);
+//		
+//		System.out.println("存回去"+redisDataJSON);
+//		jedis.set(guest, redisDataJSON.toString());
+//		jedis.close();
+//	}
+	
+	
 	
 	public void changeQuantity(String guest, String productData) {
 		Jedis jedis = new Jedis("localhost", 6379);
@@ -222,6 +240,8 @@ public class Cart extends HttpServlet {
 		jedis.set(guest, updatedJsonString);
 		jedis.close();
 	}
+		
+		
 
 	class Product {
 	    private Integer productId;
@@ -260,6 +280,5 @@ public class Cart extends HttpServlet {
 		}
 
 	  
-
 	}
 }

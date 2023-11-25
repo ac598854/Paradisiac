@@ -324,6 +324,28 @@ h1, h2, h3, h4 {
 	background-color: #e9ecef;
 }
 
+.tableDetail {
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 1px;
+	padding: 0.75rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+	background-color: #e9ecef;
+}
+
+.detailTd {
+	padding: 0.75rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+}
+
+.detailTl {
+	padding: 0.75rem;
+	vertical-align: top;
+	border-top: 1px solid #dee2e6;
+}
+
 .round-image-container {
 	width: 100px;
 	height: 100px;
@@ -348,7 +370,7 @@ h1, h2, h3, h4 {
 <body>
 	<div id="wrapper" class="">
 
-<!-- 		Sidebar -->
+		<!-- 		Sidebar -->
 		<div id="sidebar-wrapper">
 			<ul class="sidebar-nav">
 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li>
@@ -368,11 +390,11 @@ h1, h2, h3, h4 {
 				<li><a href="#">活動訂單管理</a></li>
 			</ul>
 		</div>
-<!-- 		/#sidebar-wrapper Top Navigation -->
+		<!-- 		/#sidebar-wrapper Top Navigation -->
 		<ul class="navigation">
 			<li><a href="#home">登出</a></li>
 		</ul>
-<!-- 		Page Content -->
+		<!-- 		Page Content -->
 		<div id="page-content-wrapper">
 			<a href="#menu-toggle" class="btn btn-success btn-sm"
 				id="menu-toggle">展開畫面</a>
@@ -392,6 +414,12 @@ h1, h2, h3, h4 {
 							enctype="multipart/form-data">
 							<table class="table">
 								<tr>
+									<td>活動訂單編號:<font color="red"><b>*</b></font></td>
+									<td><input type="text" class="form-control"
+										id="actOrderNo" name="actOrderNo"
+										value="${actOrder.actOrderNo}" readonly></td>
+								</tr>
+								<tr>
 									<td>檔期編號:<font color="red"><b>*</b></font></td>
 									<td><input type="text" name="schdNo" id="schdNo"
 										class="form-control" class="custom-file-input"
@@ -399,9 +427,9 @@ h1, h2, h3, h4 {
 								</tr>
 								<tr>
 									<td>訂單日期:<font color="red"><b>*</b></font></td>
-									<td><input type="datetime-local" name="orderTime" id="orderTime"
-										class="form-control" value="${actOrder.orderTime}"
-										readonly /></td>
+									<td><input type="datetime-local" name="orderTime"
+										id="orderTime" class="form-control"
+										value="${actOrder.orderTime}" readonly /></td>
 								</tr>
 								<tr>
 									<td>報名人數:<font color="red"><b>*</b></font></td>
@@ -411,7 +439,7 @@ h1, h2, h3, h4 {
 								<tr>
 									<td>訂單狀態:</td>
 									<td><select name="order_status"
-										class="form-control browser-default custom-select" >
+										class="form-control browser-default custom-select">
 											<option value="1"
 												<c:if test="${actOrder.orderStatus == 1}">selected</c:if>>成立</option>
 											<option value="0"
@@ -424,6 +452,23 @@ h1, h2, h3, h4 {
 										class="form-control" value="${actOrder.orderAmount}" size="45"
 										readonly /></td>
 								</tr>
+							</table>
+							<br>
+
+							<h5 style="font-weight: bold;">訂單明細</h5>
+							<table class="tableDetail">
+								<c:forEach var="actorder2" items="${list}">
+									<tr>
+										<td class="detailTd">參加人編號:</td>
+										<td class="detailTl">${actorder2.atnNo}</td>
+										<td class="detailTd">參加人姓名:</td>
+										<td class="detailTl">${actorder2.atnName}</td>
+										<td class="detailTd">參加人身分證字號:</td>
+										<td class="detailTl">${actorder2.atnIdNumber}</td>
+										<td class="detailTd">參加人電話:</td>
+										<td class="detailTl">${actorder2.atnTel}</td>
+									</tr>
+								</c:forEach>
 							</table>
 							<br> <input type="hidden" name="action" value=""> <input
 								type="submit" class="btn btn-primary" value="送出修改">

@@ -197,7 +197,7 @@ ul.navigation {
 
 @media ( min-width :768px) {
 	#wrapper {
-		padding-left: 250px;
+		padding-left: 150px;
 	}
 	#wrapper.toggled {
 		padding-left: 0;
@@ -337,10 +337,11 @@ ul.navigation {
 	padding: 10px;
 }
 </style>
-<%@ include file="/back-end/index/back-left_planning.jsp"%>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 </head>
 <body>
-	<div id="wrapper" class="">
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
+<!-- 	<div id="wrapper" class=""> -->
 
 		<!-- Sidebar -->
 <!-- 		<div id="sidebar-wrapper"> -->
@@ -370,9 +371,9 @@ ul.navigation {
 
 <!-- 		</ul> -->
 		<!--Page Content -->
-		<div id="page-content-wrapper">
-			<a href="#menu-toggle" class="btn btn-success btn-sm"
-				id="menu-toggle">展開畫面</a>
+<!-- 		<div id="page-content-wrapper"> -->
+<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
+<!-- 				id="menu-toggle">展開畫面</a> -->
 
 			<h1>客戶問題</h1>
 			<div class="container"></div>

@@ -347,7 +347,7 @@
             <a href="#">購物訂單查詢</a>
             </li>
             <li>
-            <a href="${pageContext.request.contextPath}/fron-end/actorder/ActLPB.jsp">活動訂單查詢</a>
+            <a href="${pageContext.request.contextPath}/front-end/actorder/ActLPF.jsp">活動訂單查詢</a>
             </li>
      </ul>
             <!--會員服務-->  

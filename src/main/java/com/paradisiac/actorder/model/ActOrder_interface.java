@@ -9,14 +9,23 @@ import com.paradisiac.schd.model.SchdVO;
 public interface ActOrder_interface {
 
 	int insert(ActOrder actOrder);//依訂單編號新增
+	ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list);
+	
 	int update(ActOrder actOrder);//訂單編號修改
+	int updateOrderStatus(ActOrder actOrder);//後臺取消活動，取消所有訂單
+	
+	
 	ActOrder getOneByActOrderNo(Integer actOrderNo);
+
 	
 	int modifyStatus(Integer schdNo, Integer orderStatus);
-//	ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list);
+	
 
 	//取全部分頁、不分頁
 	public List<ActOrder> getAll();//取全部不分頁	
+	public List<ActOrder> getAllBymemNO(Integer memNo);//取特定會員編號訂單
+	public List<ActOrder> getAllByBackSearch(Integer memNO,Integer actOrderNo,Integer schdNo,Integer orderStatus);//取特定會員編號訂單(會員編號、訂單編號,檔期編號,訂單狀態)
+	
 	List<ActOrder> getAllStatus(int currentPage);//取全部分頁	
 	
 	

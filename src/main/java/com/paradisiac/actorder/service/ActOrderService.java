@@ -60,13 +60,12 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 
 	@Override
-	public int modifyStatus(Integer schdNO, Integer orderStatus) {
+	public int modifyStatus(Integer schdNO, Integer orderStatus) {	// 官方取消活動利用 檔期PK 、改變訂單狀態
 		return dao.modifyStatus(schdNO, orderStatus);
 	}
 	
 	@Override
 	public int cancelAct(Integer schdNo) {
-		// 官方取消活動利用 檔期PK 、改變訂單狀態
 		return 1;
 	}
 
@@ -80,6 +79,16 @@ public class ActOrderService implements ActOrderService_interface {
 	@Override
 	public List<ActOrder> getAll() {//所有資料無分頁
 		return dao.getAll();
+	}
+	
+	@Override
+	public List<ActOrder> getAllByMemnoSer(Integer memNo) {	
+		return dao.getAllBymemNO(memNo);
+	}
+	
+	@Override
+	public List<ActOrder> getAllByBackSearchSer(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatu) {
+		return dao.getAllByBackSearch(memNO,actOrderNo,schdNo,orderStatu);
 	}
 		
 	@Override
@@ -106,6 +115,10 @@ public class ActOrderService implements ActOrderService_interface {
 	public List<ActOrder> getAllByStatusPage(int currentPage){//分頁
 		return dao.getOrderStatusCount(currentPage);//設置訂單狀況
 	}
+
+
+
+
 
 	}
 	

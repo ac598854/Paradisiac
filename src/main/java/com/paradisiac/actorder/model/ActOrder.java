@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 
@@ -130,8 +131,8 @@ public class ActOrder implements Serializable {
 		return actAttendees;
 	}
 
-	public void setActAttendees(Set<ActAttendees> actAttendees2) {
-		this.actAttendees = (Set<ActAttendees>) actAttendees2;
+	public void setActAttendees(Set<ActAttendees> actAttendees) {
+		this.actAttendees = actAttendees;
 	}
 
 	@Override

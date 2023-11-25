@@ -2,6 +2,7 @@ package com.paradisiac.product.service;
 
 import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.dto.OrderQueryParams;
+import com.paradisiac.product.model.Members;
 import com.paradisiac.product.model.Order;
 
 import java.util.List;
@@ -18,6 +19,7 @@ public interface OrderService {
 
     Integer createOrder(Integer memno, CreateOrderRequest createOrderRequest);
 
+    Members getMemberDetailsById(Integer memno);
 
 }
 

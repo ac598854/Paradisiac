@@ -3,11 +3,12 @@ package com.paradisiac.product.dao.impl;
 import com.paradisiac.product.dao.OrderDao;
 import com.paradisiac.product.dto.CreateOrderRequest;
 import com.paradisiac.product.dto.OrderQueryParams;
+import com.paradisiac.product.model.Members;
+import com.paradisiac.product.rowmapper.MemberRowMapper;
 import com.paradisiac.product.model.Order;
 import com.paradisiac.product.model.OrderItem;
 import com.paradisiac.product.rowmapper.OrderItemRowMapper;
 import com.paradisiac.product.rowmapper.OrderRowMapper;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -26,7 +27,7 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    //計算訂單
+    //計算訂單數量
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
         String sql = "SELECT count(*) FROM psorder WHERE 1 = 1";
@@ -169,6 +170,20 @@ public class OrderDaoImpl implements OrderDao {
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
     }
 
+    // 獲取會員資訊
+    @Override
+    public Members getMemberById(Integer memno) {
+        String sql = "SELECT mem_no, mem_name, mem_phone, mem_address FROM members WHERE mem_no = :memno";
+        Map<String, Object> params = new HashMap<>();
+        params.put("memno", memno);
+        List<Members> membersList = namedParameterJdbcTemplate.query(sql, params, new MemberRowMapper());
+        if (membersList.isEmpty()) {
+            return null;
+        }
+        return membersList.get(0);
+    }
+
+    // 添加過濾條件到 SQL 查詢語句
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
         if(orderQueryParams.getMemno() != null){
             sql = sql + " AND mem_no = :memno";
