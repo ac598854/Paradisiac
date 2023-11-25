@@ -38,6 +38,14 @@ String nowPage = request.getParameter("page") == null ? "0" : request.getParamet
 		    	}
 		    	hql.append(" memNo = "+memNo);
 		    }
+		    if (schdNo != null && schdNo.trim().length() > 0) {
+		    	if(notfirst){
+		    		hql.append(" AND ");
+		    	}else{
+		    		notfirst = true;
+		    	}
+		    	hql.append(" schdVO.schdNo = "+schdNo);
+		    }
 		    
 		    // 條件：訂單編號
 		    if (actOrderNo != null && actOrderNo.trim().length() > 0) {
@@ -381,6 +389,12 @@ ul.navigation {
 								<div class="input-group-append"></div>
 						</div>
 						<div class="col-sm-3 form-group">
+							<label for="schdNo">檔期編號</label>
+								<input type="text" class="form-control" name="schdNo"
+									id="schdNo" value="${schdNo}">
+								<div class="input-group-append"></div>
+						</div>
+						<div class="col-sm-3 form-group">
 							<label for="orderStatus">訂單狀態</label>
 								<select class="form-control" id="orderStatus" name="orderStatus">
 									<option value="2" ${orderStatus eq 2 ? "selected" : ""}>全部</option>
@@ -391,7 +405,7 @@ ul.navigation {
 						</div>
 					</div>
 					<div class="col-sm-12 form-group mb-0">
-					<button class="btn btn-primary" id="btSubmit" type="submit">送出</button>
+					<button type="submit" class="btn btn-primary" id="btSubmit">送出</button>
 				</div>
 				</form>
 				<br> <br>
@@ -452,7 +466,6 @@ ul.navigation {
 					</div>
 				</div>
 		</div>
-	</div>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script

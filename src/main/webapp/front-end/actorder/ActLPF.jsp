@@ -24,6 +24,7 @@
 
 String memNo = String.valueOf(session.getAttribute("memno"));
 String schdNo = request.getParameter("schdNo");
+String actName = request.getParameter("actName");
 String orderStatus = request.getParameter("orderStatus");
 String nowPage = request.getParameter("page") == null ? "0" : request.getParameter("page");
  			

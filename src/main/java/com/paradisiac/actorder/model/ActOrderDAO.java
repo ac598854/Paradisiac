@@ -134,7 +134,7 @@ public class ActOrderDAO implements ActOrder_interface {
 	// 後臺複合查詢
 	@Override
 	public List<ActOrder> getAllByBackSearch(String hql, String first) {
-		System.out.print(hql);
+		System.out.print("Service HQL"+hql);
 
 		StringBuilder conditional = new StringBuilder("FROM ActOrder");
 		if (hql.length() > 0) {
