@@ -461,6 +461,10 @@ input[type="text"] {
 .col-md-12 {
 	padding-bottom: 10px;
 }
+
+.notification {
+	padding-top: 150px;
+}
 </style>
 
 </head>
@@ -470,13 +474,6 @@ input[type="text"] {
 	<div id="dynamicContent"></div>
 	<header>
 		<div class="container">
-			<div class="navigation">
-
-				<div class="secure">
-					<i class="previous page"><a href="#" class="btn-shop">回上一頁</a></i>
-
-				</div>
-			</div>
 			<div class="notification">完成您的訂單</div>
 		</div>
 	</header>
@@ -498,7 +495,12 @@ input[type="text"] {
 						<lable>單價</lable>
 						<div class="item__price"><%=unitPrice%></div>
 						<lable>內容</lable>
-						<div class="item__content"><span style="font-size: 12px; color: lightgray;">在我們的渡假飯店，我們引入了刺激有趣的香蕉船活動，為您的度假體驗增添了一份冒險的色彩。香蕉船是一項結合速度、刺激和團隊協作的水上活動，適合家庭、朋友或團隊共同參與。 坐在色彩繽紛的香蕉船上，您將由專業教練引領，準備迎接一場令人難以忘懷的海上歷險。 香蕉船活動適合各種水上愛好者，無論您是尋求驚險刺激還是純粹享受水上樂趣，都能在這裡找到滿足。我們的安全專業團隊將提供完善的指導，確保您在享受刺激的同時，也能保持絕對的安全。 此外，香蕉船活動也是一個絕佳的團隊建設活動。在團隊合作的過程中，成員們需要共同努力保持平衡，克服海浪的阻力，這將促進彼此之間的信任和協作。無論是挑戰自我還是與摯愛共度歡笑時光，香蕉船活動絕對是您渡假體驗中不可錯過的一環。</span></div>
+						<div class="item__content">
+							<span style="font-size: 12px; color: gray;">在我們的渡假飯店，我們引入了刺激有趣的香蕉船活動，為您的度假體驗增添了一份冒險的色彩。香蕉船是一項結合速度、刺激和團隊協作的水上活動，適合家庭、朋友或團隊共同參與。
+								坐在色彩繽紛的香蕉船上，您將由專業教練引領，準備迎接一場令人難以忘懷的海上歷險。
+								香蕉船活動適合各種水上愛好者，無論您是尋求驚險刺激還是純粹享受水上樂趣，都能在這裡找到滿足。我們的安全專業團隊將提供完善的指導，確保您在享受刺激的同時，也能保持絕對的安全。
+								此外，香蕉船活動也是一個絕佳的團隊建設活動。在團隊合作的過程中，成員們需要共同努力保持平衡，克服海浪的阻力，這將促進彼此之間的信任和協作。無論是挑戰自我還是與摯愛共度歡笑時光，香蕉船活動絕對是您渡假體驗中不可錯過的一環。</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -622,7 +624,7 @@ input[type="text"] {
 							type="submit">結帳</button>
 						<input type="hidden" name="action" value="insert" />
 		</form>
-		
+
 		<div id="errorMessages" style="color: red;"></div>
 	</section>
 	<br>
@@ -705,7 +707,7 @@ input[type="text"] {
 							if (response.message) {
 							  	await Swal.fire({
 				            		  title: response.message,
-				            		  text: "請到信箱收取驗證碼!",
+				            		  text: "請到信箱收取訂單成立通知信!",
 				            		  icon: "success"
 				            		});								
 // 								alert(response.message);
