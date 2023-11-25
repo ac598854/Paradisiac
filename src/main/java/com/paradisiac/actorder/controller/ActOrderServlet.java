@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
+import org.hibernate.Session;
 import org.json.JSONObject;
 
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
@@ -32,6 +34,9 @@ import com.paradisiac.members.model.MembersVO;
 import com.paradisiac.members.service.MailService;
 import com.paradisiac.members.service.MembersService;
 import com.paradisiac.schd.model.SchdVO;
+import com.paradisiac.schd.service.SchdService;
+
+import com.paradisiac.util.HibernateUtil;
 
 public class ActOrderServlet extends HttpServlet {
 
@@ -52,13 +57,30 @@ public class ActOrderServlet extends HttpServlet {
 		String action = req.getParameter("action");
 		HttpSession session = req.getSession();
 		String forwardPath = "";
+		System.out.println("現在action:"+action);
 
+	    if ("search".equals(action)) {
+	        BackSearch(req, res);
+	    } else {
+	        defaultSearch(req, res);
+	    }
+		
+		
 		switch (action) {
 		case "insert":
 			insert(req, res);
 			return;
-		case "getOne_For_ActOrderNo":
-			getOne_For_ActOrderNo(req, res);
+		case "getOne_For_ActOrderNo_Back":
+			getOne_For_ActOrderNo_Back(req, res);
+			return;
+		case "getOne_For_ActOrderNo_Front":
+			getOne_For_ActOrderNo_Front(req, res);
+			return;
+		case "BackSearch":
+			BackSearch(req, res);
+			return;
+		case "defaultSearch":
+			defaultSearch(req, res);
 			return;
 		case "getAll":
 			forwardPath = getAllListPage(req, res);
@@ -71,6 +93,9 @@ public class ActOrderServlet extends HttpServlet {
 		dispatcher.forward(req, res);
 	}
 
+
+	
+	
 	private void insert(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 
 		/*********************** 1.接收請求參數 - 輸入格式的錯誤處理 *************************/
@@ -142,7 +167,7 @@ public class ActOrderServlet extends HttpServlet {
 
 		if (orderStatus == 0) {//訂單取消
 			ActOrderService actOrderServ = new ActOrderService();
-			actOrderServ.modifyStatus(schdNO,orderStatus);
+			
 		//改變檔期人數
 			
 		
@@ -151,9 +176,10 @@ public class ActOrderServlet extends HttpServlet {
 
 	}
 
-	private void getOne_For_ActOrderNo(HttpServletRequest req, HttpServletResponse res)
+	private void getOne_For_ActOrderNo_Back(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
 		res.setContentType("text/html;charset=UTF-8");
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 
 		try {
 			String actOrderNoStr = req.getParameter("actOrderNo");
@@ -182,20 +208,70 @@ public class ActOrderServlet extends HttpServlet {
 				System.out.println("無資料");
 				return;
 			}
-			System.out.println(actorder.getSchdVO().getSchdNo() + " /schdNo");
-			System.out.println(actorder + " /actorder");
+
+			// 從訂單主檔查詢關聯的明細資料			
+			Set<ActAttendees> actAttendesslist = actorder.getActAttendees();
+			req.setAttribute("list", actAttendesslist);
+//			System.out.println("後端抓檔期編號:"+actorder.getSchdVO().getSchdNo() + " /schdNo");
+//			System.out.println("後端抓訂單:"+actorder);
 			req.setAttribute("actOrder", actorder);
-			String url = "/back-end/actorder/ActCP.jsp";
+			String url = "/back-end/actorder/ActCPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
 			successView.forward(req, res);
 		} catch (Exception e) {
 			String URL = req.getContextPath() + "/back-end/actorder/ActLPB.jsp?error=ExceptionError";
 			res.sendRedirect(URL);
-			System.out.println("無法取得資料");
 			return;
 		}
 
 	}
+	
+	
+	private void getOne_For_ActOrderNo_Front(HttpServletRequest req, HttpServletResponse res)
+			throws IOException, ServletException {
+		res.setContentType("text/html;charset=UTF-8");
+
+		try {
+			String actOrderNoStr = req.getParameter("actOrderNo");
+
+			if (actOrderNoStr == null || actOrderNoStr.trim().length() == 0) {
+				String URL = req.getContextPath() + "/front-end/actorder/ActLPF.jsp?error=noActOrder";
+				res.sendRedirect(URL);
+				System.out.println("沒有輸入訂單編號");
+				return;
+			}
+			Integer actOrderNo = null;
+			try {
+				actOrderNo = Integer.valueOf(actOrderNoStr);
+			} catch (Exception e) {
+				String URL = req.getContextPath() + "/front-end/actorder/ActLPF.jsp?error=ErrorFormat";
+				res.sendRedirect(URL);
+				System.out.println("訂單編號格式錯誤");
+				return;
+			}
+			/*************************** 2.開始查詢資料 *****************************************/
+			ActOrderService actOrderServ = new ActOrderService();// 抓訂單編號
+			ActOrder actorder = actOrderServ.getOneByActOrderNo(actOrderNo);
+			if (actorder == null) {
+				String URL = req.getContextPath() + "/front-end/actorder/ActLPF.jsp?error=noData";
+				res.sendRedirect(URL);
+				System.out.println("無資料");
+				return;
+			}
+			Set<ActAttendees> actAttendesslist = actorder.getActAttendees();
+			req.setAttribute("list", actAttendesslist);
+			req.setAttribute("actOrder", actorder);
+			String url = "/front-end/actorder/ActCPF.jsp";
+			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
+			successView.forward(req, res);
+		} catch (Exception e) {
+			String URL = req.getContextPath() + "/front-end/actorder/ActLPF.jsp?error=ExceptionError";
+			res.sendRedirect(URL);
+			return;
+		}
+
+	}
+	
 
 //	分頁
 	private String getAllListPage(HttpServletRequest req, HttpServletResponse res) {
@@ -214,11 +290,49 @@ public class ActOrderServlet extends HttpServlet {
 
 		return "/back-end/actorder/ActLPB.jsp";
 	}
-//
+	
+
+
+	private void defaultSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {	    
+	    req.setCharacterEncoding("utf-8");
+	    List<ActOrder> list = null;
+	    ActOrderService actOrderServ = new ActOrderService();
+	    list = actOrderServ.getAll();
+	    req.setAttribute("list", list);
+
+	    // 轉發到JSP頁面
+	    String url = "/back-end/actorder/ActLPB.jsp";
+	    RequestDispatcher successView = req.getRequestDispatcher(url);
+	    successView.forward(req, res);
+
+	}
+
+	private void BackSearch(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        // 獲取表單參數
+	Integer actOrderNo = req.getParameter("actOrderNo") != null? Integer.valueOf(req.getParameter("actOrderNo")): null;
+	Integer memNO = req.getParameter("memNO") != null? Integer.valueOf(req.getParameter("memNO")): null;
+	Integer schdNo = req.getParameter("schdNo") != null? Integer.valueOf(req.getParameter("schdNo")): null;
+	Integer orderStatus = req.getParameter("orderStatus") != null ? Integer.valueOf(req.getParameter("orderStatus")) : null;
+
+        // 呼叫Service進行複合查詢
+        ActOrderService actOrderService = new ActOrderService (); // 假設你的Service實現類為ActOrderServiceImpl
+        List<ActOrder> result = actOrderService.getAllByBackSearchSer(memNO, actOrderNo, schdNo, orderStatus);
+
+        // 將查詢結果放入request中，以供JSP顯示
+        req.setAttribute("searchResult", result);
+        String url = "/back-end/actorder/ActLPB.jsp";
+		RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
+		successView.forward(req, res);
+    }
+
+
 //	private String getAllLP(HttpServletRequest req, HttpServletResponse res) {
 //		List<ActOrder> orderList = actOrderServ.getAll();
 //		req.setAttribute("orderList", orderList);
 //		return "/back-end/actorder/ActLPB.jsp";
 //	}
+	
+
+
 
 }

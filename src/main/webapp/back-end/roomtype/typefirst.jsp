@@ -8,14 +8,16 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
 
-
-        /* 主内容区域样式 */
+		.body{
+			padding-left: 220px; 
+		}
+       
         .content {
-            margin-left: 200px; /* 左边距至少和側邊欄宽度一致 */
-            padding-top: 20px; /* 添加一些上边距 */
+            margin-left: 240px; 
+            padding-top: 20px; 
         }
         
-        /* 卡片样式 */
+        
         .card {
             border: 1px solid #ccc;
             margin: 10px;
@@ -24,23 +26,25 @@
         
 
         .btn-icon {
-            font-size: 1.2em; /* 图标大小 */
+            font-size: 1.2em; 
         }
         
 
         .custom-width {
-            max-width: 720px; /* 或任何你需要的宽度 */
-            margin: auto; /* 这将确保内容水平居中 */
+            max-width: 640px; 
+            margin: auto;
         }
     </style>
+    <%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
 <body>
 	   <div class="sidebar">
-        <%@ include file="/back-end/index/back-left_room.jsp" %>
+			<%@ include file="/back-end/index/ManagerBody.jsp" %>
        </div>
+       
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-8"> <!-- 調整這裡的col-lg來改變寬度 -->
+        <div class="col-lg-7"> <!-- 調整這裡的col-lg來改變寬度 -->
             <h1 class="mt-5">搜尋全部</h1>
         <form method="Post">
             <a class="btn btn-primary mb-4" href="${pageContext.request.contextPath}/type/type.do?action=getAll">查詢所有房型資料</a>
@@ -48,14 +52,19 @@
 
         <h1>新增房型</h1>
         <div class="card">
-            <form method="Post" action="${pageContext.request.contextPath}/type/type.do?action=addtype">
+            <form method="Post" action="${pageContext.request.contextPath}/type/type.do?action=addtype" onsubmit="return validateForm()">
 
                 <div class="form-group">
                      <label for="roomName">NAME：</label>
                     <select class="form-control" id="roomName" name="roomName">
-                        <option value="標準套房">標準套房</option>
-                        <option value="家庭套房">家庭套房</option>
-                        <option value="豪華套房">豪華套房</option>
+			        <option value="標準單人房" >標準單人房</option>
+			        <option value="標準雙人房" >標準雙人房</option>
+			        <option value="海景雙人房" >海景雙人房</option>
+			        <option value="山景四人房" >山景四人房</option>
+			        <option value="家庭四人房" >家庭四人房</option>
+			        <option value="家庭八人房" >家庭八人房</option>
+
+
                     </select>
                 </div>
                 <div class="form-group">
@@ -69,24 +78,24 @@
                 </div>
                 <div class="form-group">
                     <label for="roomTotal">TOTAL：</label>
-                    <input type="number" class="form-control" id="roomTotal" name="roomTotal" value="3">
+                    <input type="number" class="form-control" id="roomTotal" name="roomTotal" value="3" min="1">
                 </div>
                 <div class="form-group">
                     <label for="price">價格：</label>
-                    <input type="number" class="form-control" id="price" name="price" value="" placeholder="3000">
+                    <input type="number" class="form-control" id="price" name="price" value="" placeholder="3000" min="1">
                 </div>
                        <div class="form-group">
                 <label for="normalPrice">普通價格：</label>
-                <input type="number" class="form-control" id="normalPrice" name="normalPrice" value="" placeholder="3000">
+                <input type="number" class="form-control" id="normalPrice" name="normalPrice" value="" placeholder="3000" min="1">
             </div>
             
                         <div class="form-group">
                 <label for="holidayPrice">節日價格：</label>
-                <input type="number" class="form-control" id="holidayPrice" name="holidayPrice" value="" placeholder="3000">
+                <input type="number" class="form-control" id="holidayPrice" name="holidayPrice" value="" placeholder="3000" min="1">
             </div>
                         <div class="form-group">
                 <label for="bridgeHolidayPrice">連續假期價格：</label>
-                <input type="number" class="form-control" id="bridgeHolidayPrice" name="bridgeHolidayPrice" placeholder="3000">
+                <input type="number" class="form-control" id="bridgeHolidayPrice" name="bridgeHolidayPrice" placeholder="3000" min="1">
             </div>
                         <div class="form-group">
                 <label for="notice">備註：</label>
@@ -151,8 +160,34 @@
 </div>
 </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<!--     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script> -->
+<!--     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<script>
+function validateForm() {
+    var notice = document.getElementById("notice").value;
+    var facility = document.getElementById("facility").value;
+    
+    var price = document.getElementById("price").value;
+    var normalPrice = document.getElementById("normalPrice").value;
+    var holidayPrice = document.getElementById("holidayPrice").value;
+    var bridgeHolidayPrice = document.getElementById("bridgeHolidayPrice").value;
+    
+    var roomTotal = document.getElementById("roomTotal").value;
+    if (roomTotal === ""  ) {
+        alert("房間總數未填寫");
+        return false; 
+    }
+    
+    if (notice === "" || facility ==="" ) {
+        alert("設施或備註未填寫");
+        return false; 
+    }
+    if (price === "" || normalPrice ==="" || holidayPrice ==="" || bridgeHolidayPrice ==="" ) {
+        alert("價錢未填寫完整");
+        return false; 
+    }
+    return true; 
+}
+</script>
 </body>
 </html>

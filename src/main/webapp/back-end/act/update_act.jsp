@@ -111,9 +111,15 @@
 					</div>
 					<div id="actImageBlock">
 						<label id="actPhoto1">相簿封面</label>
-						<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="相簿封面" class="img-fluid">
-						<input type="file" class="form-control-file" name="actPho1" accept="image/*">
+						<div>
+						<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="相簿封面" class="img-fluid" style="width: 400px; height: 200px; object-fit: cover;">
+						</div>						
+						<input type="file" class="form-control-file" name="actPho1" id="actPho1" accept="image/*">								
 					</div>
+					<div>
+						<img id="photoPreview" src="#" alt="封面預覽" style="width: 200px; height: 200px; object-fit: cover;">
+					</div>	
+					
 				</div>
 				<div id="actContent">
 					<p><b>活動內容:</b></p>
@@ -125,6 +131,20 @@
 			</form>
 		</div>
 	</div>
+	<script>
+        // 預覽相片
+        document.getElementById('actPho1').addEventListener('change', function(e) {
+            const preview = document.getElementById('photoPreview');
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+            };
+
+            reader.readAsDataURL(file);
+        });
+    </script>
 
 </body>
 </html>

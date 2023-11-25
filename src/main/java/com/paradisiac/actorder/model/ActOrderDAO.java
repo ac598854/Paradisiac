@@ -43,11 +43,28 @@ public class ActOrderDAO implements ActOrder_interface{
 			return 0;	
 		}	
 	}
-		
+	
+	@Override
+	public int updateOrderStatus(ActOrder actOrder) {		
+		getSession().update(actOrder);
+		try {
+			return 1;				
+		}catch(Exception e) {
+			e.printStackTrace();
+			return 0;	
+		}	
+	}
+	
 
 	@Override
 	public ActOrder getOneByActOrderNo(Integer actOrderNo) {
 		return getSession().get(ActOrder.class, actOrderNo);
+	}
+	
+	@Override
+	public ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 
@@ -66,9 +83,69 @@ public class ActOrderDAO implements ActOrder_interface{
 	//取全部分頁、不分頁
 	@Override
 	public List<ActOrder> getAll() {//取全部不分頁	
-		return getSession().createQuery("from ActOrder",ActOrder.class).list();
+		return getSession().createQuery("from ActOrder ORDER BY act_order_no DESC",ActOrder.class).list();
+	}
+	
+	@Override
+	public List<ActOrder> getAllBymemNO(Integer memNo) {
+		return getSession().createQuery("from ActOrder where memNo=:memNo ORDER BY act_order_no DESC",ActOrder.class)
+		.setParameter("memNo", memNo)
+		.list();
+	}
+	
+	@Override
+	public List<ActOrder> getAllByBackSearch(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatus) {
+//		return getSession().createQuery("from ActOrder where memNo=:memNo ORDER BY act_order_no DESC",ActOrder.class)
+//		.setParameter("memNo",memNO)
+//		.setParameter("actOrderNo", actOrderNo)
+//		.setParameter("schdNoo", schdNo)
+//		.setParameter("orderStatus", orderStatus)
+//		.list();
+		
+		  StringBuilder hql = new StringBuilder("FROM ActOrder WHERE 1 = 1");
+
+		    // 條件：會員編號
+		    if (memNO != null) {
+		        hql.append(" AND memNO = :memNO");
+		    }
+		    
+		    // 條件：訂單編號
+		    if (actOrderNo != null) {
+		        hql.append(" AND actOrderNo = :actOrderNo");
+		    }
+
+		    // 條件：檔期編號
+		    if (schdNo != null) {
+		        hql.append(" AND schdNo = :schdNo");
+		    }
+
+		    // 條件：訂單狀態
+		    if (orderStatus != null) {
+		        hql.append(" AND orderStatus = :orderStatus");
+		    }
+
+		    // 構建查詢
+		    Query<ActOrder> query = getSession().createQuery(hql.toString(), ActOrder.class);
+
+		    // 設置條件的參數值
+		    if (memNO != null) {
+		        query.setParameter("memNO", memNO);
+		    }
+		    if (actOrderNo != null) {
+		    	query.setParameter("actOrderNo", actOrderNo);
+		    }
+		    if (schdNo  != null) {
+		        query.setParameter("schdNo", schdNo);
+		    }
+		    if (orderStatus != null) {
+		        query.setParameter("orderStatus", orderStatus);
+		    }
+		    // 返回查詢結果
+		    return query.list();
 	}
 
+	
+	
 	@Override
 	public List<ActOrder> getAllStatus(int currentPage) {//取全部分頁
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
@@ -101,12 +178,10 @@ public class ActOrderDAO implements ActOrder_interface{
 				.list();
 	}
 
+
+
 	
-//	@Override
-//	public ActOrder insert_Whith_ActAttendees(ActOrder actOrder, List<ActAttendees> list) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+
 
 
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 
 import com.paradisiac.act.model.ActVO;
 
@@ -50,6 +51,24 @@ public class SchdHibernateDAO implements SchdDAO_Interface{
 	public SchdVO insertOrUpdate(SchdVO schdVO) {
 		getSession().saveOrUpdate(schdVO);
 		return schdVO;
+	}
+
+	@Override
+	public void addPaidNum(Integer schdNo, Integer aAtnNum) {		
+		Query query = getSession().createQuery("UPDATE SchdVO SET paidNum = paidNum + :aAtnNum WHERE schdNo = :schdNo");
+	    query.setParameter("schdNo", schdNo); 
+	    query.setParameter("aAtnNum", aAtnNum); 
+	    
+	    query.executeUpdate();
+	}
+	
+	@Override
+	public void reducePaidNum(Integer schdNo, Integer aAtnNum) {		
+		Query query = getSession().createQuery("UPDATE SchdVO SET paidNum = paidNum - :aAtnNum WHERE schdNo = :schdNo");
+	    query.setParameter("schdNo", schdNo); 
+	    query.setParameter("aAtnNum", aAtnNum); 
+	    
+	    query.executeUpdate();
 	}
 
 }
