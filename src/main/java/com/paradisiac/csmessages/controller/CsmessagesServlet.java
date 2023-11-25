@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONObject;
 
 import com.paradisiac.csmessages.model.CsMessagesVO;
 import com.paradisiac.csmessages.service.CsMessagesService;
@@ -30,6 +31,7 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		String action = req.getParameter("action");
 		System.out.println("現在action：" + action);
+		JSONObject jsonObject = new JSONObject();
 
 		// 後台抓客服編號
 		if ("getOne_For_CsMsgno".equals(action)) {
@@ -175,71 +177,42 @@ public class CsmessagesServlet<Session> extends HttpServlet {
 		}
 
 		if ("insert_Front".equals(action)) { 
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-
 			// 1. 接收請求參數 - 輸入格式的錯誤處理
 			String cscontent = req.getParameter("cscontent");
 			HttpSession session = req.getSession();
 			Integer memno = (Integer) session.getAttribute("memno");
-			System.out.println("測試取得放入session的會員編號" + memno);// 測試用
-			if (!errorMsgs.isEmpty()) {
-				// 錯誤停留在註冊頁
-				System.out.println("錯誤停留在註冊頁");
-				String url = "/front-end/members/MembersUpdate.jsp";
-				RequestDispatcher errorView = req.getRequestDispatcher(url);
-				errorView.forward(req, res);
-			} else {
-				// 3.新增完成,準備轉交(Send the Success view)
+				// 2.新增完成,準備轉交(Send the Success view)
 				CsMessagesService csMegSvc = new CsMessagesService();
 				CsMessagesVO CsVO = csMegSvc.insertFront(memno, cscontent);
 				req.setAttribute("CsVO_SA", CsVO);
-				String url = "/front-end/csmessages/MessageLPF.jsp";
-				RequestDispatcher successView = req.getRequestDispatcher(url);
-				successView.forward(req, res);
-				System.out.println("新增成功");
-			}
+				jsonObject.put("message", "送出成功");				
+				res.setContentType("application/json;charset=UTF-8");
+				PrintWriter out = res.getWriter();
+				out.println(jsonObject.toString());				
 		}
 		
 	
 		if ("update_Back".equals(action)) { 
-			List<String> errorMsgs = new LinkedList<String>();
-			req.setAttribute("errorMsgs", errorMsgs);
-
 			/*************************** 1.接收請求參數 ****************************************/	
 			Integer csmsgno = Integer.valueOf(req.getParameter("csmsgno").trim());
-			System.out.println("回覆訊息，取得訊息編號:"+csmsgno);
-			
+			System.out.println("回覆訊息，取得訊息編號:"+csmsgno);			
 			//取(員編)
 			HttpSession session= req.getSession();
-			Integer empno=103;//先塞假資料
-//			Integer empno = (Integer) session.getAttribute("empno");//正式用
-			
+			Integer empno = (Integer) session.getAttribute("empno");			
 			//取回覆
 			String csreply = req.getParameter("csreply");
-			if (req.getParameter("csreply") == null) {
-				errorMsgs.add("請回覆客戶");
-			} else {
-				csreply = req.getParameter("csreply");
-			}
-
 			CsMessagesVO CsVO = new CsMessagesVO();
-	
-			if (!errorMsgs.isEmpty()) {
-				req.setAttribute("CsVO", CsVO); 
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/csmessages/MessageCPB.jsp");
-				failureView.forward(req, res);
-				return;
-			}
 
 			/*************************** 2.開始查詢資料 ****************************************/
 			CsMessagesService csMegSvc = new CsMessagesService();
 			CsVO= csMegSvc.updateBack(empno, csreply,csmsgno);
 			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
 			req.setAttribute("CsVO", CsVO); 
-			String url = "/back-end/csmessages/MessageLPB.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(url);
-			successView.forward(req, res);
+			jsonObject.put("message", "送出成功");				
+			res.setContentType("application/json;charset=UTF-8");
+			PrintWriter out = res.getWriter();
+			out.println(jsonObject.toString());		
+
 		}
 	}
 }

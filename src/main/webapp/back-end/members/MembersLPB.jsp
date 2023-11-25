@@ -22,24 +22,15 @@ if (request.getAttribute("getOne_For_Memno_SA") != null) {//
 	list = memSvc.getAll();
 }
 pageContext.setAttribute("list", list);
+
+MembersVO membersVO = new MembersVO();
 %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, shrink-to-fit=no, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>會員帳號管理</title>
 
-<!-- 引入Bootstrap CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <!-- CSS -->
 <style>
@@ -338,47 +329,15 @@ h1, h2, h3, h4 {
 	background-color: #e9ecef;
 }
 </style>
-<%@ include file="/back-end/index/ManagerMeta.jsp"%>
+
 </head>
 <body>
 	<%@ include file="/back-end/index/ManagerBody.jsp"%>
-	<!-- 	<div id="wrapper" class=""> -->
-
-	<!-- Sidebar -->
-	<!-- 		<div id="sidebar-wrapper"> -->
-	<!-- 			<ul class="sidebar-nav"> -->
-	<!-- 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li> -->
-	<!-- 				<li class="sidebar-title">員工權限管理</li> -->
-	<!-- 				<li class="sidebar-title">會員管理</li> -->
-	<!-- 				<li><a -->
-	<%-- 					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li> --%>
-	<!-- 				<li><a href="#">會員相簿管理</a></li> -->
-	<!-- 				<li><a -->
-	<%-- 					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li> --%>
-	<!-- 				<li class="sidebar-title">最新消息管理</li> -->
-	<!-- 				<li class="sidebar-title">訂房管理</li> -->
-	<!-- 				<li class="sidebar-title">商城管理</li> -->
-	<!-- 				<li class="sidebar-title">活動管理</li> -->
-	<!-- 				<li><a href="#">活動類別管理</a></li> -->
-	<!-- 				<li><a href="#">檔期管理</a></li> -->
-	<!-- 				<li><a href="#">活動訂單管理</a></li> -->
-	<!-- 			</ul> -->
-	<!-- 		</div> -->
-	<!-- /#sidebar-wrapper -->
-
-	<!-- Top Navigation -->
-	<!-- 		<ul class="navigation"> -->
-	<!-- 			<li><a href="#home">登出</a></li> -->
-	<!-- 		</ul> -->
-	<!--Page Content -->
-	<!-- 		<div id="page-content-wrapper"> -->
-	<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
-	<!-- 				id="menu-toggle">展開畫面</a> -->
+	<!-- 	Page Content -->
 	<div class="container-fluid">
 
 		<div class="col-lg-12">
 			<h1>會員帳號管理</h1>
-			<!-- 查詢 -->
 			<%-- 錯誤表列 --%>
 			<div>
 				<c:if test="${not empty errorMsgs}">
@@ -390,105 +349,97 @@ h1, h2, h3, h4 {
 					</ul>
 				</c:if>
 			</div>
-			<div class="row mb-4">
-				<div class="col-md-3">
-					<form method="post" action="members.do">
-						<label for="keyword">會員編號查詢</label>
-						<div class="input-group">
-							<input type="text" class="form-control" name="memno" id="memno">
-							<input type="hidden" name="action" value="getOne_For_Memno">
-							<input type="submit" value="送出" class="btn btn-primary">
-							<div class="input-group-append"></div>
-						</div>
-					</form>
-				</div>
 
-				<div class="col-md-3">
-					<form method="post" action="members.do">
-						<label for="resStatus">會員帳號查詢</label>
-						<div class="input-group">
-							<input type="text" name="memaccount" class="form-control">
-							<input type="hidden" name="action" value="getOne_For_Account">
-							<input type="submit" value="送出" class="btn btn-primary">
-						</div>
-					</form>
-				</div>
-				<div class="col-md-3">
-					<form method="post" ACTION="members.do">
-						<label for="resStatus">會員帳號狀態查詢</label>
-						<div class="input-group">
-							<select name="memstatus" id="memstatus_dropdown"
-								class="form-control">
-								<option value="3">請選擇</option>
-								<option value="true">正常</option>
-								<option value="false">凍結</option>
-							</select>
-							<div class="input-group-append"></div>
-							<input type="hidden" name="action" value="getAll_For_Status">
-							<input type="submit" value="送出" class="btn btn-primary">
-						</div>
-					</form>
-				</div>
+			<div class="col-sm-3 form-group">
+				<form method="post" action="members.do">
+					<label for="keyword">會員編號查詢</label> <input type="text"
+						class="form-control" name="memno" id="memno"> <input
+						type="hidden" name="action" value="getOne_For_Memno"> <input
+						type="submit" value="送出" class="btn btn-primary">
+				</form>
 			</div>
-		</div>
-		<!-- 表格-->
-		<div class="container">
-			<div class="row mb-4">
-				<div class="col-md-12">
-					<div class="table-responsive">
-						<table class="table">
-							<thead>
-								<tr>
-									<th>會員編號</th>
-									<th>帳號狀態</th>
-									<th>姓名</th>
-									<th>帳號</th>
-									<th>電子信箱</th>
-									<th>生日</th>
-									<th>電話</th>
-									<th>註冊時間</th>
-									<th>動作</th>
-								</tr>
-							</thead>
 
-							<tbody>
-								<%@ include file="page1.file"%>
-								<c:forEach var="MembersVO" items="${list}"
-									begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-									<tr>
-										<td>${MembersVO.memno}</td>
-										<td><c:choose>
-												<c:when test="${MembersVO.memstatus == true}">正常</c:when>
-												<c:when test="${MembersVO.memstatus == false}">
-													<span style="color: red;">凍結</span>
-												</c:when>
-											</c:choose></td>
-										<td>${MembersVO.memname}</td>
-										<td>${MembersVO.memaccount}</td>
-										<td>${MembersVO.memmail}</td>
-										<td>${MembersVO.membir}</td>
-										<td>${MembersVO.memphone}</td>
-										<td>${MembersVO.memdate}</td>
-										<c:set var="formattedDateTime"
-											value="${ActOrder.orderTime.format(java.time.format.DateTimeFormatter.ofPattern('yyyy-MM-dd HH:mm'))}" />
-										<td>${formattedDateTime}</td>
-										<td>
-											<form method="post" action="members.do"
-												style="margin-bottom: 0px;">
-												<input type="submit" value="修改" class="btn btn-primary">
-												<input type="hidden" name="memno" value="${MembersVO.memno}">
-												<input type="hidden" name="action" value="get_all_back">
-											</form>
-										</td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</table>
-						<%@ include file="page2.file"%>
+			<div class="col-sm-3 form-group">
+				<form method="post" action="members.do">
+					<label for="resStatus">會員帳號查詢</label>
+						<input type="text" name="memaccount" class="form-control">
+						<input type="hidden" name="action" value="getOne_For_Account">
+						<input type="submit" value="送出" class="btn btn-primary">
+				</form>
+			</div>
+			<div class="col-sm-3 form-group">
+				<form method="post" ACTION="members.do">
+					<label for="resStatus">會員帳號狀態查詢</label>
+					<div class="input-group" style="width: 100%;">
+						<select name="memstatus" id="memstatus_dropdown"
+							class="form-control">
+							<option value="3">請選擇</option>
+							<option value="true">正常</option>
+							<option value="false">凍結</option>
+						</select>
+						<div class="input-group-append"></div>
+						<input type="hidden" name="action" value="getAll_For_Status">
+						<input type="submit" value="送出" class="btn btn-primary">
 					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<!-- 表格-->
+	<div class="container">
+		<div class="row mb-4">
+			<div class="col-md-12">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>會員編號</th>
+								<th>帳號狀態</th>
+								<th>姓名</th>
+								<th>帳號</th>
+								<th>電子信箱</th>
+								<th>生日</th>
+								<th>電話</th>
+								<th>註冊時間</th>
+								<th>動作</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<%@ include file="page1.file"%>
+							<c:forEach var="MembersVO" items="${list}" begin="<%=pageIndex%>"
+								end="<%=pageIndex+rowsPerPage-1%>">
+								<tr>
+									<td>${MembersVO.memno}</td>
+									<td><c:choose>
+											<c:when test="${MembersVO.memstatus == true}">正常</c:when>
+											<c:when test="${MembersVO.memstatus == false}">
+												<span style="color: red;">凍結</span>
+											</c:when>
+										</c:choose></td>
+									<td>${MembersVO.memname}</td>
+									<td>${MembersVO.memaccount}</td>
+									<td>${MembersVO.memmail}</td>
+									<td>${MembersVO.membir}</td>
+									<td>${MembersVO.memphone}</td>
+									<td>${MembersVO.memdate}</td>
+									<td>
+										<form method="post" action="members.do"
+											style="margin-bottom: 0px;">
+											<input type="submit" value="修改" class="btn btn-primary">
+											<input type="hidden" name="memno" value="${MembersVO.memno}">
+											<input type="hidden" name="action" value="get_all_back">
+										</form>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+					<%@ include file="page2.file"%>
 				</div>
 			</div>
 		</div>
+	</div>
 	</div>
 	</div>
 	</div>

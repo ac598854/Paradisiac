@@ -46,17 +46,8 @@ String nowPage = request.getParameter("page") == null ? "0" : request.getParamet
 		    	}else{
 		    		notfirst = true;
 		    	}
+		    	
 		        hql.append(" actOrderNo = "+actOrderNo);
-		    }
-
-		    // 條件：檔期編號
-		    if (schdNo != null && schdNo.trim().length() > 0) {
-		    	if(notfirst){
-		    		hql.append(" AND ");
-		    	}else{
-		    		notfirst = true;
-		    	}
-		        hql.append(" schdNo = "+schdNo);
 		    }
 
 		    // 條件：訂單狀態
@@ -75,15 +66,9 @@ String nowPage = request.getParameter("page") == null ? "0" : request.getParamet
 		   
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, shrink-to-fit=no, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>ParadisiacBay-活動訂單管理</title>
 
 <!-- Bootstrap -->
@@ -370,64 +355,48 @@ ul.navigation {
 	}
 }
 </style>
-<%@ include file="/back-end/index/back-left_planning.jsp"%>
+
 </head>
 <body>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<!--Page Content -->
-	<div id="page-content-wrapper" style="padding-left: 250px;">
-		<!-- 		<a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">展開畫面</a> -->
-		<div class="container-fluid">
+	<div id="page-content-wrapper" style="padding-left: 50px;">
 
-			<!-- 				<form action="ActLPB.jsp" method="get"> -->
 			<div class="col-lg-12">
 				<h1>活動訂單管理</h1>
 
 				<!-- 查詢 -->
 				<form METHOD="get" ACTION="ActLPB.jsp">
 					<div class="row mb-4">
-						<div class="col-md-3">
+						<div class="col-sm-3 form-group">
 							<label for="memNo">會員編號</label>
-							<div class="input-group">
 								<input type="text" class="form-control" name="memNo"
 									id="memNo" value="${memNO}">
 								<div class="input-group-append"></div>
-							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-sm-3 form-group">
 							<label for="actOrderNo">訂單編號</label>
-							<div class="input-group">
 								<input type="text" class="form-control" name="actOrderNo"
 									id="actOrderNo" value="${actOrderNo}">
 								<div class="input-group-append"></div>
-							</div>
 						</div>
-						<div class="col-md-3">
-							<label for="schdNo">活動檔期</label>
-							<div class="input-group">
-								<input type="text" class="form-control" name="schdNo"
-									id="schdNo" value="${schdNo}">
-								<div class="input-group-append"></div>
-							</div>
-						</div>
-						<div class="col-md-3">
+						<div class="col-sm-3 form-group">
 							<label for="orderStatus">訂單狀態</label>
-							<div class="input-group">
 								<select class="form-control" id="orderStatus" name="orderStatus">
 									<option value="2" ${orderStatus eq 2 ? "selected" : ""}>全部</option>
 									<option value="1" ${orderStatus eq 1 ? "selected" : ""}>訂單成立</option>
 									<option value="0" ${orderStatus eq 1 ? "selected" : ""}>訂單取消</option>
 								</select>
 								<div class="input-group-append"></div>
-							</div>
 						</div>
 					</div>
+					<div class="col-sm-12 form-group mb-0">
 					<button class="btn btn-primary" id="btSubmit" type="submit">送出</button>
+				</div>
 				</form>
 				<br> <br>
 			</div>
 			<!-- 表格-->
-
 				<div class="container">
 					<div class="row mb-4">
 						<div class="col-md-12">

@@ -7,24 +7,13 @@
 <%@ page import="com.paradisiac.csmessages.service.*"%>
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
-
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, shrink-to-fit=no, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<link rel="stylesheet" href="../css/sweetalert2.min.css">
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>客服訊息管理</title>
 
-<!-- Bootstrap -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css"
-	rel="stylesheet">
 <!-- CSS -->
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
@@ -336,48 +325,20 @@ ul.navigation {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	padding: 10px;
 }
+
+.container mt-3{
+	padding-left: 30px;
+}
+
+
 </style>
-<%@ include file="/back-end/index/ManagerMeta.jsp"%>
+
 </head>
 <body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
-<!-- 	<div id="wrapper" class=""> -->
-
-		<!-- Sidebar -->
-<!-- 		<div id="sidebar-wrapper"> -->
-<!-- 			<ul class="sidebar-nav"> -->
-<!-- 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li> -->
-<!-- 				<li class="sidebar-title">員工權限管理</li> -->
-<!-- 				<li class="sidebar-title">會員管理</li> -->
-<!-- 				<li><a -->
-<%-- 					href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li> --%>
-<!-- 				<li><a href="#">會員相簿管理</a></li> -->
-<!-- 				<li><a -->
-<%-- 					href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li> --%>
-<!-- 				<li class="sidebar-title">最新消息管理</li> -->
-<!-- 				<li class="sidebar-title">訂房管理</li> -->
-<!-- 				<li class="sidebar-title">商城管理</li> -->
-<!-- 				<li class="sidebar-title">活動管理</li> -->
-<!-- 				<li><a href="#">活動類別管理</a></li> -->
-<!-- 				<li><a href="#">檔期管理</a></li> -->
-<!-- 				<li><a href="#">活動訂單管理</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-		<!-- /#sidebar-wrapper -->
-
-		<!-- Top Navigation -->
-<!-- 		<ul class="navigation"> -->
-<!-- 			<li><a href="#home">登出</a></li> -->
-
-<!-- 		</ul> -->
-		<!--Page Content -->
-<!-- 		<div id="page-content-wrapper"> -->
-<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
-<!-- 				id="menu-toggle">展開畫面</a> -->
-
-			<h1>客戶問題</h1>
-			<div class="container"></div>
+	
 			<div class="container mt-3">
+			<h1>客戶問題</h1>
 				<div class="row">
 					<div class="col-12 text-right">
 						<a
@@ -401,40 +362,26 @@ ul.navigation {
 					</form>
 					<br>
 					<!-- 第二部分 -->
-					<form id="csreplyForm" method="post" accept-charset="UTF-8"
-						action="csmessages.do">
+					<form id="csreplyForm" method="post" accept-charset="UTF-8">
 						<div class="form-group">
 							<label for="csmsgno" id="csmsgnoHead">客服編號</label> <input
 								type="text" name="csmsgno" class="form-control" id="csmsgno"
 								value="${CsVO.csmsgno}" readonly>
 						</div>
 						<div class="form-group">
-							<label for="csreply" id="csreplyHead">客服回覆</label>
+							<label for="csreply" id="csreplyHead">客服回覆<span class="text-danger">*</span></label>
 							<textarea class="form-control" name="csreply" id="csreply"
-								rows="3"><c:out value="${CsVO.csreply}" /></textarea>
+								rows="3" required><c:out value="${CsVO.csreply}" /></textarea>
 						</div>
 						<br>
-						<button type="button" class="btn btn-primary" id="submitButton">送出</button>
+						<button type="submit" class="btn btn-primary" id="submitButton">送出</button>
 						<input type="hidden" name="action" value="update_Back">
-
 						<button type="reset" class="btn btn-secondary" id="resetButton">重設</button>
 					</form>
 				</div>
 			</div>
-		</div>
 
-	</div>
-
-
-
-
-	<!-- Bootstrap JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+	<script src="../js/sweetalert2.all.min.js"></script>
 	<!-- Menu Toggle Script -->
 	<script>
 		$("#menu-toggle").click(function(e) {
@@ -442,23 +389,80 @@ ul.navigation {
 			$("#wrapper").toggleClass("toggled");
 		});
 		
+		var fieldsValid = false;
 
+		function checkRequiredFields() {
+		  var isValid = true;
+		  var fieldIds = ["csreply"];
+		  for (var i = 0; i < fieldIds.length; i++) {
+		    var fieldId = fieldIds[i];
+		    var inputElement = $("#" + fieldId);
+
+		    if (inputElement.length > 0) {
+		      var fieldValue = inputElement.val().trim();
+
+		      if (inputElement.prop("required") && fieldValue === "") {
+		        isValid = false;
+		        break;
+		      }
+		      // 清除首尾空格
+		      inputElement.val(fieldValue.trim());
+		    }
+		  }
+		  return isValid;
+		}
+
+		$(document).ready(function () {
+		  $("#csreplyForm").submit(function (event) {
+		    event.preventDefault();
+		    var fieldsValid = checkRequiredFields();
+		    console.log(fieldsValid)
+		    if (fieldsValid) {
+		      if (confirm('確認送出回覆？')) {
+		        var formData = $(this).serialize();
+		        $.ajax({
+		          type: "POST",
+		          url: "csmessages.do",
+		          data: formData,
+		          success: async function (response) {
+		            if (response.message) {
+		              	await Swal.fire({
+		              	title: response.message,
+		                icon: "success"
+		              });
+		              window.location.href = "<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp";
+		            } else if (response.error) {
+		              alert(response.message);
+		            }
+		          },
+		          error: function () {
+		            alert("例外错误。");
+		          }
+		        });
+		      }
+		    } else {
+		      Swal.fire({
+		        title: "必填请勿空白!",
+		        icon: "error"
+		      });
+		    }
+		  });
+		});
+		
 		
 		<!-- 送出訊息確認 -->		
-		// JavaScript代碼以處理點擊"送出"按鈕時的確認對話框
-		document.getElementById('submitButton').addEventListener(
-				'click',
-				function() {
-					if (confirm('送出回覆訊息？')) {
-						// 如果使用者點擊確定，執行送出表單的相關操作
-						document.getElementById('csreplyForm')
-								.submit();
-					}
-				});
+// 		// JavaScript代碼以處理點擊"送出"按鈕時的確認對話框
+// 		document.getElementById('submitButton').addEventListener(
+// 				'click',
+// 				function() {
+// 					if (confirm('送出回覆訊息？')) {
+// 						// 如果使用者點擊確定，執行送出表單的相關操作
+// 						document.getElementById('csreplyForm')
+// 								.submit();
+// 					}
+// 				});
 
 	</script>
 </body>
-<link rel="stylesheet" asset="eduser.css"
-	href="chrome-extension://mjdbhokoopacimoekfgkcoogikbfgngb/assets/eduser.css">
 </html>
 
