@@ -87,6 +87,15 @@ public class PhotoAlbumHibernateDAO implements PhotoAlbumDAO_interface{
 	}
 	//查詢全部相片============================================
 	@Override
+	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo){	
+		List<PhoWithAlbDTO> list = getSession()
+			       .createQuery("from PhoWithAlbDTO where albNo = :albNo", PhoWithAlbDTO.class)
+			       .setParameter("albNo", albNo)
+			       .list();
+		return list;
+	}
+	
+	@Override
 	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo, int currentPage){
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
 		List<PhoWithAlbDTO> list = getSession()

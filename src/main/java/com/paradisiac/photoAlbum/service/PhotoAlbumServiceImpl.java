@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.paradisiac.photo.model.PhoWithAlbDTO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumDAO_interface;
 import com.paradisiac.photoAlbum.model.PhotoAlbumHibernateDAO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
@@ -69,5 +70,7 @@ public class PhotoAlbumServiceImpl implements PhotoAlbumService_interface{
 	public Integer getPhaByMem(Integer memno) {
 		return dao.findByMem(memno);
 	}
+
+
 
 }

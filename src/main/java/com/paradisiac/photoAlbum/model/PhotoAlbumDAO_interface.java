@@ -25,6 +25,7 @@ public interface PhotoAlbumDAO_interface {
 	
 	//DTO
 	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo, int currentPage);
+	public List<PhoWithAlbDTO> searchAllPhoto(Integer albNo);
 	
 	public int getTotalQty(Integer albNo);
 	

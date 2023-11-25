@@ -23,22 +23,6 @@ public class ActHibernateDAO implements ActDAO_interface{
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
-	//新增
-//	@Override
-//	public int insert(ActVO actVO) {
-//		try {
-//			getSession().save(actVO);
-//			return 1;
-//		} catch (Exception e) {
-//			return -1;
-//		}	
-//	}
-//	//修改
-//	@Override
-//	public ActVO update(ActVO actVO) {
-//		getSession().update(actVO);
-//		return actVO;	
-//	}
 
 	@Override //查單筆活動
 	public ActVO findByPrimaryKey(Integer actNo) {

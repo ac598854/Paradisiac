@@ -7,120 +7,160 @@
 <head>
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>相簿管理系統</title>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
-.custom-container {
-	max-width: 960px;
-	border: 1px solid #ccc;
-	padding: 20px;
-	margin: 0 auto;
-	padding-top: 65px;
-	padding-left: 255px;
+body {
+            font-size: 15px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .form-container .form-group {
+            margin-bottom: 10px;
+        }
+
+        .form-container .form-group input {
+            width: 100%;
+            padding: 5px;
+        }
+
+        .col-md-6 {
+            width: 50%;
+            float: left;
+            box-sizing: border-box;
+        }
+
+        .preview-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-container img {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: cover;
+        }
+        
+        .btn-separator {
+	margin-left: 10px;
+	font-size: 12px
+}
+.form-group{
+	margin-top: 5px;
 }
 </style>
+ <title>相簿管理系統</title>
 </head>
-
-
 
 <body>
 	<%@ include file="/back-end/index/ManagerBody.jsp"%>
-	<div class="custom-container">
+<h1>相簿管理系統</h1>	
+	<%-- 錯誤表列 --%>
+	<c:if test="${not empty errorMsgs}">
+		<font style="color: red">請修正以下錯誤:</font>
+		<ul>
+			<c:forEach var="message" items="${errorMsgs}">
+				<li style="color: red">${message}</li>
+			</c:forEach>
+		</ul>
+	</c:if>
 
-		<h1>相簿管理系統</h1>
-		<a href='${pageContext.request.contextPath}/pha.do?action=getAll'>查詢</a>所有相簿.
-		<a
-			href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">回首頁</a>
-		<%-- 錯誤表列 --%>
-		<c:if test="${not empty errorMsgs}">
-			<font style="color: red">請修正以下錯誤:</font>
-			<ul>
-				<c:forEach var="message" items="${errorMsgs}">
-					<li style="color: red">${message}</li>
-				</c:forEach>
-			</ul>
-		</c:if>
-		<h2>相簿查詢</h2>
-
-		<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do">
-			<b>輸入相簿編號</b> <input type="text" name="albNo">
-			<!-- 所有請求名稱用hidden送出 -->
-			<input type="hidden" name="action" value="getOne_For_Display">
-			<input type="submit" value="送出">
-		</FORM>
+    <!-- 相簿查詢 -->
+    <div class="col-md-12" style="margin-top: 10px;">
+    	<h2>查詢相簿</h2>
+    </div>
+    <div class="form-container" style="border: 1px solid #D3D3D3;">
+    	<FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do">  		
+    		<div class="form-group col-md-2" style="margin-top: 10px;">
+    			<input type="hidden" name="action" value="getAll">
+	       		<button class="btn btn-primary mr-2 btn-separator">查詢所有相簿</button>
+	    	</div>
+    	</FORM>   	
+ 	    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do"> 
+		    <div style=" display: flex;">
+		    	<div class="form-group col-md-4" >
+		            <label for="albNo">輸入相簿編號-查詢相簿與照片</label>
+		            <input type="text" name="albNo" id="albumNumber" class="form-control" required>
+		        </div>      
+		    </div>
+		    <div class="form-group col-md-2"> 
+		    	<input type="hidden" name="action" value="getOne_For_Display">	    	
+		       	<button type="submit" class="btn btn-primary mr-2 btn-separator">查詢相簿</button>
+		    </div>
+	    </FORM><%----%>            
 	</div>
-	<div class="custom-container">
-		<h2>新增相簿</h2>
-		<form action="${pageContext.request.contextPath}/pha.do" method="post"
+
+    <!-- 新增相簿 -->
+    <div class="col-md-12" style="margin-top: 10px;">
+    	<h2>新增相簿</h2>
+    </div> 
+	<div class="form-container" style="border: 1px solid black;">
+	<form action="${pageContext.request.contextPath}/pha.do" method="post"
 			enctype="multipart/form-data">
-			<div class="row">
-				<div class="col-md-4">
-					<div class="form-group">
-						<label for="albumNumber">相簿編號</label> <input type="text"
-							class="form-control" id="albNo" name="albNo">
-					</div>
+		<div class="col-md-12">
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" required>
 				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label for="memberNumber">會員編號</label> <input type="text"
-							class="form-control" id="memNo" name="memNo">
-					</div>
+				<div class="form-group">
+					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" required>
 				</div>
-				<div class="col-md-4">
-					<div class="form-group">
-						<label for="albumName">相簿名稱</label> <input type="text"
-							class="form-control" id="albName" name="albName">
-					</div>
+				<div class="form-group">
+					<label for="albumName">相簿名稱</label> <input type="text"
+						id="albName" name="albName" required>
+				</div>
+				<div class="form-group">
+					<label for="createDate">相簿建立日期</label> <input type="date"
+						id="createDate" id="albDate" name="albDate" required>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="albumCover" id="albumCover">相簿封面</label> <input
-							type="file" class="form-control-file" id="albPhoto"
-							name="albPhoto" accept="image/*">
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="createTime">相簿建立時間</label> <input type="date"
-							class="form-control" id="albDate" name="albDate" required>
-					</div>
-				</div>
+
+			<div class="col-md-4"
+				style="padding: 5px; display: flex; flex-direction: column; align-items: center; 
+    			justify-content: center; border: 1px solid #D3D3D3; margin-top:15px;">
+    			<p>相簿封面</p>
+				<input
+					type="file" class="form-control-file" id="actPhoto"
+					name="albPhoto" accept="image/*" onchange="showPreview">
+				<img name="photoPreview" id="photoPreview"
+					src="<%=request.getContextPath()%>/images/no-picture-taking.png"
+					alt="相片預覽" style="width: 200px; height: 200px; object-fit: cover;">
 			</div>
-			<div class="row">
-				<div class="col-md-6">
-					<div class="form-group">
-						<label>相片封面預覽區</label> 
-						<img name="photoPreview" src="#" alt="封面預覽" id="albPhoto" style="width: 200px; height: 200px; object-fit: cover;">
-					</div>
-				</div>
-				<div class="col-md-6">
-					<div class="form-group">
-						<label for="albumSubmit">建立相簿</label> <input type="hidden"
-							name="action" value="insert">
-						<button type="submit" class="btn btn-primary" id="albumSubmit">送出</button>
-					</div>
-				</div>
-			</div>
-		</form>
+		</div>
+		<div class="col-md-12"  style="margin-left: 20px; margin-bottom: 10px;">
+			<input type="hidden" name="action" value="insert">							
+			<input type="submit" value="新增相簿" class="btn btn-success mr-2 btn-separator" style="margin: 0px;">
+		</div>
+	</form>
 	</div>
 
 	<script>
-        // 預覽相片
-        document.getElementById('albPhoto').addEventListener('change', function(e) {
-            const preview = document.getElementById('photoPreview');
-            const file = e.target.files[0];
-            const reader = new FileReader();
+		// 預覽相片
+		document.getElementById('actPhoto').addEventListener('change',
+				function(e) {
+					const preview = document.getElementById('photoPreview');
+					const file = e.target.files[0];
+					const reader = new FileReader();
 
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            };
+					reader.onload = function(e) {
+						preview.src = e.target.result;
+					};
 
-            reader.readAsDataURL(file);
-        });
-    </script>
+					reader.readAsDataURL(file);
+				});
+	</script>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script

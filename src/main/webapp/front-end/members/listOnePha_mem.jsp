@@ -2,239 +2,206 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page import="com.paradisiac.photoAlbum.model.*"%>
-
 <!DOCTYPE html>
+
 
 <html>
 <head>
-<%@ include file="/front-end/index/MembersMeta.jsp"%>
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>相簿管理</title>
+<title>會員紀念相簿</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <style>
-.album.card.mb-3 {
-	position: relative;
+.btn-separator {
+	margin-left: auto;
 }
 
-.photo-content {
+.flex-container {
 	display: flex;
-	justify-content: space-between;
-}
-
-.photo-container {
-	margin: 5px;
-	width: calc(33.33% - 10px);
-	box-sizing: border-box;
-	padding: 10px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
 	align-items: center;
 }
 
-.photo-container img {
-	max-width: 100%;
-	height: auto;
+
+
+table {
+	font-size: 15px;
 }
 
-.container {
-	padding-top: 65px;
-	padding-left: 255px;
-}
-/*
-        .row.g-0 {
-        position: relative;
-        }
-        .d-flex justify-content-end {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
-        .photo-content d-flex {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-         ====
-        .photo-content img {
-		    max-width: 50%;  
-		    height: 200px; 
-            background-color: #eee;
-            border: 1px solid #ccc;
-            margin: 5px;
-        }
-        
-        .img-fluid img {
-	        max-width: 100%;
-	        height: auto;
-    	}
-        
-        .album .d-flex.justify-content-end {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        }
 
-        .d-flex.justify-content-end {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        }
-
-        .album-info {
-        margin-bottom: 50px; 
-        }
-
-        .btn-separator {
-        margin-right: 5px; 
-        }*/
 </style>
 </head>
+
 <body>
-	<%@ include file="/front-end/index/MembersBody.jsp"%>
-	<div id="dynamicContent"></div>
-	<%----%>
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<div class="container">
-		<h1 class="text-center">會員相簿</h1>
+		<h1 class="text-center">會員紀念相簿</h1>
 		<div>
 			<h2 class="d-flex justify-content-between">
-				瀏覽紀念相簿
-				<%-- <a
-					href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp"
-					class="btn btn-secondary">回首頁</a>--%>
+				 我的相簿				
 			</h2>
+			
 		</div>
 
 		<div class="album card mb-3">
 			<div class="row g-0">
-				<div class="col-md-4">
+				<div class="col-md-7">
 					<img id="albPhoto"
-						src="<%=request.getContextPath()%>/dbg.do?alb_no=${list[0].albNo}"
-						alt="相簿封面" class="img-fluid">
+						src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo}"
+						style="width: 100%; height: 300px; object-fit: cover;" alt="相簿封面" class="img-fluid">
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-5">
 					<div class="album-info">
 						<table class="table table-bordered">
 							<tr>
 								<td>相簿編號:</td>
-								<td>${list[0].albNo}</td>
+								<td>${phaVO.albNo}</td>
 							</tr>
 							<tr>
 								<td>相簿名稱:</td>
-								<td>${list[0].albName}</td>
+								<td>${phaVO.albName}</td>
 							</tr>
 							<tr>
 								<td>會員編號:</td>
-								<td>${list[0].memNo}</td>
+								<td>${phaVO.memNo}</td>
 							</tr>
 							<tr>
 								<td>相簿日期:</td>
-								<td>${list[0].albDate}</td>
+								<td>${phaVO.albDate}</td>
 							</tr>
 						</table>
 					</div>
 				</div>
 			</div>
 		</div>
-
-		<h2>相片管理</h2>
-		<c:if test="${phoPageQty > 0}">
-			<b><font color=red>第${currentPage}/${phoPageQty}頁</font></b>
+ 
+		<div class="flex-container">
+		    <h2>我的相片</h2>		    
+		</div>
+		<c:if test="${not empty errorMsgs}">
+			    <div style="color: red; font-size: 15px;">
+			        請修正以下錯誤:
+			        <ul>
+			            <c:forEach var="message" items="${errorMsgs}">
+			                <li>${message}</li>
+			            </c:forEach>
+			        </ul>
+			    </div>
 		</c:if>
+		<c:if test="${phoPageQty > 0}">
+			<b><span style="color: red; font-size: 15px;">第${currentPage}/${phoPageQty}頁</span></b>
+		</c:if>
+				
 		<div class="album card mb-3">
-			=====
-			<div class="album card mb-3">
-				<div class="row g-0">
-					<div class="col-md-8">
-						<form id="photoForm" method="post"
-							action="<%=request.getContextPath()%>/pho.do">
-							<div class="photo-content">
-								<c:forEach var="pha" items="${list}">
-									<%-- <input type="checkbox" name="photoNo" id="${pha.photoNo}"
-										value="${pha.photoNo}">--%>
-									<div class="photo-container">
-										<img
-											src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
-											alt="相片1" class="img-fluid">
-										<table>
-											<tr>
-												<td>相片名稱:</td>
-												<td>${pha.photoName}</td>
-											</tr>
-											<tr>
-												<td>相片日期:</td>
-												<td>${pha.photoDate}</td>
-											</tr>
-										</table>
-									</div>
-								</c:forEach>
-							</div>
-						</form>
 
-					</div>
+			<div class="row g-0">
+				<div class="col-md-12">
+					<form id="photoForm" method="post"
+						action="<%=request.getContextPath()%>/pho.do">
+						<div class="col-md-12" >
+							<c:forEach var="pha" items="${list}">									
+								<div class="col-md-4"  style="padding: 5px; display: flex; flex-direction: column; align-items: center;">									
+									<img
+										src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
+										style="width: 100%; height: 400px; object-fit: cover;" alt="相片1" class="img-fluid">
+									<table>
+										<tr>
+											<td>相片名稱:</td>
+											<td>${pha.photoName}</td>
+										</tr>
+										<tr>
+											<td>相片編號:</td>
+											<td>${pha.photoNo}</td>
+										</tr>
+										<tr>
+											<td>相片日期:</td>
+											<td>${pha.photoDate}</td>
+										</tr>
+									</table>
+								</div>
+							</c:forEach>
+						</div>
+
+					</form>
+					
 				</div>
 			</div>
-
-
-			======
 		</div>
+
 		<c:if test="${currentPage > 1}">
 			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${list[0].albNo}&page=1">至第一頁</a>&nbsp;
+				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=1" style="font-size: 15px;">至第一頁</a>&nbsp;
 		</c:if>
 		<c:if test="${currentPage - 1 != 0}">
 			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${list[0].albNo}&page=${currentPage - 1}">上一頁</a>&nbsp;
+				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${currentPage - 1}" style="font-size: 15px;">上一頁</a>&nbsp;
 		</c:if>
 		<c:if test="${currentPage + 1 <= phoPageQty}">
 			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${list[0].albNo}&page=${currentPage + 1}">下一頁</a>&nbsp;
+				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${currentPage + 1}" style="font-size: 15px;">下一頁</a>&nbsp;
 		</c:if>
 		<c:if test="${currentPage != phoPageQty}">
 			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${albNo}&page=${phoPageQty}">至最後一頁</a>&nbsp;
+				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${phoPageQty}" style="font-size: 15px;">至最後一頁</a>&nbsp;
 		</c:if>
-	</div>
 
-	<!-- 引入 Bootstrap JavaScript 文件（如果需要） -->
+
+
+
+	</div><%--container --%>
+
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">
-     
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">     
     </script>
+	<script>
+		// 取得"選取檔案"的檔名(輸入元素)
+		function fileName(inputName, fileInput) {
+			var nameInput = document.querySelector('input[name="' + inputName
+					+ '"]');
+			if (fileInput.files.length > 0) { //有選到檔案, 檔案名稱長度>0
+				nameInput.value = fileInput.name; //nameInput.value = fileInput.files[0].name;
+			} else {
+				nameInput.value = "";
+			}
+		}
+
+		var photo1 = document.querySelector('input[name="photo1"]');//檔案名稱
+		// 當選擇檔案時觸發事件
+		photo1.addEventListener('change', function() {
+			fileName('photoName1', photo1);//設定相片的name = 檔案名稱
+		});
+
+		var photo2 = document.querySelector('input[name="photo2"]');//檔案名稱
+		photo2.addEventListener('change', function() {
+			fileName('photoName2', photo2);//設定相片的name = 檔案名稱
+		});
+
+		var photo3 = document.querySelector('input[name="photo3"]');//檔案名稱
+		photo3.addEventListener('change', function() {
+			fileName('photoName3', photo3);//設定相片的name = 檔案名稱
+		});
+
+		// 預覽相片
+		const photoElements = document.getElementsByClassName('photo');
+		for (let i = 0; i < photoElements.length; i++) {
+			photoElements[i].addEventListener('change', function(e) {
+				const preview = document.getElementsByName('photoPreview')[i];
+
+				const file = e.target.files[0];
+				const reader = new FileReader();
+
+				reader.onload = function(e) {
+					preview.src = e.target.result;
+				};
+				reader.readAsDataURL(file);
+
+			});
+		}
+	</script>
+
 
 
 
 </body>
-<footer>
-	<%@ include file="/front-end/index/footer.jsp"%>
-</footer>
-<script>
-$(document).ready(function(){
-    $.ajax({
-        type: "POST",
-        url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
-        success: function(data) {
-            const responseMessage = parseInt(data);
-            var  contextPath='<%=request.getContextPath()%>
-	';
-										var guided = contextPath
-												+ '/front-end/index/guided.jsp';
-										var guidedSignout = contextPath
-												+ '/front-end/index/guidedSignout.jsp';
-										if (responseMessage === 1) {
-											$("#dynamicContent").load(guided);
-										} else if (responseMessage === 0) {
-
-											$("#dynamicContent").load(
-													guidedSignout);
-										}
-									},
-									error : function(error) {
-										console.log("AJAX error:", error);
-									}
-								});
-					})
-</script>
 </html>

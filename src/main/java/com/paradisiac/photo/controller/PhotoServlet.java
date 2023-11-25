@@ -32,10 +32,11 @@ import com.paradisiac.util.HibernateUtil;
 @MultipartConfig
 public class PhotoServlet extends HttpServlet {
 	private PhotoService photoSvc;
-	//private PhotoAlbumService phaSvc;
+	private PhotoAlbumService_interface phaSvc;
 	// 一個 servlet 實體對應一個 service 實體
 	public void init() throws ServletException {
 		photoSvc = new PhotoServiceImpl();
+		phaSvc = new PhotoAlbumServiceImpl();
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -70,6 +71,8 @@ public class PhotoServlet extends HttpServlet {
 					
 			/***************************1.接收請求參數****************************************/
 			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+			PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
+
 			photoDate =  java.sql.Date.valueOf(req.getParameter("photoDate"));
 			List<PhotoVO> photoList = new ArrayList<PhotoVO>();//ArrayList長度動態改變
 			
@@ -107,20 +110,31 @@ public class PhotoServlet extends HttpServlet {
 			/***************************2.開始新增資料***************************************/
 			photoSvc.addPhoto(photoList);
 			
+			//如果新增照片失敗, 且view當中沒有任何相片
+			PhotoAlbumVO phaVO = phaDAO.findByPrimaryKey(albNo);
+			List<PhoWithAlbDTO> phoList = phaDAO.searchAllPhoto(albNo);
+			if(phoList == null || phoList.isEmpty()) {
+				//存入相簿物件, 回傳到沒照片頁面
+				req.setAttribute("phaVO", phaVO);
+				forwardPath = "/back-end/pha/listOnePhaWOpho.jsp";
+				res.setContentType("text/html; charset=UTF-8");
+				RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+				dispatcher.forward(req, res);
+				return;
+			}
+			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
-//			forwardPath = "/back-end/photo/addPhoto.jsp";
-//			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
-//			successView.forward(req, res);
 			String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
 			int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 			
-			PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
+			phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
 			List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(Integer.valueOf(albNo), currentPage);
 	        
 			int phoPageQty = phaDAO.getTotalQty(Integer.valueOf(albNo));
 			req.getSession().setAttribute("phoPageQty", phoPageQty);
 			
 			req.setAttribute("list", list);
+			req.setAttribute("phaVO", phaVO);
 			req.setAttribute("currentPage", currentPage);
 
 			forwardPath = "/back-end/pha/listOnePha.jsp";
@@ -130,26 +144,45 @@ public class PhotoServlet extends HttpServlet {
 
 			
 		}//新增相片
+		
 		//刪除相片======================================================================
 		if("delete".equals(action)) {
+			
 			String[] selectedPhotos = null;
-			String albNo = req.getParameter("albNo");
+			String albNoS = req.getParameter("albNo");
+			Integer albNo = Integer.valueOf(albNoS);
 			selectedPhotos = req.getParameterValues("photoNo"); //用Values取得有打勾的陣列
-	        photoSvc.deletePhoto(selectedPhotos);
 	        
-	        String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
-			int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
-			
-			PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
-			List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(Integer.valueOf(albNo), currentPage);
+	        PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
+	        PhotoAlbumVO phaVO = phaDAO.findByPrimaryKey(albNo);
+	        req.setAttribute("phaVO", phaVO); 
 	        
-			int phoPageQty = phaDAO.getTotalQty(Integer.valueOf(albNo));
-			req.getSession().setAttribute("phoPageQty", phoPageQty);
+			//錯誤處理
+			List<String> errorMsgs = new LinkedList<String>();
+			req.setAttribute("errorMsgs", errorMsgs);
 			
-			req.setAttribute("list", list);
-			req.setAttribute("currentPage", currentPage);
+			if(selectedPhotos == null) {
+				errorMsgs.add("至少選擇一張照片");
+			}else {
+				photoSvc.deletePhoto(selectedPhotos);			
+			}
+			
+			//如果刪到完全沒照片
+			List<PhoWithAlbDTO> phoList = phaDAO.searchAllPhoto(albNo);					
+			if(phoList == null || phoList.isEmpty()) {
+				forwardPath = "/back-end/pha/listOnePhaWOpho.jsp";
+			}else { //view中還有照片
+				forwardPath = "/back-end/pha/listOnePha.jsp";
+				String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
+				int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
+				List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(albNo, currentPage);
+				
+				int phoPageQty = phaDAO.getTotalQty(albNo);
+				req.getSession().setAttribute("phoPageQty", phoPageQty);			
+				req.setAttribute("list", list);			
+				req.setAttribute("currentPage", currentPage);
+			}
 
-			forwardPath = "/back-end/pha/listOnePha.jsp";
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);

@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.paradisiac.photo.model.PhoWithAlbDTO;
 import com.paradisiac.photoAlbum.model.PhotoAlbumVO;
 
 public interface PhotoAlbumService_interface {
@@ -22,4 +23,6 @@ public interface PhotoAlbumService_interface {
 	List<PhotoAlbumVO> getPhaByCompositeQuery(Map<String, String[]> map);
 	
 	Integer getPhaByMem(Integer memno);
+	
+	
 }
