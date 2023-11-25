@@ -18,9 +18,7 @@
 				<li style="color: red">${message}</li>
 			</c:forEach>
 		</ul>
-	</c:if>
-	<a href='${pageContext.request.contextPath}/pha.do?action=getAll'>查詢</a>所有相簿
-	<a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp">回首頁</a>	
+	</c:if>	
 	
 		<form action="${pageContext.request.contextPath}/pho.do" method="post" enctype="multipart/form-data">
 				<label for="albNo">相簿編號：${phaVO.albNo}</label><input type="hidden" name="albNo" value="${phaVO.albNo}"><br>

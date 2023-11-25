@@ -110,8 +110,8 @@
 
 		<div class="album card mb-3">
 			<div class="row g-0">
-				<div class="col-md-12">
-					<img src="<%=request.getContextPath()%>/images/act_main_front.png"
+				<div class="col-md-12" style="height: 550px;">
+					<img src="<%=request.getContextPath()%>/images/act_main_front.webp"
 						alt="活動封面" class="img-fluid">
 				</div>
 			</div>
@@ -136,8 +136,8 @@
 								</div>
 								<div class="tableContent">
 									<table>
-										<tr>
-											<th>活動名稱:</th>
+									<tr>
+										<th>活動名稱:</th>
 											<td>${act.actNo}-${act.actName}</td>
 										</tr>
 										<tr>
@@ -145,8 +145,8 @@
 											<td>${act.unitPrice}</td>
 										</tr>
 									</table>
-									<label>${(schdQty==0)?'即將開放報名':'熱烈報名中'}</label>
-								</div>
+									<a href='${pageContext.request.contextPath}/act.do?action=getAllSchd_Schd&actNo=
+									${act.actNo}'>熱烈報名中</a></div>																
 							</div>
 						</c:forEach>
 					

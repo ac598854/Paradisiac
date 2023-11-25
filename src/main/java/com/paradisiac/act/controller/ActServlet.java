@@ -165,7 +165,6 @@ System.out.println("有判斷status");
 		
 		ActVO actVO = actSvc.getActByActno(actNo);
 		req.setAttribute("actVO", actVO);
-		
 	}
 	//前端-查全部上架活動
 	private void getAllActiveActs(HttpServletRequest req, HttpServletResponse res) {
@@ -193,6 +192,9 @@ System.out.println("有判斷status");
 		
 		Set<SchdVO> actSchdSet = actSvc.getActiveSchdByActno(actNo); 
 		req.setAttribute("actSchdSet", actSchdSet);//顯示在檔期頁面 
+		
+		String[] contents = actVO.getActContent().split("\n");
+		req.setAttribute("contents", contents);
 		
 	}
 

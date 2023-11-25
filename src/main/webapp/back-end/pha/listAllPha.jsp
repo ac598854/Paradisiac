@@ -19,7 +19,7 @@
         .row.g-0 {
         position: relative;
         }
-        .d-flex justify-content-end {
+       .d-flex justify-content-end {
             position: absolute;
             bottom: 0;
             right: 0;
@@ -46,7 +46,8 @@
         }
 
         .album-info {
-        margin-bottom: 50px; 
+        margin-bottom: 50px;
+        font-size: 15px;
         }
 
         .btn-separator {
@@ -63,20 +64,20 @@
         <div>
             <h2 class="d-flex justify-content-between">
                 顯示所有相簿
-                <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp" class="btn btn-secondary">回首頁</a>
+                <a href="${pageContext.request.contextPath}/back-end/pha/select_phoalb.jsp" class="btn btn-secondary" style="font-size: 12px;">會員相簿首頁</a>
             </h2>
         </div>
 	<c:if test="${phaPageQty > 0}">
-  	<b><font color=red>第${currentPage}/${phaPageQty}頁</font></b>
+  		<b><span style="color: red; font-size: 15px;">第${currentPage}/${phaPageQty}頁</span></b>
 	</c:if>
-		<c:forEach var="pha" items="${phaList}">
+	<c:forEach var="pha" items="${phaList}">
         <div class="album card mb-3">
             <div class="row g-0">
-                <div class="col-md-4">
+                <div class="col-md-7">
                     <img id="albPhoto" src="<%=request.getContextPath()%>/dbg.do?alb_no=${pha.albNo}" 
-                    style="height: 200px; object-fit: cover;" alt="相簿封面" class="img-fluid">
+                    style="width: 100%; height: 200px; object-fit: cover;" alt="相簿封面" class="img-fluid">
                 </div>
-                <div class="col-md-8">
+                <div class="col-md-5">
                     <div class="album-info">
                         <table class="table table-bordered">
                             <tr>
@@ -97,31 +98,30 @@
                             </tr>
                         </table>
                         <div class="d-flex justify-content-end">
-                        <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do" style="margin-bottom: 0px;">
-                        	<input type="hidden" name="albNo" value="${pha.albNo}"> 
-							<input type="hidden" name="action" value="getOne_For_Update">
-                            <button type="submit" class="btn btn-primary mr-2 btn-separator">修改相簿</button>
-                        </FORM>                        
+	                        <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do" style="margin-bottom: 0px;">
+	                        	<input type="hidden" name="albNo" value="${pha.albNo}"> 
+								<input type="hidden" name="action" value="getOne_For_Update">
+	                            <button type="submit" class="btn btn-primary mr-2 btn-separator" style="margin: 10px; font-size: 12px;">修改相簿</button>
+	                        </FORM>                        
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    	</c:forEach>
+    </c:forEach>
 
 	<c:if test="${currentPage > 1}">
-		<a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=1">至第一頁</a>&nbsp;
+	    <a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=1" style="font-size: 15px;">至第一頁</a>&nbsp;
 	</c:if>
 	<c:if test="${currentPage - 1 != 0}">
-		<a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${currentPage - 1}">上一頁</a>&nbsp;
+	    <a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${currentPage - 1}" style="font-size: 15px;">上一頁</a>&nbsp;
 	</c:if>                                             
 	<c:if test="${currentPage + 1 <= phaPageQty}">      
-		<a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${currentPage + 1}">下一頁</a>&nbsp;
+	    <a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${currentPage + 1}" style="font-size: 15px;">下一頁</a>&nbsp;
 	</c:if>                                             
 	<c:if test="${currentPage != phaPageQty}">          
-		<a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${phaPageQty}">至最後一頁</a>&nbsp;
+	    <a href="${pageContext.request.contextPath}/pha.do?action=getAll&page=${phaPageQty}" style="font-size: 15px;">至最後一頁</a>&nbsp;
 	</c:if>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">
    

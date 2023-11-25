@@ -21,6 +21,9 @@ import com.paradisiac.act.model.ActVO;
 import com.paradisiac.act.service.ActServiceImpl;
 import com.paradisiac.actorder.model.ActOrder;
 import com.paradisiac.actorder.service.ActOrderService;
+import com.paradisiac.members.model.MembersVO;
+import com.paradisiac.members.service.MailService;
+import com.paradisiac.members.service.MembersService;
 import com.paradisiac.schd.model.SchdVO;
 import com.paradisiac.schd.service.SchdServiceImpl;
 
@@ -31,11 +34,13 @@ public class SchdServlet extends HttpServlet {
 	private SchdServiceImpl schdSvc; 
 	private ActServiceImpl actSvc;
 	private ActOrderService actorderSvc;
+	private MembersService memSvc;
 	
 	public void init() throws ServletException{
 		schdSvc = new SchdServiceImpl();
 		actSvc = new ActServiceImpl();
 		actorderSvc = new ActOrderService();
+		memSvc = new MembersService();
 	}
 	
 	protected void doGet(HttpServletRequest req, HttpServletResponse res)
@@ -97,7 +102,7 @@ public class SchdServlet extends HttpServlet {
 	}//doPost
 	
 	//新增或修改
-	public String insertOrUpdate(HttpServletRequest req, HttpServletResponse res) throws ParseException {
+	public String insertOrUpdate(HttpServletRequest req, HttpServletResponse res) throws ParseException, IOException {
 		List<String> errorMsgs = new LinkedList<String>();
 		Integer schdNo = null;		
 		Integer actNo = Integer.valueOf(req.getParameter("actNo"));
@@ -114,6 +119,7 @@ public class SchdServlet extends HttpServlet {
 		if(req.getParameter("schdNo") != null && req.getParameter("schdNo").length() != 0) {
 			schdNo = Integer.valueOf(req.getParameter("schdNo"));
 			schdVO = schdSvc.getSchdBySchdno(schdNo);
+			
 			schdVO.setUnitPrice(unitPrice);
 			schdVO.setAncDate(ancDate);
 			schdVO.setDrpoSchdDate(drpoSchdDate);
@@ -132,7 +138,7 @@ public class SchdServlet extends HttpServlet {
 //			errorMsgs.add("成團人數須小於上限人數");
 //		}
 		
-		//開始打包 (建構子沒有上下架日期跟付款人/未付款人,如果有要裝進去)
+		//開始打包 (建構子沒有上下架日期跟付款人,如果有要裝進去)
 		if(req.getParameter("ancDate") != null) {
 			schdVO.setAncDate(ancDate);
 		}
@@ -153,13 +159,7 @@ public class SchdServlet extends HttpServlet {
 			}
 			
 		}
-		//如果檔期狀態改成3-取消 (新增訂單狀態固定為1-報名中)
-		//set訂單狀態取消 1 -> 0
-		if(applStatus == 3) {
-			actorderSvc.modifyStatus(schdNo, 0);
-			
-		}
-		
+				
 		//開始新增或修改檔期物件
 		schdSvc.addOrUpdateSchd(schdVO);
 		req.setAttribute("schdVO", schdVO);
@@ -169,6 +169,42 @@ public class SchdServlet extends HttpServlet {
 		ActVO actVO = actSvc.getActByActno(actNo);
 		
 		req.setAttribute("actVO", actVO);
+		
+		//如果檔期狀態改成3-取消, set訂單狀態取消 1 -> 0, 發取消通知信 (新增的檔期狀態固定為1-報名中)	
+		if(applStatus == 3) {
+			actorderSvc.modifyStatus(schdNo, 0);
+			Set<ActOrder> orderList = schdVO.getActorders();
+			//取出每筆訂單的信箱逐一寄信
+			for(ActOrder order : orderList) {
+				Integer memno = order.getMemNo();
+				MembersVO mem = memSvc.getOneBymemno(memno);
+				String email = mem.getMemmail();				
+				String subject = "Paradisiac飯店-活動-" + actVO.getActName() + ", 檔期" + schdVO.getSchdNo()  + "取消通知";
+				String messageText = "親愛的貴賓: " + "\n" + "很抱歉因故無法舉辦活動，" + "\n" + "特此發信通知，退款完成後會再郵件通知您" + "\n"
+						+ "造成不便深感抱歉" ;
+				System.out.println("寄出郵件到:"+email);
+				MailService mail = new MailService();
+				mail.sendMail(email, subject, messageText, res);				
+			}
+			
+		}
+		//檔期狀態改成2-成團, 發成團通知信 
+		if(applStatus == 2) {
+			actorderSvc.modifyStatus(schdNo, 0);
+			Set<ActOrder> orderList = schdVO.getActorders();
+			//取出每筆訂單的信箱逐一寄信
+			for(ActOrder order : orderList) {
+				Integer memno = order.getMemNo();
+				MembersVO mem = memSvc.getOneBymemno(memno);
+				String email = mem.getMemmail();				
+				String subject = "Paradisiac飯店-活動-" + actVO.getActName() + ", 檔期" + schdVO.getSchdNo()  + "活動成團通知";
+				String messageText = "親愛的貴賓: " + "\n" + "感謝您的報名，活動已成團!" + "\n" + "期待您的蒞臨!";
+
+				MailService mail = new MailService();
+				mail.sendMail(email, subject, messageText, res);				
+			}
+		}
+				
 		return "/back-end/act/list_act_schd.jsp";
 	
 

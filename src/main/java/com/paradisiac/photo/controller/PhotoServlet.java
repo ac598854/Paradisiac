@@ -108,9 +108,26 @@ public class PhotoServlet extends HttpServlet {
 			photoSvc.addPhoto(photoList);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
-			forwardPath = "/back-end/photo/addPhoto.jsp";
-			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
-			successView.forward(req, res);
+//			forwardPath = "/back-end/photo/addPhoto.jsp";
+//			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
+//			successView.forward(req, res);
+			String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
+			int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
+			
+			PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
+			List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(Integer.valueOf(albNo), currentPage);
+	        
+			int phoPageQty = phaDAO.getTotalQty(Integer.valueOf(albNo));
+			req.getSession().setAttribute("phoPageQty", phoPageQty);
+			
+			req.setAttribute("list", list);
+			req.setAttribute("currentPage", currentPage);
+
+			forwardPath = "/back-end/pha/listOnePha.jsp";
+			res.setContentType("text/html; charset=UTF-8");
+			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
+			dispatcher.forward(req, res);
+
 			
 		}//新增相片
 		//刪除相片======================================================================
