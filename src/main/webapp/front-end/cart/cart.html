@@ -236,7 +236,21 @@
 			}
 		}
 
-
+		.hidden-td {
+		    display: none;
+		}
+		/* 調整數量欄位寬度 */
+		.quantity-select {
+		    width: 70px; /* 根據你的需求調整寬度 */
+		}
+		
+		/* 調整刪除欄位寬度 */
+		.btn-danger {
+		    width: 100px; /* 根據你的需求調整寬度 */
+		}
+		.form-check{
+			width: 60px;		
+		}
 	</style>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -270,7 +284,12 @@
 	<table class="table table-bordered">
 		<thead>
 		<tr>
-			<th></th>
+			<th>
+					<div class="form-check">
+						<input type="checkbox" class="form-check-input" id="selectAll">
+						<label class="form-check-label" for="selectAll">全選</label>
+					</div>
+			</th>
 			<th>商品名稱</th>
 			<th>價格</th>
 			<th>描述</th>
@@ -286,36 +305,22 @@
 	</table>
 	<table class="checkoutBox" id="checkoutBar">
 		<tfoot>
-		<tr>
-			<td class="carttitleBox">
-				<div class="form-check">
-					<input type="checkbox" class="form-check-input" id="selectAll">
-					<label class="form-check-label" for="selectAll">全選</label>
-				</div>
-			</td>
-			<td class="payInfoBox">
-				<p>
-					總價格: $<span id="totalAmount">0</span>
-				</p>
-				<p>
-					活動共折抵：<span><i>$</i>25,106</span>
-				</p>
-				<p>
-					結帳總金額：<span><i class="totalPriceMoney">$</i><i
-						class="totalPrice">35,766<i></i></i></span>
-				</p>
-			</td>
-			<td class="checkoutButton selected">
-				<div id="productInfo">
-					<form id="cartForm">
-						<input type="hidden" name="productJson" id="productJson">
-						<button class="btn btn-danger" type="button"
-								onclick="handleCheckout(event)">結帳</button>
-					</form>
-				</div>
-			</td>
-		</tr>
-		</tfoot>
+    <tr>
+<!--         <td class="payInfoBox"> -->
+<!--             <p class="infoItem payInfoBox">總價格: $<span id="totalAmount">0</span></p> -->
+<!--         </td> -->
+        <td class="checkoutButton selected">
+        <p class="infoItem payInfoBox">總價格: $<span id="totalAmount">0</span></p>
+            <div id="productInfo">
+                <form id="cartForm">
+                    <input type="hidden" name="productJson" id="productJson">
+                    <button class="btn btn-danger" type="button" onclick="handleCheckout(event)">結帳</button>
+                </form>
+            </div>
+        </td>
+    </tr>
+</tfoot>
+
 
 	</table>
 </div>
@@ -346,8 +351,6 @@
 	//===============================頁面進入需要先載入的================================================//
 	document.addEventListener("DOMContentLoaded", function () {
 		var products = [];
-		loadProducts();
-		// 跳转马上获取session内的购物车数据(+redis内的)
 		getSessionCart().then(function () {
 			var totalAmountElement = document.getElementById("totalAmount");
 			totalAmountElement.textContent = "0";
@@ -369,8 +372,8 @@
 				checkoutButton.addEventListener("click", handleCheckout);
 			}
 			cartEmpty();
+			loadProducts()
 		});
-
 	});
 	// ============================檢查商品是否為空=============================================//
 	function cartEmpty(){
@@ -406,8 +409,10 @@
             </td>
             <td class="hidden-td">${product.quantity}</td>
             <td>
- 				 <button class="btn btn-danger" onclick="removeProductAndDelete('${product.name}', this)">删除</button>
-            </td>`;
+            <button class="btn btn-danger" onclick="removeProductAndDelete('${product.name}', this)" style="padding: 1px 1px ;">
+                <i class="fas fa-trash"></i> <!-- 垃圾桶圖示 -->
+            </button>
+        	</td>`;
 			productTableBody.appendChild(row);
 		}
 	}
@@ -649,7 +654,7 @@
 
 	//================================檢查庫存量跟購物車內的數量==============================//
 	function loadProducts() {
-		fetch(projectName + '/products')
+		fetch(projectName + '/allForCart')
 				.then(response => {
 					if (response.ok) {
 						return response.json();
@@ -660,7 +665,7 @@
 
 					// 獲取所有的商品名稱
 					var allProductNames = data.results.map(product => product.productName.replace(/\([^)]*\)/g, ''));
-
+					console.log(allProductNames);
 					// 獲取所有的商品行
 					var productRows = document.querySelectorAll('.name');
 					var quantity = document.querySelectorAll('.hidden-td');
@@ -675,7 +680,7 @@
 						if (index !== -1) {
 							// 如果在購物車中且找到對應的元素，設置庫存
 							var product = data.results[index];
-
+							console.log(product.stock)
 
 							for (var j = 1; j <= product.stock; j++) {
 								var option = document.createElement("option");
