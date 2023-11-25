@@ -146,40 +146,40 @@
                             <div class="carousel-inner">
 
                                 <div class="carousel-item active">
-                                <a href="/Paradisiac/front-end/roomtype/getOne.jsp"> 
+                                <a href="/Paradisiac/front-end/index/roomviewsingle.jsp"> 
                                     <img src="/Paradisiac/front-end/roomtype/image/00101.jpg" class="d-block w-100 fixed-image" alt="1">
                                     <div class="carousel-caption">
-                                    <h3>單人套房</h3>
+                                    <h3>精緻套房</h3>
                                     <p></p>
                                     </div>
                                 </a>
                                 </div>
 
                                 <div class="carousel-item">
-                                <a href="/Paradisiac/front-end/roomtype/getTwo.jsp">
+                                <a href="/Paradisiac/front-end/index/roomviewsea.jsp">
                                     <img src="/Paradisiac/front-end/roomtype/image/00201.jpg" class="d-block w-100 fixed-image" alt="2">
                                     <div class="carousel-caption">
-                                    <h3>雙人套房</h3>
+                                    <h3>海景套房</h3>
                                     <p></p>
                                     </div>
                                 </a>
                                 </div>
 
                                 <div class="carousel-item">
-                                    <a href="/Paradisiac/front-end/roomtype/getFour.jsp">
+                                    <a href="/Paradisiac/front-end/index/roomviewmon.jsp">
                                     <img src="/Paradisiac/front-end/roomtype/image/00401.jpg" class="d-block w-100 fixed-image" alt="3">
                                     <div class="carousel-caption">
-                                        <h3>四人套房</h3>
+                                        <h3>山景套房</h3>
                                         <p></p>
                                     </div>
                                     </a>
                                 </div>
 
                                 <div class="carousel-item">
-                                    <a href="/Paradisiac/front-end/roomtype/getEight.jsp">
+                                    <a href="/Paradisiac/front-end/index/roomviewfamily.jsp">
                                     <img src="/Paradisiac/front-end/roomtype/image/00801.jpg" class="d-block w-100 fixed-image" alt="4">
                                     <div class="carousel-caption">
-                                        <h3>八人套房</h3>
+                                        <h3>家庭套房</h3>
                                         <p></p>
                                     </div>
                                     </a>
