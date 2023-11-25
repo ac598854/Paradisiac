@@ -1,81 +1,87 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>訂購成功</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-        }
-        .page-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .content-wrap {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center; /* 將內容垂直居中 */
-            align-items: center; /* 將內容水平居中 */
-            padding: 20px; /* 可以根據需要調整填充 */
-        }
-        .success-message {
-            background-color: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
-            border-radius: 5px;
-            text-align: center;
-            padding: 20px; /* 可以根據需要減少填充 */
-            margin: 20px; /* 可以根據需要減少邊距 */
-        }
-        .btn-custom {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 20px;
-            margin: 10px; /* 可以根據需要調整間距 */
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn-custom:hover {
-            background-color: #218838;
-        }
-        .footer {
-            background-color: #f1f1f1;
-            padding: 10px;
-            text-align: center;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout Successful</title>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #d4e9e2;
+        margin: 0;
+        padding: 50px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90vh;
+    }
+    .checkout-success {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        width: 500px;
+        text-align: center;
+    }
+    .checkout-success h1 {
+        color: #32a852;
+        font-size: 2em;
+        margin-bottom: 0.5em;
+    }
+    .checkout-icon {
+        background-color: #4caf50;
+        border-radius: 50%;
+        display: inline-block;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    .checkout-icon svg {
+        fill: white;
+        height: 50px;
+        width: 50px;
+    }
+    .buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-around;
+    }
+    .button {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 200px;
+    }
+    .button:hover {
+        background-color: #43a047;
+    }
+</style>
 </head>
-
 <body>
-     <div class="page-container">
-     <%@ include file="/front-end/index/guided.jsp" %>
-        <div class="content-wrap">
-           
-            <div class="success-message">
-                <h1>訂購成功！</h1>
-                <p>謝謝您的訂購。</p>
-                <div>
-                    <a href="/Paradisiac/front-end/index/index2.jsp" class="btn-custom">返回首頁</a>
-                    <a href="/Paradisiac/back-end/roomorder/memvieword.jsp" class="btn-custom">查看訂單</a>
-                </div>
-            </div>
-        </div>
 
-        <div class="footer">
-            <%@ include file="/front-end/index/footer.jsp" %>
-        </div>
+<div class="checkout-success">
+    <div class="checkout-icon">
+        <!-- Insert your check mark SVG here -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M20.292 5.292l-11.292 11.292-4.292-4.292-1.414 1.414 5.706 5.706 12.706-12.706z"/>
+        </svg>
     </div>
+    <h1>Checkout Successful!</h1>
+    <p>你已成功下訂訂單</p>
+    <div class="buttons">
+      <button class="button" onclick="window.location.href='/Paradisiac/front-end/index/index2.jsp';">回到首頁</button>
+        <button class="button" onclick="window.location.href='/Paradisiac/back-end/roomorder/memvieword.jsp';">查看訂單資訊</button>
+    </div>
+</div>
 
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
