@@ -5,8 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
 	rel="stylesheet">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/main/main.css">
@@ -22,37 +21,39 @@
 } 	 */
 
 .addTable {
-    height: 20px; /* Adjust the height as needed */
-    width: 930px;
-    
+    height: 20px; 
+    width: 930px;    
 }
 
-/* Optional: Adjust the height of the cells, input fields, or other elements if needed */
+
 .addTable td,
 .addTable input {
-    height: 40px; /* Adjust the height as needed */
+    height: 40px; 
     width:150px;
 }
 
-/* Optional: If you want to center the content vertically within each cell */
+
 .addTable td {
 	text-align:center;
    padding:0;
 }
 .addTable select {
-    height: 40px; /* Adjust the height as needed */
+    height: 40px; 
    	position:relative;
    	top:8px;
 }
 #addbutton {
-    height: 40px; /* Adjust the height as needed */
+    height: 40px; 
    	position:relative;
-    width:100%;
-   
+    width:100%;  
+    background-color: #007bff;
 }
+
+    
 /*=========================  */
 .table th, .table td {
 	text-align: center;
+	vertical-align: middle;
 	border: 1px solid #dee2e6;
 }
 
@@ -65,6 +66,9 @@
 
 .table th:not(:last-child) {
 	border-right: 1px solid #dee2e6;
+}
+td {
+	border: 1px solid darkgray !important;   /* 更改表格框線顏色  */
 }
 
 .table .btn {
@@ -279,7 +283,7 @@
 
     <c:choose>
         <c:when test="${currentPage != roomnumPageQty}">
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify&page=${roomnumPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify&page=${roomnumPageQty}" class="pagination-link">最後一頁</a>&nbsp;
         </c:when>
         <c:otherwise>
             <a href="${pageContext.request.contextPath}/roomnum.do?action=roomNumModify" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;

@@ -16,10 +16,10 @@
             </div>
             <div class="col-md-4">
             <h4>最新優惠</h4>
-            <p>烤肉超值方案。</p>
-            <p>尾牙春酒專案。</p>
-            <p>御膳料理鱘龍魚宴。</p>
-            <p>秋收冬藏 一泊二食住房專案。</p>
+            <p>浮潛和潛水活動優惠</p>
+            <p>海上獨木舟和皮划艇活動優惠</p>
+            <p>水上滑板和水上摩托車活動優惠</p>
+            <p>按摩和水療療程活動優惠</p>
             </div>
             <div class="col-md-4">
                 <h4><a href="#" style="color: white;">ParadisiacCove</a></h4>

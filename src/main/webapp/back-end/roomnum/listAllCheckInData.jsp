@@ -17,7 +17,9 @@
  	position:relative;
  	top: -10px;
 }
-        
+td {
+	border: 1px solid darkgray !important;   /* 更改表格框線顏色  */
+}      
     </style>
     <%@ include file="/back-end/index/ManagerMeta.jsp" %>
 </head>
