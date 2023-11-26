@@ -378,19 +378,19 @@ ul.navigation {
 					<div class="row mb-4">
 						<div class="col-sm-3 form-group">
 							<label for="memNo">會員編號</label>
-								<input type="text" class="form-control" name="memNo"
+								<input type="number" class="form-control" name="memNo"
 									id="memNo" value="${memNO}">
 								<div class="input-group-append"></div>
 						</div>
 						<div class="col-sm-3 form-group">
 							<label for="actOrderNo">訂單編號</label>
-								<input type="text" class="form-control" name="actOrderNo"
+								<input type="number" class="form-control" name="actOrderNo"
 									id="actOrderNo" value="${actOrderNo}">
 								<div class="input-group-append"></div>
 						</div>
 						<div class="col-sm-3 form-group">
 							<label for="schdNo">檔期編號</label>
-								<input type="text" class="form-control" name="schdNo"
+								<input type="number" class="form-control" name="schdNo"
 									id="schdNo" value="${schdNo}">
 								<div class="input-group-append"></div>
 						</div>
