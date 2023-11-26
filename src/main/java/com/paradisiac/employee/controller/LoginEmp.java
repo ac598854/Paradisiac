@@ -88,7 +88,7 @@ public class LoginEmp extends HttpServlet{
 				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
 			case 102: // 商城
-				forwardPath = req.getContextPath() + "/back-end/index/select_page.jsp";
+				forwardPath = req.getContextPath() + "/back-end/index/back-index_product.jsp";
 				break;
 			case 103: // 房務
 				forwardPath = req.getContextPath() + "/back-end/index/back-index_room.jsp";
