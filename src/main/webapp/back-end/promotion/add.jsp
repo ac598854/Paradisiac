@@ -106,8 +106,8 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                         <td class="text-start">促銷專案狀態:</td>
                                                         <td>
                                                             <select name="status" class="form-select mb-3" style="height: 35px; font-size: medium;" aria-label=".form-select-lg example">
-                                                                <option value="1" ${(1==proVO.status)? 'selected' :'' }>上架</option>
-                                                                <option value="0" ${(0==proVO.status)? 'selected' :'' }>下架</option>
+                                                                <option value="true" ${(1==proVO.status)? 'selected' :'' }>上架</option>
+                                                                <option value="false" ${(0==proVO.status)? 'selected' :'' }>下架</option>
                                                             </select>
                                                         </td>
                                                     </tr>
@@ -115,6 +115,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                         class="com.paradisiac.promotion.service.PromotionService" />
                                                 </table>
                                                 <br>
+                                                <input type="hidden" id="selectedStatus" name="status" value="">
                                                  <input type="hidden" id="selectedProducts" name="selectedProducts" value="">
                                                 <input type="hidden" name="action" value="add_promotion">
                                                 <input type="submit" class="btn btn-primary" value="送出新增" onclick="return validateForm()">
@@ -150,10 +151,20 @@ response.setDateHeader("Expires", 0); // Proxies.
 
 
 
-                        <% java.sql.Date startdate=null; try { startdate=proVO.getStartdate(); } catch (Exception e) {
-                            startdate=new java.sql.Date(System.currentTimeMillis()); } java.sql.Date enddate=null; try {
-                            enddate=proVO.getEnddate(); } catch (Exception e) { enddate=new
-                            java.sql.Date(System.currentTimeMillis()); } %>
+                        <% java.sql.Date startdate=null; 
+                        		try { 
+                        			startdate=proVO.getStartdate(); 
+                        			} 
+                        			catch (Exception e) {
+			                            startdate=new java.sql.Date(System.currentTimeMillis()); 
+			                            } 
+			                java.sql.Date enddate=null; 
+                        		try {
+                            		enddate=proVO.getEnddate(); 
+                            		} 
+                        		catch (Exception e) { 
+                        			enddate=new java.sql.Date(System.currentTimeMillis()); 
+                        			} %>
                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script src="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.js"></script>
                             <script src="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.datetimepicker.full.js"></script>
@@ -195,6 +206,8 @@ response.setDateHeader("Expires", 0); // Proxies.
                                 const form = document.getElementById('mainForm');
                                 const checkboxes = document.querySelectorAll('.form-check-input');
                                 const selectedProductsInput = document.getElementById('selectedProducts');
+                                const statusSelect = document.querySelector('select[name="status"]');
+                                
 
                                 form.addEventListener('submit', function(event) {
                                     event.preventDefault(); // 防止表單自動送出
@@ -205,6 +218,16 @@ response.setDateHeader("Expires", 0); // Proxies.
                                             selectedProducts.push(checkbox.value);
                                         }
                                     });
+                                    
+                                    
+                                    const selectedStatus = statusSelect.value;
+
+	                                 // 找到隱藏的 STATUS 欄位
+	                                 const hiddenStatusInput = document.querySelector('input[name="status"]');
+	
+	                                 // 將使用者選擇的值設定到隱藏欄位中
+	                                 hiddenStatusInput.value = selectedStatus;
+
 
                                     // 將勾選商品的值設置到隱藏的輸入欄位中
                                     selectedProductsInput.value = selectedProducts.join(',');
@@ -212,6 +235,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                     // 然後再提交表單
                                     form.submit();
                                 });
+                                
                                 document.addEventListener('DOMContentLoaded', function() {
                                     const discountInput = document.getElementById('discountInput');
                                     const originalPriceElement = document.querySelectorAll('.originalPrice');

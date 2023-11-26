@@ -195,13 +195,6 @@
         }
 
 
-        @media(min-width:768px) {
-        #wrapper {
-            padding-left: 250px;
-        }
-        #wrapper.toggled {
-            padding-left: 0;
-        }
         #sidebar-wrapper {
             width: 250px;
         }
@@ -230,6 +223,14 @@
           overflow: hidden;
           transition: max-height 0.3s ease-in-out;  
         }
+        #brandName {
+  float: left;
+  color: #fff;
+  font-size: 25px; /* 設定字體大小 */
+  margin-top: 15px;
+  margin-left: 5px;
+  
+}
 
 
 
@@ -238,113 +239,34 @@
 
 <body>
 
-  <div id="wrapper" class="">
+  <div class="">
 
-    <!-- Sidebar -->
-    <div id="sidebar-wrapper">
-      <ul class="sidebar-nav">
-        <li class="sidebar-brand">
-          <a href="/Paradisiac/front-end/index/index2.jsp">前台首頁</a>
-        </li>
-
-
-        <!-- 其他菜單項目 -->
-
-        
-      
-            <!--商品-->  
-
-          <li class="sidebar-title" data-toggle="submenu-4">
-            商品系統管理
-          </li>
-          <ul class="sub-menu" id="submenu-4">
-            <li>
-                <a href="#">商品訂單管理</a>
-            </li>
-            <li>
-                <a href="#">商品類型管理</a>
-            </li>
-            <li>
-                <a href="#">商品相片管理</a>
-            </li>
-            <li>
-                <a href="#" id="promotionLeft">促銷專案管理</a>
-            </li>
-            <li>
-                <a href="#">促銷商品管理</a>
-            </li>
-        </ul>
-
-      </ul>
-    </div>
-    <!-- /#sidebar-wrapper -->
 
     <!-- Top Navigation -->
     <ul class="navigation">
-      <li><a href="#home">員工登入</a></li>
-      <li><a href="#home">功能暫未定</a></li>
+     <li id="brandName">Paradisiac</li>
+      <li><a href="${pageContext.request.contextPath}/loginempN.do?action=logoutEmp">員工登出</a></li>
+      <li><a href="#home">商品管理</a></li>
       <li><a href="#home">功能暫未定</a></li>
       <li><a href="#home">功能暫未定</a></li>
       <li><a href="#home">功能暫未定</a></li>
       <li><a href="#" id="promotion">促銷專案管理</a></li>
     </ul>
     
-    <div id="page-content-wrapper">
-      <a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">側邊欄關閉</a>
-    </div>
-
   </div><!--結尾-->
-  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
   <!-- Menu Toggle Script -->
   <script>
-  	function toggleSidebar() {
-	  $(document).ready(function(){
-	    $("#wrapper").addClass("toggled");
-	  });
-	}
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-
-    var sidebarTitles = document.querySelectorAll('.sidebar-title');
-        sidebarTitles.forEach(function(title) {
-        title.addEventListener('click', function() {
-            var toggleId = this.getAttribute('data-toggle');
-            var subMenu = document.getElementById(toggleId);
-            if (subMenu) {
-            if (subMenu.style.display === 'block') {
-                subMenu.style.display = 'none';
-            } else {
-                subMenu.style.display = 'block';
-            }
-            }
-        });
-        });
-        var sidebarTitles = document.querySelectorAll('.sidebar-title');
-            sidebarTitles.forEach(function (title) {
-              title.addEventListener('click', function () {
-                var toggleId = this.getAttribute('data-toggle');
-                var subMenu = document.getElementById(toggleId);
-                if (subMenu) {
-                  if (subMenu.style.maxHeight === '0px' || !subMenu.style.maxHeight) {
-                    subMenu.style.maxHeight = subMenu.scrollHeight + "px";
-                  } else {
-                    subMenu.style.maxHeight = '0px';
-                  }
-                }
-              });
-            });
         let pathName = window.document.location.pathname;
 	    let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 	    
          var topLink = document.getElementById('promotion');
          var listLink = document.getElementById('promotionLeft');
          topLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
-         listLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
+//          listLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
   </script>
 
 </body>
