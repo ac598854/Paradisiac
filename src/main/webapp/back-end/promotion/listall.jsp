@@ -115,7 +115,7 @@
 						    </c:choose>
 						</td>
                         <td>
-                            <form method="post" action="<%=request.getContextPath()%>/back-end/promotion/promotion" style="margin-bottom: 0px;">
+                            <form method="post" action="<%=request.getContextPath()%>/promotionList" style="margin-bottom: 0px;">
                                 <input type="submit" value="修改" class="btn btn-primary">
                                 <input type="hidden" name="prono" value="${proVO.prono}">
                                 <input type="hidden" name="action" value="getOne_For_Update">
@@ -152,7 +152,6 @@
 	    var addLink = document.getElementById('add');
 	 	addLink.setAttribute('href', projectName+"/back-end/promotion/add.jsp");
 
-			toggleSidebar();
 			  document.addEventListener("DOMContentLoaded", function() {
 			    // 監聽表單提交事件
 			    document.querySelector('form').addEventListener('submit', function(event) {
