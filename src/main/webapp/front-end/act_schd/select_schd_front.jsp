@@ -56,7 +56,7 @@
 </head>
 
 <body>
-	<%@ include file="/front-end/index/guided.jsp"%>
+	<div id="dynamicContent"></div>
 	<div class="container">
 		<h1 class="text-center" style="margin-top: 10px;">顯示所有檔期</h1>
 
@@ -107,9 +107,33 @@
 
 	<%@ include file="/front-end/index/footer.jsp" %>
 	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">
-     
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js">     
     </script>
+    <script>
+	
+    $(document).ready(function(){
+        $.ajax({
+            type: "POST",
+            url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+            success: function(data) {
+                const responseMessage = parseInt(data);
+                var  contextPath='<%=request.getContextPath()%>';
+                var guided = contextPath + '/front-end/index/guided.jsp';
+                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+                if (responseMessage === 1) {
+                    $("#dynamicContent").load(guided);
+                } else if (responseMessage === 0) {
+
+                    $("#dynamicContent").load(guidedSignout);
+                }
+            },
+            error: function(error) {
+                console.log("AJAX error:", error);
+            }
+        });
+    });
+        
+</script>
 
 
 

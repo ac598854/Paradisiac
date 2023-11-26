@@ -13,51 +13,52 @@
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <style>
 body {
-            font-size: 15px;
-        }
+	font-size: 15px;
+}
 
-        h1 {
-            text-align: center;
-        }
+h1 {
+	text-align: center;
+}
 
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            margin-top: 20px;
-        }
+.form-container {
+	display: flex;
+	flex-direction: column;
+	margin-top: 20px;
+}
 
-        .form-container .form-group {
-            margin-bottom: 10px;
-        }
+.form-container .form-group {
+	margin-bottom: 10px;
+}
 
-        .form-container .form-group input {
-            width: 100%;
-            padding: 5px;
-        }
+.form-container .form-group input {
+	width: 100%;
+	padding: 5px;
+}
 
-        .col-md-6 {
-            width: 50%;
-            float: left;
-            box-sizing: border-box;
-        }
+.col-md-6 {
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+}
 
-        .preview-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+.preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
-        .preview-container img {
-            max-width: 100%;
-            max-height: 200px;
-            object-fit: cover;
-        }
-        
-        .btn-separator {
+.preview-container img {
+	max-width: 100%;
+	max-height: 200px;
+	object-fit: cover;
+}
+
+.btn-separator {
 	margin-left: 10px;
 	font-size: 12px
 }
-.form-group{
+
+.form-group {
 	margin-top: 5px;
 }
 </style>
@@ -99,7 +100,7 @@ body {
 		    	<input type="hidden" name="action" value="getOne_For_Display">	    	
 		       	<button type="submit" class="btn btn-primary mr-2 btn-separator">查詢相簿</button>
 		    </div>
-	    </FORM><%----%>            
+	    </FORM>           
 	</div>
 
     <!-- 新增相簿 -->
@@ -112,18 +113,18 @@ body {
 		<div class="col-md-12">
 			<div class="col-md-6">
 				<div class="form-group">
-					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" required>
+					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" >
 				</div>
 				<div class="form-group">
-					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" required>
+					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" >
 				</div>
 				<div class="form-group">
 					<label for="albumName">相簿名稱</label> <input type="text"
-						id="albName" name="albName" required>
+						id="albName" name="albName" >
 				</div>
 				<div class="form-group">
 					<label for="createDate">相簿建立日期</label> <input type="date"
-						id="createDate" id="albDate" name="albDate" required>
+						id="createDate" id="albDate" name="albDate" >
 				</div>
 			</div>
 

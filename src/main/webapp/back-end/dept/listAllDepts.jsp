@@ -167,13 +167,13 @@
 		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${deptPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
 	  </c:when>
         <c:otherwise>
-            <a href="${pageContext.request.contextPath}/roomnum.do?action=getAll" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;
+            <a href="${pageContext.request.contextPath}/dept.do?action=getAll" class="pagination-link" style="pointer-events: none; cursor: default;">最後一頁</a>&nbsp;
         </c:otherwise>
     </c:choose>                                     
 	<br>
 </div>
 <script>
-	//控制表單的按鈕當按下那個按鈕時就把按下的value值傳回給後端，做到自動切換2個按鈕的觸發，這是用來分辦現在按的是退房按鈕還是清潔完成按鈕
+	//控制表單的按鈕當按下那個按鈕時就把按下的value值傳回給後端，做到自動切換2個按鈕的觸發，這是用來分辦現在按的是哪個
     document.querySelectorAll('button[type="submit"]').forEach(button => {
         button.addEventListener('click', function() {
             document.querySelector('input[name="action"]').value = this.value;
