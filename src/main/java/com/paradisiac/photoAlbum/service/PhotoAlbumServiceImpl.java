@@ -52,6 +52,11 @@ public class PhotoAlbumServiceImpl implements PhotoAlbumService_interface{
 	public List<PhotoAlbumVO> getAllPha(int currentPage) {
 		return dao.getAll(currentPage);
 	}
+	
+	@Override 
+	public List<PhotoAlbumVO> getAllPha(){
+		return dao.getAll();
+	}
 
 	@Override
 	public int getPageTotal() {
