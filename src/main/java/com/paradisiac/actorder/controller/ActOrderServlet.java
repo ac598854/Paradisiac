@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -189,6 +190,7 @@ public class ActOrderServlet extends HttpServlet {
 
 	private void getOne_For_ActOrderNo_Back(HttpServletRequest req, HttpServletResponse res)
 			throws IOException, ServletException {
+		System.out.println("1");
 		res.setContentType("text/html;charset=UTF-8");
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		try {
@@ -224,6 +226,7 @@ public class ActOrderServlet extends HttpServlet {
 //			System.out.println("後端抓檔期編號:"+actorder.getSchdVO().getSchdNo() + " /schdNo");
 //			System.out.println("後端抓訂單:"+actorder);
 			req.setAttribute("actOrder", actorder);
+			System.out.println("2");
 			String url = "/back-end/actorder/ActCPB.jsp";
 			RequestDispatcher successView = req.getRequestDispatcher(url); // 成功轉交 listOneOrder_master.jsp
 			successView.forward(req, res);
