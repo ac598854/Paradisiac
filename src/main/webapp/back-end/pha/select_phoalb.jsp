@@ -88,12 +88,19 @@ h1 {
     			<input type="hidden" name="action" value="getAll">
 	       		<button class="btn btn-primary mr-2 btn-separator">查詢所有相簿</button>
 	    	</div>
-    	</FORM>   	
+    	</FORM> 
+    	<jsp:useBean id="alb" scope="page"
+					class="com.paradisiac.photoAlbum.service.PhotoAlbumServiceImpl" />  	
  	    <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/pha.do"> 
 		    <div style=" display: flex;">
 		    	<div class="form-group col-md-4" >
-		            <label for="albNo">輸入相簿編號-查詢相簿與照片</label>
-		            <input type="text" name="albNo" id="albumNumber" class="form-control" required>
+		            <label for="albNo">選擇相簿編號-查詢相簿與照片</label>
+			        <select name="albNo">
+						<c:forEach var="albVO" items="${alb.allPha}">
+							<option value="${albVO.albNo}">${albVO.albNo}
+						</c:forEach>
+					</select>
+		            <%-- <input type="text" name="albNo" id="albumNumber" class="form-control" required>--%>
 		        </div>      
 		    </div>
 		    <div class="form-group col-md-2"> 
