@@ -25,7 +25,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light fixed-navbar"
 		style="background-color: transparent; background-color: rgba(0, 0, 0, 0.7);">
 		<div class="container">
-			<a class="navbar-brand mx-auto" href="#" style="color: #fff;"><i
+			<a class="navbar-brand mx-auto" href=""${pageContext.request.contextPath}/front-end/index/index2.jsp"" style="color: #fff;"><i
 				class="fas fa-hotel"></i>飯店訂房</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarNav" aria-controls="navbarNav"
@@ -35,9 +35,9 @@
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
 					<li class="nav-item">
-    					<a class="nav-link b" href="${pageContext.request.contextPath}/front-end/index/index2.jsp">首頁</a>
+    					<a class="nav-link b" href="/Paradisiac/front-end/index/index2.jsp">首頁</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
+					<li class="nav-item"><a class="nav-link" href="/Paradisiac/front-end/index/roomviewsingle.jsp">客房資訊</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a></li>
