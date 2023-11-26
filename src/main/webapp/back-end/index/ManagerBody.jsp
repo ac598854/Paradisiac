@@ -308,7 +308,7 @@ ul.navigation {
 }
 </style>
 
-<div id="wrapper" class="">
+<div id="wrapper" class="toggled">
 
 	<!-- Sidebar -->
 	<div id="sidebar-wrapper">

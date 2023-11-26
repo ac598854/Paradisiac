@@ -44,7 +44,7 @@
        
     <div class="container">
         <div class="row justify-content-center">
-        	<div class="col-lg-7">
+        	<div class="col-lg-8">
       			  <h1 class="mt-5">搜尋全部</h1>
         <form method="Post">
             <a class="btn btn-primary mb-4" href="${pageContext.request.contextPath}/order/order.do?action=getAll">查詢所有訂單資料</a>
@@ -150,9 +150,22 @@
                     <td>${result.memNo}</td>
                     <td>${result.roomAmount}</td>
                     <td>${result.price}</td>
-                    <td>${result.paymentMethod}</td>
-                    <td>${result.payStatus}</td>
-                    <td>${result.orderStatus}</td>
+                     <td>								    <c:choose>
+			                <c:when test="${result.paymentMethod == '1'}">信用卡</c:when>
+			                <c:when test="${result.payStatus == '2'}">未匯款</c:when>
+			                </c:choose>
+					    </td>
+   	                    <td>								    <c:choose>
+			                <c:when test="${result.payStatus == '0'}">未付款</c:when>
+			                <c:when test="${result.payStatus == '1'}">已付款</c:when>
+			                </c:choose>
+					    </td>
+   	                    <td>								    <c:choose>
+			                <c:when test="${result.orderStatus == '1'}">可入住</c:when>
+			                <c:when test="${result.orderStatus == '2'}">已入住</c:when>
+			                <c:when test="${result.orderStatus == '3'}">已退房</c:when>
+			                </c:choose>
+					    </td>
                     </tr>
                 </tbody>
             </table>

@@ -103,6 +103,30 @@ button {
 	border-top-right-radius: 20px;
 	border-bottom-right-radius: 20px;
 }
+
+#mempass1{
+	position: relative;
+}
+
+#toggle-mempass1 {
+	position: absolute;
+	top: 25%;
+	right: 60px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+#mempass{
+	position: relative;
+}
+
+#toggle-mempass2 {
+	position: absolute;
+	top: 40%;
+	right: 60px;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
 </style>
 </head>
 
@@ -120,9 +144,13 @@ button {
                     <form method="post" action="ResetPass.do" name="form1" id="resetPassForm">
                         <div class="form-group pb-3">
                             <input type="password" placeholder="新密碼" class="form-control" id="mempass1" name="mempass1" required>
+                             <span
+								class="toggle-mempass" id="toggle-mempass1" onclick="togglePasswordVisibility1()">👁️</span>
                         </div>
                         <div class="form-group pb-3">
                             <input type="password" placeholder="請再次輸入新密碼" class="form-control" id="mempass" name="mempass" required>
+                             <span
+								class="toggle-mempass" id="toggle-mempass2" onclick="togglePasswordVisibility2()">👁️</span>
                         </div>
                         <div id="errorMessages"></div>
                         <input type="submit" value="送出" name="submitButton" id="submitButton" class="btn btn-dark w-100 font-weight-bold mt-2"> 
@@ -140,14 +168,42 @@ button {
     <script>
         var isMempassValid = true;
 
+        function togglePasswordVisibility1() {
+            var passwordInput1 = document.getElementById('mempass1');
+            var toggleButton1 = document.getElementById('toggle-mempass1');
+
+            if (passwordInput1.type === 'password') {
+                passwordInput1.type = 'text';
+                toggleButton1.textContent = '👁️';
+            } else {
+                passwordInput1.type = 'password';
+                toggleButton1.textContent = '👁️';
+            }
+        }
+
+        function togglePasswordVisibility2() {
+            var passwordInput2 = document.getElementById('mempass');
+            var toggleButton2 = document.getElementById('toggle-mempass2');
+
+            if (passwordInput2.type === 'password') {
+                passwordInput2.type = 'text';
+                toggleButton2.textContent = '👁️';
+            } else {
+                passwordInput2.type = 'password';
+                toggleButton2.textContent = '👁️';
+            }
+        }
+        
         $(document).ready(function() {
             $("#mempass").on("input", function() {
                 var password = $("#mempass1").val().trim();
                 var confirmPassword = $("#mempass").val().trim();
                 if (password !== confirmPassword) {
                     $("#errorMessages").html("<p style='color: red;'>" + "密碼不一致" + "</p>");
+                    isMempassValid =false
                 }else{
                 	$("#errorMessages").empty();
+                	 isMempassValid =true
                 }
             });
 
@@ -155,6 +211,7 @@ button {
                 event.preventDefault();
                 $("#errorMessages").empty();
                 var formData = $(this).serialize();
+                if(isMempassValid){
                 $.ajax({
                     type: "POST",
                     url: "ResetPass.do", 
@@ -171,6 +228,9 @@ button {
                         alert("例外錯誤");
                     }
                 });
+                }else{
+                	 $("#errorMessages").html("<p style='color: red;'>" + "密碼不一致，無法送出" + "</p>");
+                }
             });
         });
     </script>

@@ -104,10 +104,10 @@ ul.navigation {
 .container-fluid {
 	/* 	max-width: 1100px; */
 	/* 	margin-top: 10px; */
-	max-width: 100%; 
+	max-width: 100%;
 	margin-top: 10px;
 	padding: 0;
-	overflow: hidden; 
+	overflow: hidden;
 }
 
 .sidebar-nav>.sidebar-title {
@@ -278,12 +278,8 @@ h1, h2, h3, h4 {
 	width: 50%;
 }
 
-#keyword, #resStatus {
-	width: 420px;
-}
-
 .table-data .col-md-2 {
-	width: 100%; 
+	width: 100%;
 	padding: 10px;
 	border: 1px solid #ccc;
 	background-color: #f8f9fa;
@@ -350,101 +346,68 @@ h1, h2, h3, h4 {
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 </head>
 <body>
-<%@ include file="/back-end/index/ManagerBody.jsp"%>
-<!-- 	<div id="wrapper" class=""> -->
+	<%@ include file="/back-end/index/ManagerBody.jsp"%>
 
-		<!-- Sidebar -->
-<!-- 		<div id="sidebar-wrapper"> -->
-<!-- 			<ul class="sidebar-nav"> -->
-<!-- 				<li class="sidebar-brand"><a href="#">ParadisiacBay</a></li> -->
-<!-- 				<li class="sidebar-title">員工權限管理</li> -->
-<!-- 				<li class="sidebar-title">會員管理</li> -->
-<%-- 				<li><a href="<%=request.getContextPath()%>/back-end/members/MembersLPB.jsp">會員帳號管理</a></li> --%>
-<!-- 				<li><a href="#">會員相簿管理</a></li> -->
-<%-- 				<li><a href="<%=request.getContextPath()%>/back-end/csmessages/MessageLPB.jsp">客服訊息管理</a></li> --%>
-<!-- 				<li class="sidebar-title">最新消息管理</li> -->
-<!-- 				<li class="sidebar-title">訂房管理</li> -->
-<!-- 				<li class="sidebar-title">商城管理</li> -->
-<!-- 				<li class="sidebar-title">活動管理</li> -->
-<!-- 				<li><a href="#">活動類別管理</a></li> -->
-<!-- 				<li><a href="#">檔期管理</a></li> -->
-<!-- 				<li><a href="#">活動訂單管理</a></li> -->
-<!-- 			</ul> -->
-<!-- 		</div> -->
-		<!-- /#sidebar-wrapper -->
+	<!--Page Content -->
+	<div id="page-content-wrapper">
+		<div class="container-fluid">
 
-		<!-- Top Navigation -->
-<!-- 		<ul class="navigation"> -->
-<!-- 			<li><a href="#home">登出</a></li> -->
-<!-- 		</ul> -->
-		<!--Page Content -->
-		<div id="page-content-wrapper">
-<!-- 			<a href="#menu-toggle" class="btn btn-success btn-sm" -->
-<!-- 				id="menu-toggle">展開畫面</a> -->
-			<div class="container-fluid">
-
-				<form action="MessageLPB.jsp" method="get">
-					<div class="col-lg-12">
-						<h1>客服訊息管理列表</h1>
-
-						<!-- 查詢 -->
-
-						<div class="row mb-4">
-							<div class="col-md-3">
-								<label for="keyword">申訴內容關鍵字</label>
-								<div class="input-group">
-									<input type="text" class="form-control" name="keyword"
-										id="keyword" value="<%=keyword%>">
-									<div class="input-group-append"></div>
-								</div>
-							</div>
-
-							<div class="col-md-3">
-								<label for="resStatus">處理狀態</label>
-								<div class="input-group">
-									<select class="form-control" id="resStatus" name="resStatus">
-										<option <%=resStatus.equals("0") ? "selected" : ""%> value="0">全部</option>
-										<option <%=resStatus.equals("1") ? "selected" : ""%> value="1">(有員工編號)有處理</option>
-										<option <%=resStatus.equals("2") ? "selected" : ""%> value="2">(無員工編號)未處理</option>
-									</select>
-									<div class="input-group-append"></div>
-								</div>
-							</div>
-						</div>
-						<button class="btn btn-primary" id="btn submit" type="submit">送出</button>
-						<br> <br>
-					</div>
-				</form>
-				<!-- 表格-->
-				<div class="container">
+			<form action="MessageLPB.jsp" method="get">
+				<div class="col-lg-12">
+					<h1>客服訊息管理列表</h1>
+					<!-- 查詢 -->
 					<div class="row mb-4">
-						<div class="col-md-12">
-							<div class="table-responsive">
-								<table class="table">
-									<thead>
-										<tr>
-											<th>客服編號</th>
-											<th>會員編號</th>
-											<th>申訴內容</th>
-											<th>處理員工</th>
-											<th>申訴時間</th>
-											<th>客服狀態</th>
-											<th>動作</th>
-										</tr>
-									</thead>
+						<div class="col-sm-3 form-group">
+							<label for="keyword">申訴內容關鍵字</label> <input type="text"
+								class="form-control" name="keyword" id="keyword"
+								value="<%=keyword%>">
+							<div class="input-group-append"></div>
+						</div>
 
-									<tbody>
-										<%@ include file="page1.file"%>
-										<c:forEach var="CsMessagesVO" items="${list}"
-											begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
-											<tr>
-												<td>${CsMessagesVO.csmsgno}</td>
-												<td>${CsMessagesVO.memno}</td>
-												<td>${CsMessagesVO.cscontent}</td>
-												<td>${CsMessagesVO.empno}</td>
-												<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
+						<div class="col-sm-3 form-group">
+							<label for="resStatus">處理狀態</label> <select class="form-control"
+								id="resStatus" name="resStatus">
+								<option <%=resStatus.equals("0") ? "selected" : ""%> value="0">全部</option>
+								<option <%=resStatus.equals("1") ? "selected" : ""%> value="1">已回覆</option>
+								<option <%=resStatus.equals("2") ? "selected" : ""%> value="2">未回覆</option>
+							</select>
+						</div>
+					</div>
+					<div class="col-sm-12 form-group mb-0">
+					<button class="btn btn-primary" id="btn submit" type="submit">送出</button>
+				</div>
+				</div>
+			</form>
+			<!-- 表格-->
+			<div class="container">
+				<div class="row mb-4">
+					<div class="col-md-12">
+						<div class="table-responsive">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>客服編號</th>
+										<th>會員編號</th>
+										<th>申訴內容</th>
+										<th>處理員工編號</th>
+										<th>申訴時間</th>
+										<th>客服狀態</th>
+										<th>動作</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									<%@ include file="page1.file"%>
+									<c:forEach var="CsMessagesVO" items="${list}"
+										begin="<%=pageIndex%>" end="<%=pageIndex+rowsPerPage-1%>">
+										<tr>
+											<td>${CsMessagesVO.csmsgno}</td>
+											<td>${CsMessagesVO.memno}</td>
+											<td>${CsMessagesVO.cscontent}</td>
+											<td>${CsMessagesVO.empno}</td>
+											<td><fmt:formatDate value="${CsMessagesVO.csaskdate}"
 													pattern="yyyy-MM-dd HH:mm" /></td>
-												<td><c:choose>
+											<td><c:choose>
 													<c:when test="${not empty CsMessagesVO.csredate}">
             										已回覆
         											</c:when>
@@ -452,57 +415,25 @@ h1, h2, h3, h4 {
 														<span style="color: red;">未回覆</span>
 													</c:otherwise>
 												</c:choose></td>
-												<td>
-													<FORM METHOD="post" ACTION="csmessages.do">
-														<input type="submit" value="回覆" class="btn btn-primary">
-														<input type="hidden" name="csmsgno"
-															value="${CsMessagesVO.csmsgno}"> <input
-															type="hidden" name="action" value="getOne_For_CsMsgno">
-													</FORM>
-												</td>
-											</tr>
-										</c:forEach>
-									</tbody>
-								</table>
-								<%@ include file="page2.file"%>
-							</div>
+											<td>
+												<FORM METHOD="post" ACTION="csmessages.do">
+													<input type="submit" value="回覆" class="btn btn-primary">
+													<input type="hidden" name="csmsgno"
+														value="${CsMessagesVO.csmsgno}"> <input
+														type="hidden" name="action" value="getOne_For_CsMsgno">
+												</FORM>
+											</td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<%@ include file="page2.file"%>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-<!-- 	</div> -->
-
-
-	<!-- 	<div class="container"> -->
-	<!-- 		<nav aria-label="Page navigation"> -->
-	<!-- 			<ul class="pagination justify-content-end"> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="First"> <span aria-hidden="true">首頁</span></a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Previous"> <span aria-hidden="true">上一頁</span></a></li> -->
-	<!-- 				<li class="page-item active"><a class="page-link" href="#">1</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#">2</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#">3</a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Next"> <span aria-hidden="true">下一頁</span></a></li> -->
-	<!-- 				<li class="page-item"><a class="page-link" href="#" -->
-	<!-- 					aria-label="Last"> <span aria-hidden="true">最後一頁</span></a></li> -->
-	<!-- 			</ul> -->
-	<!-- 		</nav> -->
-	<!-- 	</div> -->
-
-
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	</div>
 
 	<!-- Menu Toggle Script -->
 	<script>

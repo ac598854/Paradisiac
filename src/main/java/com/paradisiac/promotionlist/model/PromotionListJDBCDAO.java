@@ -81,4 +81,7 @@ public class PromotionListJDBCDAO implements PromotionListDAO_interface {
 		return (List<Integer>)getSession().createQuery(hql, Integer.class).setParameter("promotionNo", promotionNO)
 		        .getResultList();
 	}
+	public PromotionVO getById(Integer promotionNo) {
+		return getSession().load(PromotionVO.class,promotionNo);
+	}
 }

@@ -12,29 +12,71 @@
 <%@ page import="org.hibernate.Session"%>
 <%@ page import="org.hibernate.SessionFactory"%>
 <%@ page import="org.hibernate.query.Query"%>
+
 <%
-// request.setCharacterEncoding("utf-8");
+request.setCharacterEncoding("utf-8");
 // List<ActOrder> list = null;
 // ActOrderService actOrderServ = new ActOrderService();
 // list = actOrderServ.getAll();
 // pageContext.setAttribute("list", list);
 
-//  List<ActOrder> displayList = (List<ActOrder>) pageContext.getAttribute("searchResult");
-//     if (displayList == null) {
-// //         displayList = (List<ActOrder>) pageContext.getAttribute("list");
-//         displayList = (List<ActOrder>) pageContext.setAttribute("list", list);
-//     }
+ StringBuilder hql = new StringBuilder("");
+
+String memNo = request.getParameter("memNo");
+String actOrderNo = request.getParameter("actOrderNo");
+String schdNo = request.getParameter("schdNo");
+String orderStatus = request.getParameter("orderStatus");
+String nowPage = request.getParameter("page") == null ? "0" : request.getParameter("page");
+ 			
+			boolean notfirst = false;
+		    // 條件：會員編號
+		    if (memNo != null && memNo.trim().length() > 0) {
+		    	if(notfirst){
+		    		hql.append(" AND ");
+		    	}else{
+		    		notfirst = true;
+		    	}
+		    	hql.append(" memNo = "+memNo);
+		    }
+		    if (schdNo != null && schdNo.trim().length() > 0) {
+		    	if(notfirst){
+		    		hql.append(" AND ");
+		    	}else{
+		    		notfirst = true;
+		    	}
+		    	hql.append(" schdVO.schdNo = "+schdNo);
+		    }
+		    
+		    // 條件：訂單編號
+		    if (actOrderNo != null && actOrderNo.trim().length() > 0) {
+		    	if(notfirst){
+		    		hql.append(" AND ");
+		    	}else{
+		    		notfirst = true;
+		    	}
+		    	
+		        hql.append(" actOrderNo = "+actOrderNo);
+		    }
+
+		    // 條件：訂單狀態
+		    if (orderStatus != null && orderStatus.trim().length() > 0 && !"2".equals(orderStatus)) {
+		    	if(notfirst){
+		    		hql.append(" AND ");
+		    	}else{
+		    		notfirst = true;
+		    	}
+		        hql.append(" orderStatus = "+orderStatus);
+		    }
+
+		    ActOrderService actOrderSrv=new ActOrderService();
+		    List<ActOrder> list = actOrderSrv.getAllByBackSearchSer(hql.toString() , nowPage);
+		    pageContext.setAttribute("list", list);
+		   
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport"
-	content="width=device-width, shrink-to-fit=no, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+<%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>ParadisiacBay-活動訂單管理</title>
 
 <!-- Bootstrap -->
@@ -321,58 +363,54 @@ ul.navigation {
 	}
 }
 </style>
-<%@ include file="/back-end/index/back-left_planning.jsp"%>
+
 </head>
 <body>
-
+<%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<!--Page Content -->
-	<div id="page-content-wrapper" style="padding-left: 250px;">
-		<!-- 		<a href="#menu-toggle" class="btn btn-success btn-sm" id="menu-toggle">展開畫面</a> -->
-		<div class="container-fluid">
+	<div id="page-content-wrapper" style="padding-left: 50px;">
 
-			<!-- 				<form action="ActLPB.jsp" method="get"> -->
 			<div class="col-lg-12">
 				<h1>活動訂單管理</h1>
 
 				<!-- 查詢 -->
-				<form id="form1" name="form1" METHOD="post" ACTION="ActOrder.do">
+				<form METHOD="get" ACTION="ActLPB.jsp">
 					<div class="row mb-4">
-						<div class="col-md-3">
+						<div class="col-sm-3 form-group">
+							<label for="memNo">會員編號</label>
+								<input type="text" class="form-control" name="memNo"
+									id="memNo" value="${memNO}">
+								<div class="input-group-append"></div>
+						</div>
+						<div class="col-sm-3 form-group">
 							<label for="actOrderNo">訂單編號</label>
-							<div class="input-group">
 								<input type="text" class="form-control" name="actOrderNo"
-									id="actOrderNo">
+									id="actOrderNo" value="${actOrderNo}">
 								<div class="input-group-append"></div>
-							</div>
 						</div>
-						<div class="col-md-3">
-							<label for="schdNo">活動檔期</label>
-							<div class="input-group">
+						<div class="col-sm-3 form-group">
+							<label for="schdNo">檔期編號</label>
 								<input type="text" class="form-control" name="schdNo"
-									id="schdNo">
+									id="schdNo" value="${schdNo}">
 								<div class="input-group-append"></div>
-							</div>
 						</div>
-						<div class="col-md-3">
+						<div class="col-sm-3 form-group">
 							<label for="orderStatus">訂單狀態</label>
-							<div class="input-group">
 								<select class="form-control" id="orderStatus" name="orderStatus">
-									<option value="2">全部</option>
-									<option value="1">訂單成立</option>
-									<option value="0">訂單取消</option>
+									<option value="2" ${orderStatus eq 2 ? "selected" : ""}>全部</option>
+									<option value="1" ${orderStatus eq 1 ? "selected" : ""}>訂單成立</option>
+									<option value="0" ${orderStatus eq 1 ? "selected" : ""}>訂單取消</option>
 								</select>
 								<div class="input-group-append"></div>
-							</div>
 						</div>
 					</div>
-					<button class="btn btn-primary" id="btSubmit" type="submit">送出</button>
-					<input type="hidden"
-						name="action" value="BackSearch">
+					<div class="col-sm-12 form-group mb-0">
+					<button type="submit" class="btn btn-primary" id="btSubmit">送出</button>
+				</div>
 				</form>
 				<br> <br>
 			</div>
 			<!-- 表格-->
-			<FORM METHOD="post" ACTION="ActOrder.do">
 				<div class="container">
 					<div class="row mb-4">
 						<div class="col-md-12">
@@ -421,13 +459,13 @@ ul.navigation {
 										</c:forEach>
 									</tbody>
 								</table>
+								<input type="hidden" name="nowPage" value="${param.nowPage != null ? param.nowPage : '0' }" />
 								<%@ include file="page2.file"%>
 							</div>
 						</div>
 					</div>
 				</div>
 		</div>
-	</div>
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script

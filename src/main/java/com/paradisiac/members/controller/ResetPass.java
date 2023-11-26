@@ -119,7 +119,7 @@ public class ResetPass extends HttpServlet {
 				HttpSession session = req.getSession();
 				session.setAttribute("memaccount", memaccount);// 將從redis取到的帳號set到session
 				Object sessionMemaccount = session.getAttribute("memaccount");
-				System.out.println("忘記密碼把從redis取道的帳號放在sesssion=" + sessionMemaccount);
+//				System.out.println("忘記密碼把從redis取道的帳號放在sesssion=" + sessionMemaccount);
 				res.setContentType("application/json;charset=UTF-8");
 				PrintWriter out = res.getWriter();
 				out.println(jsonObject.toString());

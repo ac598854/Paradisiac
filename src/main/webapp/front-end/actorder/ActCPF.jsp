@@ -13,7 +13,9 @@
 <html>
 <head>
 <%@ include file="/front-end/index/MembersMeta.jsp"%>
-<title>會員客服訊息</title>
+
+<link rel="stylesheet" href="../css/sweetalert2.min.css">
+<title>活動訂單資料</title>
 <style>
 #resetButton {
 	color: #fff;
@@ -65,6 +67,11 @@
 	vertical-align: top;
 	border-top: 1px solid #dee2e6;
 }
+
+.btn-secondary {
+	color: #fff;
+	background-color: #6c757d;
+}
 </style>
 </head>
 
@@ -82,63 +89,52 @@
 		<div class="container">
 
 			<div class="table-responsive">
-				<form method="post" action="ActOrder.do" name="form1"
-					enctype="multipart/form-data">
+				<form method="post" name="form1" id="form1">
 					<table class="table">
-
 						<tr>
-							<td>活動訂單編號:<font color="red"><b>*</b></font></td>
+							<td>活動訂單編號:</td>
 							<td><input type="text" class="form-control" id="actOrderNo"
 								name="actOrderNo" value="${actOrder.actOrderNo}" readonly></td>
 						</tr>
-<!-- 						<tr> -->
-<!-- 							<td>會員編號:</td> -->
-<!-- 							<td><input type="text" name="memNo" id="memNo" -->
-<!-- 								class="form-control" class="custom-file-input" -->
-<%-- 								value="${actOrder.memNo}" size="45" readonly /></td> --%>
-<!-- 						</tr> -->
-						<!-- 						<tr> -->
-						<!-- 							<td>活動名稱:<font color="red"><b>*</b></font></td> -->
-						<!-- 							<td><input type="text" name="actName"  id="actName" class="form-control" -->
-						<%-- 								class="custom-file-input" value="${ActOrder.schdVO.act.actName}" size="45" --%>
-						<!-- 								readonly /></td> -->
-						<!-- 						</tr> -->
 						<tr>
-							<td>檔期編號:<font color="red"><b>*</b></font></td>
+							<td>檔期編號:</td>
 							<td><input type="text" name="schdNo" id="schdNo"
 								class="form-control" class="custom-file-input"
 								value="${actOrder.schdVO.schdNo}" size="45" readonly /></td>
 						</tr>
 						<tr>
-							<td>訂單日期:<font color="red"><b>*</b></font></td>
+							<td>訂單日期:</td>
 							<td><input type="datetime-local" name="orderTime"
 								id="orderTime" class="form-control"
 								value="${actOrder.orderTime}" size="45" readonly /></td>
 						</tr>
 						<tr>
-							<td>報名人數:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="aAtnNum" class="form-control"
-								value="${actOrder.aAtnNum}" size="45" readonly /></td>
+							<td>報名人數:</td>
+							<td><input type="text" name="aAtnNum" id="aAtnNum"
+								class="form-control" value="${actOrder.aAtnNum}" size="45"
+								readonly /></td>
 						</tr>
 						<tr>
 							<td>訂單狀態:</td>
-							<td><select name="order_status"
-								class="form-control browser-default custom-select">
+							<td><select name="orderStatus" id="orderStatus"
+								class="form-control browser-default custom-select"
+								<c:if test="${actOrder.orderStatus == 0}">disabled="disabled"
+            					</c:if>>
 									<option value="1"
 										<c:if test="${actOrder.orderStatus == 1}">selected</c:if>>成立</option>
 									<option value="0"
-										<c:if test="${actOrder.orderStatus== 0}">selected</c:if>>取消</option>
+										<c:if test="${actOrder.orderStatus == 0}">selected style="color: red;"</c:if>>取消</option>
 							</select></td>
 						</tr>
 						<tr>
-							<td>訂單總金額:<font color="red"><b>*</b></font></td>
-							<td><input type="text" name="orderAmount"
+							<td>訂單總金額:</td>
+							<td><input type="text" name="orderAmount" id="orderAmount"
 								class="form-control" value="${actOrder.orderAmount}" size="45"
 								readonly /></td>
 						</tr>
 					</table>
 					<br>
-					<h5 style="font-weight: bold; font-size:20px">訂單明細</h5>
+					<h5 style="font-weight: bold; font-size: 20px">活動參加人明細</h5>
 					<table class="tableDetail">
 						<c:forEach var="actorder2" items="${list}">
 							<tr>
@@ -153,26 +149,77 @@
 							</tr>
 						</c:forEach>
 					</table>
-
-
-					<br> <input type="hidden" name="action"
-						value="update_Back_Status"> <input type="submit"
-						class="btn btn-primary" value="送出修改">
+					<br>
+					<div class="col-sm-12" style="padding-left: 0;">
+						<button type="submit" class="btn btn-primary" id="submitButton"
+							<c:if test="${actOrder.orderStatus == 0}">style="display:none;"
+        					</c:if>>送出</button>
+						<input type="hidden" name="action" value="updateStatus" />
+					</div>
 				</form>
 			</div>
 		</div>
 		<br>
 	</div>
 
+
+	<script src="../js/sweetalert2.all.min.js"></script>
+	<script type="text/javascript">
+	
 	<!-- Menu Toggle Script -->
-	<script>
-		// 送出訊息確認
-		document.getElementById('submitButton').addEventListener('click',
-				function() {
-					if (confirm('送出申訴訊息？')) {
-						document.getElementById('customerForm').submit();
-					}
-				});
+	
+	$(document).ready(function () {
+	        var orderStatus = ${actOrder.orderStatus};
+
+	        if (orderStatus === 0) {
+	            $("#orderStatus").prop("disabled", true);
+	            $("#submitButton").hide();
+	        }
+	    });
+	
+
+	  
+	$(document).ready(function () {
+	    $("#form1").submit(async function (event) {
+	        event.preventDefault();
+
+	        var orderStatus = $("#orderStatus").val();
+
+	        if (orderStatus === "1") {
+	            await Swal.fire({
+	                title: "訂單已成立，請再次確認選擇",
+	                icon: "error"
+	            });
+	        } else {
+	            if (confirm('確認取消訂單？')) {
+	                var formData = $(this).serialize();	                
+	                $.ajax({
+	                    type: "POST",
+	                    url: "ActOrder.do",
+	                    data: formData,
+	                    success: async function (response) {
+	                        if (response.message) {
+	                        	console.log(response.message)
+	                            await Swal.fire({
+	                          	  title: response.message,
+			            		  text: "訂單取消成功，已寄送取消訂單通知信!",
+			            		  icon: "success"
+	                            });
+	                            window.location.href = "<%=request.getContextPath()%>/front-end/actorder/ActLPF.jsp";
+	                        } else if (response.error) {
+	                            alert(response.message);
+	                        }
+	                    },
+	                    error: function () {
+	                        alert("例外错误。");
+	                    }
+	                });
+	            }
+	        }
+	    });
+	});
+
+
 	</script>
 </body>
 </html>

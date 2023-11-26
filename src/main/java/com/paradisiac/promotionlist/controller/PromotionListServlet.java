@@ -64,20 +64,6 @@ public class PromotionListServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String action = request.getParameter("action");
 
-		// =========================取得所有商品============================//
-//		if ("getAllProduct".equals(action)) {
-//			ProductService productService = new ProductService();
-//			List<ProductVO> productVOs = productService.getAll();
-//			Gson gson = new GsonBuilder().create();
-//			String json = gson.toJson(productVOs);
-//			System.out.println(json);
-//
-//			response.setContentType("application/json");
-//			response.setCharacterEncoding("UTF-8");
-//			response.getWriter().write(json);
-//			return;
-//		}
-
 		PromotionService proSvc = new PromotionService();
 		List<PromotionVO> list = proSvc.getAll();
 		long currentMillis = System.currentTimeMillis(); // 取得當前時間
@@ -86,10 +72,11 @@ public class PromotionListServlet extends HttpServlet {
 		for (PromotionVO promotion : list) {
 			Date startTime = promotion.getStartdate();
 			Date endTime = promotion.getEnddate();
+			Boolean statusBoolean = promotion.getStatus();
 			long startMillis = startTime.getTime();
 			long endMillis = endTime.getTime();
 
-			 if (currentMillis >= startMillis && currentMillis <= endMillis) {
+			 if (currentMillis >= startMillis && currentMillis <= endMillis && statusBoolean == true) {
 				String promotionName = promotion.getProname(); // 取得促銷專案名稱
 				List<Integer> productList = proSvc.getProductnoFromView(promotion.getProno());
 
@@ -107,12 +94,6 @@ public class PromotionListServlet extends HttpServlet {
 //	            System.out.println("促銷活動尚未開始: " + promotion.getProname());
 			}
 		}
-
-//	    for (Map.Entry<Integer, PromotionDiscount> entry : maxDiscountsMap.entrySet()) {
-//	        Integer productNo = entry.getKey();
-//	        PromotionDiscount maxDiscount = entry.getValue();
-//
-//	    }
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		String jsonData = objectMapper.writeValueAsString(maxDiscountsMap);
@@ -185,8 +166,9 @@ public class PromotionListServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("請選擇折扣商品");
 			}
-
-			Boolean status = Boolean.valueOf(request.getParameter("status").trim());
+			String statusString = request.getParameter("status");
+			System.out.println(statusString);
+			Boolean status = Boolean.parseBoolean(statusString); // 嚴格轉換字串成布林值
 
 			PromotionVO proVO = new PromotionVO();
 
@@ -225,6 +207,28 @@ public class PromotionListServlet extends HttpServlet {
 			response.sendRedirect("/Paradisiac/back-end/promotion/add.jsp");
 		}
 
+		if ("getOne_For_Update".equals(action)) {
+
+			List<String> errorMsgs = new LinkedList<String>();
+			request.setAttribute("errorMsgs", errorMsgs);
+
+			/*************************** 1.接收請求參數 ****************************************/
+			Integer prono = Integer.valueOf(request.getParameter("prono"));
+
+			/*************************** 2.開始查詢資料 ****************************************/
+			PromotionService proSvc = new PromotionService();
+			PromotionVO proVO = proSvc.getById(prono);
+
+			/*************************** 3.查詢完成,準備轉交(Send the Success view) ************/
+			request.setAttribute("proVO", proVO);
+			String url = "/back-end/promotion/update.jsp";
+			RequestDispatcher successView = request.getRequestDispatcher(url);
+			successView.forward(request, response);
+		}
+		
+		
+		
+		
 		if ("update".equals(action)) {
 
 			List<String> errorMsgs = new LinkedList<String>();

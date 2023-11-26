@@ -2,10 +2,10 @@ package com.paradisiac.product.model;
 
 public class Members {
 	private Integer memno;
-    private String memName;
-    private String memPhone;
-    private String memAddress;
-    
+	private String memName;
+	private String memPhone;
+	private String memAddress;
+
 	public Integer getMemno() {
 		return memno;
 	}
@@ -31,5 +31,5 @@ public class Members {
 		this.memAddress = memAddress;
 	}
 
-    
+
 }
