@@ -15,6 +15,13 @@ body {
     padding-top: 50px;
 }
 
+.center-text h2 {
+    font-family: 'ZCOOL QingKe HuangYou', cursive; /* 可愛的手寫風格字體 */
+    font-size: 24px; /* 字體大小 */
+    color: #333; /* 字體顏色 */
+}
+
+
 .container {
     display: flex;
 }
@@ -49,6 +56,8 @@ aside ul li button:hover {
 }
 
 .order-item {
+    font-family: 'Noto Sans TC', sans-serif; /* 圓潤的無襯線字體 */
+    font-size: 16px; /* 字體大小 */
     border: 1px solid #e1e1e1;
     margin-bottom: 8px;
     padding: 10px;
@@ -114,7 +123,7 @@ button {
 .narrow-table {
     max-width: 80%;
     margin: 0 auto;
-    color:white;
+    color:black;
 }
 
 main {

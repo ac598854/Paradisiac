@@ -195,7 +195,7 @@
     </table>
 
     <div class="address-container">
-        <h3>Shipping address</h3>
+        <h3>Shipping Detail</h3>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="autofillDetailsCheckbox">
             <label class="form-check-label" for="autofillDetailsCheckbox">
@@ -292,9 +292,6 @@
     let orderStatus = true;
 
     //==================================取得會員servlet URL==============================================
-    //     var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
-
-
     $(document).ready(function(){
         // 加載頁尾
         $("#footer").load(projectName +"/front-end/index/footer.jsp");
@@ -513,8 +510,35 @@
         orderStatus = value === "1";
 
         // 根據選擇的支付方式顯示相應的文本框
-        document.getElementById("credit-card-info").style.display = value === "1" ? "block" : "none";
-        document.getElementById("transfer-info").style.display = value === "0" ? "block" : "none";
+        var creditCardInfo = document.getElementById("credit-card-info");
+        var transferInfo = document.getElementById("transfer-info");
+        if (value === "1") { // 信用卡選項
+            creditCardInfo.style.display = "block";
+            transferInfo.style.display = "none";
+            // 使信用卡輸入框為必填
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = true;
+            });
+            // 不需要轉帳帳號
+            document.getElementById('account-number').required = false;
+        } else if (value === "0") { // 轉帳選項
+            transferInfo.style.display = "block";
+            creditCardInfo.style.display = "none";
+            // 不需要信用卡號碼
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = false;
+            });
+            // 使轉帳帳號為必填
+            document.getElementById('account-number').required = true;
+        } else { // 沒有選擇
+            transferInfo.style.display = "none";
+            creditCardInfo.style.display = "none";
+            // 兩種方式都不需要
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = false;
+            });
+            document.getElementById('account-number').required = false;
+        }
     }
 
     //==================================提交訂單=============================================

@@ -23,7 +23,6 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    // 計算商品數量
     @Override
     public Integer countProduct(ProductQueryParams productQueryParams) {
         String sql = "SELECT COUNT(*) FROM product WHERE 1=1";
@@ -38,7 +37,6 @@ public class ProductDaoImpl implements ProductDao {
         return total;
     }
 
-    // 查詢商品列表
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
@@ -61,7 +59,6 @@ public class ProductDaoImpl implements ProductDao {
         return productList;
     }
 
-    // 根據商品ID查詢商品
     @Override
     public Product getProductById(Integer productId) {
         String sql = "SELECT product_id, product_name, category, image_url, price, stock, " +
@@ -80,7 +77,6 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    // 根據商品ID查詢商品（用於更新操作，加上FOR UPDATE）
     @Override
     public Product getProductByIdForUpdate(Integer productId) {
         String sql = "SELECT * FROM product WHERE product_id = :productId FOR UPDATE";
@@ -89,7 +85,6 @@ public class ProductDaoImpl implements ProductDao {
         return namedParameterJdbcTemplate.queryForObject(sql, params, new ProductRowMapper());
     }
 
-    // 獲取所有商品，用於購物車
     @Override
     public List<Product> getAllProductsForCart(ProductQueryParams productQueryParams) {
         // 基本的 SQL 查詢語句保持不變
@@ -115,7 +110,6 @@ public class ProductDaoImpl implements ProductDao {
     }
 
 
-    // 創建商品
     @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "INSERT INTO product (product_name, category, image_url, price, stock, " +
@@ -137,7 +131,6 @@ public class ProductDaoImpl implements ProductDao {
         return productId;
     }
 
-    // 更新商品
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE product SET product_name = :productName, category = :category, image_url = :imageUrl, " +
@@ -151,7 +144,6 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql, map);
     }
 
-    // 更新商品庫存
     @Override
     public void updateStock(Integer productId, Integer stock) {
         String sql = "UPDATE product SET stock = :stock WHERE product_id = :productId";
@@ -163,7 +155,6 @@ public class ProductDaoImpl implements ProductDao {
         namedParameterJdbcTemplate.update(sql, map);
     }
 
-    // 刪除商品
     @Override
     public void deleteProductById(Integer productId) {
         String sql = "DELETE FROM product WHERE product_id = :productId";
@@ -172,8 +163,6 @@ public class ProductDaoImpl implements ProductDao {
 
         namedParameterJdbcTemplate.update(sql, map);
     }
-
-    // 添加過濾條件到 SQL 查詢語句
     private String addFilteringSql(String sql, Map<String, Object> map, ProductQueryParams productQueryParams){
         // 查詢條件
         if (productQueryParams.getCategory() != null) {
@@ -188,7 +177,6 @@ public class ProductDaoImpl implements ProductDao {
         return sql;
     }
 
-    // 將 ProductRequest 轉換為 Map
     private Map<String, Object> parseProductRequest(ProductRequest productRequest) {
 
         Map<String, Object> map = new HashMap<>();
@@ -202,4 +190,6 @@ public class ProductDaoImpl implements ProductDao {
 
         return map;
     }
+
+
 }
