@@ -341,7 +341,7 @@
         </li>
         <ul class="sub-menu" id="submenu-2">
             <li>
-            <a href="#">訂房訂單查詢</a>
+            <a href="${pageContext.request.contextPath}/back-end/roomorder/memvieword.jsp">訂房訂單查詢</a>
             </li>
             <li>
             <a href="#">購物訂單查詢</a>

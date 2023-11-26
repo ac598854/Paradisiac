@@ -37,7 +37,7 @@
 					<li class="nav-item">
     					<a class="nav-link b" href="${pageContext.request.contextPath}/front-end/index/index2.jsp">首頁</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
+					<li class="nav-item"><a class="nav-link" href="/Paradisiac/front-end/index/roomviewsingle.jsp">客房資訊</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a></li>
 					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a></li>
