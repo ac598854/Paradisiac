@@ -77,7 +77,7 @@
 		        	<h3>--房型圖片資料管理--</h3>
 		        <div class="col-md-6">
 		              <div class="card">
-		            <form method="POST" action="${pageContext.request.contextPath}/roompic/roompic.do?action=insert" name="form1" enctype="multipart/form-data" onsubmit="return validateForm()">
+		            <form method="POST" action="${pageContext.request.contextPath}/roompic/roompic.do?action=insert" name="form1" enctype="multipart/form-data" onsubmit="return validateForm()" onsubmit="handleFormSubmission()">
 
 			                <div class="row g-1 align-items-center ms-5">
 			                    <div class="col-auto offset-1">
@@ -167,5 +167,11 @@
 	        }
 	    }
     </script>
+        <script>
+	    	function handleFormSubmission() {
+	
+		    location.reload();
+			}
+		</script>
 </body>
 </html>

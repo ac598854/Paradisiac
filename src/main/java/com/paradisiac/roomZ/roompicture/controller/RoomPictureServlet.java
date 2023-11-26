@@ -55,7 +55,7 @@ public class RoomPictureServlet extends HttpServlet{
 		        }
 	        }
 	    private String insertpic(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-	        // 检查请求的内容类型是否为multipart/form-data
+	       
 	        String contentType = req.getContentType();
 	        if (contentType != null && contentType.toLowerCase().startsWith("multipart/form-data")) {
 	            System.out.println("成功進insertPIC");
@@ -70,14 +70,14 @@ public class RoomPictureServlet extends HttpServlet{
 	                for (Part part : parts) {
 	                    if ("image".equals(part.getName())) {
 	                        image = part;
-	                        break; // 找到第一个图像字段后退出循环
+	                        break; 
 	                    }
 	                }
 	            } catch (IllegalArgumentException e) {
 	                e.printStackTrace();
 	            }
 
-	            // 检查是否存在图像字段
+	           
 	            if (image != null) {
 	                byte[] Pic = null;
 	                try (InputStream inputStream = image.getInputStream()) {
@@ -104,15 +104,15 @@ public class RoomPictureServlet extends HttpServlet{
 		private String getAll(HttpServletRequest req, HttpServletResponse resp) {
 
 			
-			  // 假設你有一個名為 roomPictureService 的服務類別用於獲取所有圖片
+			 
 		    RoomPictureService roomPictureService = new RoomPictureService();
 		    List<RoomPictureeVO> pictures = roomPictureService.getAllpic();
 
-		    // 將圖片列表存儲在 request 屬性中
+		    
 		    req.setAttribute("pictures", pictures);
 
 		    // 轉發到 JSP 頁面
-		    RequestDispatcher dispatcher = req.getRequestDispatcher("/back-end/roompicture/picview.jsp"); // 替換成你的 JSP 檔案名稱
+		    RequestDispatcher dispatcher = req.getRequestDispatcher("/back-end/roompicture/picview.jsp"); 
 		    try {
 				dispatcher.forward(req, resp);
 			} catch (ServletException e) {
