@@ -1,150 +1,164 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*"%>
-<%@ page import="com.paradisiac.act.service.*"%>
-<%@ page import="com.paradisiac.act.model.*"%>
-<% ActVO actVO = (ActVO) request.getAttribute("actVO"); %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>更新活動內容</title>
-<link rel="stylesheet"
-	href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<style>
-
-.container {
-	padding-top: 65px;
-	padding-left: 255px;
+    <title>修改活動</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+body {
+	font-size: 15px;
 }
 
-#searchBlock {
-	margin-bottom: 20px;
+h1 {
+	text-align: center;
 }
 
-#actTableBlock {
+.form-container {
 	display: flex;
-	flex-wrap: nowrap;
+	flex-direction: column;
+	margin-top: 20px;
 }
 
-.actCard {
-	width: 48%;
-	margin-right: 2%;
-	margin-bottom: 20px;
+.form-container .form-group {
+	margin-bottom: 10px;
+}
+
+.form-container .form-group input {
+	width: 100%;
 	padding: 5px;
-	margin: 2px;
 }
 
-#actImageBlock {
-	border: 1px solid #ddd;
-	padding: 15px;
-	width: 40%;
-	height: 295px;
-	float: right;
-	margin-left: 2%;
+.col-md-6 {
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+}
+
+.preview-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.preview-container img {
+	max-width: 100%;
+	max-height: 200px;
+	object-fit: cover;
+}
+
+.btn-separator {
+	margin-left: 10px;
+	font-size: 12px
+}
+
+.form-group {
 	margin-top: 5px;
-}
-
-#actTableBlock {
-	border: 1px solid #ddd;
-}
-
-#actContent {
-	width: 90%;
-	margin-right: 2%;
-	margin-bottom: 20px;
-	padding: 5px;
-	margin: 2px;
-}
-
-.table-bordered {
-    border: none;
-}
-
-.table-bordered th,
-.table-bordered td {
-    border: none;
-     text-align: center;
 }
 </style>
 </head>
+
 <body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
-	<div class="container">
-		<div>
-			<h2>修改活動</h2>
-		<%-- 錯誤表列 --%>
+	<div class="custom-container">	
+	<%-- 錯誤表列 --%>
 		<c:if test="${not empty errorMsgs}">
-			<font style="color:red">請修正以下錯誤:</font>
+			<font style="color: red">請修正以下錯誤:</font>
 			<ul>
 				<c:forEach var="message" items="${errorMsgs}">
-					<li style="color:red">${message}</li>
+					<li style="color: red">${message}</li>
 				</c:forEach>
 			</ul>
 		</c:if>
-			<form action="${pageContext.request.contextPath}/act.do" method="post" enctype="multipart/form-data">
-				<div id="actTableBlock">
-					<div class="actCard">
-						<table class="table table-bordered">
-							<tr>
-								<th>活動編號</th>
-								<td>${actVO.actNo}</td>
-							</tr>
-							<tr>
-								<th>活動名稱</th>
-								<td><input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName}></td>
-							</tr>							
-							<tr>
-								<th>活動狀態</th>
-								<td><input type="radio" name="actStatus" value="true" ${actVO.actStatus? 'checked':'' }>上架
-									<input type="radio" name="actStatus" value="false" ${actVO.actStatus? '':'checked' }>下架</td>
-							</tr>
-							<tr>
-								<th>參加費用</th>
-								<td><input type="text" name="unitPrice" required value=${actVO.unitPrice==null? '': actVO.unitPrice}></td>
-							</tr>
-						</table>
-					</div>
-					<div id="actImageBlock">
-						<label id="actPhoto1">相簿封面</label>
-						<div>
-						<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="相簿封面" class="img-fluid" style="width: 400px; height: 200px; object-fit: cover;">
-						</div>						
-						<input type="file" class="form-control-file" name="actPho1" id="actPho1" accept="image/*">								
-					</div>
-					<div>
-						<img id="photoPreview" src="#" alt="封面預覽" style="width: 200px; height: 200px; object-fit: cover;">
-					</div>	
-					
-				</div>
-				<div id="actContent">
-					<p><b>活動內容:</b></p>
-					<textarea name="actContent" rows="10" cols="50" placeholder="請輸入" required >${actVO.actContent==null? '': actVO.actContent}</textarea>
-				</div>
-                <input type="submit" value="送出">
-                <input type="hidden" name="actNo"value="${actVO.actNo}">
-			    <input type="hidden" name="action"value="update">			
-			</form>
+		<form method="post" action="${pageContext.request.contextPath}/act.do">
+		<div style="text-align: center;">
+			<h1 class="text-center"
+				style="display: inline-block;">更新活動資訊</h1>
+			<input type="hidden" name="action" value="getAll">
+			<button class="btn btn-primary mr-2 btn-separator" style="margin-bottom: 15px; font-size: 15px;">活動類別管理首頁</button>
 		</div>
+	</form>	
 	</div>
-	<script>
-        // 預覽相片
-        document.getElementById('actPho1').addEventListener('change', function(e) {
-            const preview = document.getElementById('photoPreview');
-            const file = e.target.files[0];
-            const reader = new FileReader();
+	
+	<div class="form-container" style="border: 1px solid #D3D3D3;">
+	<form action="${pageContext.request.contextPath}/act.do" method="post"
+			enctype="multipart/form-data">
+		<div class="col-md-12">
+		<div class="row g-0">
+		<%--活動內容--%>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="actNo">活動編號</label> <input type="text" id="actNo" name="actNo" value="${actVO.actNo}" readonly>
+				</div>
+				<div class="form-group">
+					<label for="actName">活動名稱</label> <input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName} required>
+				</div>
+				<div class="form-group">
+					<label for="actStatus">活動狀態</label> 
+					<select name="actStatus">
+						<option value="true">上架
+						<option value="false">下架
+					</select>								
+				</div>
+				<div class="form-group">
+					<label for="unitPrice">參加費用</label> <input type="text" name="unitPrice" required value=${actVO.unitPrice==null? '': actVO.unitPrice} required>
+				</div>				
+			</div>
+		<%--照片--%>
+			<div class=class="col-md-4" style="padding: 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #D3D3D3 
+			 ;margin-top:15px; margin-right: 5px;">
+    			<p>活動照片</p>
+				<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="活動照片" class="img-fluid"
+				style="width: 250px; height: 200px; object-fit: cover;">
+			</div>
+		<%--預覽圖--%>
+			<div  class="col-md-4"  style="padding: 2px; display: flex; flex-direction: column; align-items: 
+			center; justify-content: center; border: 1px solid #D3D3D3; margin-top:15px; margin-right: 5px;">
+    			<p>選擇另一張封面</p>
+				<input
+					type="file" class="form-control-file" id="actPho1"
+					name="actPho1" accept="image/*" onchange="showPreview">
+				<img name="photoPreview" id="photoPreview"
+					src="<%=request.getContextPath()%>/images/no-picture-taking.png"
+					alt="相片預覽" style="width: 200px; height: 171px; object-fit: cover;">
+			</div>
+		</div>		
+		
+		<div id="actContent" class="col-md-12">
+			<p><b>活動內容:</b></p>
+			<textarea name="actContent" rows="10" cols="50" placeholder="請輸入" required >${actVO.actContent==null? '': actVO.actContent}</textarea>
+		</div>
+	
+		</div>
+		<div class="col-md-12"  style="margin-left: 20px; margin-bottom: 10px;">
+			 <input type="hidden" name="actNo"value="${actVO.actNo}">
+			 <input type="hidden" name="action"value="update">					
+			<input type="submit" value="送出" class="btn btn-success mr-2 btn-separator" style="margin: 0px;">
+		</div>
+	</form>
+	</div>
 
-            reader.onload = function(e) {
-                preview.src = e.target.result;
-            };
+    <script>
+    // 預覽相片
+    document.getElementById('actPho1').addEventListener('change', function(e) {
+        const preview = document.getElementById('photoPreview');
+        const file = e.target.files[0];
+        const reader = new FileReader();
 
-            reader.readAsDataURL(file);
-        });
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    });
     </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
 </html>

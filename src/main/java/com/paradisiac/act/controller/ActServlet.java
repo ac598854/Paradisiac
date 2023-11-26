@@ -104,10 +104,9 @@ public class ActServlet extends HttpServlet{
 			throws IOException, ServletException {
 		List<String> errorMsgs = new LinkedList<String>();
 		Integer actNo = null;
+		ActVO actVO = null;
 
-		if (req.getParameter("actNo") != null && req.getParameter("actNo").length() != 0) { // 修改
-			actNo = Integer.valueOf(req.getParameter("actNo"));			
-		}
+		
 		String actName = req.getParameter("actName");
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
 		boolean actStatus = Boolean.valueOf(req.getParameter("actStatus"));
@@ -116,11 +115,22 @@ System.out.println("活動狀態:"+actStatus);
 
 		byte[] actPho1 = null;
 
-		// 開始打包
-		ActVO actVO = new ActVO(actName, unitPrice, actStatus, actContent);
-		if (req.getParameter("actNo") != null) { // 修改要set PK
-			actVO.setActNo(actNo);			
+		// 開始打包(新增或修改)
+		if (req.getParameter("actNo") != null && req.getParameter("actNo").length() != 0) { // 修改
+			actNo = Integer.valueOf(req.getParameter("actNo"));	
+			actVO = actSvc.getActByActno(actNo);			
+			actVO.setActName(actName);
+			actVO.setUnitPrice(unitPrice);
+			actVO.setActStatus(actStatus);
+			actVO.setActContent(actContent);
+		}else {
+			actVO = new ActVO(actName, unitPrice, actStatus, actContent);//新增
 		}
+
+		
+//		if (req.getParameter("actNo") != null) { // 修改要set PK
+//			actVO.setActNo(actNo);			
+//		}
 		if (req.getPart("actPho1") != null) { // 有選照片1		
 				Part part = req.getPart("actPho1");
 				InputStream is = part.getInputStream();
@@ -130,8 +140,7 @@ System.out.println("活動狀態:"+actStatus);
 				actVO.setActPho1(actPho1);		
 		}
 		
-		//上架需檢查是否有有效檔期
-		
+		//上架需檢查是否有有效檔期		
 		if (actStatus == true) {
 System.out.println("有判斷status");
 			if (actSvc.getActiveSchdByActno(actNo) == null || actSvc.getActiveSchdByActno(actNo).isEmpty()) {

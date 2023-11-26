@@ -100,7 +100,7 @@ h1 {
 							<option value="${albVO.albNo}">${albVO.albNo}
 						</c:forEach>
 					</select>
-		             <%--<input type="text" name="albNo" id="albumNumber" class="form-control" required>--%>
+		            <%-- <input type="text" name="albNo" id="albumNumber" class="form-control" required>--%>
 		        </div>      
 		    </div>
 		    <div class="form-group col-md-2"> 
@@ -110,7 +110,7 @@ h1 {
 	    </FORM>           
 	</div>
 
-    <%--  新增相簿 --%>
+    <!-- 新增相簿 -->
     <div class="col-md-12" style="margin-top: 10px;">
     	<h2>新增相簿</h2>
     </div> 
@@ -119,9 +119,9 @@ h1 {
 			enctype="multipart/form-data">
 		<div class="col-md-12">
 			<div class="col-md-6">
-<!-- 				<div class="form-group"> -->
-<!-- 					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" > -->
-<!-- 				</div> -->
+				<div class="form-group">
+					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" >
+				</div>
 				<div class="form-group">
 					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" >
 				</div>

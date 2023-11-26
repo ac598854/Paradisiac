@@ -7,7 +7,7 @@
 
 <html>
 <head>
-<%@ include file="/back-end/index/ManagerMeta.jsp"%>
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>會員紀念相簿</title>
@@ -34,7 +34,7 @@ table {
 </head>
 
 <body>
-<%@ include file="/back-end/index/ManagerBody.jsp"%>
+<%@ include file="/front-end/index/MembersBody.jsp"%>
 	<div class="container">
 		<h1 class="text-center">會員紀念相簿</h1>
 		<div>

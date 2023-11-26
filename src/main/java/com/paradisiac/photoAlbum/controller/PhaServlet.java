@@ -60,12 +60,12 @@ public class PhaServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			//接收參數與錯誤處裡
-			Integer albNo = null;
-			try {
-				albNo = Integer.valueOf(req.getParameter("albNo").trim());
-			}catch(Exception e) {
-				errorMsgs.add("相簿編號請勿空白");
-			}
+//			Integer albNo = null;
+//			try {
+//				albNo = Integer.valueOf(req.getParameter("albNo").trim());
+//			}catch(Exception e) {
+//				errorMsgs.add("相簿編號請勿空白");
+//			}
 			
 			Integer memNo = null;
 			try {
@@ -87,7 +87,7 @@ public class PhaServlet extends HttpServlet {
 			}
 			//開始打包成物件
 			PhotoAlbumVO phaVO = new PhotoAlbumVO();
-			phaVO.setAlbNo(albNo);
+//			phaVO.setAlbNo(albNo);
 			phaVO.setMemNo(memNo);
 			phaVO.setAlbName(albName);
 			phaVO.setAlbDate(albDate);

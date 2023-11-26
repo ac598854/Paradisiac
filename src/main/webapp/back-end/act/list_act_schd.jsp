@@ -16,11 +16,13 @@
 		.container {
         padding-top: 65px;
         padding-left: 255px;
+        border: 1px solid black;
         }
 
         table {
             border-collapse: collapse;
             width: 100%;
+            border: 1px solid black;
             
         }
 
@@ -28,10 +30,12 @@
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+            border: 1px solid black;
         }
 
         th {
             background-color: #f2f2f2;
+            border: 1px solid black;
         }
 
         .form-section {
@@ -70,17 +74,25 @@
             color: black;
             border: 1px solid #4CAF50;
         }
+        
+       
+
+
 </style>
 
 </head>
 <body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
 <div class="container">
+	<div style="text-align: center; padding-right:0;">
+		<form method="post" action="${pageContext.request.contextPath}/act.do">
+			<input type="hidden" name="action" value="getAll">
+			<button class="btn btn-primary mr-2 btn-separator" style="margin-bottom: 15px; font-size: 15px;">活動類別管理首頁</button>		
+		</form>
+			
+	</div>
 
-    <table class="form-section-act">
-        <tr>
-            <th colspan="3" style="text-align: center;">活動訊息</th>
-        </tr>
+    <table class="form-section-act" style="border: 1px solid black;">
         <tr>
             <th>活動編號</th>
             <th>活動名稱</th>
