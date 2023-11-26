@@ -199,6 +199,7 @@
     <li><a href="/Paradisiac/front-end/index/roomviewsea.jsp">海景客房</a></li>
     <li><a href="/Paradisiac/front-end/index/roomviewmon.jsp">山景客房</a></li>
     <li><a href="/Paradisiac/front-end/index/roomviewfamily.jsp">家庭套房</a></li>
+  	<li><a href="${pageContext.request.contextPath}/front-end/index/index2.jsp">返回首頁</a></li>
   </ul>
 </nav>
 

@@ -91,7 +91,7 @@
 			String facility = req.getParameter("facility");
 			String rTypeStatus = req.getParameter("rTypeStatus");
 
-			// 将字符串参数解析为整数
+			
 			Integer roomTotalInt = null;
 			Integer priceInt = null;
 			Integer normalPriceInt = null;
@@ -141,7 +141,7 @@
 			String facility = req.getParameter("facility");
 			String rTypeStatus = req.getParameter("rTypeStatus");
 
-			// 将字符串参数解析为整数
+			
 			Integer roomTypeNoInt = null;
 			Integer roomTotalInt = null;
 			Integer priceInt = null;

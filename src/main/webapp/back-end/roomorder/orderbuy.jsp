@@ -101,6 +101,7 @@
             background-color: #0056b3; /* hover 時的顏色 */
         }
     </style>
+       
 </head>
 
 
@@ -112,7 +113,7 @@
         <h1>下訂訂單</h1>
         <div class="card animate-fade-in" style="border: none; ">
     		<div class="card-body">
-            <form method="Post" action="${pageContext.request.contextPath}/order/order.do?action=buyorder" id="ord" class="animate-fade-in">
+            <form method="Post" action="${pageContext.request.contextPath}/order/order.do?action=buyorder" id="ord" class="animate-fade-in" >
 
 <!-- 			<div class="form-group"> -->
 <!-- <!-- 			    <label for="roomOrderDate">roomOrderDate：</label> -->
@@ -155,11 +156,14 @@
 
                            <div class="form-group">
                      <label for="paymentMethod">付款方式:</label>
-                    <select class="form-control" id="paymentMethod" name="paymentMethod">
+                    <select class="form-control" id="paymentMethod" name="paymentMethod" onchange="showExtraInput(this.value)">
+                        <option value="0">選擇付款方式</option>
                         <option value="1">信用卡</option>
                         <option value="2">匯款</option>
                     </select>
+                     <div id="paymentError" style="display: none; color: red;">請選擇付款方式</div>
                 </div>
+                 <div id="extraInputContainer"></div>
 
                                     <div class="form-group">
 <!--                 <label for="paymentMethod">payStatus：</label> -->
@@ -204,44 +208,115 @@
 			</div>
 
     </div>
-<script>
-    let roomInfoString = localStorage.getItem('roomInfo');
-     console.log("roomInfoString",roomInfoString);
-    // 檢查 roomInfoString 是否為 null
-    if (roomInfoString !== null) {
-        let roomInfo = JSON.parse(roomInfoString);
+     <script>
+	     // 新增函數用於顯示額外輸入欄位
+	     function showExtraInput(paymentType) {
+	         var extraInputContainer = document.getElementById('extraInputContainer');
+	         extraInputContainer.innerHTML = ''; // 清空先前可能添加的輸入欄位
+	         document.getElementById('paymentError').style.display = 'none'; // 隱藏錯誤訊息
+	
+	         if (paymentType == '1') { // 信用卡
+	             extraInputContainer.innerHTML = '<label for="cardNumber">信用卡號：</label><input type="text" class="form-control" id="cardNumber" name="cardNumber" placeholder="輸入信用卡號">';
+	         } else if (paymentType == '2') { // 匯款
+	             extraInputContainer.innerHTML = '<label for="accountNumber">帳號：</label><input type="text" class="form-control" id="accountNumber" name="accountNumber" placeholder="輸入匯款帳號">';
+	         }
+	     }
 
-        document.getElementById('vDateinput').value = roomInfo.vDate;
-        document.getElementById('formattedNextDayinput').value = roomInfo.formattedNextDay;
-        document.getElementById('roomTypeNoinput').value = roomInfo.roomTypeNo;
-        document.getElementById('rbookinginput').value = roomInfo.rbooking;
-        document.getElementById('rbookinginput2').value = roomInfo.rbooking;
-        document.getElementById('priceinput').value = roomInfo.price * roomInfo.rbooking;
-        
-        document.getElementById('vDateinput2').value = roomInfo.vDate;
-        document.getElementById('roomTypeNoinput2').value = roomInfo.roomTypeNo;
-        document.getElementById('roomTotal').value = roomInfo.roomtotal;
-        console.log(roomInfo.roomtotal);
+    </script>
+    <script>
+	    function validateForm() {
+	        var paymentMethod = document.getElementById('paymentMethod').value;
+	        var cardNumberInput = document.getElementById('cardNumber');
+	        var accountNumberInput = document.getElementById('accountNumber');
+	        
+	        // 正則表達式用於檢查信用卡號碼（16位數字）
+	        var cardNumberPattern = /^\d{16}$/;
+	        // 正則表達式用於檢查匯款帳號（4位數字）
+	        var accountNumberPattern = /^\d{4}$/;
+	        
+	        if (paymentMethod === '0') {
+	            alert("請選擇付款方式");
+	            return false;
+	        }
+	        
+	        // 當選擇了信用卡付款方式時
+	        if (paymentMethod === '1') {
+	            
+	            if (!cardNumberInput || cardNumberInput.value === "") {
+	                alert("信用卡號未填寫");
+	                return false;
+	            }
+	            // 使用正則表達式檢查格式
+	            if (!cardNumberPattern.test(cardNumberInput.value)) {
+	                alert("信用卡號應該為16位數字");
+	                return false;
+	            }
+	        }
+	        
+	        // 當選擇了匯款付款方式時
+	        if (paymentMethod === '2') {
+	            // 首先確保輸入框存在
+	            if (!accountNumberInput || accountNumberInput.value === "") {
+	                alert("匯款帳號未填寫");
+	                return false;
+	            }
+	            // 使用正則表達式檢查格式
+	            if (!accountNumberPattern.test(accountNumberInput.value)) {
+	                alert("匯款帳號應該為4位數字");
+	                return false;
+	            }
+	        }
+	        
+	        return true;
+	    }
 
-    } else {
-        console.log('No roomInfo found in localStorage.');
-    }
 
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("a").addEventListener("click", function(event) {
-            event.preventDefault(); // 防止點擊按鈕後直接提交表單
+    </script>
+	<script>
 
-            // 提交 "ord" 表單
-            document.getElementById("ord").submit();
-
-            // 延遲一點時間再提交 "cal" 表單，確保 "ord" 表單的數據能夠成功提交
-            setTimeout(function() {
-                document.getElementById("cal").submit();
-            }, 100);
-        });
-    });
-
-</script>
+	    let roomInfoString = localStorage.getItem('roomInfo');
+	     console.log("roomInfoString",roomInfoString);
+	    // 檢查 roomInfoString 是否為 null
+	    if (roomInfoString !== null) {
+	        let roomInfo = JSON.parse(roomInfoString);
+	
+	        document.getElementById('vDateinput').value = roomInfo.vDate;
+	        document.getElementById('formattedNextDayinput').value = roomInfo.formattedNextDay;
+	        document.getElementById('roomTypeNoinput').value = roomInfo.roomTypeNo;
+	        document.getElementById('rbookinginput').value = roomInfo.rbooking;
+	        document.getElementById('rbookinginput2').value = roomInfo.rbooking;
+	        document.getElementById('priceinput').value = roomInfo.price * roomInfo.rbooking;
+	        
+	        document.getElementById('vDateinput2').value = roomInfo.vDate;
+	        document.getElementById('roomTypeNoinput2').value = roomInfo.roomTypeNo;
+	        document.getElementById('roomTotal').value = roomInfo.roomtotal;
+	
+	        console.log(roomInfo.roomtotal);
+	
+	    } else {
+	        console.log('No roomInfo found in localStorage.');
+	    }
+	
+	    document.addEventListener("DOMContentLoaded", function() {
+	        document.getElementById("a").addEventListener("click", function(event) {
+	            // 防止點擊按鈕後直接提交表單
+	            event.preventDefault();
+	            
+	            // 呼叫 validateForm 函數進行驗證
+	            if (validateForm()) {
+	                // 如果驗證通過，提交 "ord" 表單
+	                document.getElementById("ord").submit();
+	
+	                // 延遲一點時間再提交 "cal" 表單，確保 "ord" 表單的數據能夠成功提交
+	                setTimeout(function() {
+	                    document.getElementById("cal").submit();
+	                }, 100);
+	            }
+	        });
+	    });
+	    
+	
+	</script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

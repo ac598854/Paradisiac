@@ -142,7 +142,7 @@
 		            </tbody>
 		    </table>
 		     <div class="pagination-container" id="pagination-container">
-                <!-- 分页按钮将被插入这里 -->
+               
             </div>
 			<a class="btn btn-secondary btn-icon" href="${pageContext.request.contextPath}/back-end/roomtype/typefirst.jsp">
                 <i class="fas fa-arrow-left"></i> 返回

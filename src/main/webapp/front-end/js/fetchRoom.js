@@ -494,7 +494,7 @@ html = `
 lightboxContent.innerHTML = html;
 
 // 顯示燈箱
-$('#lightbox').modal('show');
+//$('#lightbox').modal('show');
 //士傑跳轉
 let originalDate = new Date(vDate);
   let nextDay = new Date(originalDate.getTime() + 24 * 60 * 60 * 1000);

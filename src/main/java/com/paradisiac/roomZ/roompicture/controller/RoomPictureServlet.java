@@ -40,7 +40,10 @@ public class RoomPictureServlet extends HttpServlet{
 		        case "insert":
 					forwardPath = insertpic(req, res);
 					break;
-		        
+		        case "getAll":
+					forwardPath = getAll(req, res);
+					break;
+					
 		        
 				default:
 					forwardPath = "/index2.jsp";
@@ -52,7 +55,7 @@ public class RoomPictureServlet extends HttpServlet{
 		        }
 	        }
 	    private String insertpic(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-	        // 检查请求的内容类型是否为multipart/form-data
+	       
 	        String contentType = req.getContentType();
 	        if (contentType != null && contentType.toLowerCase().startsWith("multipart/form-data")) {
 	            System.out.println("成功進insertPIC");
@@ -67,14 +70,14 @@ public class RoomPictureServlet extends HttpServlet{
 	                for (Part part : parts) {
 	                    if ("image".equals(part.getName())) {
 	                        image = part;
-	                        break; // 找到第一个图像字段后退出循环
+	                        break; 
 	                    }
 	                }
 	            } catch (IllegalArgumentException e) {
 	                e.printStackTrace();
 	            }
 
-	            // 检查是否存在图像字段
+	           
 	            if (image != null) {
 	                byte[] Pic = null;
 	                try (InputStream inputStream = image.getInputStream()) {
@@ -91,18 +94,36 @@ public class RoomPictureServlet extends HttpServlet{
 	                /***************************3.新增完成,準備轉交(Send the Success view)***********/
 	                String url = "/back-end/roompicture/addpic.jsp";
 	                RequestDispatcher successView = req.getRequestDispatcher(url);
+	                req.setAttribute("roomTypeNo", roomtypeNoInt);
+	                req.setAttribute("pic", Pic);
 	                successView.forward(req, resp);
 	            }
 	        }
 	        return "index2.jsp";
 	    }
 		private String getAll(HttpServletRequest req, HttpServletResponse resp) {
-			RoomPictureService roompicSvc = new RoomPictureService();
+
 			
-			List<RoomPictureeVO> all = roompicSvc.getAllpic();;
-			req.setAttribute("all", all);
+			 
+		    RoomPictureService roomPictureService = new RoomPictureService();
+		    List<RoomPictureeVO> pictures = roomPictureService.getAllpic();
+
+		    
+		    req.setAttribute("pictures", pictures);
+
+		    // 轉發到 JSP 頁面
+		    RequestDispatcher dispatcher = req.getRequestDispatcher("/back-end/roompicture/picview.jsp"); 
+		    try {
+				dispatcher.forward(req, resp);
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	
-			return "/back-end/roompicture/getAllpic.jsp";
+			return "/back-end/roompicture/picview.jsp";
 		}
 	   
 //
