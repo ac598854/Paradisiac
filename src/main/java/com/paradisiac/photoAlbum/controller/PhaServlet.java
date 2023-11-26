@@ -49,7 +49,7 @@ public class PhaServlet extends HttpServlet {
 
 		
 		if("getAll".equals(action)) {
-			forwardPath = getAllPha(req, res);
+			forwardPath = getAllpha(req, res);
 			res.setContentType("text/html; charset=UTF-8");
 			RequestDispatcher dispatcher = req.getRequestDispatcher(forwardPath);
 			dispatcher.forward(req, res);
@@ -101,7 +101,6 @@ public class PhaServlet extends HttpServlet {
 			is.close();
 			phaVO.setAlbPhoto(albPhoto);
 			
-			
 			//如果有錯誤處理輸出
 			if (!errorMsgs.isEmpty()) {
 				req.setAttribute("phaVO", phaVO); // 含有輸入格式錯誤的empVO物件,也存入req
@@ -112,11 +111,12 @@ public class PhaServlet extends HttpServlet {
 			}
 			//開始新增
 			phaSvc.addPha(phaVO);
-			
-			forwardPath = getAllPha(req, res);
+			//forwardPath = "/back-end/pha/select_phoalb.jsp";
+			forwardPath = getAllpha(req, res); 
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath); // 新增成功後轉交
 			successView.forward(req, res);
 		}
+		
 		//新增相片(先找相本PK再forward(req, res)出去
 		if("insertPhoto".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
@@ -131,11 +131,13 @@ public class PhaServlet extends HttpServlet {
 			RequestDispatcher successView = req.getRequestDispatcher(forwardPath);// 成功轉交
 			successView.forward(req, res);
 		}
-		//刪除相片
-		if("delete".equals(action)) {
-			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
-			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
-		}
+		
+		//刪除相簿
+//		if("delete".equals(action)) {
+//			Integer albNo = Integer.valueOf(req.getParameter("albNo"));
+//			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
+//		}
+		
 		//查單筆相簿(含所有照片)
 		if("getOne_For_Display".equals(action)) {			
 			forwardPath = getAllPho(req, res);
@@ -207,7 +209,7 @@ public class PhaServlet extends HttpServlet {
 	}//doPost
 	
 	//查全部可瀏覽的頁數
-	private String getAllPha(HttpServletRequest req, HttpServletResponse res) { //從ListAll請求
+	private String getAllpha(HttpServletRequest req, HttpServletResponse res) { //從ListAll請求
 		String page = req.getParameter("page"); //網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 		
@@ -223,6 +225,7 @@ public class PhaServlet extends HttpServlet {
 
 		return "/back-end/pha/listAllPha.jsp";
 	}
+	
 	//查相簿的所有照片
 	private String getAllPho(HttpServletRequest req, HttpServletResponse res) {
 
@@ -230,14 +233,6 @@ public class PhaServlet extends HttpServlet {
 		Integer memno = null;
 		//從session取得會員編號
 		Object memnoInt = (Integer)req.getSession(false).getAttribute("memno");
-		
-		if(memnoInt instanceof Integer) {
-			System.out.println("輸入是Integer");
-		}else if(memnoInt instanceof String) {
-			System.out.println("輸入是String");
-		}
-		
-		System.out.println("有取得會員編號"+memnoInt);
 				
 		//會員查詢相簿
 		if(memnoInt != null) {
@@ -253,17 +248,31 @@ public class PhaServlet extends HttpServlet {
 			System.out.println("後台取得相簿編號: "+albNo);
 		}
 	
+		
 		String page = req.getParameter("page");//網址列會有page=空(第一頁) or 第幾頁
 		int currentPage = (page == null) ? 1 : Integer.parseInt(page); //如果第一次跳轉則page會是空值, 把1存進currentPage
 		
 		PhotoAlbumDAO_interface phaDAO = new PhotoAlbumHibernateDAO(HibernateUtil.getSessionFactory());
 		List<PhoWithAlbDTO> list = phaDAO.searchAllPhoto(albNo, currentPage);
+System.out.println(list);
+
+		//view裡面沒找到相片的話, 則改查相簿VO回傳
+		if(list == null || list.isEmpty()) {
+			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
+System.out.println(phaVO);
+			req.setAttribute("phaVO", phaVO);
+			return "/back-end/pha/listOnePhaWOpho.jsp";
+		}
 		
+		//如果view裡面有照片
 		int phoPageQty = phaDAO.getTotalQty(albNo);
 		req.getSession().setAttribute("phoPageQty", phoPageQty);
-		
+		//相片資料
 		req.setAttribute("list", list);
 		req.setAttribute("currentPage", currentPage);
+		//相簿資料
+		PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
+		req.setAttribute("phaVO", phaVO);
 		
 		if(memnoInt != null) { //會員查詢
 			req.setAttribute("albNo", albNo);		

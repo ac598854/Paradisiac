@@ -23,22 +23,6 @@ public class ActHibernateDAO implements ActDAO_interface{
 	private Session getSession() {
 		return factory.getCurrentSession();
 	}
-	//新增
-//	@Override
-//	public int insert(ActVO actVO) {
-//		try {
-//			getSession().save(actVO);
-//			return 1;
-//		} catch (Exception e) {
-//			return -1;
-//		}	
-//	}
-//	//修改
-//	@Override
-//	public ActVO update(ActVO actVO) {
-//		getSession().update(actVO);
-//		return actVO;	
-//	}
 
 	@Override //查單筆活動
 	public ActVO findByPrimaryKey(Integer actNo) {
@@ -47,7 +31,7 @@ public class ActHibernateDAO implements ActDAO_interface{
 	
 	@Override //查單筆活動(所有檔期)
 	public Set<SchdVO> findByPrimaryKeyS(Integer actNo){
-		Set<SchdVO> actSchdSet = getSession().get(ActVO.class, actNo).getSchds(); 
+		Set<SchdVO> actSchdSet = getSession().get(ActVO.class , actNo).getSchds(); 
 		return actSchdSet;
 	}
 
@@ -60,7 +44,7 @@ public class ActHibernateDAO implements ActDAO_interface{
 	@Override//查全部(分頁)
 	public List<ActVO> getAll(int currentPage) {
 		int first = (currentPage - 1) * PAGE_MAX_RESULT;
-		return getSession().createQuery("from ActVO order by actNo desc", ActVO.class)//order by actNo desc
+		return getSession().createQuery("from ActVO order", ActVO.class)//order by actNo desc
 				.setFirstResult(first)
 				.setMaxResults(PAGE_MAX_RESULT)
 				.list();
