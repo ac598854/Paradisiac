@@ -542,38 +542,42 @@
     }
 
     //==================================提交訂單=============================================
-    function submitOrder(memNo) {
-        // 獲取收件人名稱、電話、選擇的城市和街道門牌
-        const recipientName = document.getElementById('recipient-name').value;
-        const recipientPhone = document.getElementById('recipient-phone').value;
-        const selectedCity = document.getElementById('city').value;
-        const streetAddress = document.getElementById('recipient-address').value;
+    function deleteProducts(productNames) {
+    return fetch(projectName + '/Cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({ action: 'delete', cartData: JSON.stringify( productNames ) })
+    }).then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('刪除商品失敗');
+        }
+    });
+}
 
-        // 組合完整地址
-        const fullAddress = selectedCity + streetAddress;
+function submitOrder(memNo) {
+    const recipientName = document.getElementById('recipient-name').value;
+    const recipientPhone = document.getElementById('recipient-phone').value;
+    const selectedCity = document.getElementById('city').value;
+    const streetAddress = document.getElementById('recipient-address').value;
+    
 
-        // 從sessionStorage中獲取購物車項目
-        const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-        // 將購物車項目轉換為訂單項目列表
-        const buyItemList = cartItems.map(item => ({
-            productId: item.productId,  // 確保這裡使用正確的屬性名
-            quantity: item.quantity,
-        }));
+    const fullAddress = selectedCity + streetAddress;
 
-        //刪除redis內的商品
-        const productNameDelet = cartItems.map(item => ({
-            productName: item.name
-        }));
+    const cartItems = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+    const buyItemList = cartItems.map(item => ({
+        productId: item.productId,
+        quantity: item.quantity,
+    }));
 
-        productNameDelet.forEach(item => {
-            console.log("刪除" + item.productName);
-            deleteOne(item.productName);
-        });
+    const productNameDelete = cartItems.map(item => item.name);
 
-
-
-        // 構建訂單數據
-        const orderData = {
+    deleteProducts(productNameDelete)
+        .then(() => {
+             const orderData = {
             orderName: recipientName,
             orderPhone: recipientPhone,
             address: fullAddress,
@@ -582,59 +586,34 @@
             buyItemList: buyItemList
         };
 
-        // 向伺服器發送POST請求，提交訂單數據
-        fetch(projectName +  `/members/orders`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(orderData),
-        })
-
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('庫存不足，請重新選購！');
-                }
-                return response.json();
-            })
-
-            .then(data => {
-                console.log('訂單創建成功:', data);
-                alert('訂單創建成功');
-                // 訂單創建成功後，重定向到memberOrders頁面
-                window.location.href = projectName + '/memberOrders.html';
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert(error.message);  // 顯示錯誤信息
-                window.location.href = projectName + '/productFront.html'; // 重定向到購物商城頁面
+            return fetch(projectName +  `/members/orders`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData),
             });
-    }
-
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('庫存不足，請重新選購！');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('訂單創建成功:', data);
+            alert('訂單創建成功');
+            window.location.href = projectName + '/memberOrders.html';
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert(error.message);
+            window.location.href = projectName + '/productFront.html';
+        });
+}
     //==================================計算購物車總金額=============================================
     function calculateTotalAmount(cartItems) {
         return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-    }
-    //=============================刪除redis內的商品=====================================================//
-    function deleteOne(productName) {
-        console.log(productName);
-        const productNameJSON = JSON.stringify({ productName: productName });
-        const dataToSend = { action: 'delete', cartData: productNameJSON};
-
-        fetch(projectName + '/Cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8'
-            },
-            body: JSON.stringify(dataToSend)
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('沒有取得回應');
-            }
-        })
-
     }
 </script>
 
