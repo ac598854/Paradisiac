@@ -25,6 +25,40 @@ public class OderController {
 
     @Autowired
     private OrderService orderService;
+    
+    @GetMapping("/admin/orders")
+    public ResponseEntity<Page<Order>> getAllOrders(
+            @RequestParam(defaultValue = "50") @Max(1000) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset) {
+
+        OrderQueryParams orderQueryParams = new OrderQueryParams();
+        orderQueryParams.setLimit(limit);
+        orderQueryParams.setOffset(offset);
+
+        List<Order> orders = orderService.getOrders(orderQueryParams);
+        Integer count = orderService.countOrder(orderQueryParams);  // 需要新增一個方法來計算所有訂單的總數
+
+        Page<Order> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(count);
+        page.setResults(orders);
+
+        return ResponseEntity.ok(page);
+    }
+    
+    @GetMapping("/orders/{orderId}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Integer orderId) {
+        Order order = orderService.getOrderById(orderId);
+
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(order);
+    }
+
+
 
     //查詢訂單
     @GetMapping("/members/orders")

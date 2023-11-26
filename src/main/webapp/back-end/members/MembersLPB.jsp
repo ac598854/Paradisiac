@@ -352,7 +352,7 @@ h1, h2, h3, h4 {
 
 			<div class="col-sm-3 form-group">
 				<form method="post" action="members.do">
-					<label for="keyword">會員編號查詢</label> <input type="text"
+					<label for="keyword">會員編號查詢</label> <input type="number"
 						class="form-control" name="memno" id="memno"> <input
 						type="hidden" name="action" value="getOne_For_Memno"> <input
 						type="submit" value="送出" class="btn btn-primary">
@@ -440,9 +440,7 @@ h1, h2, h3, h4 {
 			</div>
 		</div>
 	</div>
-	</div>
-	</div>
-	</div>
+
 
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 	<script

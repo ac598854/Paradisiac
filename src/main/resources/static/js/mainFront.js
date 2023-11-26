@@ -94,7 +94,7 @@ function displayProducts(products) {
         addToCartButton.className = 'btn btn-primary';
         addToCartButton.innerHTML = '<i class="fas fa-shopping-cart add-to-cart" data-id="${product.prodNo}" data-name="${product.prodName}" data-price="${product.prodPrice}"></i> Add To Cart';
         addToCartButton.addEventListener('click', function() {
-            addToCart(product.productName, product.price, product.description, product.stock, product.productId);
+           addToCart(product.productName, promotionDiscount ? Math.ceil(promotionDiscount * product.price) : product.price, product.description, product.stock, product.productId);
         });
 
         addToCartButton.addEventListener('click', function(event) {
@@ -110,11 +110,10 @@ function displayProducts(products) {
 
         console.log("if之前"+promotionDiscount);
         // 如果有相符的促銷折扣，則顯示在商品價格下面
-        if (promotionDiscount) {
-            var discountText = document.createElement('p');
-            discountText.innerText = `Discount: ${promotionDiscount}`;
-            productDiv.appendChild(discountText);
-        }
+       if (promotionDiscount) {
+		    var discountedPrice = Math.ceil(promotionDiscount * product.price);
+		    productPrice.innerText = `促銷價:NT$ ${discountedPrice}`; // 修改商品價格為促銷價格
+		}
 
         productsArea.appendChild(productDiv);
     }

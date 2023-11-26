@@ -80,9 +80,9 @@ String nowPage = request.getParameter("page") == null ? "0" : request.getParamet
 <title>ParadisiacBay-活動訂單管理</title>
 
 <!-- Bootstrap -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css"
-	rel="stylesheet">
+<!-- <link -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" -->
+<!-- 	rel="stylesheet"> -->
 <!-- CSS -->
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
@@ -378,19 +378,19 @@ ul.navigation {
 					<div class="row mb-4">
 						<div class="col-sm-3 form-group">
 							<label for="memNo">會員編號</label>
-								<input type="text" class="form-control" name="memNo"
+								<input type="number" class="form-control" name="memNo"
 									id="memNo" value="${memNO}">
 								<div class="input-group-append"></div>
 						</div>
 						<div class="col-sm-3 form-group">
 							<label for="actOrderNo">訂單編號</label>
-								<input type="text" class="form-control" name="actOrderNo"
+								<input type="number" class="form-control" name="actOrderNo"
 									id="actOrderNo" value="${actOrderNo}">
 								<div class="input-group-append"></div>
 						</div>
 						<div class="col-sm-3 form-group">
 							<label for="schdNo">檔期編號</label>
-								<input type="text" class="form-control" name="schdNo"
+								<input type="number" class="form-control" name="schdNo"
 									id="schdNo" value="${schdNo}">
 								<div class="input-group-append"></div>
 						</div>
@@ -467,20 +467,20 @@ ul.navigation {
 				</div>
 		</div>
 
-	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-	<script
-		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+<!-- 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+<!-- 	<script -->
+<!-- 		src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> -->
+<!-- 	<script -->
+<!-- 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+<!-- 	<script -->
+<!-- 		src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script> -->
 
 	<!-- Menu Toggle Script -->
 	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
+// 		$("#menu-toggle").click(function(e) {
+// 			e.preventDefault();
+// 			$("#wrapper").toggleClass("toggled");
+// 		});
 	</script>
 </body>
 </html>

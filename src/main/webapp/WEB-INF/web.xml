@@ -74,6 +74,10 @@
         <servlet-name>ActOrder</servlet-name>
         <url-pattern>/front-end/actorder/ActOrder.do</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ActOrder</servlet-name>
+        <url-pattern>/back-end/actorder/ActOrder.do</url-pattern>
+    </servlet-mapping>
 
 	<listener>
 		<listener-class>com.paradisiac.listener.InitializerListener</listener-class>
