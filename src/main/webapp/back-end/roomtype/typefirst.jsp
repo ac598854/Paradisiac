@@ -151,7 +151,13 @@
                     <td>${result.bridgeHolidayPrice}</td>
                     <td>${result.notice}</td>
                     <td>${result.facility}</td>
-                    <td>${result.rTypeStatus}</td>
+		                    <td>  
+							    <c:choose>
+				                    <c:when test="${result.rTypeStatus == 'true'}">上架</c:when>
+				                    <c:when test="${result.rTypeStatus == 'false'}">下架</c:when>
+				                </c:choose>
+				            </td>
+
                     </tr>
                 </tbody>
             </table>

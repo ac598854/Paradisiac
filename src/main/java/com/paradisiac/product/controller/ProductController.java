@@ -70,11 +70,41 @@ public class ProductController {
 
     // 獲取所有產品用於購物車
     @GetMapping("/allForCart")
-    public ResponseEntity<List<Product>> getAllProductsForCart() {
-        List<Product> products = productService.getAllProductsForCart();
-        return ResponseEntity.ok(products);
-    }
+	 public ResponseEntity<Page<Product>> getAllProductsForCart(
+	            //查詢條件 Filtering
+	            @RequestParam (required = false) ProductCategory category,
+	            @RequestParam (required = false) String search,
+	            //排序 Sorting
+	            @RequestParam (defaultValue = "product_id") String orderBy,
+	            @RequestParam (defaultValue = "asc") String sort,
+	            //分頁 Pagination
+	            @RequestParam (defaultValue = "1000") @Max(1000) @Min(0) Integer limit,
+	            @RequestParam (defaultValue = "0") @Min(0) Integer offset
+	    ){
 
+	        ProductQueryParams productQueryParams = new ProductQueryParams();
+	        productQueryParams.setCategory(category);
+	        productQueryParams.setSearch(search);
+	        productQueryParams.setOrderBy(orderBy);
+	        productQueryParams.setSort(sort);
+	        productQueryParams.setLimit(limit);
+	        productQueryParams.setOffset(offset);
+
+	        // 取得 product list
+	        List<Product> productList = productService.getProducts(productQueryParams);
+
+	        // 取得 product 總數
+	        Integer total = productService.countProduct(productQueryParams);
+
+	        // 分頁
+	        Page<Product> page = new Page<>();
+	        page.setLimit(limit);
+	        page.setOffset(offset);
+	        page.setTotal(total);
+	        page.setResults(productList);
+
+	        return ResponseEntity.status(HttpStatus.OK).body(page);
+	    }
     //查詢單個產品
     @GetMapping("/products/{productId}")
     public ResponseEntity<Product> getProduct(@PathVariable Integer productId){

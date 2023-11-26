@@ -9,4 +9,5 @@ public interface PromotionListDAO_interface {
 	public List<PromotionListVO> getProductList(Integer promotion);
 	public List<PromotionVO> getAll();
 	public List<Integer> getProductnoFromView(Integer promotionNO);
+	public PromotionVO getById(Integer promotionNO);
 }

@@ -122,6 +122,55 @@
         #checkout-details {
             margin-bottom: 60px; /* 頁尾高度加上一些額外空間 */
         }
+
+        /* 信用卡輸入框的外層容器 */
+        #credit-card-info {
+            display: flex;
+            flex-direction: column; /* 子元素垂直堆疊 */
+            align-items: center;
+            margin-bottom: 20px; /* 與下一個元素的距離 */
+        }
+
+        /* 信用卡輸入框和標籤的行容器 */
+        .credit-card-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 10px; /* 與下一個元素的距離 */
+        }
+
+        /* 單個信用卡輸入框樣式 */
+        .credit-card-input {
+            width: 14% !important; /* 四個輸入框均分空間，10px為輸入框間的間隙 */
+            margin: 0 5px; /* 輸入框之間的間隙 */
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* 調整錯誤消息的顯示 */
+        .error-message {
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: red;
+        }
+
+        /* 隱藏標籤，只在必要時顯示（例如屏幕閱讀器） */
+        #credit-card-info label {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
     </style>
 </head>
 <body>
@@ -146,7 +195,7 @@
     </table>
 
     <div class="address-container">
-        <h3>Shipping address</h3>
+        <h3>Shipping Detail</h3>
         <div class="form-check">
             <input class="form-check-input" type="checkbox" id="autofillDetailsCheckbox">
             <label class="form-check-label" for="autofillDetailsCheckbox">
@@ -200,12 +249,20 @@
                 <option value="1">信用卡</option>
                 <option value="0">轉帳</option>
             </select>
-            <!-- 信用卡資訊的文本框 -->
+
+            <!-- 信用卡資訊的文本框，分為四個部分 -->
             <div id="credit-card-info" style="display:none;">
-                <label for="card-number">信用卡號碼:</label>
-                <input type="text" id="card-number" name="card-number" pattern="[0-9]{16}">
-                <span class="error-message" style="color: red; display: none;">請輸入有效卡號</span>
+                <label for="card-number-section-1">信用卡號碼:</label>
+                <input type="text" id="card-number-section-1" name="card-number-section-1" class="credit-card-input" maxlength="4" pattern="\d{4}" required>
+                <span class="dash">-</span>
+                <input type="text" id="card-number-section-2" name="card-number-section-2" class="credit-card-input" maxlength="4" pattern="\d{4}" required>
+                <span class="dash">-</span>
+                <input type="text" id="card-number-section-3" name="card-number-section-3" class="credit-card-input" maxlength="4" pattern="\d{4}" required>
+                <span class="dash">-</span>
+                <input type="text" id="card-number-section-4" name="card-number-section-4" class="credit-card-input" maxlength="4" pattern="\d{4}" required>
+                <span class="error-message" style="color: red; display: none;">請輸入有效卡號 (格式：xxxx-xxxx-xxxx-xxxx)</span>
             </div>
+
 
             <!-- 轉帳資訊的文本框 -->
             <div id="transfer-info" style="display:none;">
@@ -235,9 +292,6 @@
     let orderStatus = true;
 
     //==================================取得會員servlet URL==============================================
-    //     var contextPath = window.location.pathname.substring(0, window.location.pathname.indexOf("/",1));
-
-
     $(document).ready(function(){
         // 加載頁尾
         $("#footer").load(projectName +"/front-end/index/footer.jsp");
@@ -278,8 +332,25 @@
         let cancelLink = document.getElementById('cancel-button').parentNode;
         cancelLink.href = projectName + '/productFront.html';
 
+        // 為每個信用卡輸入框添加適當的事件監聽器
+        const cardNumberInputs = document.querySelectorAll('.credit-card-input');
+        cardNumberInputs.forEach((input, index) => {
+            // 當用戶輸入時，自動跳轉到下一個輸入框
+            input.addEventListener('input', function(event) {
+                // 僅允許數字輸入
+                event.target.value = event.target.value.replace(/[^\d]/g, '');
+                // 如果輸入了四個數字，且不是最後一個輸入框，則跳轉到下一個輸入框
+                if (event.target.value.length === 4 && index < 3) {
+                    cardNumberInputs[index + 1].focus();
+                }
+            });
+        });
+
         // 绑定表单提交事件处理器
         document.getElementById('shipping-form').addEventListener('submit', function(event) {
+            // 防止表單的默認提交行為
+            event.preventDefault();
+
             var isValid = true;
             var inputs = this.querySelectorAll('input[required]');
 
@@ -294,14 +365,22 @@
                 }
             });
 
-            // 检查支付方式相关的输入
-            var paymentMethod = document.getElementById('payment-method').value;
-            if (paymentMethod === "1" && !document.getElementById('card-number').validity.valid) {
-                document.getElementById('card-number').nextElementSibling.style.display = 'inline';
-                isValid = false;
-            } else if (paymentMethod === "0" && !document.getElementById('account-number').validity.valid) {
-                document.getElementById('account-number').nextElementSibling.style.display = 'inline';
-                isValid = false;
+            // 拼接信用卡號碼
+            var cardNumberComplete = '';
+            cardNumberInputs.forEach(input => {
+                cardNumberComplete += input.value;
+            });
+
+            // 驗證信用卡號碼是否已完全填寫（共16位數字）
+            if (cardNumberComplete.length === 16) {
+                // 如果通過驗證，進行表單提交或其它邏輯處理
+                // 例如：
+                // submitOrder(cardNumberComplete);
+                console.log('信用卡號碼:', cardNumberComplete); // 可以替換為實際的提交邏輯
+            } else {
+                // 未通過驗證，顯示錯誤信息
+                document.querySelector('.error-message').textContent = '請輸入有效的信用卡號碼';
+                document.querySelector('.error-message').style.display = 'block';
             }
 
             // 如果验证通过，调用 handleFormSubmit 处理后续逻辑
@@ -383,8 +462,9 @@
 
         var isValid = true;
         var inputs = document.querySelectorAll('#shipping-form input[required]');
+        var cardNumberComplete = '';
 
-        // 通用的前端验证逻辑
+        // 通用的前端驗證邏輯
         inputs.forEach(function(input) {
             var errorSpan = input.nextElementSibling;
             if (!input.validity.valid) {
@@ -395,30 +475,32 @@
             }
         });
 
-        // 检查支付方式相关的输入
+        // 檢查支付方式相關的輸入
         var paymentMethod = document.getElementById('payment-method').value;
-        var cardNumber = document.getElementById('card-number');
-        var accountNumber = document.getElementById('account-number');
-
         if (paymentMethod === "1") {
-            if (cardNumber.value.trim() === "") {
-                cardNumber.nextElementSibling.style.display = 'inline';
-                isValid = false;
-            } else {
-                cardNumber.nextElementSibling.style.display = 'none';
+            // 檢查每個信用卡輸入段
+            var cardNumberInputs = document.querySelectorAll('input[id^="card-number-section-"]');
+            cardNumberInputs.forEach(function(input) {
+                if (input.value.length !== 4 || !input.validity.valid) {
+                    input.nextElementSibling.style.display = 'inline'; // 顯示錯誤信息
+                    isValid = false;
+                } else {
+                    cardNumberComplete += input.value; // 組合信用卡號碼
+                    input.nextElementSibling.style.display = 'none'; // 隱藏錯誤信息
+                }
+            });
+            if (!isValid) {
+                // 如果信用卡號碼無效，阻止表單提交
+                return;
             }
-        } else if (paymentMethod === "0") {
-            if (accountNumber.value.trim() === "") {
-                accountNumber.nextElementSibling.style.display = 'inline';
-                isValid = false;
-            } else {
-                accountNumber.nextElementSibling.style.display = 'none';
-            }
+        } else if (paymentMethod === "0" && !document.getElementById('account-number').validity.valid) {
+            document.getElementById('account-number').nextElementSibling.style.display = 'inline';
+            isValid = false;
         }
 
-        // 如果验证通过，调用 submitOrder 函數處理提交邏輯
+        // 如果驗證通過，調用 submitOrder 函數處理提交邏輯
         if (isValid) {
-            submitOrder();
+            submitOrder(cardNumberComplete); // 傳遞完整的信用卡號碼到 submitOrder 函數
         }
     }
 
@@ -428,8 +510,35 @@
         orderStatus = value === "1";
 
         // 根據選擇的支付方式顯示相應的文本框
-        document.getElementById("credit-card-info").style.display = value === "1" ? "block" : "none";
-        document.getElementById("transfer-info").style.display = value === "0" ? "block" : "none";
+        var creditCardInfo = document.getElementById("credit-card-info");
+        var transferInfo = document.getElementById("transfer-info");
+        if (value === "1") { // 信用卡選項
+            creditCardInfo.style.display = "block";
+            transferInfo.style.display = "none";
+            // 使信用卡輸入框為必填
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = true;
+            });
+            // 不需要轉帳帳號
+            document.getElementById('account-number').required = false;
+        } else if (value === "0") { // 轉帳選項
+            transferInfo.style.display = "block";
+            creditCardInfo.style.display = "none";
+            // 不需要信用卡號碼
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = false;
+            });
+            // 使轉帳帳號為必填
+            document.getElementById('account-number').required = true;
+        } else { // 沒有選擇
+            transferInfo.style.display = "none";
+            creditCardInfo.style.display = "none";
+            // 兩種方式都不需要
+            document.querySelectorAll('.credit-card-input').forEach(input => {
+                input.required = false;
+            });
+            document.getElementById('account-number').required = false;
+        }
     }
 
     //==================================提交訂單=============================================

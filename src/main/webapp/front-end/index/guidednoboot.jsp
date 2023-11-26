@@ -25,7 +25,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light fixed-navbar"
 		style="background-color: transparent; background-color: rgba(0, 0, 0, 0.7);">
 		<div class="container">
-			<a class="navbar-brand mx-auto" href="#" style="color: #fff;"><i
+			<a class="navbar-brand mx-auto" href="/Paradisiac/front-end/index/index2.jsp" style="color: #fff;"><i
 				class="fas fa-hotel"></i>飯店訂房</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarNav" aria-controls="navbarNav"

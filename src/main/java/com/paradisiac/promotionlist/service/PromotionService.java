@@ -54,8 +54,12 @@ public class PromotionService {
 	public List<PromotionVO> getAll() {
 		return pro.getAll();
 	}
+	
 	public List<Integer> getProductnoFromView(Integer promotionNO){
 		return pro.getProductnoFromView(promotionNO);
 	}
-
+	
+	public PromotionVO getById(Integer promotionNO) {
+		return pro.getById(promotionNO);
+	}
 }

@@ -86,87 +86,23 @@ table {
 		</div>
  
 		<div class="flex-container">
-		    <h2>相片管理</h2>		    
-		</div>
-		<c:if test="${not empty errorMsgs}">
-			    <div style="color: red; font-size: 15px;">
-			        請修正以下錯誤:
-			        <ul>
-			            <c:forEach var="message" items="${errorMsgs}">
-			                <li>${message}</li>
-			            </c:forEach>
-			        </ul>
-			    </div>
-		</c:if>
-		<c:if test="${phoPageQty > 0}">
-			<b><span style="color: red; font-size: 15px;">第${currentPage}/${phoPageQty}頁</span></b>
-		</c:if>
-				
-		<div class="album card mb-3">
-
-			<div class="row g-0">
-				<div class="col-md-12">
-					<form id="photoForm" method="post"
-						action="<%=request.getContextPath()%>/pho.do">
-						<div class="col-md-12" >
-							<c:forEach var="pha" items="${list}">									
-								<div class="col-md-4"  style="padding: 5px; display: flex; flex-direction: column; align-items: center;">
-									<input type="checkbox" name="photoNo" id="${pha.photoNo}" style="margin-bottom: 5px;"
-									value="${pha.photoNo}">
-									<img
-										src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
-										style="width: 100%; height: 200px; object-fit: cover;" alt="相片1" class="img-fluid">
-									<table>
-										<tr>
-											<td>相片名稱:</td>
-											<td>${pha.photoName}</td>
-										</tr>
-										<tr>
-											<td>相片編號:</td>
-											<td>${pha.photoNo}</td>
-										</tr>
-										<tr>
-											<td>相片日期:</td>
-											<td>${pha.photoDate}</td>
-										</tr>
-									</table>
-								</div>
-							</c:forEach>
-						</div>
-												
-						<div class="col-md-12">
-							<div>
-								<input type="hidden" name="action" value="delete"> <input
-									type="hidden" name="albNo" value="${phaVO.albNo}"> <input
-									class="btn btn-danger" type="submit" value="刪除相片" style="font-size: 12px;">
-							</div>
-						</div>
-					</form>
-					
-				</div>
-			</div>
+		    <h2>相片管理</h2>
 		</div>
 
-		<c:if test="${currentPage > 1}">
-			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=1" style="font-size: 15px;">至第一頁</a>&nbsp;
-		</c:if>
-		<c:if test="${currentPage - 1 != 0}">
-			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${currentPage - 1}" style="font-size: 15px;">上一頁</a>&nbsp;
-		</c:if>
-		<c:if test="${currentPage + 1 <= phoPageQty}">
-			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${currentPage + 1}" style="font-size: 15px;">下一頁</a>&nbsp;
-		</c:if>
-		<c:if test="${currentPage != phoPageQty}">
-			<a
-				href="${pageContext.request.contextPath}/pha.do?action=getOne_For_Display&albNo=${phaVO.albNo}&page=${phoPageQty}" style="font-size: 15px;">至最後一頁</a>&nbsp;
-		</c:if>
 
 		<%--新增相片 --%>
 		<div class="album card mb-3" style="border: 1px solid #CFCFCF">
 			<div class="row g-0">
+				<c:if test="${not empty errorMsgs}">
+				    <div style="color: red; font-size: 15px;">
+				        請修正以下錯誤:
+				        <ul>
+				            <c:forEach var="message" items="${errorMsgs}">
+				                <li>${message}</li>
+				            </c:forEach>
+				        </ul>
+				    </div>
+				</c:if>
 				<div class="col-md-12">
 					<form action="${pageContext.request.contextPath}/pho.do"
 						method="post" enctype="multipart/form-data">
