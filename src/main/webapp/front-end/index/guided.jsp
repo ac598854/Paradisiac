@@ -1,5 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ page import="com.paradisiac.members.model.*"%>
+<%@ page import="com.paradisiac.members.service.*"%>
+<%@ page import="com.paradisiac.members.controller.*"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
+<%
+MembersService MemsSvc = new MembersService();
+Integer memno = (Integer) session.getAttribute("memno");
+MembersVO membersVO = MemsSvc.getOneBymemno(memno);
+pageContext.setAttribute("membersVO", membersVO);
+%>
 
 <!DOCTYPE html>
 <html>
@@ -34,19 +45,25 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item">
-    					<a class="nav-link b" href="${pageContext.request.contextPath}/front-end/index/index2.jsp">首頁</a>
+					<li class="nav-item"><a class="nav-link b"
+						href="${pageContext.request.contextPath}/front-end/index/index2.jsp">首頁</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" href="#">客房</a></li>
-					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
-					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a></li>
-					<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a></li>
 					<li class="nav-item"><a class="nav-link"
-						href="<%= request.getContextPath() %>/productFront.html">購物商城</a>
+						href="${pageContext.request.contextPath}/calender.do?action=getAll">線上訂房</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${pageContext.request.contextPath}/front-end/other/ContectUs.jsp">關於我們</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="${pageContext.request.contextPath}/act.do?action=getAll_Front">最新活動</a></li>
+					<li class="nav-item"><a class="nav-link"
+						href="<%=request.getContextPath()%>/productFront.html">購物商城</a>
 					</li>
 					<li class="nav-item"><a class="nav-link"
 						href='<%=request.getContextPath()%>/front-end/members/MembersUpdate.jsp'>會員專區</a>
 					</li>
+					<li class="nav-item"><a class="nav-link" href='#'><div>
+								<c:out value="${membersVO.memname}" />
+							</div></a></li>
 					<li class="nav-item"><a class="nav-link" href="#"
 						id="logoutLink">登出</a></li>
 
@@ -76,16 +93,18 @@
                         console.log("Logout successful");
                         if (response === "ok") {
                             console.log("ok");
-                            window.location.href = `<%=request.getContextPath()%>/front-end/index/index2.jsp`;
-                        }
-                    },
-                    error: function(error) {                   
-                        console.log("Logout failed");
-                    }
-                });
-            });
-        });
-        
-</script>
+                            window.location.href = `<%=request.getContextPath()%>
+		/front-end/index/index2.jsp`;
+																}
+															},
+															error : function(
+																	error) {
+																console
+																		.log("Logout failed");
+															}
+														});
+											});
+						});
+	</script>
 </body>
 </html>
