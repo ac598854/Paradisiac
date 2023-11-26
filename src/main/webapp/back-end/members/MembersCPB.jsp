@@ -465,15 +465,15 @@ h1, h2, h3, h4 {
 <!-- 			src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> -->
 <!-- 		<script -->
 <!-- 			src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-		<script
-			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+<!-- 		<script -->
+<!-- 			src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script> -->
 		
 		<!-- Menu Toggle Script -->
 		<script>
-			$("#menu-toggle").click(function(e) {
-				e.preventDefault();
-				$("#wrapper").toggleClass("toggled");
-			});
+//  			$("#menu-toggle").click(function(e) {
+//  				e.preventDefault();
+//  				$("#wrapper").toggleClass("toggled");
+//  			});
 			
 			
 			
