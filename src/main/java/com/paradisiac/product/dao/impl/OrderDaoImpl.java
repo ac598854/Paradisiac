@@ -27,7 +27,7 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    //計算訂單數量
+    //計算訂單
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
         String sql = "SELECT count(*) FROM psorder WHERE 1 = 1";
@@ -170,7 +170,6 @@ public class OrderDaoImpl implements OrderDao {
         namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
     }
 
-    // 獲取會員資訊
     @Override
     public Members getMemberById(Integer memno) {
         String sql = "SELECT mem_no, mem_name, mem_phone, mem_address FROM members WHERE mem_no = :memno";
@@ -183,7 +182,6 @@ public class OrderDaoImpl implements OrderDao {
         return membersList.get(0);
     }
 
-    // 添加過濾條件到 SQL 查詢語句
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams){
         if(orderQueryParams.getMemno() != null){
             sql = sql + " AND mem_no = :memno";
