@@ -27,7 +27,7 @@ public class RoomPictureDAOImpl implements RoomPictureDAO{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			try {
 				session.beginTransaction();
-				session.save(roomPictureVO);
+				session.saveOrUpdate(roomPictureVO);
 				session.getTransaction().commit();
 				return 1;
 			} catch (Exception e) {
