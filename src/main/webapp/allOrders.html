@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>所有訂單</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=ZCOOL+QingKe+HuangYou&display=swap" rel="stylesheet">
+  <style>
+		/* 模態框背景 */
+		.modal {
+		    display: none;
+		    position: fixed;
+		    z-index: 1000;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    overflow: auto;
+		    background-color: rgba(0, 0, 0, 0.5);
+		    backdrop-filter: blur(5px); /* 背景模糊效果 */
+		    align-items: center; /* 用於垂直居中 */
+		    justify-content: center; /* 用於水平居中 */
+		    display: flex;
+		}
+		
+		/* 模態框内容 */
+		.modal-content {
+		    background-color: #fefefe;
+		    margin: auto;
+		    padding: 20px;
+		    border: 1px solid #888;
+		    width: 60%; /* 模態框宽度 */
+		    max-width: 700px; /* 最大寬度 */
+		    border-radius: 10px; /* 邊框圓角 */
+		    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* 盒子陰影 */
+		    animation-name: modalOpen; /* 指定動畫 */
+		    animation-duration: 0.4s; /* 動畫持續時間 */
+		}
+		
+		/* 模態匡打開動畫 */
+		@keyframes modalOpen {
+		    from {top: -300px; opacity: 0}
+		    to {top: 0; opacity: 1}
+		}
+		
+		/* 關閉按鈕樣式 */
+		.close {
+		    color: #aaaaaa;
+		    float: right;
+		    font-size: 35px;
+		    font-weight: bold;
+		}
+		
+		.close:hover,
+		.close:focus {
+		    color: #000;
+		    text-decoration: none;
+		    cursor: pointer;
+		}
+		
+		/* 模態匡標題樣式 */
+		.modal h2 {
+		    margin-top: 0;
+		    color: #333;
+		    margin-bottom: 20px; /* 添加底部間隔 */
+		}
+		
+		/* 模態匡列表樣式 */
+		.modal ul {
+		    padding: 0;
+		    list-style: none;
+		}
+		
+		.modal li {
+		    background: #f7f7f7;
+		    margin-bottom: 10px;
+		    padding: 10px;
+		    border-radius: 5px;
+		}
+		
+		/* 模態匡圖片樣式 */
+		.modal img {
+		    border-radius: 5px; /* 圖片圓角 */
+		    margin-right: 15px;
+		}
+		
+		/* 模態匡文本樣式 */
+		.modal p, .modal li {
+		    color: #555; /* 文本顏色 */
+		    line-height: 1.5; /* 行高 */
+		    font-size: 16px; /* 字體大小 */
+		}
+		
+		.modal-content .table {
+		    width: 100%;
+		    margin-bottom: 20px;
+		}
+		
+		.modal-content .table th, .modal-content .table td {
+		    padding: 8px;
+		    line-height: 1.5;
+		    vertical-align: top;
+		    border-top: 1px solid #dee2e6;
+		}
+		
+		.modal-content .table thead th {
+		    vertical-align: bottom;
+		    border-bottom: 2px solid #dee2e6;
+		}
+		
+		.modal-content .table tbody + tbody {
+		    border-top: 2px solid #dee2e6;
+		}
+		
+		.modal-content .table img {
+		    width: 50px; /* 根據需要調整大小 */
+		    height: auto;
+		    border-radius: 5px; 
+		}
+				
+		  
+  </style>
+</head>
+<body>
+<div id="dynamicContent"></div>  <!-- 動態內容的容器 -->
+<main>
+  <section class="orders-list">
+    <h2 class="center-text">所有訂單</h2>
+    <!-- 訂單詳情模態匡 -->
+	<div id="orderDetailsModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="orderDetails" style="max-height: 60vh; overflow-y: auto;">
+        
+        </div>
+    </div>
+</div>
+
+    
+    <!-- 訂單列表的表格容器 -->
+    <div id="ordersTableContainer" class="table-responsive">
+      <!-- 表格將在這裡動態生成 -->
+    </div>
+    <!-- 分頁按鈕容器 -->
+    <div id="paginationContainer" class="pagination-center"></div>
+  </section>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.2/jquery.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+//==================================獲取當前頁面的路徑名稱==============================================
+let pathName = window.document.location.pathname;
+//==================================從路徑名稱中提取出項目名稱==============================================
+let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
+
+$(document).ready(function(){
+	// 使用 jQuery 的 .load() 方法從伺服器加載 JSP 文件的內容
+    $("#dynamicContent").load(projectName + "/back-end/index/back-left_product.jsp");
+
+    // 加載所有訂單
+    fetchOrders(1);
+});
+
+//==================================獲取所有訂單資訊==============================================
+function fetchOrders() {
+    fetch(`${projectName}/admin/orders`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (!data || !Array.isArray(data.results)) {
+                throw new Error('Expected an array of orders but got: ', data);
+            }
+            createOrdersTable(data.results); 
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+}
+// 調用fetchOrders獲取所有訂單
+$(document).ready(function(){
+    fetchOrders();
+});
+
+//==================================創建所有訂單==============================================
+function createOrdersTable(orders) {
+    const ordersTableContainer = document.getElementById('ordersTableContainer');
+    if (!ordersTableContainer) return;
+
+    // 清空先前的表格內容
+    ordersTableContainer.innerHTML = '';
+
+    // 創建表格元素和表頭
+    const table = document.createElement('table');
+    table.className = 'table table-striped'; // 使用Bootstrap的表格樣式
+
+    // 創建表頭
+    const thead = document.createElement('thead');
+    const headerRow = thead.insertRow();
+    const headers = ['訂單編號', '總金額', '訂單日期'];
+    headers.forEach(headerText => {
+        const headerCell = document.createElement('th');
+        headerCell.textContent = headerText;
+        headerRow.appendChild(headerCell);
+    });
+    table.appendChild(thead);
+
+    // 創建表格主體部分
+    const tbody = document.createElement('tbody');
+    orders.forEach(order => {
+        const row = tbody.insertRow();
+        row.innerHTML = `<td>${order.orderId}</td>
+                         <td>${order.totalAmount}</td>
+                         <td>${order.createdDate}</td>`; 
+
+        row.addEventListener('click', () => showOrderDetails(order.orderId));
+    });
+    table.appendChild(tbody);
+
+    // 表格添加到容器
+    ordersTableContainer.appendChild(table);
+}
+
+//==================================創建單一訂單模態匡==============================================
+function showOrderDetails(orderId) {
+    fetch(`http://localhost:8081/Paradisiac/orders/${orderId}`)
+        .then(response => response.json())
+        .then(orderDetails => {
+            const detailsDiv = document.getElementById('orderDetails');
+            detailsDiv.innerHTML = ''; // 清空之前的内容
+
+            // 創建訂單基本信息的表格
+            let detailsHtml = `
+                <table class="table">
+                    <tr><th>訂單編號</th><td>${orderDetails.orderId}</td></tr>
+                    <tr><th>會員編號</th><td>${orderDetails.memno}</td></tr>
+                    <tr><th>總金額</th><td>${orderDetails.totalAmount}</td></tr>
+                    <tr><th>訂單姓名</th><td>${orderDetails.orderName}</td></tr>
+                    <tr><th>會員電話</th><td>${orderDetails.orderPhone}</td></tr>
+                    <tr><th>地址</th><td>${orderDetails.address}</td></tr>
+                    <tr><th>創建日期</th><td>${orderDetails.createdDate}</td></tr>
+                    <tr><th>最後修改日期</th><td>${orderDetails.lastModifiedDate}</td></tr>
+                </table>
+                <h3>訂單：</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>訂單ID</th>
+                            <th>商品ID</th>
+                            <th>商品名稱</th>
+                            <th>商品數量</th>
+                            <th>商品金額</th>
+                            <th>商品圖片</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            // 添加訂單到表格
+            orderDetails.orderItemList.forEach(item => {
+                detailsHtml += `
+                    <tr>
+                        <td>${item.orderItemId}</td>
+                        <td>${item.productId}</td>
+                        <td>${item.productName}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.amount}</td>
+                        <td><img src="${item.imageUrl}" alt="${item.productName}" style="width:100px; height:auto;"></td>
+                    </tr>`;
+            });
+
+            detailsHtml += `</tbody></table>`;
+            detailsDiv.innerHTML = detailsHtml;
+
+            // 顯示模態匡
+            document.getElementById('orderDetailsModal').style.display = 'block';
+        })
+        .catch(error => console.error('Error fetching order details:', error));
+}
+
+
+function closeModal() {
+    document.getElementById('orderDetailsModal').style.display = 'none';
+}
+//添加點擊模態匡外部關閉模態匡的功能
+window.onclick = function(event) {
+    const modal = document.getElementById('orderDetailsModal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script>
+</body>
+</html>
