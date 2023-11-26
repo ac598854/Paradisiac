@@ -457,10 +457,10 @@ h1, h2, h3, h4 {
 
 	<!-- Menu Toggle Script -->
 	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
+// 		$("#menu-toggle").click(function(e) {
+// 			e.preventDefault();
+// 			$("#wrapper").toggleClass("toggled");
+// 		});
 		
 		$(document).ready(function () {
 		    $("#form1").submit(async function (event) {

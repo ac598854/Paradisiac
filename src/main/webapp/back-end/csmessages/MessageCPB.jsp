@@ -336,7 +336,7 @@ ul.navigation {
 </head>
 <body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
-	
+	<
 			<div class="container mt-3">
 			<h1>客戶問題</h1>
 				<div class="row">
@@ -384,10 +384,10 @@ ul.navigation {
 	<script src="../js/sweetalert2.all.min.js"></script>
 	<!-- Menu Toggle Script -->
 	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
+// 		$("#menu-toggle").click(function(e) {
+// 			e.preventDefault();
+// 			$("#wrapper").toggleClass("toggled");
+// 		});
 		
 		var fieldsValid = false;
 
