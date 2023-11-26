@@ -1,25 +1,23 @@
-$(document).ready(function() {
-
-	$.ajax({
-		type: "POST",
-		url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
-		success: function(data) {
-			const responseMessage = parseInt(data);
-			var contextPath = '<%=request.getContextPath()%>';
-			var guided = contextPath + '/front-end/index/guided.jsp';
-			var guidedSignout = contextPath + '/front-end/index/guidedSignout.jsp';
-			if (responseMessage === 1) {
-				$("#dynamicContent").load(guided);
-			} else if (responseMessage === 0) {
-
-				$("#dynamicContent").load(guidedSignout);
-			}
-		},
-		error: function(error) {
-			console.log("AJAX error:", error);
-		}
-	});
-});
+//$(document).ready(function() {
+//	$.ajax({
+//		type: "POST",
+//		url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+//		success: function(data) {
+//			const responseMessage = parseInt(data);
+//			var contextPath = '<%=request.getContextPath()%>';
+//			var guided = contextPath + '/front-end/index/guided.jsp';
+//			var guidedSignout = contextPath + '/front-end/index/guidedSignout.jsp';
+//			if (responseMessage === 1) {
+//				$("#dynamicContent").load(guided);
+//			} else if (responseMessage === 0) {
+//				$("#dynamicContent").load(guidedSignout);
+//			}
+//		},
+//		error: function(error) {
+//			console.log("AJAX error:", error);
+//		}
+//	});
+//});
 let countNum = 0;
 
 $('#addParticipantBtn').on('click', function() {

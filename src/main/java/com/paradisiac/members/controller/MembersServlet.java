@@ -355,7 +355,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			String UnSlatmempass = req.getParameter("mempass").trim();
 
 			// 加密
-			String salt = BCrypt.gensalt(20);
+			String salt = BCrypt.gensalt();
 			String mempass = BCrypt.hashpw(UnSlatmempass, salt);
 			System.out.println("加密後:" + mempass);
 

@@ -57,7 +57,7 @@ public class LoginHandler extends HttpServlet {
 		String storedHashedPassword=membersVO.getMempass();		
 		// 檢查帳號+密碼
 		if (membersVO.getMemaccount().equals(memaccount) && BCrypt.checkpw(mempass, storedHashedPassword)) {
-			 // 使用正确密码验证密码是否正确
+			 //解密驗證
 	        boolean flag = BCrypt.checkpw(mempass, storedHashedPassword);
 //	        System.out.println("加密比較結果："+flag);			
 			return 4;

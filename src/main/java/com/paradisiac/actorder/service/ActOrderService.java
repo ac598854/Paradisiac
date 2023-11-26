@@ -4,8 +4,12 @@ import static com.paradisiac.department.service.Constants.PAGE_MAX_RESULT;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.Session;
 
 import com.paradisiac.act.model.ActVO;
 import com.paradisiac.actattendees.model.ActAttendees;
@@ -14,7 +18,7 @@ import com.paradisiac.actorder.model.ActOrderDAO;
 import com.paradisiac.employee.model.EmpVO;
 import com.paradisiac.schd.model.SchdVO;
 import com.paradisiac.util.HibernateUtil;
-import java.time.LocalDateTime;
+
 
 public class ActOrderService implements ActOrderService_interface {
 	private ActOrderDAO dao;
@@ -23,6 +27,7 @@ public class ActOrderService implements ActOrderService_interface {
 		dao = new ActOrderDAO(HibernateUtil.getSessionFactory());
 	}
 
+	//增改查
 	@Override
 	public int addActOrder(Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime, Integer aAtnNum,
 			Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
@@ -40,7 +45,7 @@ public class ActOrderService implements ActOrderService_interface {
 
 		return dao.insert(ActOderVO);
 	}
-//更新
+
 	@Override
 	public int updateActOrder(Integer actOrderNo, Integer memNo, SchdVO schdVO, EmpVO empVO, Timestamp orderTime,
 			Integer aAtnNum, Integer orderStatus, Integer orderAmount, Set<ActAttendees> actAttendees) {
@@ -58,7 +63,17 @@ public class ActOrderService implements ActOrderService_interface {
 
 		return dao.update(ActOderVO);
 	}
+	
+	@Override
+	public int updateOrderStatus(Integer actOrderNo, Integer orderStatus) {
+		ActOrder ActOderVO = new ActOrder();
+		ActOderVO.setActOrderNo(actOrderNo);
+		ActOderVO.setOrderStatus(orderStatus);
+		
+		return dao.updateOrderStatus(ActOderVO);
+	}
 
+	//後臺取消活動，取消所有訂單
 	@Override
 	public int modifyStatus(Integer schdNO, Integer orderStatus) {	// 官方取消活動利用 檔期PK 、改變訂單狀態
 		return dao.modifyStatus(schdNO, orderStatus);
@@ -69,11 +84,33 @@ public class ActOrderService implements ActOrderService_interface {
 		return 1;
 	}
 
-//查詢
+	//單一查詢
 	@Override
 	public ActOrder getOneByActOrderNo(Integer actOrderNo) {
 
 		return dao.getOneByActOrderNo(actOrderNo);
+	}
+	
+	@Override
+	public List<ActOrder> getAllByMemnoSer(Integer memNo) {	
+		return dao.getAllBymemNO(memNo);
+	}
+	
+	//===========================後臺備用=======================
+	
+	@Override
+	public List<ActOrder> getAllByBackSearchSer(String hql , String first) {
+		return dao.getAllByBackSearch(hql , first);
+	}
+	@Override
+	public List<ActOrder> getAll(int currentPage) {//所有資料分頁
+		return dao.getAllStatus(currentPage);
+	}
+	
+	@Override
+	public List<ActOrder> getAllByStatusPage(int currentPage){//分頁
+		return dao.getOrderStatusCount(currentPage);//設置訂單狀況
+		
 	}
 	
 	@Override
@@ -82,42 +119,35 @@ public class ActOrderService implements ActOrderService_interface {
 	}
 	
 	@Override
-	public List<ActOrder> getAllByMemnoSer(Integer memNo) {	
-		return dao.getAllBymemNO(memNo);
-	}
-	
-	@Override
-	public List<ActOrder> getAllByBackSearchSer(Integer memNO, Integer actOrderNo, Integer schdNo, Integer orderStatu) {
-		return dao.getAllByBackSearch(memNO,actOrderNo,schdNo,orderStatu);
-	}
-		
-	@Override
-	public List<ActOrder> getAll(int currentPage) {//所有資料分頁
-		return dao.getAllStatus(currentPage);
-	}
-
-	@Override
 	public int getTotal() {//總頁數
 		long total = dao.getTotal();
 		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
 	
+	// ==========================前台會員===========================
+	//前台會員複合查詢
 	@Override
-	public int getPageActOrderTotal() {//資料總比數
-		long total = dao.getTotal();
+	public List<ActOrder> getAllByFrontSearchSer(String hql , String first) {
+		return dao.getAllByBackSearch(hql , first);
+	}
+	
+
+	//會員列表
+	@Override
+	public List<ActOrder> getAllOrderFront(int currentPage, Integer memNo) {
+		return dao.getOrderMenNoCount(currentPage,memNo);
+	}
+	
+	@Override
+	public int getPageActOrderTotal(Integer memNo) {//資料總比數
+		long total = dao.getOrderFrontTotal(memNo);
 		int pageQty = (int)(total % PAGE_MAX_RESULT == 0 ? (total / PAGE_MAX_RESULT) : (total / PAGE_MAX_RESULT + 1));
 		return pageQty;
 	}
+
+
 	
-	
-	@Override
-	public List<ActOrder> getAllByStatusPage(int currentPage){//分頁
-		return dao.getOrderStatusCount(currentPage);//設置訂單狀況
-	}
-
-
-
 
 
 	}
