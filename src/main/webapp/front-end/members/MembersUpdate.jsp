@@ -10,6 +10,7 @@ MembersService MemsSvc = new MembersService();
 Integer memno = (Integer) session.getAttribute("memno");// 取memno
 MembersVO membersVO = MemsSvc.getOneBymemno(memno);
 pageContext.setAttribute("membersVO", membersVO);
+
 %>
 <!DOCTYPE html>
 <html>
