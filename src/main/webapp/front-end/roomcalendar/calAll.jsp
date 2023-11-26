@@ -62,7 +62,7 @@
     </style>
 </head>
 <body>
-	<%@ include file="/front-end/index/guided.jsp" %>
+	<div id="dynamicContent"></div>
     <div class="container text-center my-4">
         <button id="prevMonth" class="btn btn-primary">上個月</button>
         <span id="currentMonthYear" class="h4 mx-4">August 2023</span>
@@ -110,10 +110,35 @@
     <div class="container">
     <input type="hidden" id="selectedDate" readonly>
     </div>
+    <%@ include file="/front-end/index/footer.jsp" %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   	<script src="${pageContext.request.contextPath}/front-end/js/fetchRoom.js"></script> 
+	<script>
+	 $(document).ready(function(){
+	        $.ajax({
+	            type: "POST",
+	            url: "<%=request.getContextPath()%>/front-end/members/members.do?action=indexLogin",
+	            success: function(data) {
+	                const responseMessage = parseInt(data);
+	                var  contextPath='<%=request.getContextPath()%>';
+	                var guided = contextPath + '/front-end/index/guided.jsp';
+	                var guidedSignout= contextPath + '/front-end/index/guidedSignout.jsp';
+	                if (responseMessage === 1) {
+	                    $("#dynamicContent").load(guided);
+	                } else if (responseMessage === 0) {
 
-	<%@ include file="/front-end/index/footer.jsp" %>
+	                    $("#dynamicContent").load(guidedSignout);
+	                }
+	            },
+	            error: function(error) {
+	                console.log("AJAX error:", error);
+	            }
+	        });
+	    }); 
+
+	
+	</script>
+	
 </body>
 </html>
