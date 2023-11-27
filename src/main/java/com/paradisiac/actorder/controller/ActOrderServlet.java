@@ -86,7 +86,7 @@ public class ActOrderServlet extends HttpServlet {
 
 			Integer schdNo = ((SchdVO) SchdVO).getSchdNo();
 			Integer unitPrice = ((SchdVO) SchdVO).getUnitPrice();
-			System.out.println("印出" + schdNo);
+//			System.out.println("印出" + schdNo);
 
 			Integer aAtnNum = Integer.valueOf(req.getParameter("aAtnNum"));// 人數
 			Integer orderStatus = Integer.valueOf(1);

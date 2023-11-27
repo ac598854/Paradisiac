@@ -79,10 +79,6 @@ String nowPage = request.getParameter("page") == null ? "0" : request.getParamet
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <title>ParadisiacBay-活動訂單管理</title>
 
-<!-- Bootstrap -->
-<!-- <link -->
-<!-- 	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" -->
-<!-- 	rel="stylesheet"> -->
 <!-- CSS -->
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);

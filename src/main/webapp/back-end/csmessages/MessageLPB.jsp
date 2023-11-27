@@ -47,9 +47,9 @@ pageContext.setAttribute("list", list);
 <title>客服訊息管理</title>
 
 <!-- Bootstrap -->
-<link
-	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css"
-	rel="stylesheet">
+<!-- <link -->
+<!-- 	href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.6/lumen/bootstrap.min.css" -->
+<!-- 	rel="stylesheet"> -->
 <!-- CSS -->
 <style>
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
@@ -436,12 +436,12 @@ h1, h2, h3, h4 {
 	</div>
 
 	<!-- Menu Toggle Script -->
-	<script>
-		$("#menu-toggle").click(function(e) {
-			e.preventDefault();
-			$("#wrapper").toggleClass("toggled");
-		});
-	</script>
+<!-- 	<script> -->
+// 		$("#menu-toggle").click(function(e) {
+// 			e.preventDefault();
+// 			$("#wrapper").toggleClass("toggled");
+// 		});
+<!-- 	</script> -->
 </body>
 </html>
 
