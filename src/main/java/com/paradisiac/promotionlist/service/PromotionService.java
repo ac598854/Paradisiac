@@ -38,7 +38,7 @@ public class PromotionService {
 			Date enddate,Double discount,Boolean status,String selectedProducts) {
 
 		PromotionVO proVO = new PromotionVO();
-
+		
 		proVO.setProno(prono);
 		proVO.setProname(proname);
 		proVO.setProdes(prodes);

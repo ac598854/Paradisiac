@@ -115,7 +115,7 @@
 						    </c:choose>
 						</td>
                         <td>
-                            <form method="post" action="<%=request.getContextPath()%>/promotionList" style="margin-bottom: 0px;">
+                            <form method="post" action="<%=request.getContextPath()%>/PromotionListServlet" style="margin-bottom: 0px;">
                                 <input type="submit" value="н╫зя" class="btn btn-primary">
                                 <input type="hidden" name="prono" value="${proVO.prono}">
                                 <input type="hidden" name="action" value="getOne_For_Update">
