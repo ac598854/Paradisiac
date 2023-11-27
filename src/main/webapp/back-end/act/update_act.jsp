@@ -88,35 +88,45 @@ h1 {
 			enctype="multipart/form-data">
 		<div class="col-md-12">
 		<div class="row g-0">
-		<%--活動內容--%>
+		<%--活動內容${(empVO.dept.deptNo==deptVO.deptNo)?'selected':'' }--%>
 			<div class="col-md-4">
 				<div class="form-group">
 					<label for="actNo">活動編號</label> <input type="text" id="actNo" name="actNo" value="${actVO.actNo}" readonly>
 				</div>
 				<div class="form-group">
-					<label for="actName">活動名稱</label> <input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName} required>
+					<label for="actName">活動名稱</label> <input type="text" name="actName" required value=${actVO.actName==null? '': actVO.actName}>
 				</div>
 				<div class="form-group">
 					<label for="actStatus">活動狀態</label> 
-					<select name="actStatus">
-						<option value="true">上架
-						<option value="false">下架
-					</select>								
+					<select size="1" name="actStatus">
+					    <option value="true" ${actVO.actStatus ? 'selected' : ''}>上架</option>
+					    <option value="false" ${!actVO.actStatus ? 'selected' : ''}>下架</option>
+					</select>
+					
+		<%-- <select size="1" name="deptno"> 
+			<c:forEach var="deptVO" items="${deptSvc.all}" >
+				<option value="${deptVO.deptNo}" ${(empVO.dept.deptNo==deptVO.deptNo)?'selected':'' } >${deptVO.deptName}
+				
+			</c:forEach>
+		</select>--%>
+
+					
+													
 				</div>
 				<div class="form-group">
-					<label for="unitPrice">參加費用</label> <input type="text" name="unitPrice" required value=${actVO.unitPrice==null? '': actVO.unitPrice} required>
+					<label for="unitPrice">參加費用</label> <input type="text" name="unitPrice" required value=${actVO.unitPrice==null? '': actVO.unitPrice}>
 				</div>				
 			</div>
-		<%--照片--%>
-			<div class=class="col-md-4" style="padding: 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #D3D3D3 
-			 ;margin-top:15px; margin-right: 5px;">
+		<%--照片 style="padding: 2px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid #D3D3D3 
+			 ;margin-top:15px; margin-right: 5px;"--%>
+			<div class= "col-md-4">
     			<p>活動照片</p>
-				<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo}" alt="活動照片" class="img-fluid"
+				<img src="<%=request.getContextPath()%>/dbg.do?act_no=${actVO.actNo==null? '':actVO.actNo}" alt="活動照片" class="img-fluid" <%--${actVO.actNo}--%>
 				style="width: 250px; height: 200px; object-fit: cover;">
 			</div>
-		<%--預覽圖--%>
-			<div  class="col-md-4"  style="padding: 2px; display: flex; flex-direction: column; align-items: 
-			center; justify-content: center; border: 1px solid #D3D3D3; margin-top:15px; margin-right: 5px;">
+		<%--預覽圖style="padding: 2px; display: flex; flex-direction: column; align-items: 
+			center; justify-content: center; border: 1px solid #D3D3D3; margin-top:15px; margin-right: 5px;"--%>
+			<div  class="col-md-4"  >
     			<p>選擇另一張封面</p>
 				<input
 					type="file" class="form-control-file" id="actPho1"

@@ -55,7 +55,7 @@ public class LoginEmp extends HttpServlet{
 			}
 			
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");//有錯跳回查詢頁面
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/index/loginEmp.jsp");//有錯跳回查詢頁面
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -75,7 +75,7 @@ public class LoginEmp extends HttpServlet{
 					break;					
 			}
 			if (!errorMsgs.isEmpty()) {
-				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/emp/loginEmp.jsp");//有錯跳回查詢頁面
+				RequestDispatcher failureView = req.getRequestDispatcher("/back-end/index/loginEmp.jsp");//有錯跳回查詢頁面
 				failureView.forward(req, res);
 				return;// 程式中斷
 			}
@@ -91,10 +91,10 @@ public class LoginEmp extends HttpServlet{
 				forwardPath = req.getContextPath() + "/productsView.html";
 				break;
 			case 103: // 房務
-				forwardPath = req.getContextPath() + "/back-end/index/back-index_room.jsp";
+				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
 			case 104: // 人資
-				forwardPath = req.getContextPath() + "/back-end/index/back-left_hr.jsp";
+				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";
 				break;
 			case 105: // 主管最高權限
 				forwardPath = req.getContextPath() + "/back-end/pha/select_phoalb.jsp";

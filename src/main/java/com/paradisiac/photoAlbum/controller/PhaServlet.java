@@ -59,14 +59,7 @@ public class PhaServlet extends HttpServlet {
 		if("insert".equals(action)) {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
-			//接收參數與錯誤處裡
-//			Integer albNo = null;
-//			try {
-//				albNo = Integer.valueOf(req.getParameter("albNo").trim());
-//			}catch(Exception e) {
-//				errorMsgs.add("相簿編號請勿空白");
-//			}
-			
+			//接收參數與錯誤處裡		
 			Integer memNo = null;
 			try {
 				memNo = Integer.valueOf(req.getParameter("memNo").trim());
@@ -87,7 +80,6 @@ public class PhaServlet extends HttpServlet {
 			}
 			//開始打包成物件
 			PhotoAlbumVO phaVO = new PhotoAlbumVO();
-//			phaVO.setAlbNo(albNo);
 			phaVO.setMemNo(memNo);
 			phaVO.setAlbName(albName);
 			phaVO.setAlbDate(albDate);
@@ -177,17 +169,27 @@ public class PhaServlet extends HttpServlet {
 			}catch(Exception e) {
 				errorMsgs.add("相簿建立日期請勿空白");
 			}
-			//開始打包
-			PhotoAlbumVO phaVO = new PhotoAlbumVO(albNo, memNo, albName, albDate);
-			//圖片需轉換成byte
-			byte[] albPhoto = null;
 			Part part = req.getPart("albPhoto");
-			InputStream is = part.getInputStream();
-			albPhoto = new byte[is.available()];
-			is.read(albPhoto);
-			is.close();
-			phaVO.setAlbPhoto(albPhoto);
+			byte[] albPhoto = null;
 			
+			//開始打包
+			PhotoAlbumVO phaVO = phaSvc.getPhaByPK(albNo);
+			phaVO.setMemNo(memNo);
+			phaVO.setAlbName(albName);
+			phaVO.setAlbDate(albDate); //albPhoto
+			
+			if (part != null && part.getSize() > 0) { //有選更新照片,換一張
+				part = req.getPart("albPhoto");
+				InputStream is = part.getInputStream();
+				albPhoto = new byte[is.available()];
+				is.read(albPhoto);
+				is.close();
+				phaVO.setAlbPhoto(albPhoto);					
+			}else { //沒選照片,set本來的
+				albPhoto = phaVO.getAlbPhoto();
+				phaVO.setAlbPhoto(albPhoto);
+			}
+	
 			//如有錯誤則將填寫的資料保留傳回更新頁面
 			if(!errorMsgs.isEmpty()) {
 				req.setAttribute("phaVO", phaVO);

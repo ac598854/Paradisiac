@@ -119,7 +119,7 @@ h1 {
     			<p>活動照片</p>
 				<input
 					type="file" class="form-control-file" id="actPho1"
-					name="actPho1" accept="image/*" onchange="showPreview">
+					name="actPho1" accept="image/*" onchange="showPreview" required>
 				<img name="photoPreview" id="photoPreview"
 					src="<%=request.getContextPath()%>/images/no-picture-taking.png"
 					alt="相片預覽" style="width: 200px; height: 171px; object-fit: cover;">

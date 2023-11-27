@@ -105,14 +105,13 @@ public class ActServlet extends HttpServlet{
 		List<String> errorMsgs = new LinkedList<String>();
 		Integer actNo = null;
 		ActVO actVO = null;
-
 		
 		String actName = req.getParameter("actName");
 		Integer unitPrice = Integer.valueOf(req.getParameter("unitPrice"));
 		boolean actStatus = Boolean.valueOf(req.getParameter("actStatus"));
 System.out.println("活動狀態:"+actStatus);
 		String actContent = req.getParameter("actContent");
-
+		Part part = req.getPart("actPho1");
 		byte[] actPho1 = null;
 
 		// 開始打包(新增或修改)
@@ -123,21 +122,27 @@ System.out.println("活動狀態:"+actStatus);
 			actVO.setUnitPrice(unitPrice);
 			actVO.setActStatus(actStatus);
 			actVO.setActContent(actContent);
-		}else {
-			actVO = new ActVO(actName, unitPrice, actStatus, actContent);//新增
-		}
-
-		
-//		if (req.getParameter("actNo") != null) { // 修改要set PK
-//			actVO.setActNo(actNo);			
-//		}
-		if (req.getPart("actPho1") != null) { // 有選照片1		
-				Part part = req.getPart("actPho1");
+			//照片處理		
+			if (part != null && part.getSize() > 0) { //有選更新照片,換一張
+				part = req.getPart("actPho1");
 				InputStream is = part.getInputStream();
 				actPho1 = new byte[is.available()];
 				is.read(actPho1);
 				is.close();
-				actVO.setActPho1(actPho1);		
+				actVO.setActPho1(actPho1);						
+			}else { //沒選照片,set本來的
+				actPho1 = actVO.getActPho1();
+				actVO.setActPho1(actPho1);	
+			}
+		//新增
+		}else {
+			actVO = new ActVO(actName, unitPrice, actStatus, actContent);
+			part = req.getPart("actPho1"); //新增照片為必填
+			InputStream is = part.getInputStream();
+			actPho1 = new byte[is.available()];
+			is.read(actPho1);
+			is.close();
+			actVO.setActPho1(actPho1);	
 		}
 		
 		//上架需檢查是否有有效檔期		
@@ -187,9 +192,7 @@ System.out.println("有判斷status");
 			req.getSession().setAttribute("actPageQty", actPageQty);
 		}		
 		req.setAttribute("actList", actList);
-		req.setAttribute("currentPage", currentPage);
-
-		
+		req.setAttribute("currentPage", currentPage);	
 
 	}
 	//前端-查上架活動的開放檔期
