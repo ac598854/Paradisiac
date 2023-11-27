@@ -286,7 +286,7 @@ public class PromotionListServlet extends HttpServlet {
 			} catch (Exception e) {
 				errorMsgs.add("請選擇折扣商品");
 			}
-
+			
 			Boolean status = Boolean.valueOf(request.getParameter("status").trim());
 
 			PromotionVO proVO = new PromotionVO();
@@ -310,10 +310,11 @@ public class PromotionListServlet extends HttpServlet {
 			proVO = proSvc.updatePro(prono, proname, prodes, startdate, enddate, discount, status, selectedProducts);
 
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
-			request.setAttribute("proVO", proVO);
-			String url = "/back-end/promotion/listOne.jsp";
+			String url = "/back-end/promotion/listall.jsp";
+			request.setAttribute("prono", prono);
 			RequestDispatcher successView = request.getRequestDispatcher(url);
 			successView.forward(request, response);
+			return;
 		}
 
 	};

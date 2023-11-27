@@ -2,6 +2,7 @@ package com.paradisiac.promotionlist.model;
 
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -35,7 +36,6 @@ public class PromotionVO {
 	@Column(name = "promotion_status")
 	private Boolean status;
 
-
 	public PromotionVO() {
 		
 	}
@@ -43,12 +43,15 @@ public class PromotionVO {
 	
 	@OneToMany(mappedBy = "promotion", cascade = CascadeType.ALL)
 	@OrderBy("promotion_no")
-	private Set<PromotionListVO> promotionLists;
+	private  List<PromotionListVO> promotionLists;
 	
 	
 
-	public void setPromotionLists(Set<PromotionListVO> promotionLists) {
+	public void setPromotionLists( List<PromotionListVO> promotionLists) {
 		this.promotionLists = promotionLists;
+	}
+	public List<PromotionListVO> getPromotionLists() {
+		return promotionLists;
 	}
 
 	public Integer getProno() {
@@ -106,6 +109,7 @@ public class PromotionVO {
 	public void setStatus(Boolean status) {
 		this.status = status;
 	}
+	
 	
 	
 	
