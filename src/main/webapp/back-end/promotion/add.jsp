@@ -177,7 +177,6 @@ response.setDateHeader("Expires", 0); // Proxies.
                             
 
                             <script>
-                            toggleSidebar();
                                 $.datetimepicker.setLocale('zh');
                                 $('#f_date1').datetimepicker({	
                                     theme: '',              //theme: 'dark',

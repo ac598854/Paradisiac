@@ -18,6 +18,8 @@ public interface PhotoAlbumService_interface {
 	
 	List<PhotoAlbumVO> getAllPha(int currentPage);
 	
+	List<PhotoAlbumVO> getAllPha();
+	
 	int getPageTotal();
 	
 	List<PhotoAlbumVO> getPhaByCompositeQuery(Map<String, String[]> map);
