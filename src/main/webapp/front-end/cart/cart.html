@@ -251,6 +251,14 @@
 		.form-check{
 			width: 60px;		
 		}
+		.payInfoBox,
+#totalAmount {
+  display: inline-block;
+  vertical-align: middle; /* 垂直置中 */
+  margin-right: 50px;
+  font-size: 18px;
+  font-weight: bold;
+}
 	</style>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -274,11 +282,11 @@
 		</div>
 	</nav>
 </header>
-<div class="container" id="shopUrl">
+<div class="container" id="shopUrl" style="margin-top: 30px;">
 	<div>
-		<button id="backtoshop">
-			<a href="#" id="shoppingMallLink">
-				<i class="fas fa-shopping-cart"></i></a>
+		<button id="backtoshop" style="display:none">
+			<a href="#" id="shoppingMallLink" style="display:none">
+				<i class="fas fa-shopping-cart" style="display:none"></i></a>
 		</button>
 	</div>
 	<table class="table table-bordered">
@@ -514,7 +522,7 @@
 	}
 	//=============================刪除一個=====================================================//
 	function deleteOne(productName) {
-		const productNameJSON = JSON.stringify({ productName: productName });
+		const productNameJSON = JSON.stringify([ productName, productName ]);
 		const dataToSend = { action: 'delete', cartData: productNameJSON};
 
 		fetch(projectName + '/Cart', {
@@ -532,7 +540,7 @@
 		})
 				.then(data => {
 					if (data.delete) {
-						alert(data.delete);
+						alert(data.delete+productName);
 					}
 				});
 	}
@@ -690,15 +698,23 @@
 							}
 							var quantityRow = quantity[i];
 							var quantityValue = quantityRow.textContent.trim();
-
+							
 							if(product.stock < quantityValue){
 								changeQuantityPost(productName,product.stock)
-								alert(productName+"購物車內數量超過庫存量改為庫存量")
-								selectElement.value = product.stock;
-							}else{
+								if (product.stock === 0) {
+									alert(productName+"庫存量為0")
+									deleteOne(productName);
+									location.reload();
+								}else{
+									selectElement.value = product.stock;
+									alert(productName+"購物車內數量超過庫存量改為庫存量")
+								}
+							}else {
 								selectElement.value = quantityValue;
 								// 其他操作
 							}
+							
+							
 							selectElement.setAttribute('max', product.stock);
 						}
 

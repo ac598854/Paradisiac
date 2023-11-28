@@ -45,15 +45,15 @@
         }
 
         ul.navigation {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #8E44AD;
-        /*COLOR*/
-        width: 100%;
-        height: 61px;
-        }
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background: #4aafd2;
+	/*COLOR*/
+	width: 100%;
+	height: 61px;
+}
 
         .navigation li {
         float: right;
@@ -69,7 +69,7 @@
         }
 
         .navigation li a:hover {
-        background-color: #783993;
+        background-color: #4aafd2;
         /*COLOR*/
         }
 
@@ -246,10 +246,8 @@
     <ul class="navigation">
      <li id="brandName">Paradisiac</li>
       <li><a href="${pageContext.request.contextPath}/loginempN.do?action=logoutEmp">員工登出</a></li>
-      <li><a href="#home">商品管理</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
-      <li><a href="#home">功能暫未定</a></li>
+      <li><a href="#" id="productManagement">商品管理</a></li>
+      <li><a href="#" id="productDetail">商品訂單管理</a></li>
       <li><a href="#" id="promotion">促銷專案管理</a></li>
     </ul>
     
@@ -264,8 +262,12 @@
 	    let projectName = pathName.substring(0, pathName.substring(1).indexOf("/") + 1);
 	    
          var topLink = document.getElementById('promotion');
+         var productLink = document.getElementById('productManagement');
          var listLink = document.getElementById('promotionLeft');
+         var detailLink = document.getElementById('productDetail');
          topLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
+         productLink.setAttribute('href', projectName + "/productsView.html");
+         detailLink.setAttribute('href', projectName + "/allOrders.html");
 //          listLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
   </script>
 

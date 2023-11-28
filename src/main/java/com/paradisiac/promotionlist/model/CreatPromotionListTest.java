@@ -1,7 +1,6 @@
 package com.paradisiac.promotionlist.model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 import org.hibernate.Session;
 import java.sql.Date;
@@ -41,7 +40,7 @@ public class CreatPromotionListTest {
 			proList2.setProduct(productVO2);
 			proList2.setPromotion(promotion);
 			
-			Set<PromotionListVO> details = new LinkedHashSet<>();
+			List<PromotionListVO> details = new ArrayList<>();
 			details.add(proList);
 			details.add(proList2);
 			// 此訂單要新增時，跟著要一起新增的書本明細們 (明細物件裡也都有關聯的書本資訊)

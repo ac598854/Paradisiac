@@ -31,7 +31,7 @@ response.setDateHeader("Expires", 0); // Proxies.
 <%
 	PromotionService proSvc = new PromotionService();
 	List<Integer> productList = proSvc.getProductnoFromView(promotionVO.getProno());
-	System.out.println(productList);
+	System.out.println("陣列"+productList);
 %>
                 <html lang="en">
 
@@ -40,7 +40,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
                     <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/back-end/promotion/datetimepicker/jquery.datetimepicker.css" />
-                    <title>促銷編號新增</title>
+                    <title>促銷專案修改</title>
                     <style type="text/css">
                         h4 {
                             color: blue;
@@ -89,7 +89,7 @@ response.setDateHeader("Expires", 0); // Proxies.
                                     <div class="text">
 									  <div style="width: 45rem;">
 									    <div>
-									        <h3 style="font-family: 'Arial', sans-serif; font-size: 28px; font-weight: bold;  margin-right: 60px;">促銷專案新增</h3>
+									        <h3 style="font-family: 'Arial', sans-serif; font-size: 28px; font-weight: bold;  margin-right: 60px;">促銷專案修改</h3>
 									    </div>
 									</div>
 									<br>
@@ -127,9 +127,10 @@ response.setDateHeader("Expires", 0); // Proxies.
                                                 </table>
                                                 <br>
                                                 <input type="hidden" id="selectedStatus" name="status" value="">
-                                                 <input type="hidden" id="selectedProducts" name="selectedProducts" value="">
-                                                <input type="hidden" name="action" value="add_promotion">
-                                                <input type="submit" class="btn btn-primary" value="送出新增" onclick="return validateForm()">
+                                                <input type="hidden" id="selectedProducts" name="selectedProducts" value="">
+                                                <input type="hidden" name="prono" value="<%=promotionVO.getProno()%>">
+                                                <input type="hidden" name="action" value="update">
+                                                <input type="submit" class="btn btn-primary" value="送出修改" onclick="return validateForm()">
                                             </FORM>
                                     </div>
                                 </div>
@@ -143,11 +144,7 @@ response.setDateHeader("Expires", 0); // Proxies.
 									                    <h5 class="card-title">${ProductVO.productName}</h5>
 									                    <p><span class="original-price-label">原價：</span><span class="card-text originalPrice">${ProductVO.price}</span></p>
 									                    <p class="card-text"><span class="discountedPrice"></span></p>
-									                    <input class="form-check-input" type="checkbox" value="${ProductVO.productno}" id="checkbox${ProductVO.productno}"
-									                     <c:if test="${productList.contains(ProductVO.productno)}">
-										                    checked
-										                </c:if>
-										                >
+									                    <input class="form-check-input" type="checkbox" value="${ProductVO.productno}" id="checkbox${ProductVO.productno}">
 									                    <label class="form-check-label" for="checkbox${ProductVO.productno}"></label>
 									                </div>
 									            </div>
@@ -157,7 +154,7 @@ response.setDateHeader("Expires", 0); // Proxies.
 								</div>
                             </div>
                         </div>
-						        <div class="d-flex justify-content-end">
+						        <div class="d-flex justify-content-end" style="margin-right: 80px">
 						            <button id="prevPage" class="btn btn-primary me-2">上一頁</button>
 						            <button id="nextPage" class="btn btn-primary">下一頁</button>
 						        </div>
@@ -253,7 +250,6 @@ response.setDateHeader("Expires", 0); // Proxies.
                                 document.addEventListener('DOMContentLoaded', function() {
                                     const discountInput = document.getElementById('discountInput');
                                     const originalPriceElement = document.querySelectorAll('.originalPrice');
-                                    console.log(originalPriceElement)
                                     
                                     // 更新折扣價格的函數
                                    function updateDiscountedPrices() {
@@ -404,6 +400,19 @@ response.setDateHeader("Expires", 0); // Proxies.
 				            showCards();
 				        }
 				    });
+				    
+				    //以選擇的商品
+				    const checkboxes = document.querySelectorAll('.form-check-input');
+				    const productList = [<%= productList %>]; // 假設 productList 是包含產品 ID 的 Java 陣列
+				    
+				   	console.log(productList[0]);
+				    checkboxes.forEach(checkbox => {
+				        if (productList[0].includes(parseInt(checkbox.value))) {
+				            checkbox.checked = true;
+				        }
+				    });
+				    
+				    
 				});
 
 								

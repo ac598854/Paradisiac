@@ -142,7 +142,7 @@ response.setDateHeader("Expires", 0); // Proxies.
 								</div>
                             </div>
                         </div>
-						        <div class="d-flex justify-content-end">
+						        <div class="d-flex justify-content-end" style="margin-right: 80px">
 						            <button id="prevPage" class="btn btn-primary me-2">上一頁</button>
 						            <button id="nextPage" class="btn btn-primary">下一頁</button>
 						        </div>

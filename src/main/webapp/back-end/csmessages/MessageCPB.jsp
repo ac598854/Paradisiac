@@ -6,7 +6,6 @@
 <%@ page import="com.paradisiac.csmessages.controller.*"%>
 <%@ page import="com.paradisiac.csmessages.service.*"%>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -448,19 +447,7 @@ ul.navigation {
 		    }
 		  });
 		});
-		
-		
-		<!-- 送出訊息確認 -->		
-// 		// JavaScript代碼以處理點擊"送出"按鈕時的確認對話框
-// 		document.getElementById('submitButton').addEventListener(
-// 				'click',
-// 				function() {
-// 					if (confirm('送出回覆訊息？')) {
-// 						// 如果使用者點擊確定，執行送出表單的相關操作
-// 						document.getElementById('csreplyForm')
-// 								.submit();
-// 					}
-// 				});
+
 
 	</script>
 </body>

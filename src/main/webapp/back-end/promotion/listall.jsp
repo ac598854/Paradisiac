@@ -115,7 +115,7 @@
 						    </c:choose>
 						</td>
                         <td>
-                            <form method="post" action="<%=request.getContextPath()%>/promotionList" style="margin-bottom: 0px;">
+                            <form method="post" action="<%=request.getContextPath()%>/PromotionListServlet" style="margin-bottom: 0px;">
                                 <input type="submit" value="修改" class="btn btn-primary">
                                 <input type="hidden" name="prono" value="${proVO.prono}">
                                 <input type="hidden" name="action" value="getOne_For_Update">
@@ -130,8 +130,10 @@
 
     <%
         Integer prono = (Integer)request.getAttribute("prono");
+    Integer update = (Integer)request.getAttribute("update");
 		request.removeAttribute("prono");
-        if (prono != null) {
+		request.removeAttribute("update");
+        if (prono != null && update == 0) {
     %>
         
         <script>
@@ -145,8 +147,22 @@
             });
         </script>
     <%
+        }else if(prono != null && update == 1){
+    %>
+    <script>
+        
+            Swal.fire({
+                title: '促銷專案已新增',
+                html: `<span style="font-weight: bold; font-family: 'Comic Sans MS', cursive; font-size: 20px;">專案編號<%= prono %> 已成功修改</span>`,
+                icon: 'success',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+         <%
         }
     %>
+    
 		<script>
 	    
 	    var addLink = document.getElementById('add');
