@@ -123,11 +123,11 @@ h1 {
 <!-- 					<label for="albumNo">相簿編號</label> <input type="text" id="albNo" name="albNo" > -->
 <!-- 				</div> -->
 				<div class="form-group">
-					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" >
+					<label for="memberNo">會員編號</label> <input type="text" id="memNo" name="memNo" value="${phaVO.memNo==null?'':phaVO.memNo}">
 				</div>
 				<div class="form-group">
 					<label for="albumName">相簿名稱</label> <input type="text"
-						id="albName" name="albName" >
+						id="albName" name="albName"  value="${phaVO.albNo==null?'':phaVO.albNo}"> 
 				</div>
 				<div class="form-group">
 					<label for="createDate">相簿建立日期</label> <input type="date"

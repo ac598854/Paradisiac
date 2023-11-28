@@ -100,7 +100,7 @@ h1 {
 					<label for="actStatus">活動狀態</label> 
 					<select size="1" name="actStatus">
 					    <option value="true" ${actVO.actStatus ? 'selected' : ''}>上架</option>
-					    <option value="false" ${!actVO.actStatus ? 'selected' : ''}>下架</option>
+					    <option value="false" ${actVO.actStatus ? '' : 'selected'}>下架</option>
 					</select>
 					
 		<%-- <select size="1" name="deptno"> 
