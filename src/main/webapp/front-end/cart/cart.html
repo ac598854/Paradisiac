@@ -251,6 +251,14 @@
 		.form-check{
 			width: 60px;		
 		}
+		.payInfoBox,
+#totalAmount {
+  display: inline-block;
+  vertical-align: middle; /* 垂直置中 */
+  margin-right: 50px;
+  font-size: 18px;
+  font-weight: bold;
+}
 	</style>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -274,11 +282,11 @@
 		</div>
 	</nav>
 </header>
-<div class="container" id="shopUrl">
+<div class="container" id="shopUrl" style="margin-top: 30px;">
 	<div>
-		<button id="backtoshop">
+		<button id="backtoshop" style="display:none">
 			<a href="#" id="shoppingMallLink" style="display:none">
-				<i class="fas fa-shopping-cart"></i></a>
+				<i class="fas fa-shopping-cart" style="display:none"></i></a>
 		</button>
 	</div>
 	<table class="table table-bordered">

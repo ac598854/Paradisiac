@@ -247,6 +247,7 @@
      <li id="brandName">Paradisiac</li>
       <li><a href="${pageContext.request.contextPath}/loginempN.do?action=logoutEmp">員工登出</a></li>
       <li><a href="#" id="productManagement">商品管理</a></li>
+      <li><a href="#" id="productDetail">商品訂單管理</a></li>
       <li><a href="#" id="promotion">促銷專案管理</a></li>
     </ul>
     
@@ -263,8 +264,10 @@
          var topLink = document.getElementById('promotion');
          var productLink = document.getElementById('productManagement');
          var listLink = document.getElementById('promotionLeft');
+         var detailLink = document.getElementById('productDetail');
          topLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
          productLink.setAttribute('href', projectName + "/productsView.html");
+         detailLink.setAttribute('href', projectName + "/allOrders.html");
 //          listLink.setAttribute('href', projectName+"/back-end/promotion/listall.jsp");
   </script>
 

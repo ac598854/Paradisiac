@@ -197,6 +197,7 @@ public class PromotionListServlet extends HttpServlet {
 				Integer prono = proVO.getProno();
 				String url = "/back-end/promotion/listall.jsp";
 				request.setAttribute("prono", prono);
+				request.setAttribute("update", 0);
 				RequestDispatcher successView = request.getRequestDispatcher(url);
 				successView.forward(request, response);
 				return;
@@ -312,6 +313,7 @@ public class PromotionListServlet extends HttpServlet {
 			/*************************** 3.修改完成,準備轉交(Send the Success view) *************/
 			String url = "/back-end/promotion/listall.jsp";
 			request.setAttribute("prono", prono);
+			request.setAttribute("update", 1);
 			RequestDispatcher successView = request.getRequestDispatcher(url);
 			successView.forward(request, response);
 			return;
