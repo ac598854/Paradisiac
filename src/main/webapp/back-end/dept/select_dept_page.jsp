@@ -84,6 +84,9 @@
 		</form>
 
 		<!-- 部門資料和新增部門員工表單區塊 -->
+		<div style="border: 1px solid black;">
+		
+		<h2>新增部門</h2>
 		<form id="dept_emp_form"
 			action="${pageContext.request.contextPath}/dept.do" method="post">
 			<table>
@@ -97,7 +100,6 @@
 					</ul>
 				</c:if>
 				<tr>
-					<th>部門編號</th>
 					<th>部門名稱</th>
 					<th>部門狀態</th>
 					<th>功能設定</th>
@@ -105,7 +107,7 @@
 				<jsp:useBean id="fucSvc" scope="page"
 					class="com.paradisiac.fuc.service.Fuc_ServiceImpl" />
 				<tr>
-					<td><input type="text" name="deptNo" value="<%=(deptVO == null) ? "" : deptVO.getDeptNo()%>" required></td>
+					<%-- <td><input type="text" name="deptNo" value="<%=(deptVO == null) ? "" : deptVO.getDeptNo()%>" required></td>--%>
 					<td><input type="text" name="deptName"
 						value="<%=(deptVO == null) ? "" : deptVO.getDeptName()%>" required></td>
 					<td><label><input type="radio" name="deptStatus"
@@ -113,7 +115,7 @@
 							type="radio" name="deptStatus" value="true" checked>未凍結</label></td>
 					<td><select name="fucNo" >
 				  	<c:forEach var="fucVO" items="${fucSvc.all}" > 
-		          	<option value="${fucVO.fucNo}" ${(fucVO.fucNo==deptVO.fucNo)?'selected':'' }>${fucVO.fucName}
+		          	<option value="${fucVO.fucNo}" ${(fucVO.fucNo==deptVO.fucNo)?'selected':'' }>${fucVO.fucNo}-${fucVO.fucName}
 		          	</c:forEach>
 				</select>
 				</td>
@@ -124,10 +126,10 @@
 				<jsp:useBean id="empSvc" scope="page"
 					class="com.paradisiac.employee.service.EmpService" />
 				<legend>新增部門員工</legend>
-				<div class="dep_add_block">
+				<%--<div class="dep_add_block">
 			        <input type="text" class="dep_name" placeholder="輸入員工編號…">
 			        <button type="button" class="dep_add">新增</button>
-		 		</div> <%----%>
+		 		</div> --%>
 				<label>選擇員工編號：</label> <select name="empNo2" id="employeeSelect">
 					<option value="none">請選擇員工編號
 					<c:forEach var="empVO" items="${empSvc.all}">
@@ -144,6 +146,7 @@
 			<input type="hidden" name="action" value="insert"> 
 			<input type="submit" value="送出新增" onclick="disableSelect()">
 		</form>
+		</div>
 	</div>
 
 	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>

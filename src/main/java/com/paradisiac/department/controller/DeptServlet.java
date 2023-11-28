@@ -97,7 +97,7 @@ public class DeptServlet extends HttpServlet{
 	}
 	//新增部門(與從屬員工)
 	private String insert(HttpServletRequest req, HttpServletResponse res) {
-		Integer deptNo = Integer.valueOf(req.getParameter("deptNo"));	
+//		Integer deptNo = Integer.valueOf(req.getParameter("deptNo"));	
 		String deptName = req.getParameter("deptName").trim();
 		Boolean deptStatus = Boolean.valueOf(req.getParameter("deptStatus"));
 		Integer funNo = Integer.valueOf(req.getParameter("fucNo"));	
@@ -107,7 +107,7 @@ public class DeptServlet extends HttpServlet{
 		
 		DeptVO deptVO = new DeptVO();
 		//建立部門		
-		deptVO.setDeptNo(deptNo);
+//		deptVO.setDeptNo(deptNo);
 		deptVO.setDeptName(deptName);
 		deptVO.setDeptStatus(deptStatus);
 		deptVO.setFucNo(funNo);	
@@ -133,7 +133,7 @@ public class DeptServlet extends HttpServlet{
 
 		//打包完成送出
 		deptSvc.addDept(deptVO);//回傳主鍵PK
-		req.setAttribute("deptNo", deptNo);
+//		req.setAttribute("deptNo", deptNo);
 		return "/back-end/dept/select_dept_page.jsp";
 	}
 	//修改部門(先找PK再forward(req, res)出去
@@ -168,10 +168,13 @@ public class DeptServlet extends HttpServlet{
 			errorMsgs.add("部門編號"+deptNo+"含有未凍結員工"+validEmp+"位,不可凍結部門");
 		}
 		req.setAttribute("errorMsgs", errorMsgs); 		
-	
-		
+			
 		//打包部門
-		DeptVO deptVO = new DeptVO(deptNo, deptName, fucNo, deptStatus);
+		DeptVO deptVO = deptSvc.getDeptByDeptno(deptNo);
+		deptVO.setDeptName(deptName);
+		deptVO.setFucNo(fucNo);
+		deptVO.setDeptStatus(deptStatus);
+//		DeptVO deptVO = new DeptVO(deptNo, deptName, fucNo, deptStatus);
 		
 		if (!errorMsgs.isEmpty()) {
 			req.setAttribute("deptVO", deptVO);

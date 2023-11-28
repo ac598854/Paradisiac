@@ -22,6 +22,10 @@
  		#checkoutbtn{
  			width:60px;
  		}
+ 		.table{
+ 			font-size: 15px;
+ 		}
+
         .table th,
         .table td {
             text-align: center;
@@ -121,8 +125,8 @@
 							<input type="hidden" name="deptNo" value="${dept.deptNo}"> 
 							<input type="hidden" name="deptName" value="${dept.deptName}">					
 							<input type="hidden" name="deptNo" value="${dept.deptNo}"> 		
-							<button type="submit" class="btn btn-primary" name="action" value="getOne_For_Display">查詢</button> 					
-							<button type="submit" class="btn btn-primary" name="action" value="getOne_For_Update">修改</button>
+							<button type="submit" class="btn btn-primary" name="action" value="getOne_For_Display" style="font-size: 15px;">查詢</button> 					
+							<button type="submit" class="btn btn-primary" name="action" value="getOne_For_Update" style="font-size: 15px;">修改</button>
 						</FORM>
 
 					</td>
@@ -153,7 +157,7 @@
  
 	
 	<c:choose>
-        <c:when test="${currentPage + 1 <= roomnumPageQty}">
+        <c:when test="${currentPage + 1 <= deptPageQty}">
 		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${currentPage + 1}" class="pagination-link">下一頁</a>&nbsp;
 	 </c:when>
         <c:otherwise>
@@ -163,7 +167,7 @@
 	
 	                                      
 	  <c:choose>
-        <c:when test="${currentPage != roomnumPageQty}">   
+        <c:when test="${currentPage != deptPageQty}">   
 		<a href="${pageContext.request.contextPath}/dept.do?action=getAll&page=${deptPageQty}" class="pagination-link">至最後一頁</a>&nbsp;
 	  </c:when>
         <c:otherwise>

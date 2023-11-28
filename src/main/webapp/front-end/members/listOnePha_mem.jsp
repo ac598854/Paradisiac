@@ -7,7 +7,7 @@
 
 <html>
 <head>
-<%@ include file="/back-end/index/ManagerMeta.jsp"%>
+<%@ include file="/front-end/index/MembersMeta.jsp"%>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>會員紀念相簿</title>
@@ -34,7 +34,7 @@ table {
 </head>
 
 <body>
-<%@ include file="/back-end/index/ManagerBody.jsp"%>
+<%@ include file="/front-end/index/MembersBody.jsp"%>
 	<div class="container">
 		<h1 class="text-center">會員紀念相簿</h1>
 		<div>
@@ -106,14 +106,14 @@ table {
 										src="<%=request.getContextPath()%>/dbg.do?photo_no=${pha.photoNo}"
 										style="width: 100%; height: 400px; object-fit: cover;" alt="相片1" class="img-fluid">
 									<table>
-										<tr>
-											<td>相片名稱:</td>
+										<%--<tr>
+											 <td>相片名稱:</td>
 											<td>${pha.photoName}</td>
 										</tr>
 										<tr>
 											<td>相片編號:</td>
 											<td>${pha.photoNo}</td>
-										</tr>
+										</tr>--%>
 										<tr>
 											<td>相片日期:</td>
 											<td>${pha.photoDate}</td>

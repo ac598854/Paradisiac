@@ -101,20 +101,20 @@ ul.navigation {
 	padding-left: 250px;
 }
 
-#sidebar-wrapper {
-	z-index: 1000;
-	position: fixed;
-	left: 250px;
-	width: 0;
-	height: 100%;
-	margin-left: -250px;
-	overflow-y: auto;
-	background: #4d4d4d;
-	-webkit-transition: all 0.5s ease;
-	-moz-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
-	transition: all 0.5s ease;
-}
+ #sidebar-wrapper { 
+ 	z-index: 1000; 
+ 	position: fixed; 
+ 	left: 250px; 
+ 	width: 0; 
+ 	height: 100%; 
+ 	margin-left: -250px; 
+ 	overflow-y: auto; 
+ 	background: #4d4d4d; 
+ 	-webkit-transition: all 0.5s ease; 
+ 	-moz-transition: all 0.5s ease; 
+ 	-o-transition: all 0.5s ease; 
+ 	transition: all 0.5s ease; 
+ } */
 
 #wrapper.toggled #sidebar-wrapper {
 	width: 250px;
@@ -124,6 +124,7 @@ ul.navigation {
 	width: 100%;
 	position: absolute;
 	padding: 15px;
+
 }
 
 #wrapper.toggled #page-content-wrapper {
@@ -198,10 +199,12 @@ ul.navigation {
 /* sidbar */
 .sidebar-title {
 	cursor: pointer;
+	font-size: 15px;
 }
 
 .sub-menu {
 	display: none;
+	font-size: 15px;
 }
 
 }
@@ -209,6 +212,7 @@ ul.navigation {
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.3s ease-in-out;
+	font-size: 15px;
 }
 
 /*表格、查詢*/
@@ -245,6 +249,7 @@ ul.navigation {
 
 .table-data .col-md-2:nth-child(odd) {
 	background-color: #e9ecef;
+
 }
 
 .table-data .col-md-2:nth-child(1) {
@@ -306,6 +311,9 @@ ul.navigation {
 	margin-left: 0px;
 	margin-right: 0px;
 }
+
+
+
 </style>
 
 <div id="wrapper" class="toggled">
@@ -317,8 +325,8 @@ ul.navigation {
 				href="/Paradisiac/front-end/index/index2.jsp">後台管理系統</a>
 			<%--/Paradisiac/front-end/index/index2.jsp --%></li>
 
-			<li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
-			<!-- 企劃 -->
+			<!--<li class="sidebar-title" data-toggle="submenu-1">前端頁面管理</li>
+			 企劃 -->
 			<!--訂房-->
 			<li class="sidebar-title" data-toggle="submenu-2">訂房系統管理</li>
 			<ul class="sub-menu" id="submenu-2">
@@ -389,7 +397,11 @@ ul.navigation {
 				<li><a href="#" id="promotionLeft">促銷專案管理</a></li>
 				<li><a href="#">促銷商品管理</a></li>
 			</ul>
+		</ul>
+		
+			
 	</div>
+
 	<!-- /#sidebar-wrapper -->
 
 	<!-- Top Navigation -->
@@ -397,7 +409,6 @@ ul.navigation {
 		<li class="nav-item"><a class="nav-link"
 			href="${pageContext.request.contextPath}/loginempN.do?action=logoutEmp"
 			id="logoutLi">登出</a></li>
-		<li class="nav-item"><a class="nav-link" href='#'>首頁</a></li>
 	</ul>
 
 	<div id="page-content-wrapper">

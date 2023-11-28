@@ -23,6 +23,7 @@ public class DeptVO implements java.io.Serializable{
 	
 	@Expose
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)//自增主鍵
 	@Column(name = "dept_no" , updatable = false) //更新時這個屬性不需輸入
 	private Integer deptNo;
 	
@@ -78,8 +79,8 @@ public class DeptVO implements java.io.Serializable{
 		this.deptName = deptName;
 	}
 	
-	public DeptVO(Integer deptNo, String deptName,  Integer fucNo, boolean deptStatus) {
-		this.deptNo = deptNo;
+	public DeptVO(String deptName,  Integer fucNo, boolean deptStatus) {
+//		this.deptNo = deptNo;
 		this.deptName = deptName;
 		this.fucNo = fucNo;
 		this.deptStatus = deptStatus;

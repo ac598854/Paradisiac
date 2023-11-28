@@ -11,9 +11,10 @@
 <html>
 <head>
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
-<title>員工資料 - listOneEmp</title>
+<title>員工資料</title>
 
 <style>
+<%--
   table#table-1 {
 	background-color: #CCCCFF;
     border: 2px solid black;
@@ -23,7 +24,7 @@
     color: red;
     display: block;
     margin-bottom: 1px;
-  }
+  }--%>
   h4 {
     color: blue;
     display: inline;
@@ -33,7 +34,6 @@
 <style>
   table {
 	width: 600px;
-	background-color: white;
 	margin-top: 5px;
 	margin-bottom: 5px;
   }
@@ -47,12 +47,12 @@
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料 - listOneEmp.jsp</h3>
-		 <h4><a href="back-end/emp/select_page.jsp">回首頁</a></h4>
+		 <h3>員工資料</h3>
+		 <h4><a href="back-end/emp/select_page.jsp">回員工首頁</a></h4>
 	</td></tr>
 </table>
 

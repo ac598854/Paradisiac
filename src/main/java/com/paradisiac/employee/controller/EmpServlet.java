@@ -190,12 +190,12 @@ public class EmpServlet extends HttpServlet {
 			List<String> errorMsgs = new LinkedList<String>();
 			req.setAttribute("errorMsgs", errorMsgs);
 			/***************************1.接收請求參數 - 輸入格式的錯誤處理**********************/
-			Integer empno = null;
-			try {
-				empno = Integer.valueOf(req.getParameter("empno").trim());
-			}catch(Exception e){
-				errorMsgs.add("員工編號請勿空白");
-			}
+//			Integer empno = null;
+//			try {
+//				empno = Integer.valueOf(req.getParameter("empno").trim());
+//			}catch(Exception e){
+//				errorMsgs.add("員工編號請勿空白");
+//			}
 		
 			String empName = req.getParameter("empName");
 			String enameReg = "^[(\u4e00-\u9fa5)(a-zA-Z0-9_)]{2,10}$";
@@ -248,7 +248,7 @@ public class EmpServlet extends HttpServlet {
 //			deptVO.setDeptNo(deptno);
 			DeptVO deptVO = deptSvc.getDeptByDeptno(deptno);
 			
-			empVO.setEmpno(empno);
+//			empVO.setEmpno(empno);
 			empVO.setDeptVO(deptVO);
 			//empVO.setDeptno(deptno);
 			empVO.setEmpStatus(empStatus);
@@ -269,7 +269,7 @@ public class EmpServlet extends HttpServlet {
 			}
 			/***************************2.開始新增資料***************************************/
 			EmpService empSvc = new EmpService();
-			empVO = empSvc.addEmp(empno, deptVO, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
+			empVO = empSvc.addEmp(deptVO, empStatus, empName, empMail, empAccount, empPass, empGender, empPhone);
 			
 			/***************************3.新增完成,準備轉交(Send the Success view)***********/
 			String url = "/back-end/emp/listAllEmp.jsp";

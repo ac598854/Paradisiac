@@ -10,10 +10,10 @@ EmpVO empVO = (EmpVO) request.getAttribute("empVO");
 <head>
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<title>員工資料新增 - addEmp.jsp</title>
+<title>員工資料新增</title>
 
 <style>
-table#table-1 {
+<%--table#table-1 {
 	background-color: #CCCCFF;
 	border: 2px solid black;
 	text-align: center;
@@ -23,7 +23,7 @@ table#table-1 h4 {
 	color: red;
 	display: block;
 	margin-bottom: 1px;
-}
+}--%>
 
 h4 {
 	color: blue;
@@ -34,7 +34,7 @@ h4 {
 <style>
 table {
 	width: 450px;
-	background-color: white;
+	
 	margin-top: 1px;
 	margin-bottom: 1px;
 }
@@ -49,7 +49,7 @@ th, td {
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
 	<table id="table-1">
 		<tr>
@@ -59,7 +59,7 @@ th, td {
 			<td>
 				<h4>
 					<a
-						href="${pageContext.request.contextPath}/back-end/emp/select_page.jsp">回首頁</a>
+						href="${pageContext.request.contextPath}/back-end/emp/select_page.jsp">回員工首頁</a>
 				</h4>
 			</td>
 		</tr>
@@ -80,11 +80,11 @@ th, td {
 	<FORM ACTION="${pageContext.request.contextPath}/emp.do"
 		name="form1">
 		<table>
-			<tr>
+			<%-- <tr>
 				<td>員工編號:</td>
 				<td><input type="text" name="empno" id="f_date1"
 					value="${param.empVO.getEmpno() == '' ? '' : empVO.getEmpno()}"></td>
-			</tr>
+			</tr>--%>
 
 			<jsp:useBean id="deptSvc" scope="page"
 				class="com.paradisiac.department.service.DeptServiceImpl" />

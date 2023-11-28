@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>員工系統首頁</title>
 <style>
-  table#table-1 {
+  <%--table#table-1 {
 	width: 450px;
 	background-color: #CCCCFF;
 	margin-top: 5px;
@@ -21,7 +21,7 @@
     color: red;
     display: block;
     margin-bottom: 1px;
-  }
+  }--%>
   h4 {
     color: blue;
     display: inline;
@@ -30,13 +30,11 @@
 </head>
 <body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
-<body bgcolor='white'>
+<body>
 
 <table id="table-1">
-   <tr><td><h3>員工系統首頁 Emp: Home</h3><h4></h4></td></tr>	
+   <tr><td><h3>員工系統首頁</h3><h4></h4></td></tr>	
 </table>
-
-<p>This is the Home page for IBM Emp: Home</p>
 
 <h3>資料查詢:</h3>
 	
@@ -55,7 +53,7 @@
   
   <li>
     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/emp.do" ><%--這裡寫emp.do繪多生一個emp --%>
-        <b>輸入員工編號 (如7001):</b>
+        <b>輸入員工編號</b>
         <input type="text" name="empno"> <!-- 所有請求名稱用hidden送出 -->
         <input type="hidden" name="action" value="getOne_For_Display">
         <input type="submit" value="送出">

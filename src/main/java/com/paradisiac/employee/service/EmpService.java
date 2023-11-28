@@ -48,12 +48,12 @@ public class EmpService {
 		return dao.getAll();
 	}
 	
-	public EmpVO addEmp(Integer empno, DeptVO dept, Integer empStatus,
+	public EmpVO addEmp(DeptVO dept, Integer empStatus,
 			String empName, String empMail, String empAccount, String empPass, Integer empGender, String empPhone) {
 
 		EmpVO empVO = new EmpVO();
 
-		empVO.setEmpno(empno);
+//		empVO.setEmpno(empno);
 		empVO.setDeptVO(dept);
 		empVO.setEmpStatus(empStatus);
 		empVO.setEmpName(empName);

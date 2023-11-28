@@ -75,7 +75,7 @@ public class Cart extends HttpServlet {
 				JSONObject redisDataJSON = new JSONObject(redisDataString);//必須要不是空值的地方才可以轉
 				if (sessionDataString != null) {
 					JSONObject sessionDataJSON = new JSONObject(sessionDataString);
-//					System.out.println("session內有,redis也有");
+					System.out.println("session內有,redis也有");
 					for (String key : sessionDataJSON.keySet()) {
 						Object productObject = sessionDataJSON.getJSONObject(key);
 						int sessionquantity = ((JSONObject) productObject).getInt("quantity");
@@ -84,10 +84,10 @@ public class Cart extends HttpServlet {
 							int redisquantity = ((JSONObject) redisObject).getInt("quantity");
 							int total = sessionquantity + redisquantity;
 							((JSONObject) redisObject).put("quantity", total);
-//							System.out.println("更新後redis內數量:" + redisObject);
+							System.out.println("更新後redis內數量:" + redisObject);
 						} else {
 							((JSONObject) productObject).put("quantity", sessionquantity);
-							redisDataJSON.put(key, redisObject);
+							redisDataJSON.put(key, productObject);
 						}
 					}
 				}
@@ -99,11 +99,11 @@ public class Cart extends HttpServlet {
 		}
 		// ==========不是會員從session內取得=================================
 		if (memno == null) {
-//				System.out.println("不是會員從session取得");
+				System.out.println("不是會員從session取得");
 				if (sessionDataString != null) {
 					response.getWriter().write(sessionDataString);
 				} else {
-//					System.out.println("不是會員且session是空的");
+					System.out.println("不是會員且session是空的");
 					JSONObject errorResponse = new JSONObject();
 					errorResponse.put("error", "購物車為空");
 					response.getWriter().write(errorResponse.toString());
@@ -169,7 +169,7 @@ public class Cart extends HttpServlet {
 
 		if (memno == null) {
 			if ("checkout".equals(action)) {
-//				System.out.println("不是會員存入session");
+				System.out.println("不是會員存入session");
 				session.setAttribute("cart", data);
 				JSONObject addResponse = new JSONObject();
 				addResponse.put("add", "已加入購物車");

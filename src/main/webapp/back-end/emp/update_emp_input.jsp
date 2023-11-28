@@ -7,20 +7,20 @@
    EmpVO empVO = (EmpVO) request.getAttribute("empVO");
    DeptVO deptVO = (DeptVO) request.getAttribute("deptVO");
 %>
---<%= empVO==null%>
---<%= deptVO==null%>
+<%= empVO==null%>
+<%= deptVO==null%>
 <html>
 <head>
 <%@ include file="/back-end/index/ManagerMeta.jsp"%>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-<title>員工資料修改 - update_emp_input.jsp</title>
+<title>員工資料修改</title>
 
 <style>
-  table#table-1 {
+  <%--table#table-1 {
 	background-color: #CCCCFF;
     border: 2px solid black;
     text-align: center;
-  }
+  }--%>
   table#table-1 h4 {
     color: red;
     display: block;
@@ -35,7 +35,6 @@
 <style>
   table {
 	width: 450px;
-	background-color: white;
 	margin-top: 1px;
 	margin-bottom: 1px;
   }
@@ -48,12 +47,12 @@
 </style>
 
 </head>
-<body bgcolor='white'>
+<body>
 <%@ include file="/back-end/index/ManagerBody.jsp"%>
 <table id="table-1">
 	<tr><td>
-		 <h3>員工資料修改 - update_emp_input.jsp</h3>
-		 <h4><a href="back-end/emp/select_page.jsp">回首頁</a></h4>
+		 <h3>員工資料修改</h3>
+		 <h4><a href="back-end/emp/select_page.jsp">回員工首頁</a></h4>
 	</td></tr>
 </table>
 

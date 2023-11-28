@@ -92,11 +92,11 @@ h1 {
 				</div>
 				<div class="form-group">
 					<label for="albumName">相簿名稱</label> <input type="text"
-						id="albName" name="albName" value="${phaVO.albName}">
+						id="albName" name="albName" value="${phaVO.albName==null?'':phaVO.albName}">
 				</div>
 				<div class="form-group">
 					<label for="createDate">相簿建立日期</label> <input type="date"
-						id="createDate" id="albDate" name="albDate" value="${phaVO.albDate}" required>
+						id="createDate" id="albDate" name="albDate" value="${phaVO.albDate==null?'':phaVO.albDate}" required>
 				</div>
 			</div>
 			
@@ -104,7 +104,7 @@ h1 {
 				style="padding: 5px; display: flex; flex-direction: column; align-items: center; 
     			justify-content: center; border: 1px solid #D3D3D3; margin-top:15px; margin-right: 5px;">
     			<p>相簿封面</p>
-				<img src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo}" alt="相簿封面" class="img-fluid"
+				<img src="<%=request.getContextPath()%>/dbg.do?alb_no=${phaVO.albNo==null?'':phaVO.albNo}" alt="相簿封面" class="img-fluid"
 				style="width: 250px; height: 200px; object-fit: cover;">
 			</div>
 

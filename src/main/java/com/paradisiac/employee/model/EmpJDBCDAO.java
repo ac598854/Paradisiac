@@ -20,7 +20,7 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 	static String passwd = "123456";
 
 	private static final String INSERT_STMT = 
-		"INSERT INTO employee (emp_no,dept_no,emp_status,emp_name,emp_mail,emp_account,emp_pass,emp_gender,emp_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		"INSERT INTO employee (dept_no,emp_status,emp_name,emp_mail,emp_account,emp_pass,emp_gender,emp_phone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	private static final String GET_ALL_STMT = 
 		"SELECT * FROM employee order by emp_no";
 	private static final String GET_ONE_STMT = 
@@ -74,16 +74,16 @@ public class EmpJDBCDAO implements EmpDAO_interface{
 			con = DriverManager.getConnection(url, userid, passwd);
 			pstmt = con.prepareStatement(INSERT_STMT);
 			
-			pstmt.setInt(1, empVO.getEmpno());
-			pstmt.setInt(2,empVO.getDept().getDeptNo());
+//			pstmt.setInt(1, empVO.getEmpno());
+			pstmt.setInt(1,empVO.getDept().getDeptNo());
 			//pstmt.setInt(2,empVO.getDeptno());
-			pstmt.setInt(3,empVO.getEmpStatus());
-			pstmt.setString(4,empVO.getEmpName());
-			pstmt.setString(5,empVO.getEmpMail());
-			pstmt.setString(6,empVO.getEmpAccount());
-			pstmt.setString(7,empVO.getEmpPass());
-			pstmt.setInt(8,empVO.getEmpGender());
-			pstmt.setString(9,empVO.getEmpPhone());
+			pstmt.setInt(2,empVO.getEmpStatus());
+			pstmt.setString(3,empVO.getEmpName());
+			pstmt.setString(4,empVO.getEmpMail());
+			pstmt.setString(5,empVO.getEmpAccount());
+			pstmt.setString(6,empVO.getEmpPass());
+			pstmt.setInt(7,empVO.getEmpGender());
+			pstmt.setString(8,empVO.getEmpPhone());
 
 			pstmt.executeUpdate();
 

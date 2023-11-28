@@ -83,7 +83,7 @@ td form input[type="submit"] {
 					<td><input type="radio" name="deptStatus" value="false"
 						${deptVO.isDeptStatus()? '' : 'checked'} size="45" />凍結 
 						<input type="radio" name="deptStatus" value="true"						
-						${deptVO.isDeptStatus()? 'checked' : ''} size="45" />未凍結</td>
+						${deptVO.isDeptStatus()? 'checked' : ''} size="45" />正常</td>
 					 <td>
 					 <jsp:useBean id="fucSvc" scope="page"
 							class="com.paradisiac.fuc.service.Fuc_ServiceImpl" /> 
