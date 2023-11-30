@@ -233,7 +233,7 @@ function createOrdersTable(orders) {
 
 //==================================創建單一訂單模態匡==============================================
 function showOrderDetails(orderId) {
-    fetch(`http://localhost:8081/Paradisiac/orders/${orderId}`)
+    fetch(projectName+`/orders/${orderId}`)
         .then(response => response.json())
         .then(orderDetails => {
             const detailsDiv = document.getElementById('orderDetails');

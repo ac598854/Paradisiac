@@ -294,7 +294,7 @@ public class MembersServlet<Session> extends HttpServlet {
 			String memmail = req.getParameter("memmail");
 			String mempass = req.getParameter("mempass");
 			if (mempass != null && mempass.trim().length() > 0) {
-				String salt = BCrypt.gensalt(20);
+				String salt = BCrypt.gensalt();
 				mempass = BCrypt.hashpw(mempass, salt);
 				System.out.println("會員專區加密後:" + mempass);
 			} else {		
