@@ -53,7 +53,7 @@
         <div>
 	        <form method="post" action="<%=request.getContextPath()%>/loginempN.do">
 				員工編號<input type="text" name="empno" style="margin: 10px;"><br>
-				員工密碼<input type="text" name="empPass" style="margin: 5px;"><br>
+				員工密碼<input type="password" name="empPass" style="margin: 5px;"><br>
 				<input type="hidden" name="action" value="loginEmp">
 				<input type="submit" value="登入" style="margin: 10px;">
 			</form>

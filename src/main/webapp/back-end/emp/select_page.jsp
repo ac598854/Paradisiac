@@ -49,7 +49,7 @@
 </c:if>
 
 <ul>
-  <li><a href='listAllEmp.jsp'>List</a> all Emps.  <br><br></li>
+  <li><a href='${pageContext.request.contextPath}/back-end/emp/listAllEmp.jsp'>List</a> all Emps.  <br><br></li>
   
   <li>
     <FORM METHOD="post" ACTION="${pageContext.request.contextPath}/emp.do" ><%--這裡寫emp.do繪多生一個emp --%>

@@ -121,7 +121,7 @@ th, td {
 			</tr>
 			<tr>
 				<td>­û¤u±K½X:</td>
-				<td><input type="TEXT" name="empPass"
+				<td><input type="password" name="empPass"
 					value="<%=(empVO == null) ? "" : empVO.getEmpPass()%>" size="45" /></td>
 			</tr>
 			<tr>
